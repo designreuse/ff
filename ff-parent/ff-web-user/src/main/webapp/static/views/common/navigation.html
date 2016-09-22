@@ -1,0 +1,24 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+	<div ng-controller="NavigationController" class="sidebar-collapse">
+		<ul side-navigation class="nav metismenu" id="side-menu">
+			<li ng-class="{active: $state.includes('tenders')}">
+                <a ui-sref="tenders.overview">
+                    <i class="fa fa-star"></i>
+                    <span class="nav-label">{{ 'MENU_TENDERS' | translate }}</span>
+                </a>
+            </li>
+			<li ng-class="{active: $state.includes('investments')}">
+                <a ui-sref="investments.overview">
+                    <i class="fa fa-university"></i>
+                    <span class="nav-label">{{ 'MENU_INVESTMENTS' | translate }}</span>
+                </a>
+            </li>
+			<li ng-class="{active: $state.includes('articles')}">
+                <a ui-sref="articles.overview">
+                    <i class="fa fa-newspaper-o"></i>
+                    <span class="nav-label">{{ 'MENU_ARTICLES' | translate }}</span>
+                </a>
+            </li>
+		</ul>
+	</div>
+</nav>

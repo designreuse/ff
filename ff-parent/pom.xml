@@ -22,5 +22,7 @@
     
     <modules>
     	<module>ff-core</module>
+    	<module>ff-web-user</module>
     </modules>
+    
 </project>
