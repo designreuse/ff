@@ -42,8 +42,6 @@ angular.module('FundFinder')
 		}
 	};
 	
-	$urlRouterProvider.otherwise('/tenders/overview');
-	
 	$stateProvider
 		// TENDERS
 		.state('tenders', {

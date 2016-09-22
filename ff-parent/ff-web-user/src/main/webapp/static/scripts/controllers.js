@@ -9,7 +9,7 @@ angular.module('FundFinder')
 	$scope.logout = function() {
 		$http.post('/logout', {})
 			.success(function() {
-				location.reload();
+				$window.location.href = '';
 			})
 			.error(function(data) {
 				$log.error(data);
