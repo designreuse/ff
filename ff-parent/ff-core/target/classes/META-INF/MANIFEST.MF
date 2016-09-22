@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: Fund Finder Core
+Implementation-Version: 1.0.0-SNAPSHOT
+Built-By: dblazevic
+Implementation-Vendor-Id: org.ff
+Build-Jdk: 1.8.0_40
+Implementation-URL: http://projects.spring.io/spring-boot/ff-parent/ff
+ -core/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
