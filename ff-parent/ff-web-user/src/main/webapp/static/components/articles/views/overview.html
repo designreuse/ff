@@ -16,8 +16,12 @@ p span {
 	<div masonry>
 		<div class="masonry-brick ff-masonry-brick" ng-repeat="article in articles">
             <small class="label-default pull-right ff-masonry-brick-date ">{{article.lastModifiedDate | date : dateFormat}}</small>
-            <h5 class="p-xs ff-masonry-brick-title">{{article.name}}</h5>
-            <img class="img-rounded ff-masonry-brick-img" ng-show="article.image.base64" ng-src="data:image/JPEG;base64,{{article.image.base64}}" width="100%">
+            <h5 class="p-xs ff-masonry-brick-title">
+                <a class="ff-a" ui-sref="articles.details({ id: article.id })">{{article.name}}</a>
+            </h5>
+            <a ui-sref="articles.details({ id: article.id })">
+                <img class="img-rounded ff-masonry-brick-img" ng-show="article.image.base64" ng-src="data:image/JPEG;base64,{{article.image.base64}}" width="100%">
+            </a>
             <p data-ng-bind="article.text" class="ff-masonry-brick-text" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(article)"></p>
         </div>
 	</div>

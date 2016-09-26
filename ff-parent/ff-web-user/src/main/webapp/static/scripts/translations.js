@@ -18,6 +18,7 @@ function config($translateProvider) {
 			MENU_ARTICLES: 'Articles',
 			
 			BUTTON_SAVE: 'Save',
+			BUTTON_BACK: 'Back',
 			
 			ACTION_LOAD_FAILURE_MESSAGE: 'Loading data failed',
 			ACTION_SAVE_FAILURE_MESSAGE: 'Saving data failed',
@@ -44,12 +45,14 @@ function config($translateProvider) {
 			MENU_ARTICLES: 'Članci',
 			
 			BUTTON_SAVE: 'Spremi',
+			BUTTON_BACK: 'Nazad',
 			
 			ACTION_LOAD_FAILURE_MESSAGE: 'Loading data failed',
 			ACTION_SAVE_FAILURE_MESSAGE: 'Saving data failed',
 			ACTION_SAVE_SUCCESS_MESSAGE: 'Saving data successful',
 			
 			LABEL_LAST_MODIFIED: 'Last modified',
+			LABEL_READ_MORE: 'Pročitajte više',
 		});
 	
 	$translateProvider.preferredLanguage("en");

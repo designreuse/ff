@@ -108,6 +108,12 @@ angular.module('FundFinder')
 	        templateUrl: "/components/articles/views/overview.html",
 	        controller: 'ArticlesController'
 	    })
+	    .state('articles.details', {
+	        url: "/details/:id",
+	        templateUrl: "/components/articles/views/details.html",
+	        controller: 'ArticlesDetailsController',
+	        params: { 'id' : null }
+	    })
 })
 	
 .run(function ($rootScope, $state, $stateParams, $log, $localStorage, ModalService) {

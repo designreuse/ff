@@ -9,7 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
@@ -27,13 +29,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "investment")
 @NoArgsConstructor @Getter @Setter @ToString
 @Audited
 @JsonInclude(Include.NON_NULL)
-public class User extends AbstractEntity {
+public class Investment extends AbstractEntity {
 
-	public enum UserStatus { ACTIVE, INACTIVE };
+	public enum InvestmentStatus { ACTIVE, INACTIVE };
 
 	@Id
 	@Column(name = "id")
@@ -42,28 +44,22 @@ public class User extends AbstractEntity {
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false, columnDefinition="varchar(16)")
-	private UserStatus status;
+	@Column(name = "status", nullable = false, length = 16)
+	private InvestmentStatus status;
 
 	@Nationalized
-	@Column(name = "first_name", nullable = false, length = 128)
-	private String firstName;
+	@Column(name = "name", nullable = false, length = 255)
+	private String name;
 
+	@Lob
 	@Nationalized
-	@Column(name = "last_name", nullable = false, length = 128)
-	private String lastName;
-
-	@Nationalized
-	@Column(name = "email", nullable = false, length = 255)
-	private String email;
-
-	@Nationalized
-	@Column(name = "password", nullable = false, length = 128)
-	private String password;
+	@Column(name = "text", nullable = true)
+	private String text;
 
 	@NotAudited
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "image", nullable = true)
 	@JsonIgnore
-	private Company company;
+	private Image image;
 
 }

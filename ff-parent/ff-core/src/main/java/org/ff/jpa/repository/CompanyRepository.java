@@ -1,15 +1,15 @@
 package org.ff.jpa.repository;
 
-import org.ff.jpa.domain.County;
+import org.ff.jpa.domain.Company;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CountyRepository extends CrudRepository<County, Integer>, JpaSpecificationExecutor<County> {
+public interface CompanyRepository extends CrudRepository<Company, Integer>, JpaSpecificationExecutor<Company> {
 
-	Page<County> findAll(Pageable pageable);
+	Page<Company> findAll(Pageable pageable);
 
-	County findByName(String name);
+	Company findByCode(String code);
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ff.article.resource.ArticleResource;
 import org.ff.article.service.ArticleService;
+import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping(value = { "/api/v1/articles" })
-public class ArticleController {
+public class ArticleController extends BaseController {
 
 	@Autowired
 	private ArticleService articleService;

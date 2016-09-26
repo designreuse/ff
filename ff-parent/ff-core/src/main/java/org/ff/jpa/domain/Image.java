@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
@@ -30,8 +31,8 @@ public class Image extends AbstractEntity {
 	@JsonIgnore
 	private Integer id;
 
-	@Column(name = "text", nullable = true, columnDefinition = "longtext")
-	//	@Column(name = "text", nullable = true, columnDefinition = "nvarchar(max)")
+	@Lob
+	@Column(name = "base64", nullable = true)
 	private String base64;
 
 }

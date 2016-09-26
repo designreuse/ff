@@ -1,21 +1,24 @@
 package org.ff.jpa.domain;
 
-import javax.persistence.CascadeType;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.ff.jpa.AbstractEntity;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,43 +30,37 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "company")
 @NoArgsConstructor @Getter @Setter @ToString
 @Audited
 @JsonInclude(Include.NON_NULL)
-public class User extends AbstractEntity {
-
-	public enum UserStatus { ACTIVE, INACTIVE };
+public class Company extends AbstractEntity {
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
 	private Integer id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false, columnDefinition="varchar(16)")
-	private UserStatus status;
+	@OneToOne
+	@JoinColumn(name = "\"user\"")
+	@AuditOverride(name = "\"user\"")
+	private User user;
 
 	@Nationalized
-	@Column(name = "first_name", nullable = false, length = 128)
-	private String firstName;
+	@Column(name = "name", nullable = false, length = 255)
+	private String name;
 
 	@Nationalized
-	@Column(name = "last_name", nullable = false, length = 128)
-	private String lastName;
+	@Column(name = "code", nullable = false, length = 64)
+	private String code;
 
-	@Nationalized
-	@Column(name = "email", nullable = false, length = 255)
-	private String email;
-
-	@Nationalized
-	@Column(name = "password", nullable = false, length = 128)
-	private String password;
-
-	@NotAudited
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "company_investment",
+			joinColumns = { @JoinColumn(name = "company_id", referencedColumnName = "id") },
+			inverseJoinColumns = { @JoinColumn(name = "investment_id", referencedColumnName = "id") },
+			uniqueConstraints = { @UniqueConstraint(columnNames = {"company_id", "investment_id"}) })
 	@JsonIgnore
-	private Company company;
+	private Set<Investment> investments;
 
 }

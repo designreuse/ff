@@ -9,14 +9,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.ff.jpa.SearchCriteria;
-import org.ff.jpa.domain.County;
+import org.ff.jpa.domain.Investment;
 import org.springframework.data.jpa.domain.Specification;
 
-public class CountySpecification implements Specification<County> {
+public class InvestmentSpecification implements Specification<Investment> {
 
 	private SearchCriteria criteria;
 
-	public CountySpecification(final SearchCriteria criteria) {
+	public InvestmentSpecification(final SearchCriteria criteria) {
 		super();
 		this.criteria = criteria;
 	}
@@ -27,7 +27,7 @@ public class CountySpecification implements Specification<County> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Predicate toPredicate(Root<County> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+	public Predicate toPredicate(Root<Investment> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 		switch (criteria.getOperation()) {
 			case EQUALITY:
 				return builder.equal(root.get(criteria.getKey()), criteria.getValue());

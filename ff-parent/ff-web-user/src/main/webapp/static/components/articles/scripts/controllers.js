@@ -1,8 +1,9 @@
 angular.module('FundFinder')
-	.controller('ArticlesController', ArticlesController);
+	.controller('ArticlesController', ArticlesController)
+	.controller('ArticlesDetailsController', ArticlesDetailsController);
 
 // ========================================================================
-//	OVERVIEW CONTROLLER
+//	OVERVIEW
 // ========================================================================
 function ArticlesController($rootScope, $scope, $state, $log, $timeout, $filter, $sce, ArticlesService) {
 	var $translate = $filter('translate');
@@ -27,9 +28,42 @@ function ArticlesController($rootScope, $scope, $state, $log, $timeout, $filter,
 	};
 	
 	$scope.showDetails = function(article) {
-		alert('details for ' + article.name);
+		$state.go('articles.details', { 'id' : article.id });
 	};
 	
 	// initial load
 	$scope.findAll();
+};
+
+// ========================================================================
+//	DETAILS
+// ========================================================================
+function ArticlesDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, $sce, ArticlesService) {
+	var $translate = $filter('translate');
+	var $lowercase = $filter('lowercase');
+	
+	$scope.back = function() {
+		$state.go('articles.overview');
+	};
+	
+	$scope.find = function(id) {
+		ArticlesService.find(id)
+			.success(function(data, status) {
+				if (status == 200) {
+					$scope.article = data;
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.toTrusted = function(html) {
+	    return $sce.trustAsHtml(html);
+	};
+	
+	// initial load
+	$scope.find($stateParams.id);
 };

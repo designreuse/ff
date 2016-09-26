@@ -10,10 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
+import org.hibernate.annotations.Nationalized;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -41,16 +43,17 @@ public class Article extends AbstractEntity {
 	@JsonIgnore
 	private Integer id;
 
-	@Column(name = "status", nullable = false, columnDefinition="varchar(16)")
 	@Enumerated(EnumType.STRING)
+	@Column(name = "status", nullable = false, length = 16)
 	private ArticleStatus status;
 
-	@Column(name = "name", nullable = false, columnDefinition = "varchar(512)")
-	//	@Column(name = "name", nullable = false, columnDefinition = "nvarchar(512)")
+	@Nationalized
+	@Column(name = "name", nullable = false, length = 255)
 	private String name;
 
-	@Column(name = "text", nullable = true, columnDefinition = "longtext")
-	//	@Column(name = "text", nullable = true, columnDefinition = "nvarchar(max)")
+	@Lob
+	@Nationalized
+	@Column(name = "text", nullable = true)
 	private String text;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
