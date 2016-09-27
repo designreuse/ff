@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
-import org.ff.investment.resource.InvestmentResource;
 import org.ff.investment.service.InvestmentService;
+import org.ff.resource.investment.InvestmentResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

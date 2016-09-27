@@ -2,10 +2,11 @@ package org.ff.jpa.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
@@ -16,17 +17,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "image")
+@Table(name = "impression")
 @NoArgsConstructor @Getter @Setter @ToString
-public class Image extends AbstractEntity {
+public class Impression extends AbstractEntity {
+
+	public enum EntityType { ARTICLE, TENDER };
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Lob
-	@Column(name = "base64", nullable = true)
-	private String base64;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "entity_type", nullable = false, length = 16)
+	private EntityType entityType;
+
+	@Column(name = "entity_id", nullable = false)
+	private Integer entityId;
 
 }

@@ -1,21 +1,21 @@
-package org.ff.investment.resource;
+package org.ff.resource.article;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ff.image.resource.ImageResourceAssembler;
-import org.ff.jpa.domain.Investment;
+import org.ff.jpa.domain.Article;
+import org.ff.resource.image.ImageResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InvestmentResourceAssembler {
+public class ArticleResourceAssembler {
 
 	@Autowired
 	private ImageResourceAssembler imageResourceAssembler;
 
-	public InvestmentResource toResource(Investment entity) {
-		InvestmentResource resource = new InvestmentResource();
+	public ArticleResource toResource(Article entity) {
+		ArticleResource resource = new ArticleResource();
 		resource.setId(entity.getId());
 		resource.setName(entity.getName());
 		resource.setText(entity.getText());
@@ -26,9 +26,9 @@ public class InvestmentResourceAssembler {
 		return resource;
 	}
 
-	public List<InvestmentResource> toResources(Iterable<Investment> entities) {
-		List<InvestmentResource> resources = new ArrayList<>();
-		for (Investment entity : entities) {
+	public List<ArticleResource> toResources(List<Article> entities) {
+		List<ArticleResource> resources = new ArrayList<>();
+		for (Article entity : entities) {
 			resources.add(toResource(entity));
 		}
 		return resources;

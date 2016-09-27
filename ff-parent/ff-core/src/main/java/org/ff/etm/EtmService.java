@@ -9,8 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.ff.FundFinderProperties;
 import org.ff.email.EmailService;
+import org.ff.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class EtmService {
 	private EtmProperties etmProperties;
 
 	@Autowired
-	private FundFinderProperties ffProperties;
+	private BaseProperties ffProperties;
 
 	@Autowired
 	private EmailService emailService;

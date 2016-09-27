@@ -65,6 +65,28 @@ angular.module('FundFinder')
 	        controller: 'TendersOverviewController'
 	    })
 	    
+	    // COMPANY
+		.state('company', {
+	        abstract: true,
+	        url: "/company",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/company/scripts/controllers.js',
+	        			        'components/company/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('company.edit', {
+	        url: "/edit",
+	        templateUrl: "/components/company/views/edit.html",
+	        controller: 'CompanyEditController'
+	    })
+	    
 		// INVESTMENTS
 		.state('investments', {
 	        abstract: true,

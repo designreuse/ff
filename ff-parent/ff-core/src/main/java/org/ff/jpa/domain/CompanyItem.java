@@ -1,10 +1,7 @@
 package org.ff.jpa.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,32 +20,26 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "investment")
+@Table(name = "company_item")
 @NoArgsConstructor @Getter @Setter @ToString
-public class Investment extends AbstractEntity {
-
-	public enum InvestmentStatus { ACTIVE, INACTIVE };
+public class CompanyItem extends AbstractEntity {
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false, length = 16)
-	private InvestmentStatus status;
+	@ManyToOne
+	@JoinColumn(name = "company")
+	private Company company;
 
-	@Nationalized
-	@Column(name = "name", nullable = false, length = 255)
-	private String name;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "item", nullable = true)
+	private Item item;
 
 	@Lob
 	@Nationalized
-	@Column(name = "text", nullable = true)
-	private String text;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "image", nullable = true)
-	private Image image;
+	@Column(name = "value", nullable = true)
+	private String value;
 
 }

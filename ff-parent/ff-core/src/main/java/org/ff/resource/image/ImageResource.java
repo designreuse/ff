@@ -1,4 +1,4 @@
-package org.ff.image.resource;
+package org.ff.resource.image;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

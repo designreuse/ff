@@ -2,10 +2,10 @@ package org.ff.article.controller;
 
 import java.util.List;
 
-import org.ff.article.resource.ArticleResource;
 import org.ff.article.service.ArticleService;
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
+import org.ff.resource.article.ArticleResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

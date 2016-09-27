@@ -1,4 +1,4 @@
-package org.ff;
+package org.ff.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Component
-@ConfigurationProperties(prefix = "ff")
+@ConfigurationProperties(prefix = "base")
 @Getter @Setter
-public class FundFinderProperties {
+public class BaseProperties {
 
 	private String dateFormat;
 

@@ -1,4 +1,4 @@
-package org.ff.image.resource;
+package org.ff.resource.image;
 
 import java.util.ArrayList;
 import java.util.List;

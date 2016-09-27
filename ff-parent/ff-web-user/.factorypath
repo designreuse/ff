@@ -88,7 +88,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/bower/bootstrap3-dialog/1.34.4/bootstrap3-dialog-1.34.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/bower/bootstrap/4.0.0-alpha.4/bootstrap-4.0.0-alpha.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/bower/tether/1.3.7/tether-1.3.7.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/bower/jquery/3.1.0/jquery-3.1.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/bower/jquery/3.1.1/jquery-3.1.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/npm/angular-modal-service/0.6.9/angular-modal-service-0.6.9.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/chartjs/1.0.2/chartjs-1.0.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/webjars/bower/angular-chart.js/0.8.8/angular-chart.js-0.8.8.jar" enabled="true" runInBatchMode="false"/>

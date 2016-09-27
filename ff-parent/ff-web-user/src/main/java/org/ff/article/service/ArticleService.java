@@ -2,11 +2,11 @@ package org.ff.article.service;
 
 import java.util.List;
 
-import org.ff.article.resource.ArticleResource;
-import org.ff.article.resource.ArticleResourceAssembler;
 import org.ff.jpa.domain.Article;
 import org.ff.jpa.domain.Article.ArticleStatus;
 import org.ff.jpa.repository.ArticleRepository;
+import org.ff.resource.article.ArticleResource;
+import org.ff.resource.article.ArticleResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

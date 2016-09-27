@@ -1,8 +1,9 @@
-package org.ff.investment.resource;
+package org.ff.resource.investment;
 
 import java.util.Date;
 
-import org.ff.image.resource.ImageResource;
+import org.ff.jpa.domain.Investment.InvestmentStatus;
+import org.ff.resource.image.ImageResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -17,6 +18,9 @@ public class InvestmentResource {
 	@JsonProperty("id")
 	private Integer id;
 
+	@JsonProperty("status")
+	private InvestmentStatus status;
+
 	@JsonProperty("name")
 	private String name;
 
@@ -26,10 +30,19 @@ public class InvestmentResource {
 	@JsonProperty("image")
 	private ImageResource image;
 
+	@JsonProperty("selected")
+	private Boolean selected;
+
+	@JsonProperty("creationDate")
+	private Date creationDate;
+
+	@JsonProperty("createdBy")
+	private String createdBy;
+
 	@JsonProperty("lastModifiedDate")
 	private Date lastModifiedDate;
 
-	@JsonProperty("selected")
-	private Boolean selected;
+	@JsonProperty("lastModifiedBy")
+	private String lastModifiedBy;
 
 }

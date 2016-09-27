@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.ff.investment.resource.InvestmentResource;
-import org.ff.investment.resource.InvestmentResourceAssembler;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Investment.InvestmentStatus;
@@ -16,6 +14,8 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.InvestmentRepository;
 import org.ff.jpa.repository.UserRepository;
+import org.ff.resource.investment.InvestmentResource;
+import org.ff.resource.investment.InvestmentResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class InvestmentService {
 	public List<InvestmentResource> findAll(UserDetails principal) {
 		log.debug("Finding investments for user [{}]", principal.getUsername());
 
-		List<InvestmentResource> resources = resourceAssembler.toResources(repository.findByStatus(InvestmentStatus.ACTIVE));
+		List<InvestmentResource> resources = resourceAssembler.toResources(repository.findByStatus(InvestmentStatus.ACTIVE), false);
 
 		User user = null;
 		Company company = null;

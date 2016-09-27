@@ -5,10 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
+import org.hibernate.annotations.Nationalized;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +16,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "image")
+@Table(name = "county")
 @NoArgsConstructor @Getter @Setter @ToString
-public class Image extends AbstractEntity {
+public class County extends AbstractEntity {
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Lob
-	@Column(name = "base64", nullable = true)
-	private String base64;
+	@Nationalized
+	@Column(name = "name", nullable = false, length = 255)
+	private String name;
 
 }

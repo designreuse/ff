@@ -1,8 +1,6 @@
-package org.ff.article.resource;
+package org.ff.resource.county;
 
 import java.util.Date;
-
-import org.ff.image.resource.ImageResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -12,7 +10,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class ArticleResource {
+public class CountyResource {
 
 	@JsonProperty("id")
 	private Integer id;
@@ -20,13 +18,16 @@ public class ArticleResource {
 	@JsonProperty("name")
 	private String name;
 
-	@JsonProperty("text")
-	private String text;
+	@JsonProperty("creationDate")
+	private Date creationDate;
 
-	@JsonProperty("image")
-	private ImageResource image;
+	@JsonProperty("createdBy")
+	private String createdBy;
 
 	@JsonProperty("lastModifiedDate")
 	private Date lastModifiedDate;
+
+	@JsonProperty("lastModifiedBy")
+	private String lastModifiedBy;
 
 }

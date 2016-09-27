@@ -16,6 +16,7 @@ function config($translateProvider) {
 			MENU_TENDERS: 'Tenders',
 			MENU_INVESTMENTS: 'Investments',
 			MENU_ARTICLES: 'Articles',
+			MENU_COMPANY: 'Company',
 			
 			BUTTON_SAVE: 'Save',
 			BUTTON_BACK: 'Back',
@@ -43,6 +44,7 @@ function config($translateProvider) {
 			MENU_TENDERS: 'Natječaji',
 			MENU_INVESTMENTS: 'Investicije',
 			MENU_ARTICLES: 'Članci',
+			MENU_COMPANY: 'Kompanija',
 			
 			BUTTON_SAVE: 'Spremi',
 			BUTTON_BACK: 'Nazad',

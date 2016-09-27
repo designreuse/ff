@@ -16,12 +16,6 @@ import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +25,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "article")
 @NoArgsConstructor @Getter @Setter @ToString
-@Audited
-@JsonInclude(Include.NON_NULL)
 public class Article extends AbstractEntity {
 
 	public enum ArticleStatus { ACTIVE, INACTIVE };
@@ -40,7 +32,6 @@ public class Article extends AbstractEntity {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
@@ -58,7 +49,6 @@ public class Article extends AbstractEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "image", nullable = true)
-	@NotAudited @JsonIgnore
 	private Image image;
 
 }
