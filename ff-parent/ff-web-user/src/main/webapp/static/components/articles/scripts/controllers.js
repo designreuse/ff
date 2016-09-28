@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW
 // ========================================================================
-function ArticlesController($rootScope, $scope, $state, $log, $timeout, $filter, $sce, ArticlesService) {
+function ArticlesController($rootScope, $scope, $state, $log, $timeout, $filter, ArticlesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -23,10 +23,6 @@ function ArticlesController($rootScope, $scope, $state, $log, $timeout, $filter,
 			});
 	};
 	
-	$scope.toTrusted = function(html) {
-	    return $sce.trustAsHtml(html);
-	};
-	
 	$scope.showDetails = function(article) {
 		$state.go('articles.details', { 'id' : article.id });
 	};
@@ -38,7 +34,7 @@ function ArticlesController($rootScope, $scope, $state, $log, $timeout, $filter,
 // ========================================================================
 //	DETAILS
 // ========================================================================
-function ArticlesDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, $sce, ArticlesService) {
+function ArticlesDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, ArticlesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -58,10 +54,6 @@ function ArticlesDetailsController($rootScope, $scope, $state, $stateParams, $lo
 			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			});
-	};
-	
-	$scope.toTrusted = function(html) {
-	    return $sce.trustAsHtml(html);
 	};
 	
 	// initial load

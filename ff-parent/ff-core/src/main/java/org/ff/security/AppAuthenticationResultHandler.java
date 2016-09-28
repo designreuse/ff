@@ -42,7 +42,7 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 			data.put(URL, contextPath + "/#/dashboard/overview");
 		} else if (isUser(authentication)) {
 			data.put(MESSAGE, "Login success");
-			data.put(URL, contextPath + "/#/articles/overview");
+			data.put(URL, contextPath + "/#/tenders/overview");
 		} else {
 			data.put(MESSAGE, "Invalid role");
 		}

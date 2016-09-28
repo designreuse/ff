@@ -9,7 +9,11 @@ angular.module('FundFinder')
 	$httpProvider.interceptors.push(function($location) {  
 		var path = {
 				request: function(config) {
-					config.url = constants.contextPath + config.url;
+					if (config.url.indexOf("template/datepicker") != -1) {
+						// workaround for problem with loading datepicker templates
+					} else {
+						config.url = constants.contextPath + config.url;
+					}
 					return config;
 				},
 				response: function(response) {
@@ -64,6 +68,12 @@ angular.module('FundFinder')
 	        templateUrl: "/components/tenders/views/overview.html",
 	        controller: 'TendersOverviewController'
 	    })
+	    .state('tenders.details', {
+	        url: "/details/:id",
+	        templateUrl: "/components/tenders/views/details.html",
+	        controller: 'TendersDetailsController',
+	        params: { 'id' : null }
+	    })
 	    
 	    // COMPANY
 		.state('company', {
@@ -76,7 +86,9 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: ['components/company/scripts/controllers.js',
-	        			        'components/company/scripts/services.js']
+	        			        'components/company/scripts/services.js',
+	        			        'components/nkds/scripts/services.js',
+	        			        'components/cities/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -138,7 +150,7 @@ angular.module('FundFinder')
 	    })
 })
 	
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, ModalService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, ModalService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -221,5 +233,9 @@ angular.module('FundFinder')
 			gridApi.saveState.restore(null, state.gridState);
 			$rootScope.setDateFilters(creationDateEl, lastModifiedDateEl, state.dateFilters);
 		}
+	}
+	
+	$rootScope.toTrusted = function(html) {
+	    return $sce.trustAsHtml(html);
 	}
 });

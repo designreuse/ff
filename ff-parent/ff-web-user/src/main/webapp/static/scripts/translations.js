@@ -27,6 +27,8 @@ function config($translateProvider) {
 			
 			LABEL_LAST_MODIFIED: 'Last modified',
 			LABEL_READ_MORE: 'Read more',
+			LABEL_COMPANY_NAME: 'Name',
+			LABEL_COMPANY_CODE: 'Identification code',
 		})
 	
 		// ===========================================================================
@@ -55,6 +57,8 @@ function config($translateProvider) {
 			
 			LABEL_LAST_MODIFIED: 'Last modified',
 			LABEL_READ_MORE: 'Pročitajte više',
+			LABEL_COMPANY_NAME: 'Name',
+			LABEL_COMPANY_CODE: 'Identification code',
 		});
 	
 	$translateProvider.preferredLanguage("en");

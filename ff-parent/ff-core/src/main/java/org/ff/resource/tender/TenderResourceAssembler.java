@@ -93,96 +93,99 @@ public class TenderResourceAssembler {
 		if (!light && entity.getImage() != null) {
 			resource.setImage(imageResourceAssembler.toResource(entity.getImage()));
 		}
-		resource.setItems(itemResourceAssembler.toResources(itemRepository.findByEntityTypeAndStatusOrderByPosition(ItemEntityType.TENDER, ItemStatus.ACTIVE), false));
 
-		Set<TenderItem> tenderItems = entity.getItems();
+		if (!light) {
+			resource.setItems(itemResourceAssembler.toResources(itemRepository.findByEntityTypeAndStatusOrderByPosition(ItemEntityType.TENDER, ItemStatus.ACTIVE), false));
 
-		for (ItemResource itemResource : resource.getItems()) {
-			for (TenderItem tenderItem : tenderItems) {
-				if (itemResource.getId().equals(tenderItem.getItem().getId())) {
-					if (itemResource.getType() == ItemType.NUMBER) {
-						itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
-						itemResource.setValueMapped(tenderItem.getValue());
-					} else if (itemResource.getType() == ItemType.RADIO) {
-						itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
-						itemResource.setValueMapped(itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText());
-					} else if (itemResource.getType() == ItemType.COUNTIES) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							List<CountyResource> value = new ArrayList<>();
-							List<String> valueMapped = new ArrayList<>();
-							for (String id : tenderItem.getValue().split("\\|")) {
-								County county = countyRepository.findOne(Integer.parseInt(id));
-								value.add(countyResourceAssembler.toResource(county, true));
-								valueMapped.add(county.getName());
-							}
-							itemResource.setValue(value);
-							itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
-						}
-					} else if (itemResource.getType() == ItemType.NKDS) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							List<Integer> value = new ArrayList<>();
-							List<String> valueMapped = new ArrayList<>();
-							for (String id : tenderItem.getValue().split("\\|")) {
-								value.add(Integer.parseInt(id));
-								Nkd nkd = nkdRepository.findOne(Integer.parseInt(id));
-								valueMapped.add(nkd.getArea() + "." + nkd.getActivity() + " - " + nkd.getActivityName());
-							}
-							itemResource.setValue(value);
-							itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
-						}
-					} else if (itemResource.getType() == ItemType.INVESTMENTS) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							List<InvestmentResource> value = new ArrayList<>();
-							List<String> valueMapped = new ArrayList<>();
-							for (String id : tenderItem.getValue().split("\\|")) {
-								Investment investment = investmentRepository.findOne(Integer.parseInt(id));
-								value.add(investmentResourceAssembler.toResource(investment, true));
-								valueMapped.add(investment.getName());
-							}
-							itemResource.setValue(value);
-							itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
-						}
-					} else if (itemResource.getType() == ItemType.CHECKBOX) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							Map<String, Boolean> map = new LinkedHashMap<>();
-							List<String> valueMapped = new ArrayList<>();
-							for (ItemOptionResource itemOptionResource : itemResource.getOptions()) {
-								map.put(itemOptionResource.getId().toString(), Boolean.FALSE);
+			Set<TenderItem> tenderItems = entity.getItems();
+
+			for (ItemResource itemResource : resource.getItems()) {
+				for (TenderItem tenderItem : tenderItems) {
+					if (itemResource.getId().equals(tenderItem.getItem().getId())) {
+						if (itemResource.getType() == ItemType.NUMBER) {
+							itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
+							itemResource.setValueMapped(tenderItem.getValue());
+						} else if (itemResource.getType() == ItemType.RADIO) {
+							itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
+							itemResource.setValueMapped(itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText());
+						} else if (itemResource.getType() == ItemType.COUNTIES) {
+							if (StringUtils.isNotBlank(tenderItem.getValue())) {
+								List<CountyResource> value = new ArrayList<>();
+								List<String> valueMapped = new ArrayList<>();
 								for (String id : tenderItem.getValue().split("\\|")) {
-									if (itemOptionResource.getId().toString().equals(id)) {
-										map.put(itemOptionResource.getId().toString(), Boolean.TRUE);
-										valueMapped.add(itemOptionResource.getText());
-										break;
+									County county = countyRepository.findOne(Integer.parseInt(id));
+									value.add(countyResourceAssembler.toResource(county, true));
+									valueMapped.add(county.getName());
+								}
+								itemResource.setValue(value);
+								itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+							}
+						} else if (itemResource.getType() == ItemType.NKDS) {
+							if (StringUtils.isNotBlank(tenderItem.getValue())) {
+								List<Integer> value = new ArrayList<>();
+								List<String> valueMapped = new ArrayList<>();
+								for (String id : tenderItem.getValue().split("\\|")) {
+									value.add(Integer.parseInt(id));
+									Nkd nkd = nkdRepository.findOne(Integer.parseInt(id));
+									valueMapped.add(nkd.getArea() + "." + nkd.getActivity() + " - " + nkd.getActivityName());
+								}
+								itemResource.setValue(value);
+								itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+							}
+						} else if (itemResource.getType() == ItemType.INVESTMENTS) {
+							if (StringUtils.isNotBlank(tenderItem.getValue())) {
+								List<InvestmentResource> value = new ArrayList<>();
+								List<String> valueMapped = new ArrayList<>();
+								for (String id : tenderItem.getValue().split("\\|")) {
+									Investment investment = investmentRepository.findOne(Integer.parseInt(id));
+									value.add(investmentResourceAssembler.toResource(investment, true));
+									valueMapped.add(investment.getName());
+								}
+								itemResource.setValue(value);
+								itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+							}
+						} else if (itemResource.getType() == ItemType.CHECKBOX) {
+							if (StringUtils.isNotBlank(tenderItem.getValue())) {
+								Map<String, Boolean> map = new LinkedHashMap<>();
+								List<String> valueMapped = new ArrayList<>();
+								for (ItemOptionResource itemOptionResource : itemResource.getOptions()) {
+									map.put(itemOptionResource.getId().toString(), Boolean.FALSE);
+									for (String id : tenderItem.getValue().split("\\|")) {
+										if (itemOptionResource.getId().toString().equals(id)) {
+											map.put(itemOptionResource.getId().toString(), Boolean.TRUE);
+											valueMapped.add(itemOptionResource.getText());
+											break;
+										}
 									}
 								}
-							}
 
-							itemResource.setValue(map);
-							itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
-						}
-					} else if (itemResource.getType() == ItemType.SELECT) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
-							itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
-							itemResource.setValueMapped(itemOption.getText());
-						}
-					} else if (itemResource.getType() == ItemType.MULTISELECT) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							List<ItemOptionResource> value = new ArrayList<>();
-							List<String> valueMapped = new ArrayList<>();
-							for (String id : tenderItem.getValue().split("\\|")) {
-								ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
-								value.add(itemOptionResourceAssembler.toResource(itemOption, true));
-								valueMapped.add(itemOption.getText());
+								itemResource.setValue(map);
+								itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
 							}
-							itemResource.setValue(value);
-							itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+						} else if (itemResource.getType() == ItemType.SELECT) {
+							if (StringUtils.isNotBlank(tenderItem.getValue())) {
+								ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
+								itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
+								itemResource.setValueMapped(itemOption.getText());
+							}
+						} else if (itemResource.getType() == ItemType.MULTISELECT) {
+							if (StringUtils.isNotBlank(tenderItem.getValue())) {
+								List<ItemOptionResource> value = new ArrayList<>();
+								List<String> valueMapped = new ArrayList<>();
+								for (String id : tenderItem.getValue().split("\\|")) {
+									ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
+									value.add(itemOptionResourceAssembler.toResource(itemOption, true));
+									valueMapped.add(itemOption.getText());
+								}
+								itemResource.setValue(value);
+								itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+							}
+						} else {
+							itemResource.setValue(tenderItem.getValue());
+							itemResource.setValueMapped(tenderItem.getValue());
 						}
-					} else {
-						itemResource.setValue(tenderItem.getValue());
-						itemResource.setValueMapped(tenderItem.getValue());
+						break;
 					}
-					break;
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 angular.module('FundFinder')
 	.controller('InvestmentsController', InvestmentsController);
 
-function InvestmentsController($rootScope, $scope, $state, $log, $timeout, $filter, $sce, InvestmentsService) {
+function InvestmentsController($rootScope, $scope, $state, $log, $timeout, $filter, InvestmentsService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -32,10 +32,6 @@ function InvestmentsController($rootScope, $scope, $state, $log, $timeout, $filt
 				toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 			});		
 	};
-	
-	$scope.toTrusted = function(html) {
-	    return $sce.trustAsHtml(html);
-	}
 	
 	// initial load
 	$scope.findAll();
