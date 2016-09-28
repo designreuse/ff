@@ -1,0 +1,91 @@
+<div class="row border-bottom">
+	<div class="col-sm-12">
+		<h1 ng-show="entity != null && entity.id == null">{{ 'HEADER_ALGORITHM_ITEM_ADD' | translate }}</h1>
+		<h1 ng-show="entity != null && entity.id != null">{{ 'HEADER_ALGORITHM_ITEM_EDIT' | translate }}</h1>
+	</div>
+</div>
+
+<style>
+    .panel {
+        margin-bottom: 0px; 
+    }
+</style>
+      
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+		<div class="col-lg-12">
+		   <form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
+                <div class="col-lg-6">
+                    <div class="form-group">
+	                    <div class="col-sm-12">
+	                        <label class="ff-label">{{ 'LABEL_CODE' | translate }}
+	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.code.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.code.$valid }"></i></span>
+	                        </label>
+	                        <input ng-model="entity.code" type="text" icheck class="form-control ff-form-control" name="code" ng-required="true" maxlength="8" />
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <div class="col-sm-12">
+	                        <label class="ff-label">{{ 'LABEL_TYPE' | translate }}
+	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.type.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.type.$valid }"></i></span>
+	                        </label>
+	                        <select ng-required="true" chosen class="form-control" ng-model="entity.type" name="type">
+	                            <option value=""></option>
+	                            <option value="MANDATORY">{{ 'ALGORITHM_ITEM_TYPE_MANDATORY' | translate }}</option>
+	                            <option value="OPTIONAL">{{ 'ALGORITHM_ITEM_TYPE_OPTIONAL' | translate }}</option>
+	                            <option value="CONDITIONAL">{{ 'ALGORITHM_ITEM_TYPE_CONDITIONAL' | translate }}</option>
+	                        </select>
+	                    </div>
+	                </div>
+	                <div ng-show="entity.type == 'CONDITIONAL'" class="form-group">
+	                    <div class="col-sm-12">
+	                        <label class="ff-label">{{ 'LABEL_CONDITIONAL_ITEM' | translate }}
+	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.conditionalItemCode.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.conditionalItemCode.$valid }"></i></span>
+	                        </label>
+	                        <select chosen class="form-control ff-form-control" ng-required="entity.type == 'CONDITIONAL'" ng-model="entity.conditionalItemCode" name="conditionalItemCode" ng-options='code for code in conditionalItemCodes'></select>
+	                    </div>
+	                </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="form-group">
+	                    <div class="col-sm-12">
+	                        <label class="ff-label">{{ 'LABEL_COMPANY_ITEM' | translate }}
+	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.companyItem.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.companyItem.$valid }"></i></span>
+	                        </label>
+	                        <select ng-change="updateOperator()" chosen search-contains="true" class="form-control ff-form-control" ng-required="true" ng-model="entity.companyItem" name="companyItem" options="companyItems" ng-options='(companyItem.code + " [" + companyItem.type + "] - " + companyItem.text) for companyItem in companyItems track by companyItem.id'></select>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <div class="col-sm-12">
+	                        <label class="ff-label">{{ 'LABEL_OPERATOR' | translate }}
+	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.operator.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.operator.$valid }"></i></span>
+	                        </label>
+	                        <select ng-required="true" chosen class="form-control" ng-model="entity.operator" name="operator" disabled="disabled">
+	                            <option value=""></option>
+	                            <option value="EQUALS">{{ 'OPERATOR_EQUALS' | translate }}</option>
+	                            <option value="IN">{{ 'OPERATOR_IN' | translate }}</option>
+	                        </select>
+	                        <small class="ff-postscript">{{ 'LABEL_OPERATOR_NOTE' | translate }}</small>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <div class="col-sm-12">
+	                        <label class="ff-label">{{ 'LABEL_TENDER_ITEM' | translate }}
+	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.tenderItem.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.tenderItem.$valid }"></i></span>
+	                        </label>
+	                        <select ng-change="updateOperator()" chosen search-contains="true" class="form-control ff-form-control" ng-required="true" ng-model="entity.tenderItem" name="tenderItem" options="tenderItems" ng-options='(tenderItem.code + " [" + tenderItem.type + "] - " + tenderItem.text) for tenderItem in tenderItems track by tenderItem.id'></select>
+	                    </div>
+	                </div>                
+                </div>
+		   </form>
+		</div>
+	</div>
+	
+	<div class="row" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white m-r-sm"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="saveEntity()" ng-disabled="form.$invalid" class="btn btn-primary"><i class="fa fa-save"></i> {{ 'BUTTON_SAVE' | translate }}</button>
+        </div>
+    </div>
+</div>

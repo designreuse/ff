@@ -1,0 +1,32 @@
+<div class="row border-bottom">
+	<div class="col-sm-12">
+		<h1 ng-show="entity != null && entity.id == null">{{ 'HEADER_COUNTY_ADD' | translate }}</h1>
+		<h1 ng-show="entity != null && entity.id != null">{{ 'HEADER_COUNTY_EDIT' | translate }}</h1>
+	</div>
+</div>
+      
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+		<div class="col-lg-12">
+		   <form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
+		       
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_NAME' | translate }}
+                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.name.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.name.$valid }"></i></span>
+                        </label>
+                        <input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="512" />
+                    </div>
+                </div>
+                
+		   </form>
+		</div>
+	</div>
+	
+	<div class="row" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white m-r-sm"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="saveEntity()" ng-disabled="form.$invalid" class="btn btn-primary"><i class="fa fa-save"></i> {{ 'BUTTON_SAVE' | translate }}</button>
+        </div>
+    </div>
+</div>

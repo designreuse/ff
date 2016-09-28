@@ -1,0 +1,111 @@
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1 ng-show="entityType == 'tender'">{{ 'HEADER_TENDER_ITEM_DETAILS' | translate }}</h1>
+        <h1 ng-show="entityType == 'company'">{{ 'HEADER_COMPANY_ITEM_DETAILS' | translate }}</h1>
+    </div>
+</div>
+
+<style>
+    .panel {
+        margin-bottom: 0px; 
+    }
+    .chosen-container-single {
+        width: 100%;
+    }
+    .chosen-container-single .chosen-single {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi {
+        width: 100%;
+    }
+    .chosen-container-multi .chosen-choices {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi .chosen-choices li.search-field .default {
+        width: 100% !important;
+        color: #b0b0b0 !important;
+    }
+</style>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="tabs-container">
+                <uib-tabset>
+                    <uib-tab> 
+                        <uib-tab-heading><i class="fa fa-file-text-o"></i> {{ 'TAB_PREVIEW' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
+                                <div class="col-lg-6" style="padding-left: 0px; padding-right: 10px;">
+	                                <h3>{{ 'LABEL_EDIT' | translate }}<br><small class="ff-postscript" style="margin-left: 0px;">{{ 'LABEL_EDIT_POSTSCRIPT' | translate }}</small></h3>
+	                                <label class="ff-label">{{ entity.text }}
+	                                    <span ng-if="entity.mandatory" class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.entity.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.entity.$valid }"></i></span>
+	                                </label>
+	                                <input ng-if="entity.type == 'TEXT'" ng-model="entity.value" type="text" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" maxlength="512" />
+	                                <input ng-if="entity.type == 'NUMBER'" ng-model="entity.value" type="number" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+	                                <textarea ng-if="entity.type == 'TEXT_AREA'" ng-model="entity.value" rows="5" class="form-control ff-form-control" name="entity" style="resize: none;" maxlength="4096"></textarea>
+	                                <div ng-if="entity.type == 'RADIO'" class="m-t-xxs">
+	                                    <div class="m-l-sm m-t-xs" ng-repeat="option in entity.options">
+	                                        <input ng-model="entity.value" type="radio" ng-value="{{option.id}}" icheck class="form-control" name="entity" ng-required="entity.mandatory" /> <span>{{ option.text }}</span><br>
+	                                    </div>
+	                                </div>
+	                                <div ng-if="entity.type == 'CHECKBOX'" class="m-t-xxs">
+	                                    <div class="m-l-sm m-t-xs" ng-repeat="option in entity.options">
+	                                        <input ng-model="entity.value[option.id]" type="checkbox" icheck class="form-control" /> <span>{{ option.text }}</span><br>
+	                                    </div>
+	                                </div>
+	                                <div ng-if="entity.type == 'DATE'">
+	                                    <div class="input-group">
+	                                        <input ng-required="entity.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate()" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="false" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate.opened" ng-model="entity.value" name="entity" />
+	                                        <span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate()">
+	                                            <i class="glyphicon glyphicon-calendar"></i>
+	                                        </span>
+	                                    </div>
+	                                </div>
+	                                <input ng-if="entity.type == 'HYPERLINK'" ng-model="entity.value" type="text" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+	                                <select ng-if="entity.type == 'CITY'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="cities" ng-options="city.name for city in cities track by city.id"></select>
+	                                <select ng-if="entity.type == 'COUNTIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="counties" ng-options="county.name for county in counties track by county.id"></select>
+	                                <select ng-if="entity.type == 'NKD'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="nkds" ng-options="(nkd.area + '.' + nkd.activity + ' - ' + nkd.activityName) group by (nkd.sector + ' - ' + nkd.sectorName) for nkd in nkds track by nkd.id"></select>
+	                                <select ng-if="entity.type == 'NKDS'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="nkds" ng-options="nkd.id as (nkd.area + '.' + nkd.activity + ' - ' + nkd.activityName) group by (nkd.sector + ' - ' + nkd.sectorName) for nkd in nkds"></select>
+	                                <select ng-if="entity.type == 'INVESTMENTS'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
+	                                <select ng-if="entity.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="entity.options" ng-options="option.text for option in entity.options track by option.id"></select>
+	                                <select ng-if="entity.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="entity.options" ng-options="option.text for option in entity.options track by option.id"></select>
+                                </div>
+                                <div class="col-lg-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <h3>{{ 'LABEL_DISPLAY' | translate }}<br><small class="ff-postscript" style="margin-left: 0px;">{{ 'LABEL_DISPLAY_POSTSCRIPT' | translate }}</small></h3>
+                                    <label class="ff-label">{{ entity.text }}</label>
+                                    <div ng-if="entity.type == 'TEXT' || entity.type == 'TEXT_AREA'" style="padding-left: 10px;" ng-bind-html="toTrusted(entity.value)"></div>
+                                    <div ng-if="entity.type == 'DATE'" style="padding-left: 10px;">{{ entity.value | date:dateFormat }}</div>
+                                    <div ng-if="entity.type == 'CITY'" style="padding-left: 10px;">{{ entity.value.name }}</div>
+                                    <div ng-if="entity.type == 'COUNTIES'" style="padding-left: 10px;"><span ng-repeat="county in entity.value">{{ county.name }}<br></span></div>
+                                    <div ng-if="entity.type == 'NKD'" style="padding-left: 10px;">{{ entity.value.area + "." + entity.value.activity + " - " + entity.value.activityName }}</div>
+                                    <div ng-if="entity.type == 'NKDS'" style="padding-left: 10px;"><span ng-repeat="id in entity.value">{{ nkdPreview(id) }}<br></span></div>
+                                    <div ng-if="entity.type == 'CHECKBOX'" style="padding-left: 10px;" ng-bind-html="toTrusted(checkboxPreview(entity.value))"></div>
+                                    <div ng-if="entity.type == 'RADIO'" style="padding-left: 10px;" ng-bind-html="toTrusted(radioPreview(entity.value))"></div>
+                                    <div ng-if="entity.type == 'NUMBER'" style="padding-left: 10px;">{{ entity.value }}</div>
+                                    <div ng-if="entity.type == 'INVESTMENTS'" style="padding-left: 10px;"><span ng-repeat="investment in entity.value">{{ investment.name }}<br></span></div>
+                                    <div ng-if="entity.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ entity.value }}" target="_blank">{{ entity.value }}</a></div>
+                                    <div ng-if="entity.type == 'SELECT'" style="padding-left: 10px;">{{ entity.value.text }}</div>
+                                    <div ng-if="entity.type == 'MULTISELECT'" style="padding-left: 10px;"><span ng-repeat="option in entity.value">{{ option.text }}<br></span></div>
+                                </div>
+                            </form>
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading><i class="fa fa-history"></i> {{ 'TAB_REVISION_HISTORY' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid"></div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+		</div>
+	</div>
+	
+	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white m-r-sm"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="editEntity()" class="btn btn-primary"><i class="fa fa-edit"></i> {{ 'BUTTON_EDIT' | translate }}</button>
+        </div>
+    </div>
+</div>

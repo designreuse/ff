@@ -2,6 +2,7 @@ package org.ff.resource.article;
 
 import java.util.Date;
 
+import org.ff.jpa.domain.Article.ArticleStatus;
 import org.ff.resource.image.ImageResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,6 +18,9 @@ public class ArticleResource {
 	@JsonProperty("id")
 	private Integer id;
 
+	@JsonProperty("status")
+	private ArticleStatus status;
+
 	@JsonProperty("name")
 	private String name;
 
@@ -26,7 +30,16 @@ public class ArticleResource {
 	@JsonProperty("image")
 	private ImageResource image;
 
+	@JsonProperty("creationDate")
+	private Date creationDate;
+
+	@JsonProperty("createdBy")
+	private String createdBy;
+
 	@JsonProperty("lastModifiedDate")
 	private Date lastModifiedDate;
+
+	@JsonProperty("lastModifiedBy")
+	private String lastModifiedBy;
 
 }

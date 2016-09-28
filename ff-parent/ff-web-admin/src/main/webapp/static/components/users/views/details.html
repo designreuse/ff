@@ -1,0 +1,100 @@
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1>{{ 'HEADER_USER_DETAILS' | translate }}</h1>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="tabs-container">
+                <uib-tabset>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_USER_DATA' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_FIRST_NAME' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.firstName }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_LAST_NAME' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.lastName }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_EMAIL' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.email }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_CREATION_DATE' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.creationDate | date:dateTimeFormat }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_LAST_MODIFIED_DATE' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.lastModifiedDate | date:dateTimeFormat }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_COMPANY_DATA' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_COMPANY_NAME' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.company.name }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_COMPANY_CODE' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.company.code }}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" ng-repeat="item in entity.company.items">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ item.text }}</label>
+                                    <div ng-if="item.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
+                                    <div ng-if="item.type != 'HYPERLINK'" style="padding-left: 10px;" ng-bind-html="toTrusted(item.valueMapped)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_INVESTMENTS' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <label ng-repeat="investment in entity.company.investments" class="ff-label">{{ investment.name }}<i uib-tooltip="{{ 'ACTION_TOOLTIP_DETAILS' | translate }}" ui-sref="investments.details({ id: investment.id })" class="fa fa-lg fa-arrow-circle-right pull-right" style="padding-top: 3px; cursor: pointer;"></i></label>
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_TENDERS' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <label ng-repeat="tender in entity.company.tenders" class="ff-label">{{ tender.name }}<i uib-tooltip="{{ 'ACTION_TOOLTIP_DETAILS' | translate }}" ui-sref="tenders.details({ id: tender.id })" class="fa fa-lg fa-arrow-circle-right pull-right" style="padding-top: 3px; cursor: pointer;"></i></label>
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_REVISION_HISTORY' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid"></div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+		</div>
+	</div>
+	
+	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+        </div>
+    </div>
+</div>

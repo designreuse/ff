@@ -164,7 +164,7 @@ angular.module('FundFinder')
 	$rootScope.paginationPageSize = 10;
 	$rootScope.paginationPageSizes = [10, 25, 50, 100];
 	$rootScope.heightNoData = 300;
-	$rootScope.heightNoDataRevisions = 61;
+	$rootScope.heightNoDataRevisions = 88;
 	$rootScope.heightCorrectionFactor = 90;
 	$rootScope.heightCorrectionFactorRevisions = 60;
 	

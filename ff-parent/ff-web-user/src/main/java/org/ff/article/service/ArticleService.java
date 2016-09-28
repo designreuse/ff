@@ -26,7 +26,7 @@ public class ArticleService {
 	@Transactional(readOnly = true)
 	public List<ArticleResource> findAll() {
 		log.debug("Finding articles...");
-		return resourceAssembler.toResources(repository.findByStatusOrderByLastModifiedDateDesc(ArticleStatus.ACTIVE));
+		return resourceAssembler.toResources(repository.findByStatusOrderByLastModifiedDateDesc(ArticleStatus.ACTIVE), false);
 	}
 
 	@Transactional(readOnly = true)
@@ -38,7 +38,7 @@ public class ArticleService {
 			throw new RuntimeException(String.format("Article [%s] not found", id));
 		}
 
-		return resourceAssembler.toResource(entity);
+		return resourceAssembler.toResource(entity, false);
 	}
 
 }

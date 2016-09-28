@@ -1,0 +1,32 @@
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1 ng-show="entityType == 'tender'">{{ 'MENU_TENDER_ITEMS' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
+        <h1 ng-show="entityType == 'company'">{{ 'MENU_COMPANY_ITEMS' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+        <div class="col-lg-12 m-b-xs">
+            <button ng-click="addEntity()" type="button" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> {{ 'BUTTON_ADD' | translate }}</button>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-lg-12">
+            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid m-b-sm">
+                <div class="grid-msg-overlay" ng-hide="!loading">
+                    <div class="msg">
+                        <span>
+                            {{ 'UI_GRID_LOADING_DATA' | translate }} <i class="fa fa-spinner fa-spin"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="grid-msg-overlay" ng-hide="loading || gridOptions.data.length">
+                    <div class="msg">
+                        <span>{{ 'UI_GRID_NO_DATA' | translate }}</span>
+                    </div>
+                </div>
+            </div>		  
+		</div>
+	</div>
+</div>

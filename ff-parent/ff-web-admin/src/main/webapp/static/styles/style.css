@@ -1,0 +1,296 @@
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background: transparent;
+}
+
+:focus {
+    outline: none;
+}
+
+/* ************************************************************ */
+/*  override for inspinia navbar classes                        */
+/* ************************************************************ */
+
+.navbar-fixed-top {
+    background: #2f4050;
+    border-bottom: none !important;
+}
+
+.nav.navbar-right > li > a {
+  color: white;
+}
+
+.nav.navbar-right > li > label {
+  color: white;
+}
+
+.nav-header {
+    padding: 15px 25px;
+}
+
+.nav > li > a {
+    padding-left: 10px; 
+}
+
+.nav-second-level li a {
+    padding-left: 35px;
+}
+
+.nav-third-level li a {
+    padding-left: 45px;
+}
+
+/* ************************************************************ */
+/*  ui-grid                                                     */
+/* ************************************************************ */
+.ui-grid-pager-panel {
+    background-color: #eaeaea;
+    border-top: 1px solid #d8d8d8;
+}
+
+.ui-grid-filter-container {
+    padding: 4px !important;
+}
+
+.ui-grid-filter-input {
+    padding-left: 4px !important; padding-right: 24px !important; height: 22px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.ui-grid-filter-select {
+    height: 22px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.ui-grid-filter-datepicker {
+    height: 22px; 
+    border: 1px solid #d4d4d4; 
+    font-size: 11px;
+    font-weight: normal; 
+    padding: 6px 6px;
+    z-index: 1 !important;
+}
+
+.ui-grid-filter-datepicker-span {
+    padding: 3px; 
+    border: 1px solid #d4d4d4; 
+    border-left: none;
+}
+
+.ui-grid-filter-datepicker-i {
+    opacity: 0.66;
+}
+
+.ui-grid-filter-datepicker-i:hover {
+    opacity: 1.00;
+}
+    
+:focus {
+    outline: none !important;
+}
+
+.ui-grid-filter-input-port {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 100%;
+  border: 1px solid #d4d4d4;
+  -webkit-border-top-right-radius: 0px;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topright: 0px;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-topleft: 0;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.ui-grid-filter-input-port:hover {
+    border: 1px solid #d4d4d4;
+}
+
+/* ************************************************************ */
+/*  ui-grid message overlay                                     */
+/* ************************************************************ */
+
+.grid-msg-overlay {
+    position: absolute;
+    top: 59px;
+    bottom: 0;
+    width: 100%;
+    background: rgba(235, 235, 235, 0.2);
+}
+
+.grid-msg-overlay .msg {
+    opacity: 1;
+    position: absolute;
+    top: 20%;
+    left: 35%;
+    width: 30%;
+    height: 30%;
+    background-color: #eee;
+    border-radius: 4px;
+    border: 1px solid #555;
+    text-align: center;
+    font-size: 20px;
+    display: table;
+}
+
+.grid-msg-overlay .msg span {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/* ************************************************************ */
+/*  daterangepicker icons                                       */
+/* ************************************************************ */
+.glyphicon.fa {
+    font-family: 'Glyphicons Halflings';
+}
+
+/* ************************************************************ */
+/*  bootstrap modal dialog                                      */
+/* ************************************************************ */
+.bootstrap-dialog.type-default .modal-header {
+    background-color: #fafafa;
+}
+
+.bootstrap-dialog.type-default .modal-footer {
+    background-color: #fafafa;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* ************************************************************ */
+/*  angular modal dialog                                        */
+/* ************************************************************ */
+.modal-header {
+    background-color: #fafafa;
+}
+
+.modal-footer {
+    background-color: #fafafa;
+}
+
+.modal-lg {
+    width: 900px !important;
+}
+
+/* ************************************************************ */
+/*  summernote editor                                           */
+/* ************************************************************ */
+.note-editor {
+    border: 1px solid #e5e6e7;
+}
+	
+.note-editable {
+    color: rgb(103, 106, 108) !important;
+    font-size: 12px !important;
+}
+
+/* ************************************************************ */
+/*  chosen                                                      */
+/* ************************************************************ */
+.chosen-container {
+	font-size: 12px;
+}
+
+/* ************************************************************ */
+/*  fund finder classes                                         */
+/* ************************************************************ */
+.ff-div-button {
+	text-align: right;
+    border-top: solid 1px #f0f0f0 !important;	
+}
+
+.ff-ro-field {
+    resize: none; 
+    background: white !important;
+}
+
+.ff-revision-font {
+    font-size: 12px !important;
+}
+
+.ff-invalid {
+    color: red !important;
+}
+
+.ff-valid {
+    color: green;
+}
+
+.ff-form-control {
+	font-size: 12px !important;
+}
+
+.ff-grid-button, .bss-grid-button:active, .bss-grid-button:focus {
+    border-width: 0px !important;
+    background: transparent !important;
+}
+
+.ff-grid-button:hover:enabled {
+    color: #303030  !important;
+    background: transparent !important;
+}
+
+.ff-div-label {
+	background: #f0f0f0;
+    margin-bottom: 2px;
+    padding-top: 3px;
+    padding-bottom: 10px !important;
+    padding-left: 10px;
+}
+
+.ff-a {
+    color: #676a6c;
+}
+
+.ff-a:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
+.ff-a-alt {
+    color: #909090;
+}
+
+.ff-a-alt:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
+.ff-postscript {
+    font-weight: normal;
+    font-size: 10px;
+    color: #a0a0a0;
+    margin-left: 8px;
+}
+
+.ff-label {
+	width: 100%;
+	background: #f0f0f0;
+	padding: 10px;
+}
+
+.ff-nav-second-level {
+    font-size: 11px;
+}
+
+/* ************************************************************ */
+/*  global                                                      */
+/* ************************************************************ */
+body {
+    font-size: 11px;
+    font-family: Arial;
+}

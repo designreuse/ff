@@ -1,0 +1,88 @@
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1>{{ 'HEADER_ARTICLE_DETAILS' | translate }}</h1>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="tabs-container">
+                <uib-tabset>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_PREVIEW' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <h1 style="margin-top: 0px; padding: 5px;">{{entity.name}}</h1>
+                            <img style="padding: 5px;" ng-show="entity.image.base64" ng-src="data:image/JPEG;base64,{{entity.image.base64}}" width="320">
+                            <div style="padding: 5px;" ng-bind-html="toTrusted(entity.text)" />
+                            <div class="m-t-md" style="text-align: right;">
+                                <small>{{ 'LABEL_LAST_MODIFIED' | translate }}: {{ entity.lastModifiedDate | date : dateTimeFormat }}</small>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_STATISTICS' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="col-lg-8 form-horizontal m-t-xs m-b-sm">
+										<div class="form-group">
+											<label class="col-sm-3 control-label">{{ 'LABEL_STATISTICS_FOR' | translate }}</label>
+											<div class="col-sm-9">
+												<select width="1" chosen disable-search="true" ng-change="getImpressionStatistics(statisticsPeriod)" class="form-control" ng-model="statisticsPeriod" options="statisticsPeriods" ng-options="statisticsPeriod.label for statisticsPeriod in statisticsPeriods track by statisticsPeriod.value"></select>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-2 m-b-sm">
+										<div class="widget style1 navy-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
+											<div class="row vertical-align">
+												<div class="col-xs-3">
+													<i class="fa fa-bullseye fa-2x"></i>
+												</div>
+												<div class="col-xs-9 text-left">
+													<label style="font-size: 16px">{{impressionStatistics.total}}</label>
+												</div>
+											</div>
+										</div>
+										<small style="padding-left: 20px;">{{ 'TOOLTIP_TOTAL_IMPRESSIONS' | translate }}</small>
+									</div>
+									<div class="col-lg-2 m-b-sm">
+										<div class="widget style1 yellow-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
+											<div class="row vertical-align">
+												<div class="col-xs-3">
+													<i class="fa fa-user fa-2x"></i>
+												</div>
+												<div class="col-xs-9 text-left">
+													<label style="font-size: 16px">{{impressionStatistics.unique}}</label>
+												</div>
+											</div>
+										</div>
+										<small style="padding-left: 20px;">{{ 'TOOLTIP_UNIQUE_IMPRESSIONS' | translate }}</small>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 m-b-md">
+									<canvas class="chart chart-bar" chart-legend="true" chart-colours="colours" chart-data="impressionStatistics.data" chart-labels="impressionStatistics.labels" chart-series="impressionStatistics.series"></canvas>
+								</div>
+							</div>
+						</div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_REVISION_HISTORY' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid"></div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+		</div>
+	</div>
+	
+	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white m-r-sm"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="editEntity()" class="btn btn-primary"><i class="fa fa-edit"></i> {{ 'BUTTON_EDIT' | translate }}</button>
+        </div>
+    </div>
+</div>

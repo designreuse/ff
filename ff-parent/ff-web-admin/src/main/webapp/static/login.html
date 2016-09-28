@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html data-ng-app="Login">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Fund Finder | Login</title>
+        
+        <link rel="stylesheet" type="text/css" href="inspinia/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="inspinia/css/animate.css" />
+        <link rel="stylesheet" type="text/css" href="inspinia/css/style.css" id="loadBefore" />
+        
+        <script src="inspinia/js/angular/angular.min.js"></script>
+        <script src="inspinia/js/ui-router/angular-ui-router.min.js"></script>
+        <script src="login.js"></script>
+    </head>
+
+    <body class="gray-bg">
+        <div class="loginColumns animated flipInY">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="ibox-content">
+                        <h3>Fund Finder</h3>
+                        <form class="m-t" role="form" data-ng-controller="LoginController" data-ng-submit="login()">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Username" data-ng-model="username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" data-ng-model="password">
+                            </div>
+                            <p class="{{msgClass}}" ng-bind="msg"></p>
+                            <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+    </body>
+
+</html>

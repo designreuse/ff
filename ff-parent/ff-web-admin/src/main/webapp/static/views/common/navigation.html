@@ -1,0 +1,68 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+	<div ng-controller="NavigationController" class="sidebar-collapse">
+		<ul side-navigation class="nav metismenu" id="side-menu">
+			<li ng-class="{active: $state.includes('dashboard')}">
+                <a ui-sref="dashboard.overview">
+                    <i class="fa fa-tachometer"></i>
+                    <span class="nav-label">{{ 'MENU_DASHBOARD' | translate }}</span>
+                </a>
+            </li>
+			<li ng-class="{active: $state.includes('users')}">
+                <a ui-sref="users.overview">
+                    <i class="fa fa-users"></i>
+                    <span class="nav-label">{{ 'MENU_USERS' | translate }}</span>
+                    <span class="label label-default pull-right">{{totalUsers}}</span>
+                </a>
+            </li>
+			<li ng-class="{active: $state.includes('tenders')}">
+                <a ui-sref="tenders.overview">
+                    <i class="fa fa-star"></i>
+                    <span class="nav-label">{{ 'MENU_TENDERS' | translate }}</span>
+                    <span class="label label-default pull-right">{{totalTenders}}</span>
+                </a>
+            </li>
+			<li ng-class="{active: $state.includes('investments')}">
+                <a ui-sref="investments.overview">
+                    <i class="fa fa-university"></i>
+                    <span class="nav-label">{{ 'MENU_INVESTMENTS' | translate }}</span>
+                    <span class="label label-default pull-right">{{totalInvestments}}</span>
+                </a>
+            </li>
+			<li ng-class="{active: $state.includes('articles')}">
+                <a ui-sref="articles.overview">
+                    <i class="fa fa-newspaper-o"></i>
+                    <span class="nav-label">{{ 'MENU_ARTICLES' | translate }}</span>
+                    <span class="label label-default pull-right">{{totalArticles}}</span>
+                </a>
+            </li>
+            
+            <li ng-class="{active: $state.includes('settings')}">
+                <a href="">
+                    <i class="fa fa-cogs"></i>
+                    <span class="nav-label">{{ 'MENU_SETTINGS' | translate }}</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li ng-class="{active: $state.is('settings.algorithmitems_overview') || $state.is('settings.algorithmitems_edit')}">
+                        <a class="ff-nav-second-level" ui-sref="settings.algorithmitems_overview">{{ 'MENU_ALGORITHM_ITEMS' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.items_overview_company') || $state.is('settings.items_edit_company') || $state.is('settings.items_details_company')}">
+                        <a class="ff-nav-second-level" ui-sref="settings.items_overview_company({entityType : 'company'})">{{ 'MENU_COMPANY_ITEMS' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.items_overview_tender') || $state.is('settings.items_edit_tender') || $state.is('settings.items_details_tender')}">
+                        <a class="ff-nav-second-level" ui-sref="settings.items_overview_tender({entityType : 'tender'})">{{ 'MENU_TENDER_ITEMS' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.cities_overview') || $state.is('settings.cities_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.cities_overview">{{ 'MENU_CITIES' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.counties_overview') || $state.is('settings.counties_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.counties_overview">{{ 'MENU_COUNTIES' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.nkds_overview') || $state.is('settings.nkds_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.nkds_overview">{{ 'MENU_NKD' | translate }}</a>
+                    </li>
+                </ul>
+            </li>
+		</ul>
+	</div>
+</nav>

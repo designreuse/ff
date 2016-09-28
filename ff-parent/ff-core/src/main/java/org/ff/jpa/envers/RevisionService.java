@@ -26,17 +26,21 @@ public class RevisionService {
 	public List<RevisionResource> getRevisions(Class<?> clazz, Integer entityId) {
 		List<RevisionResource> result = new ArrayList<>();
 		log.debug("Getting revisions for entity [{}] with ID [{}]", clazz.getSimpleName(), entityId);
-		List<Object[]> objects = AuditReaderFactory.get(entityManager).createQuery().forRevisionsOfEntity(clazz, false, true).add(new IdentifierEqAuditExpression(entityId, true)).getResultList();
-		for (Object[] object : objects) {
-			RevisionResource resource = new RevisionResource();
-			resource.setClazz(clazz.getName());
-			resource.setEntityId(entityId);
-			Revision revision = (Revision) object[1];
-			resource.setId(revision.getId());
-			resource.setCreationDate(revision.getCreationDate());
-			resource.setCreatedBy(revision.getCreatedBy());
-			resource.setType(RevisionType.valueOf(object[2].toString()));
-			result.add(resource);
+		try {
+			List<Object[]> objects = AuditReaderFactory.get(entityManager).createQuery().forRevisionsOfEntity(clazz, false, true).add(new IdentifierEqAuditExpression(entityId, true)).getResultList();
+			for (Object[] object : objects) {
+				RevisionResource resource = new RevisionResource();
+				resource.setClazz(clazz.getName());
+				resource.setEntityId(entityId);
+				Revision revision = (Revision) object[1];
+				resource.setId(revision.getId());
+				resource.setCreationDate(revision.getCreationDate());
+				resource.setCreatedBy(revision.getCreatedBy());
+				resource.setType(RevisionType.valueOf(object[2].toString()));
+				result.add(resource);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 		}
 		return result;
 	}
