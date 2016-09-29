@@ -9,7 +9,7 @@
         <dependent-module archiveName="ff-core-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ff-core/ff-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="ff-web-admin"/>
         <property name="java-output-path" value="/ff-web-admin/target/classes"/>
+        <property name="context-root" value="fundfinder-admin"/>
     </wb-module>
 </project-modules>

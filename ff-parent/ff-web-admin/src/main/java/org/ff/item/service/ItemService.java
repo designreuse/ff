@@ -29,7 +29,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +78,7 @@ public class ItemService extends BaseService {
 
 		Item entity = repository.findOne(id);
 		if (entity == null) {
-			throw new ResourceNotFoundException(messageSource.getMessage("exception.resourceNotFound",
+			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.item", null, locale), id }, locale));
 		}
 
@@ -109,7 +108,7 @@ public class ItemService extends BaseService {
 
 		Item entity = repository.findOne(id);
 		if (entity == null) {
-			throw new ResourceNotFoundException(messageSource.getMessage("exception.resourceNotFound",
+			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.item", null, locale), id }, locale));
 		}
 
@@ -125,7 +124,7 @@ public class ItemService extends BaseService {
 
 		Item entity = repository.findOne(id);
 		if (entity == null) {
-			throw new ResourceNotFoundException(messageSource.getMessage("exception.resourceNotFound",
+			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.item", null, locale), id }, locale));
 		}
 
@@ -141,7 +140,7 @@ public class ItemService extends BaseService {
 
 		Item entity = repository.findOne(id);
 		if (entity == null) {
-			throw new ResourceNotFoundException(messageSource.getMessage("exception.resourceNotFound",
+			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.item", null, locale), id }, locale));
 		}
 

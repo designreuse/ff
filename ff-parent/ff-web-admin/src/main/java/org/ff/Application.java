@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+@SpringBootApplication
 @EnableCaching
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableScheduling
 @EnableTransactionManagement
-@SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
 	@Autowired
