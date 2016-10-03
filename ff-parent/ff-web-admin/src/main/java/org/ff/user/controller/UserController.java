@@ -1,14 +1,9 @@
 package org.ff.user.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
-import org.ff.jpa.domain.User;
-import org.ff.jpa.envers.RevisionResource;
-import org.ff.jpa.envers.RevisionService;
 import org.ff.resource.user.UserResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
@@ -34,9 +29,6 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private RevisionService revisionService;
 
 	@Autowired
 	private EtmService etmService;
@@ -98,16 +90,6 @@ public class UserController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			userService.delete(id, localeResolver.resolveLocale(request));
-		} finally {
-			etmService.collect(point);
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/{id}/revisions")
-	public List<RevisionResource> getRevisions(@AuthenticationPrincipal @PathVariable Integer id) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getRevisions");
-		try {
-			return revisionService.getRevisions(User.class, id);
 		} finally {
 			etmService.collect(point);
 		}

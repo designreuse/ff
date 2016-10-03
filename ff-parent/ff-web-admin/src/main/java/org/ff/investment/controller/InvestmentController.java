@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
 import org.ff.investment.service.InvestmentService;
-import org.ff.jpa.domain.Investment;
-import org.ff.jpa.envers.RevisionResource;
-import org.ff.jpa.envers.RevisionService;
 import org.ff.resource.investment.InvestmentResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
@@ -34,9 +31,6 @@ public class InvestmentController extends BaseController {
 
 	@Autowired
 	private InvestmentService investmentService;
-
-	@Autowired
-	private RevisionService revisionService;
 
 	@Autowired
 	private EtmService etmService;
@@ -108,16 +102,6 @@ public class InvestmentController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			investmentService.delete(id, localeResolver.resolveLocale(request));
-		} finally {
-			etmService.collect(point);
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/{id}/revisions")
-	public List<RevisionResource> getRevisions(@AuthenticationPrincipal @PathVariable Integer id) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getRevisions");
-		try {
-			return revisionService.getRevisions(Investment.class, id);
 		} finally {
 			etmService.collect(point);
 		}

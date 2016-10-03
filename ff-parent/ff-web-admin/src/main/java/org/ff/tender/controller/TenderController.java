@@ -1,14 +1,9 @@
 package org.ff.tender.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
-import org.ff.jpa.domain.Tender;
-import org.ff.jpa.envers.RevisionResource;
-import org.ff.jpa.envers.RevisionService;
 import org.ff.resource.tender.TenderResource;
 import org.ff.tender.service.TenderService;
 import org.ff.uigrid.PageableResource;
@@ -34,9 +29,6 @@ public class TenderController extends BaseController {
 
 	@Autowired
 	private TenderService tenderService;
-
-	@Autowired
-	private RevisionService revisionService;
 
 	@Autowired
 	private EtmService etmService;
@@ -98,16 +90,6 @@ public class TenderController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			tenderService.delete(id, localeResolver.resolveLocale(request));
-		} finally {
-			etmService.collect(point);
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/{id}/revisions")
-	public List<RevisionResource> getRevisions(@AuthenticationPrincipal @PathVariable Integer id) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getRevisions");
-		try {
-			return revisionService.getRevisions(Tender.class, id);
 		} finally {
 			etmService.collect(point);
 		}

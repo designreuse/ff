@@ -560,17 +560,4 @@ angular.module('FundFinder')
 			$rootScope.setDateFilters(creationDateEl, lastModifiedDateEl, state.dateFilters);
 		}
 	}
-	
-	
-	$rootScope.showRevisionDetails = function(revision) {
-		ModalService.showModal({
-			templateUrl: "dialogs/revisionDetails.html",
-			controller: "RevisionDetailsController",
-			inputs: {
-				revision: revision
-			}
-		}).then(function(modal) {
-			modal.element.modal();
-		});
-	}
 });

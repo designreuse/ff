@@ -22,7 +22,4 @@ angular.module('FundFinder')
 	this.getPage = function(resource) {
 		return $http.post('/api/v1/tenders/page', resource);
 	};
-	this.getRevisions = function(id) {
-		return $http.get('/api/v1/tenders/' + id + "/revisions");
-	};
 });

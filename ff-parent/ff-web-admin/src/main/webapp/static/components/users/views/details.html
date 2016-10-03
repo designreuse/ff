@@ -81,12 +81,6 @@
                             <label ng-repeat="tender in entity.company.tenders" class="ff-label">{{ tender.name }}<i uib-tooltip="{{ 'ACTION_TOOLTIP_DETAILS' | translate }}" ui-sref="tenders.details({ id: tender.id })" class="fa fa-lg fa-arrow-circle-right pull-right" style="padding-top: 3px; cursor: pointer;"></i></label>
                         </div>
                     </uib-tab>
-                    <uib-tab> 
-                        <uib-tab-heading>{{ 'TAB_REVISION_HISTORY' | translate }}</uib-tab-heading>
-                        <div class="panel-body">
-                            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid"></div>
-                        </div>
-                    </uib-tab>
                 </uib-tabset>
             </div>
 		</div>

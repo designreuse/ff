@@ -1,69 +1,6 @@
 angular.module('FundFinder')
 
 // ====================================================================================
-//	RevisionDetailsController
-// ====================================================================================
-.controller('RevisionDetailsController', function($rootScope, $scope, $state, $log, $translate, RevisionDetailsService, revision) {
-
-	$scope.getPreviousRevision = function() {
-		RevisionDetailsService.getPreviousRevision($scope.revision)
-			.success(function(data, status, headers, config) {
-				if (status == 200) {
-					$scope.revisionPrev = data;
-					if ($scope.revisionPrev) {
-						RevisionDetailsService.getRevisionDetails($scope.revisionPrev)
-							.success(function(data, status, headers, config) {
-								if (status == 200) {
-									$scope.revisionPrevDetails = JSON.stringify(data, null, 4);
-								} else {
-									toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-								}
-							})
-							.error(function(data, status, headers, config) {
-								toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-							});	
-					}
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-				}
-			})
-			.error(function(data, status, headers, config) {
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			});	
-	};
-	
-	$scope.getRevisionDetails = function() {
-		RevisionDetailsService.getRevisionDetails($scope.revision)
-			.success(function(data, status, headers, config) {
-				if (status == 200) {
-					$scope.revisionDetails = JSON.stringify(data, null, 4);
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-				}
-			})
-			.error(function(data, status, headers, config) {
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			});		
-	};
-	
-	$scope.compare = function() {
-		$scope.compareVisible = true;
-	};
-	
-	$scope.back = function() {
-		$scope.compareVisible = false;
-	};
-	
-	$scope.compareVisible = false;
-	$scope.revision = revision;
-	
-	// initial load
-	$scope.getPreviousRevision();
-	$scope.getRevisionDetails();
-
-})
-
-// ====================================================================================
 //	TopnavbarController
 // ====================================================================================
 .controller('TopnavbarController', function($scope, $http, $window, $translate, $state, $log) {

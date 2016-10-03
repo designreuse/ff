@@ -112,14 +112,14 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $
 					enableSorting: false,
 					enableFiltering: false,
 					enableHiding: false,
-					width: 158,
+					width: 134,
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-search-plus"></i></button>' +	
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-toggle-on"></i></button>' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-edit"></i></button>' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-times"></i></button>' + 
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +	
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
 						'</div>'
 				}
 			],
@@ -376,97 +376,6 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	
 	$scope.showEditButton = $stateParams.showEditButton;
 	
-	$scope.gridOptions = {
-		rowHeight: $rootScope.rowHeight,
-		paginationPageSize: $rootScope.paginationPageSize,
-		paginationPageSizes: $rootScope.paginationPageSizes,
-		enableFiltering: true,
-		useExternalFiltering: false,
-		useExternalSorting: false,
-		useExternalPagination: false,
-		enableColumnMenus: false,
-		enableHorizontalScrollbar: uiGridConstants.scrollbars.NEVER,
-		enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
-		enableGridMenu: false,
-		columnDefs: [
-			{
-				displayName: $translate('COLUMN_REVISION'),
-				field: 'id',
-				type: 'number',
-				cellTooltip: false, 
-				sort: { direction: uiGridConstants.DESC },
-				enableSorting: true,
-				enableFiltering: false,
-				filterHeaderTemplate: 
-					'<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters">' +
-						'<input type="number" min="0" class="ui-grid-filter-input ui-grid-filter-input-0 ng-dirty ng-valid-parse ng-touched ui-grid-filter-input-port" ng-model="colFilter.term" ng-attr-placeholder="{{colFilter.placeholder || \'\'}}" aria-label="Filter for column" placeholder="">' + 
-					'</div>', 
-				enableHiding: false,
-				visible: false,
-				width: 100
-			},
-			{
-				displayName: $translate('COLUMN_REVISION_DATE'),
-				field: 'creationDate',
-				type: 'date',
-				cellFilter: 'date:\'' + $rootScope.dateTimeFormat + '\'',
-				cellTooltip: false, 
-				enableSorting: true,
-				enableFiltering: false,
-				enableHiding: false,
-				width: 175
-			},
-			{
-				displayName: $translate('COLUMN_REVISION_USER'),
-				field: 'createdBy',
-				type: 'string',
-				cellTooltip: false, 
-				enableSorting: true,
-				enableFiltering: false,
-				enableHiding: false
-			},
-			{
-				displayName: $translate('COLUMN_REVISION_TYPE'),
-				field: 'type',
-				type: 'string',
-				filter: {
-					type: uiGridConstants.filter.SELECT,
-					disableCancelFilterButton: true,
-					selectOptions: [
-						{ value: 'ADD', label: $translate('REVISION_TYPE_ADD') },
-						{ value: 'MOD', label: $translate('REVISION_TYPE_MOD') },
-						{ value: 'DEL', label: $translate('REVISION_TYPE_DEL') }]
-				},
-				cellTooltip: false, 
-				enableSorting: true,
-				enableFiltering: false,
-				enableHiding: false,
-				width: 100
-			},
-			{
-				name: ' ',
-				type: 'string',
-				cellTooltip: false, 
-				enableSorting: false,
-				enableFiltering: false,
-				enableHiding: false,
-				width: 42,
-				cellTemplate:
-					'<div style="padding-top: 1px">' +
-						'<button uib-tooltip="{{\'ACTION_TOOLTIP_REVISION_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showRevisionDetails(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-search-plus"></i></button>' +
-					'</div>'
-			}
-		],
-		onRegisterApi: function(gridApi) {
-			$scope.gridApi = gridApi;
-			
-			$scope.gridApi.core.on.rowsRendered($scope, function(b, f, i) {
-				var newHeight = ($scope.gridApi.core.getVisibleRows($scope.gridApi.grid).length * $rootScope.rowHeight) + (($scope.gridOptions.totalItems == 0) ? $rootScope.heightNoDataRevisions : $rootScope.heightCorrectionFactorRevisions);
-				angular.element(document.getElementsByClassName('grid')[0]).css('height', newHeight + 'px');
-			});
-		}
-	};
-	
 	$scope.toTrusted = function(html) {
 		if (html) {
 			html = html.replace(/\r?\n/g, '<br />');
@@ -497,20 +406,6 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	};
 	
 	// initial load
-	TendersService.getRevisions($stateParams.id)
-		.success(function(data, status, headers, config) {
-			if (status == 200) {
-				$scope.gridOptions.data = data;
-				$scope.gridOptions.totalItems = data.length;
-			} else {
-				$log.error(data);
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			}
-		})
-		.error(function(data, status, headers, config) {
-			toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-		});
-	
 	TendersService.getEntity($stateParams.id)
 		.success(function(data, status) {
 			if (status == 200) {

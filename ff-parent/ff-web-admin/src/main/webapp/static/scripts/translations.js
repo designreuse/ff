@@ -48,7 +48,6 @@ function config($translateProvider) {
 			
 			TAB_PREVIEW: 'Preview',
 			TAB_STATISTICS: 'Statistics',
-			TAB_REVISION_HISTORY: 'Revision history',
 			TAB_BASIC_DATA: 'Basic data',
 			TAB_USER_DATA: 'User data',
 			TAB_COMPANY_DATA: 'Company data',
@@ -62,8 +61,6 @@ function config($translateProvider) {
 			LABEL_TEXT: 'Text',
 			LABEL_TYPE: 'Type',
 			LABEL_IMAGE: 'Image',
-			LABEL_REVISION_DATE: 'Revision date',
-			LABEL_REVISION_TYPE: 'Revision type',
 			LABEL_USER: 'User',
 			LABEL_ENTITY_TYPE: 'Enitity type',
 			LABEL_ENTITY_ATTRIBUTES: 'Entity attributes',
@@ -114,10 +111,6 @@ function config($translateProvider) {
 			COLUMN_TEXT: 'Text',
 			COLUMN_CREATION_DATE: 'Creation date',
 			COLUMN_LAST_MODIFIED_DATE: 'Last modified date',
-			COLUMN_REVISION: 'Revision',
-			COLUMN_REVISION_DATE: 'Date',
-			COLUMN_REVISION_USER: 'User',
-			COLUMN_REVISION_TYPE: 'Type',
 			COLUMN_SECTOR: 'Sector',
 			COLUMN_SECTOR_NAME: 'Sector name',
 			COLUMN_AREA: 'Area',
@@ -186,11 +179,6 @@ function config($translateProvider) {
 			BOOLEAN_TRUE: 'Yes',
 			BOOLEAN_FALSE: 'No',
 			
-			REVISION_TYPE_ADD: 'ADD',
-			REVISION_TYPE_MOD: 'MOD',
-			REVISION_TYPE_DEL: 'DEL',
-
-			ENTITY_REVISION: 'Revision',
 			ENTITY_USER: 'User',
 			ENTITY_TENDER: 'Tender',
 			ENTITY_ARTICLE: 'Article',
@@ -206,7 +194,6 @@ function config($translateProvider) {
 			ACTION_TOOLTIP_EDIT: 'Edit',
 			ACTION_TOOLTIP_DELETE: 'Delete',
 			ACTION_TOOLTIP_DETAILS: 'Details',
-			ACTION_TOOLTIP_REVISION_DETAILS: 'Revision details',
 			
 			TOOLTIP_TOTAL_IMPRESSIONS: 'Total impressions',
 			TOOLTIP_UNIQUE_IMPRESSIONS: 'Unique impressions',
@@ -224,9 +211,6 @@ function config($translateProvider) {
 			DIALOG_DELETE_HEADER: 'Delete {{entity}}',
 			DIALOG_DELETE_MESSAGE: 'Do you really want to delete {{entity}}?',
 			
-			DIALOG_REVISION_DETAILS_HEADER: 'Compare with previous revision',
-			DIALOG_REVISION_DETAILS_DIFFERENCES: 'Differences',
-			
 			POSTSCRIPT_CODE: 'Identificator for cross-referencing algorithm',
 			POSTSCRIPT_ITEM_POSITION: 'Value must be between 1 and 1000',
 			
@@ -241,7 +225,6 @@ function config($translateProvider) {
 			BUTTON_CLOSE: 'Close',
 			BUTTON_SELECT: 'Select...',
 			BUTTON_DELETE: 'Delete',
-			BUTTON_REVISION_COMPARE: 'Compare with previous revision',
 		});
 	
 	$translateProvider.preferredLanguage("en");

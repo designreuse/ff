@@ -91,11 +91,11 @@ function CountiesOverviewController($rootScope, $scope, $state, $log, $timeout, 
 					enableSorting: false,
 					enableFiltering: false,
 					enableHiding: false,
-					width: 78,
+					width: 64,
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-edit"></i></button>' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white m-l-xs"><i class="fa fa-2x fa-times"></i></button>' + 
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
+							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
 						'</div>'
 				}
 			],

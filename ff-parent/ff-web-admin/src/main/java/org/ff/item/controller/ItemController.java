@@ -8,10 +8,7 @@ import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
 import org.ff.item.service.ItemService;
 import org.ff.item.validation.ItemValidator;
-import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemEntityType;
-import org.ff.jpa.envers.RevisionResource;
-import org.ff.jpa.envers.RevisionService;
 import org.ff.resource.item.ItemResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
@@ -39,9 +36,6 @@ public class ItemController extends BaseController {
 
 	@Autowired
 	private ItemService itemService;
-
-	@Autowired
-	private RevisionService revisionService;
 
 	@Autowired
 	private EtmService etmService;
@@ -114,16 +108,6 @@ public class ItemController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			itemService.delete(id, localeResolver.resolveLocale(request));
-		} finally {
-			etmService.collect(point);
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/{id}/revisions")
-	public List<RevisionResource> getRevisions(@AuthenticationPrincipal @PathVariable Integer id) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getRevisions");
-		try {
-			return revisionService.getRevisions(Item.class, id);
 		} finally {
 			etmService.collect(point);
 		}
