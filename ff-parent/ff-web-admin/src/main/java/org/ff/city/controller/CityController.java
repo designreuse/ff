@@ -1,5 +1,6 @@
 package org.ff.city.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,6 @@ import org.ff.resource.city.CityResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,7 @@ public class CityController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/page")
-	public PageableResource<CityResource> getPage(@RequestBody UiGridResource resource) {
+	public PageableResource<CityResource> getPage(Principal principal, @RequestBody UiGridResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getPage");
 		try {
 			return cityService.getPage(resource);
@@ -46,7 +45,7 @@ public class CityController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<CityResource> findAll() {
+	public List<CityResource> findAll(Principal principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
 			return cityService.findAll();
@@ -56,7 +55,7 @@ public class CityController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public CityResource find(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public CityResource find(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return cityService.find(id, localeResolver.resolveLocale(request));
@@ -66,7 +65,7 @@ public class CityController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public CityResource save(@AuthenticationPrincipal UserDetails user, @RequestBody CityResource resource, HttpServletRequest request) {
+	public CityResource save(Principal principal, @RequestBody CityResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			return cityService.save(resource);
@@ -78,7 +77,7 @@ public class CityController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
-	public void delete(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public void delete(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			cityService.delete(id, localeResolver.resolveLocale(request));

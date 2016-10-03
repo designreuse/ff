@@ -11,8 +11,8 @@
                     <li><a ng-click="changeLanguage('en')"><span class="flag-icon flag-icon-gb m-r-xs"></span> {{ 'ENGLISH' | translate }}</a></li>
                 </ul>
             </li>
-            <li>
-                <a style="font-weight: normal;" href="#" ng-click="logout()"><i class="fa fa-sign-out"></i> {{ 'LOGOUT' | translate }}</a>
+            <li class="m-l-sm">
+                <label><i class="fa fa-user m-r-xs"></i> {{ principal.username }}</label>
             </li>
         </ul>
     </nav>

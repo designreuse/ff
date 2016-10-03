@@ -1,5 +1,6 @@
 package org.ff.county.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,6 @@ import org.ff.resource.county.CountyResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,7 @@ public class CountyController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/page")
-	public PageableResource<CountyResource> getPage(@RequestBody UiGridResource resource) {
+	public PageableResource<CountyResource> getPage(Principal principal, @RequestBody UiGridResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getPage");
 		try {
 			return countyService.getPage(resource);
@@ -46,7 +45,7 @@ public class CountyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<CountyResource> findAll() {
+	public List<CountyResource> findAll(Principal principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
 			return countyService.findAll();
@@ -56,7 +55,7 @@ public class CountyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public CountyResource find(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public CountyResource find(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return countyService.find(id, localeResolver.resolveLocale(request));
@@ -66,7 +65,7 @@ public class CountyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public CountyResource save(@AuthenticationPrincipal UserDetails user, @RequestBody CountyResource resource, HttpServletRequest request) {
+	public CountyResource save(Principal principal, @RequestBody CountyResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			return countyService.save(resource);
@@ -78,7 +77,7 @@ public class CountyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
-	public void delete(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public void delete(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			countyService.delete(id, localeResolver.resolveLocale(request));

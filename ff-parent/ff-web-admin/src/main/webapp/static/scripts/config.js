@@ -47,6 +47,8 @@ angular.module('FundFinder')
 		}
 	};
 	
+	$urlRouterProvider.when('', '/dashboard/overview').otherwise('/dashboard/overview');
+	
 	$stateProvider
 		// DASHBOARD
 		.state('dashboard', {

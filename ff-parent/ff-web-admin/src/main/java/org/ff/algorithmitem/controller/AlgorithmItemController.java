@@ -1,5 +1,6 @@
 package org.ff.algorithmitem.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,6 @@ import org.ff.resource.algorithmitem.AlgorithmItemResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,7 @@ public class AlgorithmItemController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/page")
-	public PageableResource<AlgorithmItemResource> getPage(@RequestBody UiGridResource resource) {
+	public PageableResource<AlgorithmItemResource> getPage(Principal principal, @RequestBody UiGridResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getPage");
 		try {
 			return algorithmItemService.getPage(resource);
@@ -46,7 +45,7 @@ public class AlgorithmItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<AlgorithmItemResource> findAll() {
+	public List<AlgorithmItemResource> findAll(Principal principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
 			return algorithmItemService.findAll();
@@ -56,7 +55,7 @@ public class AlgorithmItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public AlgorithmItemResource find(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public AlgorithmItemResource find(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return algorithmItemService.find(id, localeResolver.resolveLocale(request));
@@ -66,7 +65,7 @@ public class AlgorithmItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public AlgorithmItemResource save(@AuthenticationPrincipal UserDetails user, @RequestBody AlgorithmItemResource resource, HttpServletRequest request) {
+	public AlgorithmItemResource save(Principal principal, @RequestBody AlgorithmItemResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			return algorithmItemService.save(resource);
@@ -78,7 +77,7 @@ public class AlgorithmItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/activate")
-	public AlgorithmItemResource activate(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public AlgorithmItemResource activate(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".activate");
 		try {
 			return algorithmItemService.activate(id, localeResolver.resolveLocale(request));
@@ -88,7 +87,7 @@ public class AlgorithmItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/deactivate")
-	public AlgorithmItemResource deactivate(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public AlgorithmItemResource deactivate(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".deactivate");
 		try {
 			return algorithmItemService.deactivate(id, localeResolver.resolveLocale(request));
@@ -98,7 +97,7 @@ public class AlgorithmItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
-	public void delete(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public void delete(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			algorithmItemService.delete(id, localeResolver.resolveLocale(request));

@@ -1,5 +1,7 @@
 package org.ff.user.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.ff.controller.BaseController;
@@ -9,8 +11,6 @@ import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
 import org.ff.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +34,7 @@ public class UserController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/page")
-	public PageableResource<UserResource> getPage(@RequestBody UiGridResource resource) {
+	public PageableResource<UserResource> getPage(Principal principal, @RequestBody UiGridResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getPage");
 		try {
 			return userService.getPage(resource);
@@ -44,7 +44,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public UserResource find(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public UserResource find(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return userService.find(id, localeResolver.resolveLocale(request));
@@ -54,7 +54,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public UserResource save(@AuthenticationPrincipal UserDetails user, @RequestBody UserResource resource, HttpServletRequest request) {
+	public UserResource save(Principal principal, @RequestBody UserResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			return userService.save(resource);
@@ -66,7 +66,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/activate")
-	public UserResource activate(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public UserResource activate(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".activate");
 		try {
 			return userService.activate(id, localeResolver.resolveLocale(request));
@@ -76,7 +76,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/deactivate")
-	public UserResource deactivate(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public UserResource deactivate(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".deactivate");
 		try {
 			return userService.deactivate(id, localeResolver.resolveLocale(request));
@@ -86,7 +86,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
-	public void delete(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public void delete(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			userService.delete(id, localeResolver.resolveLocale(request));

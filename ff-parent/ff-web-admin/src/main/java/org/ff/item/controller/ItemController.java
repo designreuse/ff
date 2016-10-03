@@ -1,5 +1,6 @@
 package org.ff.item.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,6 @@ import org.ff.resource.item.ItemResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +40,7 @@ public class ItemController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/page")
-	public PageableResource<ItemResource> getPage(@RequestBody UiGridResource resource) {
+	public PageableResource<ItemResource> getPage(Principal principal, @RequestBody UiGridResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getPage");
 		try {
 			return itemService.getPage(resource);
@@ -51,7 +50,7 @@ public class ItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{entityType}")
-	public List<ItemResource> findAll(@AuthenticationPrincipal UserDetails user, @PathVariable String entityType, HttpServletRequest request) {
+	public List<ItemResource> findAll(Principal principal, @PathVariable String entityType, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return itemService.findAll(ItemEntityType.valueOf(entityType));
@@ -61,7 +60,7 @@ public class ItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{entityType}/{id}")
-	public ItemResource find(@AuthenticationPrincipal UserDetails user, @PathVariable String entityType, @PathVariable Integer id, HttpServletRequest request) {
+	public ItemResource find(Principal principal, @PathVariable String entityType, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return itemService.find(entityType, id, localeResolver.resolveLocale(request));
@@ -71,7 +70,7 @@ public class ItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ItemResource save(@AuthenticationPrincipal UserDetails user, @RequestBody ItemResource resource, HttpServletRequest request) {
+	public ItemResource save(Principal principal, @RequestBody ItemResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			itemValidator.validate(resource, localeResolver.resolveLocale(request));
@@ -84,7 +83,7 @@ public class ItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/activate")
-	public ItemResource activate(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public ItemResource activate(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".activate");
 		try {
 			return itemService.activate(id, localeResolver.resolveLocale(request));
@@ -94,7 +93,7 @@ public class ItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/deactivate")
-	public ItemResource deactivate(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public ItemResource deactivate(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".deactivate");
 		try {
 			return itemService.deactivate(id, localeResolver.resolveLocale(request));
@@ -104,7 +103,7 @@ public class ItemController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
-	public void delete(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id, HttpServletRequest request) {
+	public void delete(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			itemService.delete(id, localeResolver.resolveLocale(request));

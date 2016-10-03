@@ -2,6 +2,7 @@ package org.ff.principal.controller;
 
 import org.ff.principal.resource.PrincipalResource;
 import org.ff.security.AppUserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,11 @@ public class PrincipalController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (authentication.getPrincipal() instanceof AppUserDetails) {
 				AppUserDetails principal = (AppUserDetails) authentication.getPrincipal();
+				resource = new PrincipalResource(principal.getUsername(), principal.getAuthorities().iterator().next().toString());
+			} else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+				UsernamePasswordAuthenticationToken principal = (UsernamePasswordAuthenticationToken) authentication;
 				resource = new PrincipalResource();
-				resource.setUsername(principal.getUsername());
+				resource = new PrincipalResource(principal.getName(), principal.getAuthorities().iterator().next().toString());
 			}
 		}
 

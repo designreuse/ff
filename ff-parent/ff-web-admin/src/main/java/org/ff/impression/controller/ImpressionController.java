@@ -1,5 +1,6 @@
 package org.ff.impression.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ImpressionController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.GET, value="/statistics/periods")
-	public List<String> getStatisticsPeriods() {
+	public List<String> getStatisticsPeriods(Principal principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getStatisticsPeriods");
 		try {
 			List<String> result = new ArrayList<>();
@@ -48,7 +49,7 @@ public class ImpressionController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/statistics/{entity}/{entityId}/{statisticsPeriod}")
-	public ImpressionStatisticsResource getImpressionStatistics(@PathVariable String entity, @PathVariable Integer entityId, @PathVariable String statisticsPeriod, HttpServletRequest request) {
+	public ImpressionStatisticsResource getImpressionStatistics(Principal principal, @PathVariable String entity, @PathVariable Integer entityId, @PathVariable String statisticsPeriod, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getImpressionStatistics");
 		try {
 			return impressionService.getImpressionStatistics(EntityType.valueOf(entity), entityId, StatisticsPeriod.valueOf(statisticsPeriod), localeResolver.resolveLocale(request));

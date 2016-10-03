@@ -21,6 +21,8 @@
 
 .nav.navbar-right > li > label {
   color: white;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .nav-header {
