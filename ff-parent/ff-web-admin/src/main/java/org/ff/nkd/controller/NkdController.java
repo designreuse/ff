@@ -22,7 +22,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import etm.core.monitor.EtmPoint;
 
 @RestController
-@RequestMapping(value = { "/api/v1/nkds", "/e/api/v1/nkds" })
+@RequestMapping(value = { "/api/v1/nkds" })
 public class NkdController extends BaseController {
 
 	@Autowired

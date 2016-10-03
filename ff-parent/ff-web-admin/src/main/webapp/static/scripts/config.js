@@ -478,7 +478,7 @@ angular.module('FundFinder')
 	    
 })
 
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, ModalService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, ModalService, constants, CountersService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -562,4 +562,39 @@ angular.module('FundFinder')
 			$rootScope.setDateFilters(creationDateEl, lastModifiedDateEl, state.dateFilters);
 		}
 	}
+	
+	$log.info("Registering event listener for SSE");
+	var source = new EventSource(constants.contextPath + '/api/v1/sse/emitter');
+	source.addEventListener('FundFinder', function(event) {
+		var data = JSON.parse(event.data);
+		if (data.type == 'COUNTERS_UPDATE') {
+			$rootScope.totalUsers = data.counters.cntUsers;
+			$rootScope.totalTenders = data.counters.cntTenders;
+			$rootScope.totalInvestments = data.counters.cntInvestments;
+			$rootScope.totalArticles = data.counters.cntArticles;
+		}
+	});
+	
+	CountersService.findAll()
+		.success(function(data, status, headers, config) {
+			if (status == 200) {
+				$rootScope.totalUsers = data.cntUsers;
+				$rootScope.totalTenders = data.cntTenders;
+				$rootScope.totalInvestments = data.cntInvestments;
+				$rootScope.totalArticles = data.cntArticles;	
+			} else {
+				$log.error(data);
+				$rootScope.totalUsers = 'n/a';
+				$rootScope.totalTenders = 'n/a';
+				$rootScope.totalInvestments = 'n/a';
+				$rootScope.totalArticles = 'n/a';	
+			}
+		})
+		.error(function(data, status, headers, config) {
+			$log.error(data);
+			$rootScope.totalUsers = 'n/a';
+			$rootScope.totalTenders = 'n/a';
+			$rootScope.totalInvestments = 'n/a';
+			$rootScope.totalArticles = 'n/a';
+		});
 });

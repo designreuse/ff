@@ -16,10 +16,6 @@ angular.module('FundFinder')
 // ====================================================================================
 //	NavigationController
 // ====================================================================================
-.controller('NavigationController', function($rootScope, $scope, $http, $window) {
-	// TODO
-	$rootScope.totalUsers = 0;
-	$rootScope.totalTenders = 0;
-	$rootScope.totalInvestments = 0;
-	$rootScope.totalArticles = 0;
+.controller('NavigationController', function($rootScope, $scope, $http, $window, $log) {
+	
 });

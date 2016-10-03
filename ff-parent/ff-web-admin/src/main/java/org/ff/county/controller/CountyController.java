@@ -22,7 +22,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import etm.core.monitor.EtmPoint;
 
 @RestController
-@RequestMapping(value = { "/api/v1/counties", "/e/api/v1/counties" })
+@RequestMapping(value = { "/api/v1/counties" })
 public class CountyController extends BaseController {
 
 	@Autowired

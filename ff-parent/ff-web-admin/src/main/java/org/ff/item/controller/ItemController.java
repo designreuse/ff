@@ -24,7 +24,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import etm.core.monitor.EtmPoint;
 
 @RestController
-@RequestMapping(value = { "/api/v1/items", "/e/api/v1/items" })
+@RequestMapping(value = { "/api/v1/items" })
 public class ItemController extends BaseController {
 
 	@Autowired

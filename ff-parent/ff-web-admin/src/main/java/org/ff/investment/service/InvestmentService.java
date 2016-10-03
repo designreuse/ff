@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.ff.counters.service.CountersService;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Investment;
@@ -46,6 +47,9 @@ public class InvestmentService extends BaseService {
 
 	@Autowired
 	private Collator collator;
+
+	@Autowired
+	private CountersService countersService;
 
 	@Transactional(readOnly = true)
 	public List<InvestmentResource> findAll() {
@@ -92,8 +96,11 @@ public class InvestmentService extends BaseService {
 		}
 
 		repository.save(entity);
+		resource = resourceAssembler.toResource(entity, false);
 
-		return resourceAssembler.toResource(entity, false);
+		countersService.sendEvent();
+
+		return resource;
 	}
 
 	@Transactional
@@ -139,6 +146,8 @@ public class InvestmentService extends BaseService {
 		}
 
 		repository.delete(entity);
+
+		countersService.sendEvent();
 	}
 
 	@Transactional(readOnly = true)

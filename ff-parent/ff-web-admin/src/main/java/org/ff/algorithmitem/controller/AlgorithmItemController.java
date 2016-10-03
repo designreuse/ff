@@ -22,7 +22,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import etm.core.monitor.EtmPoint;
 
 @RestController
-@RequestMapping(value = { "/api/v1/algorithmitems", "/e/api/v1/algorithmitems" })
+@RequestMapping(value = { "/api/v1/algorithmitems" })
 public class AlgorithmItemController extends BaseController {
 
 	@Autowired

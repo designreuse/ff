@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.ff.counters.service.CountersService;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Item.ItemEntityType;
@@ -51,6 +52,9 @@ public class TenderService extends BaseService {
 	@Autowired
 	private ItemResourceAssembler itemResourceAssembler;
 
+	@Autowired
+	private CountersService countersService;
+
 	@Transactional(readOnly = true)
 	public TenderResource find(Integer id, Locale locale) {
 		log.debug("Finding tender [{}]...", id);
@@ -84,8 +88,11 @@ public class TenderService extends BaseService {
 		}
 
 		repository.save(entity);
+		resource = resourceAssembler.toResource(entity, false);
 
-		return resourceAssembler.toResource(entity, false);
+		countersService.sendEvent();
+
+		return resource;
 	}
 
 	@Transactional
@@ -131,6 +138,8 @@ public class TenderService extends BaseService {
 		}
 
 		repository.delete(entity);
+
+		countersService.sendEvent();
 	}
 
 	@Transactional(readOnly = true)

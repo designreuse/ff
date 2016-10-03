@@ -21,7 +21,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import etm.core.monitor.EtmPoint;
 
 @RestController
-@RequestMapping(value = { "/api/v1/tenders", "/e/api/v1/tenders" })
+@RequestMapping(value = { "/api/v1/tenders" })
 public class TenderController extends BaseController {
 
 	@Autowired
