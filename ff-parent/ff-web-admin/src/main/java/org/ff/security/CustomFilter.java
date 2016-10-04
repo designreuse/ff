@@ -36,10 +36,12 @@ public class CustomFilter implements Filter {
 
 			Authentication authentication = null;
 			if (httpRequest.getUserPrincipal() != null) {
+				// when in WebSphere realm
 				log.trace("Authenticating user [{}]...", httpRequest.getUserPrincipal().getName());
 				authentication = new UsernamePasswordAuthenticationToken(
 						httpRequest.getUserPrincipal().getName(), null, getGrantedAuthorities(httpRequest));
 			} else {
+				// stand alone
 				log.trace("Authenticating guest user...");
 				authentication = new UsernamePasswordAuthenticationToken(
 						"guest", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_GUEST.name()));
@@ -64,7 +66,7 @@ public class CustomFilter implements Filter {
 		if (httpRequest.isUserInRole(AppUserRole.ROLE_ADMIN.name())) {
 			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name());
 		} else {
-			return AuthorityUtils.createAuthorityList();
+			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_UNKNOWN.name());
 		}
 	}
 
