@@ -12,13 +12,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private CustomFilter customFilter;
+	private SecurityFilter filter;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests().anyRequest().fullyAuthenticated();
-		http.addFilterAfter(customFilter, BasicAuthenticationFilter.class);
+		http.addFilterAfter(filter, BasicAuthenticationFilter.class);
 	}
 
 }

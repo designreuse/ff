@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class CustomFilter implements Filter {
+public class SecurityFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
@@ -36,15 +36,15 @@ public class CustomFilter implements Filter {
 
 			Authentication authentication = null;
 			if (httpRequest.getUserPrincipal() != null) {
-				// when in WebSphere realm
+				// when in security realm (e.g. WebSphere)
 				log.trace("Authenticating user [{}]...", httpRequest.getUserPrincipal().getName());
 				authentication = new UsernamePasswordAuthenticationToken(
 						httpRequest.getUserPrincipal().getName(), null, getGrantedAuthorities(httpRequest));
 			} else {
 				// stand alone
-				log.trace("Authenticating guest user...");
+				log.trace("Authenticating unknown user...");
 				authentication = new UsernamePasswordAuthenticationToken(
-						"guest", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_GUEST.name()));
+						"unknown", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_UNKNOWN.name()));
 			}
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -65,6 +65,12 @@ public class CustomFilter implements Filter {
 	private List<GrantedAuthority> getGrantedAuthorities(HttpServletRequest httpRequest) {
 		if (httpRequest.isUserInRole(AppUserRole.ROLE_ADMIN.name())) {
 			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name());
+		} else if (httpRequest.isUserInRole(AppUserRole.ROLE_OPERATOR_L1.name())) {
+			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_OPERATOR_L1.name());
+		} else if (httpRequest.isUserInRole(AppUserRole.ROLE_OPERATOR_L2.name())) {
+			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_OPERATOR_L2.name());
+		} else if (httpRequest.isUserInRole(AppUserRole.ROLE_OPERATOR_L3.name())) {
+			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_OPERATOR_L3.name());
 		} else {
 			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_UNKNOWN.name());
 		}
