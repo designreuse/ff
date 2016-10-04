@@ -11,28 +11,28 @@
                 <a ui-sref="users.overview">
                     <i class="fa fa-users"></i>
                     <span class="nav-label">{{ 'MENU_USERS' | translate }}</span>
-                    <span class="label label-default pull-right">{{totalUsers}}</span>
+                    <span class="label label-default pull-right">{{cntUsers}}</span>
                 </a>
             </li>
 			<li ng-class="{active: $state.includes('tenders')}">
                 <a ui-sref="tenders.overview">
                     <i class="fa fa-star"></i>
                     <span class="nav-label">{{ 'MENU_TENDERS' | translate }}</span>
-                    <span class="label label-default pull-right">{{totalTenders}}</span>
+                    <span class="label label-default pull-right">{{cntTenders}}</span>
                 </a>
             </li>
 			<li ng-class="{active: $state.includes('investments')}">
                 <a ui-sref="investments.overview">
                     <i class="fa fa-university"></i>
                     <span class="nav-label">{{ 'MENU_INVESTMENTS' | translate }}</span>
-                    <span class="label label-default pull-right">{{totalInvestments}}</span>
+                    <span class="label label-default pull-right">{{cntInvestments}}</span>
                 </a>
             </li>
 			<li ng-class="{active: $state.includes('articles')}">
                 <a ui-sref="articles.overview">
                     <i class="fa fa-newspaper-o"></i>
                     <span class="nav-label">{{ 'MENU_ARTICLES' | translate }}</span>
-                    <span class="label label-default pull-right">{{totalArticles}}</span>
+                    <span class="label label-default pull-right">{{cntArticles}}</span>
                 </a>
             </li>
             

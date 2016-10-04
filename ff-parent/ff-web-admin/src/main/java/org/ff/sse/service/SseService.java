@@ -17,19 +17,29 @@ public class SseService {
 
 	public SseEmitter getEmitter() {
 		SseEmitter emitter = new SseEmitter();
-		emitter.onCompletion(() -> emitters.remove(emitter));
+
+		emitter.onCompletion(() -> {
+			log.trace("{} is no longer usable", emitter);
+			emitters.remove(emitter);
+		});
+		emitter.onTimeout(() -> {
+			log.trace("{} timed out", emitter);
+		});
+
 		emitters.add(emitter);
-		log.debug("New emitter created: {}", emitter);
+		log.trace("New emitter created: {}", emitter);
 		return emitter;
 	}
 
 	public void sendEvent(SseResource data) {
 		for (SseEmitter emitter : emitters) {
 			try {
-				log.debug("Sending [{}] to emitter [{}]", data, emitter);
-				emitter.send(SseEmitter.event().name("FundFinder").data(data));
+				log.trace("Sending [{}] to emitter [{}]", data, emitter);
+				emitter.send(SseEmitter.event().name("message").data(data));
 			} catch (Exception e) {
-				log.warn("Sending event to [" + emitter + "] failed", e.getMessage());
+				emitter.complete();
+				emitters.remove(emitter);
+				log.trace("Sending event to [" + emitter + "] failed", e.getMessage());
 			}
 		}
 	}

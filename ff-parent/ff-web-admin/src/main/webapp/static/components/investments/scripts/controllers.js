@@ -365,6 +365,13 @@ function InvestmentsOverviewController($rootScope, $scope, $state, $log, $timeou
 		
 		// initial sorting
 		$scope.setInitialSorting();
+		
+		// watch 'cntInvestments' variable, so if it changes we can refresh grid
+		$scope.$watch('cntInvestments', function(newValue, oldValue) {
+			if (newValue != oldValue) {
+				$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+			}
+		});
 	}, 1000);
 };
 

@@ -392,6 +392,13 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 		
 		// initial sorting
 		$scope.setInitialSorting();
+		
+		// watch 'cntUsers' variable, so if it changes we can refresh grid
+		$scope.$watch('cntUsers', function(newValue, oldValue) {
+			if (newValue != oldValue) {
+				$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+			}
+		});
 	}, 1000);
 };
 
