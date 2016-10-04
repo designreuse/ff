@@ -19,4 +19,6 @@ public class BaseProperties {
 
 	private String colatorLocale;
 
+	private Boolean runBatch;
+
 }
