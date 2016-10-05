@@ -189,6 +189,12 @@ function config($translateProvider) {
 			ENTITY_COUNTY: 'County',
 			ENTITY_CITY: 'City',
 			
+			ROLE_ADMIN: 'Administrator',
+			ROLE_OPERATOR_L1: 'Operator L1',
+			ROLE_OPERATOR_L2: 'Operator L2',
+			ROLE_OPERATOR_L3: 'Operator L3',
+			ROLE_UNKNOWN: 'Unknown',
+			
 			ACTION_TOOLTIP_ACTIVATE: 'Activate',
 			ACTION_TOOLTIP_DEACTIVATE: 'Deactivate',
 			ACTION_TOOLTIP_EDIT: 'Edit',
