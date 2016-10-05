@@ -44,7 +44,8 @@ function CountiesOverviewController($rootScope, $scope, $state, $log, $timeout, 
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: true
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_CREATION_DATE'),

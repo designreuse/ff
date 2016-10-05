@@ -45,7 +45,8 @@ function NkdsOverviewController($rootScope, $scope, $state, $log, $timeout, $fil
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 75
+					width: 75,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_SECTOR_NAME'),
@@ -54,7 +55,8 @@ function NkdsOverviewController($rootScope, $scope, $state, $log, $timeout, $fil
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: true
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_AREA'),
@@ -64,7 +66,8 @@ function NkdsOverviewController($rootScope, $scope, $state, $log, $timeout, $fil
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 75
+					width: 75,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_ACTIVITY'),
@@ -74,7 +77,8 @@ function NkdsOverviewController($rootScope, $scope, $state, $log, $timeout, $fil
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 75
+					width: 75,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_ACTIVITY_NAME'),
@@ -83,7 +87,8 @@ function NkdsOverviewController($rootScope, $scope, $state, $log, $timeout, $fil
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: false
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_CREATION_DATE'),

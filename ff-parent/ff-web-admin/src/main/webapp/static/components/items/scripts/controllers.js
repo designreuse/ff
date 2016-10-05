@@ -82,7 +82,8 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 75
+					width: 75,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_TEXT'),
@@ -92,7 +93,8 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: false,
-					cellTemplate:'<div class="ui-grid-cell-contents"><a class="ff-a" ng-click="grid.appScope.showEntity(row.entity)">{{row.entity.text}}</a></div>'
+					cellTemplate: '<div class="ui-grid-cell-contents"><a class="ff-a" ng-click="grid.appScope.showEntity(row.entity)">{{row.entity.text}}</a></div>',
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_TYPE'),

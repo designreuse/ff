@@ -44,7 +44,8 @@ function CitiesOverviewController($rootScope, $scope, $state, $log, $timeout, $f
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: true
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_COUNTY'),
@@ -53,7 +54,8 @@ function CitiesOverviewController($rootScope, $scope, $state, $log, $timeout, $f
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: true
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_DEVELOPMENT_INDEX'),
@@ -63,7 +65,8 @@ function CitiesOverviewController($rootScope, $scope, $state, $log, $timeout, $f
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 150
+					width: 150,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_CREATION_DATE'),

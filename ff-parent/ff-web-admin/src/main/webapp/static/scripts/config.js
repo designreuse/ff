@@ -478,7 +478,7 @@ angular.module('FundFinder')
 	    
 })
 
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, ModalService, constants, CountersService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $templateCache, ModalService, constants, CountersService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -562,6 +562,17 @@ angular.module('FundFinder')
 			$rootScope.setDateFilters(creationDateEl, lastModifiedDateEl, state.dateFilters);
 		}
 	}
+	
+	// =======================================
+	// 	custom ui-grid-filter
+	// =======================================
+	$templateCache.put('ui-grid/ui-grid-filter-bss',
+		"<div class=\"ui-grid-filter-container\" ng-repeat=\"colFilter in col.filters\" ng-class=\"{'ui-grid-filter-cancel-button-hidden' : colFilter.disableCancelFilterButton === true }\">" +
+			"<div ng-if=\"colFilter.type !== 'select'\">" + 
+				"<input type=\"text\" class=\"input-sm form-control ui-grid-filter-input\" ng-model=\"colFilter.term\" ng-model-options=\"{ debounce : { 'default' : 500, 'blur' : 0 }}\" ng-attr-placeholder=\"{{colFilter.placeholder || ''}}\" aria-label=\"{{colFilter.ariaLabel || aria.defaultFilterLabel}}\"><div role=\"button\" class=\"ui-grid-filter-button\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term !== null && colFilter.term !== ''\"><i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i></div>" + 
+			"</div>" +
+		"</div>"
+	);
 	
 	// =======================================
 	// 	SSE handling

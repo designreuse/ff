@@ -45,7 +45,8 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 75
+					width: 75,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_TYPE'),
@@ -76,7 +77,8 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 					enableFiltering: true,
 					enableHiding: true,
 					width: 150,
-					visible: false
+					visible: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_COMPANY_ITEM_TEXT'),
@@ -85,7 +87,8 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: false
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_OPERATOR'),
@@ -115,7 +118,8 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 					enableFiltering: true,
 					enableHiding: true,
 					width: 150,
-					visible: false
+					visible: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_TENDER_ITEM_TEXT'),
@@ -124,7 +128,8 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: false
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_STATUS'),

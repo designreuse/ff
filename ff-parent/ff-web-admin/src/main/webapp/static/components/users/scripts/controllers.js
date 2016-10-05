@@ -44,7 +44,8 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: true
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_LAST_NAME'),
@@ -53,7 +54,8 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: true
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_EMAIL'),
@@ -63,7 +65,8 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					visible: false
+					visible: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_COMPANY'),
@@ -72,17 +75,19 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					enableHiding: false
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_COMPANY_CODE'),
-					field: 'code',
+					field: 'company.code',
 					type: 'string',
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					visible: false
+					visible: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_STATUS'),
