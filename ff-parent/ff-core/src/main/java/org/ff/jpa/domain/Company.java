@@ -41,7 +41,7 @@ public class Company extends AbstractEntity {
 	private String name;
 
 	@Nationalized
-	@Column(name = "code", nullable = false, length = 64)
+	@Column(name = "code", nullable = true, length = 64)
 	private String code;
 
 	@OneToOne

@@ -25,7 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor @Getter @Setter @ToString
 public class User extends AbstractEntity {
 
-	public enum UserStatus { ACTIVE, INACTIVE };
+	public enum UserStatus { ACTIVE, INACTIVE, WAITING_CONFIRMATION };
 
 	@Id
 	@Column(name = "id")
@@ -33,7 +33,7 @@ public class User extends AbstractEntity {
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false, columnDefinition="varchar(16)")
+	@Column(name = "status", nullable = false, length = 32)
 	private UserStatus status;
 
 	@Nationalized
@@ -47,6 +47,9 @@ public class User extends AbstractEntity {
 	@Nationalized
 	@Column(name = "email", nullable = false, length = 255)
 	private String email;
+
+	@Column(name = "email_confirmation_code", nullable = false, length = 255)
+	private String emailConfirmationCode;
 
 	@Nationalized
 	@Column(name = "password", nullable = false, length = 128)

@@ -65,7 +65,7 @@ public class SecurityConfiguration {
 		protected void configure(HttpSecurity http) throws Exception {
 			log.info("Configuring WEB security...");
 			http.csrf().disable();
-			http.authorizeRequests().antMatchers("/inspinia/**", "/login**").permitAll();
+			http.authorizeRequests().antMatchers("/styles/**", "/external/**", "/inspinia/**", "/login**", "/api/v1/users/**").permitAll();
 			http.authorizeRequests().anyRequest().fullyAuthenticated();
 			http.formLogin().loginPage("/login.html").permitAll().successHandler(authenticationResultHandler).failureHandler(authenticationResultHandler);
 			http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login.html").permitAll();

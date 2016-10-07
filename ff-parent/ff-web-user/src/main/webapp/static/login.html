@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-app="Login">
+<html ng-app="FundFinderUnsecured">
 
     <head>
         <meta charset="utf-8">
@@ -7,37 +7,149 @@
         
         <title>Fund Finder</title>
         
+        <link rel="stylesheet" type="text/css" href="inspinia/font-awesome/css/font-awesome.css" />
         <link rel="stylesheet" type="text/css" href="inspinia/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="inspinia/css/animate.css" />
         <link rel="stylesheet" type="text/css" href="inspinia/css/style.css" id="loadBefore" />
+        <link rel="stylesheet" type="text/css" href="external/sweetalert2.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/style.css" />
         
         <script src="inspinia/js/angular/angular.min.js"></script>
         <script src="inspinia/js/ui-router/angular-ui-router.min.js"></script>
+        <script src="inspinia/js/angular-translate/angular-translate.min.js"></script>
+        <script src="external/sweetalert2.min.js"></script>
         <script src="login.js"></script>
     </head>
 
-    <body class="gray-bg">
-        <div class="loginColumns animated flipInY">
+    <body class="gray-bg" ng-controller="Controller">
+        <div ng-show="loginVisible" class="loginColumns animated flipInY">
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <div class="ibox-content">
-                        <h3>Fund Finder</h3>
-                        <form class="m-t" role="form" data-ng-controller="LoginController" data-ng-submit="login()">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Username" data-ng-model="username">
+                        <h3>{{ 'LBL_WELCOME' | translate }}</h3>
+                        <form name="formLogin" role="form" ng-submit="login()">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <input ng-model="username" type="text" class="form-control" name="username" ng-required="true" maxlength="255">
+                                <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                             </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Password" data-ng-model="password">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <input ng-model="password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
+                                <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
                             </div>
                             <p class="{{msgClass}}" ng-bind="msg"></p>
-                            <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                            <button type="submit" ng-disabled="formLogin.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_LOGIN' | translate }}</button>
                         </form>
+                    </div>
+                    <div class="p-xxs">
+                        <small class="pull-left"><a class="ff-a-alt" ng-click="showForgotPassword()">{{ 'LBL_FORGOT_PASSWORD' | translate }}</a></small>
+                        <small class="pull-right"><a class="ff-a-alt" ng-click="showRegistration()">{{ 'LBL_REGISTRATION' | translate }}</a></small>
                     </div>
                 </div>
                 <div class="col-md-3"></div>
             </div>
         </div>
+        
+        <div ng-show="forgotPasswordVisible" class="loginColumns animated flipInY">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="ibox-content">
+                        <h3>{{ 'LBL_FORGOT_PASSWORD' | translate }}</h3>
+                        <form name="formForgotPassword" role="form" ng-submit="send()">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+                                    <input ng-model="email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
+                                    <span class="input-group-addon">
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formForgotPassword.email.$invalid, 'fa fa-check-circle ff-valid' : formForgotPassword.email.$valid }"></i>
+                                    </span>
+                                </div>
+                                <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
+                            </div>
+                            <button type="submit" ng-disabled="formForgotPassword.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_SEND' | translate }}</button>
+                        </form>
+                    </div>
+                    <div class="p-xxs">
+                        <small class="pull-left"><a class="ff-a-alt" ng-click="showLogin()">{{ 'LBL_CANCEL' | translate }}</a></small>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+        
+        <div ng-show="registrationVisible" class="loginColumns animated flipInY">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="ibox-content">
+                        <h3>{{ 'LBL_REGISTRATION' | translate }}</h3>
+                        <form name="formRegistration" role="form" ng-submit="register()">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+                                    <input ng-model="user.firstName" type="text" class="form-control" name="firstName" ng-required="true" maxlength="128">
+                                    <span class="input-group-addon">
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.firstName.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.firstName.$valid }"></i>
+                                    </span>
+                                </div>
+                                <small class="ff-postscript">{{ 'LBL_FIRST_NAME' | translate }}</small>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+                                    <input ng-model="user.lastName" type="text" class="form-control" name="lastName" ng-required="true" maxlength="128">
+                                    <span class="input-group-addon">
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.lastName.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.lastName.$valid }"></i>
+                                    </span>
+                                </div>
+                                <small class="ff-postscript">{{ 'LBL_LAST_NAME' | translate }}</small>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+                                    <input ng-model="user.email" type="text" class="form-control" name="email" ng-required="true" maxlength="255">
+                                    <span class="input-group-addon">
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.email.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.email.$valid }"></i>
+                                    </span>
+                                </div>
+                                <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+	                                <input ng-model="user.company.name" type="text" class="form-control" name="company" ng-required="true" maxlength="255">
+	                                <span class="input-group-addon">
+	                                    <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.company.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.company.$valid }"></i>
+	                                </span>
+	                            </div>
+	                            <small class="ff-postscript">{{ 'LBL_COMPANY_NAME' | translate }}</small>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+                                    <input ng-model="user.password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
+                                    <span class="input-group-addon">
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.password.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.password.$valid }"></i>
+                                    </span>
+                                </div>
+                                <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <div class="input-group">
+                                    <input ng-model="user.confirmPassword" type="password" class="form-control" name="confirmPassword" ng-required="true" maxlength="128">
+                                    <span class="input-group-addon">
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.confirmPassword.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword), 'fa fa-check-circle ff-valid' : formRegistration.confirmPassword.$valid && (user.confirmPassword.length > 0 && user.password == user.confirmPassword) }"></i>
+                                    </span>
+                                </div>
+                                <small class="ff-postscript">{{ 'LBL_CONFIRM_PASSWORD' | translate }}</small>
+                            </div>
+                            <button type="submit" ng-disabled="formRegistration.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword)" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_REGISTER' | translate }}</button>
+                        </form>
+                    </div>
+                    <div class="p-xxs">
+                        <small class="pull-left"><a class="ff-a-alt" ng-click="showLogin()">{{ 'LBL_CANCEL' | translate }}</a></small>
+                        <small class="pull-right"><a class="ff-a-alt" ng-click="showTermsOfUse()">{{ 'LBL_TERMS_OF_USE' | translate }}</a></small>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+        
     </body>
 
 </html>

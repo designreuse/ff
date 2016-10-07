@@ -2,9 +2,11 @@ package org.ff.resource.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.resource.company.CompanyResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class UserResourceAssembler {
 	public User createEntity(UserResource resource) {
 		User entity = new User();
 		entity.setStatus((resource.getStatus() != null) ? resource.getStatus() : User.UserStatus.INACTIVE);
+		if (entity.getStatus() == UserStatus.WAITING_CONFIRMATION) {
+			entity.setEmailConfirmationCode(System.currentTimeMillis() + "-" + UUID.randomUUID().toString());
+		}
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
