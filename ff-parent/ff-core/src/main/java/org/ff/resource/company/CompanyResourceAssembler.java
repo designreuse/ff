@@ -156,7 +156,7 @@ public class CompanyResourceAssembler {
 	private void setResourceValue(ItemResource itemResource, CompanyItem companyItem) {
 		try {
 			if (itemResource.getType() == ItemType.NUMBER) {
-				itemResource.setValue(Integer.parseInt(companyItem.getValue()));
+				itemResource.setValue((companyItem.getValue() != null) ? Integer.parseInt(companyItem.getValue()) : null);
 				itemResource.setValueMapped(companyItem.getValue());
 			} else if (itemResource.getType() == ItemType.DATE) {
 				itemResource.setValue(companyItem.getValue());

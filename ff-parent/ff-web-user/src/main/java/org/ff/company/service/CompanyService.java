@@ -5,6 +5,7 @@ import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.resource.company.CompanyResource;
 import org.ff.resource.company.CompanyResourceAssembler;
+import org.ff.resource.item.ItemResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,20 @@ public class CompanyService {
 		resource = resourceAssembler.toResource(entity, false);
 		resource.setInvestments(null);
 		return resource;
+	}
+
+	@Transactional(readOnly = true)
+	public Boolean validate(UserDetails principal) {
+		CompanyResource resource = resourceAssembler.toResource(
+				userRepository.findByEmail(principal.getUsername()).getCompany(), false);
+
+		for (ItemResource itemResource : resource.getItems()) {
+			if (Boolean.TRUE == itemResource.getMandatory() && itemResource.getValue() == null) {
+				return Boolean.FALSE;
+			}
+		}
+
+		return Boolean.TRUE;
 	}
 
 }

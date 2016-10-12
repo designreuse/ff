@@ -9,7 +9,7 @@ angular.module('FundFinder')
 	$httpProvider.interceptors.push(function($location) {  
 		var path = {
 				request: function(config) {
-					if (config.url.indexOf("template/datepicker") != -1) {
+					if (config.url.indexOf("template/datepicker") != -1 || config.url.indexOf("uib") != -1) {
 						// workaround for problem with loading datepicker templates
 					} else {
 						config.url = constants.contextPath + config.url;
@@ -47,6 +47,28 @@ angular.module('FundFinder')
 	};
 	
 	$stateProvider
+	    // SETTINGS
+		.state('settings', {
+	        abstract: true,
+	        url: "/settings",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/settings/scripts/controllers.js',
+	        			        'components/settings/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('settings.overview', {
+	        url: "/overview",
+	        templateUrl: "/components/settings/views/overview.html",
+	        controller: 'SettingsController'
+	    })
+	    
 		// TENDERS
 		.state('tenders', {
 	        abstract: true,
@@ -150,7 +172,7 @@ angular.module('FundFinder')
 	    })
 })
 	
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, ModalService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, ModalService, CommonService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -238,4 +260,21 @@ angular.module('FundFinder')
 	$rootScope.toTrusted = function(html) {
 	    return $sce.trustAsHtml(html);
 	}
+	
+	/**
+	 * Function validates company profile.
+	 * Profile is valid if all mandatory items are entered.
+	 */
+	$rootScope.validateProfile = function() {
+		CommonService.validateProfile()
+			.success(function(data, status) {
+				$rootScope.profileIncomplete = !data;
+			})
+			.error(function(data, status) {
+				$log.error(data);
+			});
+	}
+	
+	$rootScope.profileIncomplete = false;
+	$rootScope.validateProfile();
 });

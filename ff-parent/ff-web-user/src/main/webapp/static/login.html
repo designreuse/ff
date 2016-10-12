@@ -11,12 +11,16 @@
         <link rel="stylesheet" type="text/css" href="inspinia/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="inspinia/css/animate.css" />
         <link rel="stylesheet" type="text/css" href="inspinia/css/style.css" id="loadBefore" />
+        <link rel="stylesheet" type="text/css" href="inspinia/css/plugins/ladda/ladda-themeless.min.css">
         <link rel="stylesheet" type="text/css" href="external/sweetalert2.min.css">
         <link rel="stylesheet" type="text/css" href="styles/style.css" />
         
         <script src="inspinia/js/angular/angular.min.js"></script>
         <script src="inspinia/js/ui-router/angular-ui-router.min.js"></script>
         <script src="inspinia/js/angular-translate/angular-translate.min.js"></script>
+        <script src="inspinia/js/plugins/ladda/spin.min.js"></script>
+        <script src="inspinia/js/plugins/ladda/ladda.min.js"></script>
+        <script src="inspinia/js/plugins/ladda/angular-ladda.min.js"></script>
         <script src="external/sweetalert2.min.js"></script>
         <script src="login.js"></script>
     </head>
@@ -42,7 +46,7 @@
                         </form>
                     </div>
                     <div class="p-xxs">
-                        <small class="pull-left"><a class="ff-a-alt" ng-click="showForgotPassword()">{{ 'LBL_FORGOT_PASSWORD' | translate }}</a></small>
+                        <small class="pull-left"><a class="ff-a-alt" ng-click="showResetPassword()">{{ 'LBL_RESET_PASSWORD' | translate }}</a></small>
                         <small class="pull-right"><a class="ff-a-alt" ng-click="showRegistration()">{{ 'LBL_REGISTRATION' | translate }}</a></small>
                     </div>
                 </div>
@@ -50,23 +54,23 @@
             </div>
         </div>
         
-        <div ng-show="forgotPasswordVisible" class="loginColumns animated flipInY">
+        <div ng-show="resetPasswordVisible" class="loginColumns animated flipInY">
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <div class="ibox-content">
-                        <h3>{{ 'LBL_FORGOT_PASSWORD' | translate }}</h3>
-                        <form name="formForgotPassword" role="form" ng-submit="send()">
+                        <h3>{{ 'LBL_RESET_PASSWORD' | translate }}</h3>
+                        <form name="formResetPassword" role="form" ng-submit="resetPassword()">
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
-                                    <input ng-model="email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
+                                    <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
                                     <span class="input-group-addon">
-                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formForgotPassword.email.$invalid, 'fa fa-check-circle ff-valid' : formForgotPassword.email.$valid }"></i>
+                                        <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formResetPassword.email.$invalid, 'fa fa-check-circle ff-valid' : formResetPassword.email.$valid }"></i>
                                     </span>
                                 </div>
                                 <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                             </div>
-                            <button type="submit" ng-disabled="formForgotPassword.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_SEND' | translate }}</button>
+                            <button ladda="processingResetPassword" data-style="zoom-in" type="submit" ng-disabled="formResetPassword.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_SEND' | translate }}</button>
                         </form>
                     </div>
                     <div class="p-xxs">
@@ -104,7 +108,7 @@
                             </div>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
-                                    <input ng-model="user.email" type="text" class="form-control" name="email" ng-required="true" maxlength="255">
+                                    <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.email.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.email.$valid }"></i>
                                     </span>
@@ -138,7 +142,7 @@
                                 </div>
                                 <small class="ff-postscript">{{ 'LBL_CONFIRM_PASSWORD' | translate }}</small>
                             </div>
-                            <button type="submit" ng-disabled="formRegistration.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword)" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_REGISTER' | translate }}</button>
+                            <button ladda="processingRegister" data-style="zoom-in" type="submit" ng-disabled="formRegistration.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword)" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_REGISTER' | translate }}</button>
                         </form>
                     </div>
                     <div class="p-xxs">

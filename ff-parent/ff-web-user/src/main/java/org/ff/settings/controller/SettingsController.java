@@ -1,9 +1,9 @@
-package org.ff.company.controller;
+package org.ff.settings.controller;
 
-import org.ff.company.service.CompanyService;
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
-import org.ff.resource.company.CompanyResource;
+import org.ff.settings.resource.SettingsResource;
+import org.ff.settings.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,20 +17,20 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value = { "/api/v1/company", "/e/api/v1/company" })
-public class CompanyController extends BaseController {
+@RequestMapping(value = { "/api/v1/settings" })
+public class SettingsController extends BaseController {
 
 	@Autowired
-	private CompanyService companyService;
+	private SettingsService settingsService;
 
 	@Autowired
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public CompanyResource find(@AuthenticationPrincipal UserDetails principal) {
+	public SettingsResource find(@AuthenticationPrincipal UserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
-			return companyService.find(principal);
+			return settingsService.find(principal);
 		} finally {
 			etmService.collect(point);
 			log.debug(".find finished in {} ms", point.getTransactionTime());
@@ -38,26 +38,15 @@ public class CompanyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public CompanyResource save(@AuthenticationPrincipal UserDetails principal, @RequestBody CompanyResource resource) {
+	public SettingsResource save(@AuthenticationPrincipal UserDetails principal, @RequestBody SettingsResource resources) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
-			return companyService.save(principal, resource);
+			return settingsService.save(principal, resources);
 		} catch (RuntimeException e) {
 			throw processException(e);
 		} finally {
 			etmService.collect(point);
 			log.debug(".save finished in {} ms", point.getTransactionTime());
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/validate")
-	public Boolean validate(@AuthenticationPrincipal UserDetails principal) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".validate");
-		try {
-			return companyService.validate(principal);
-		} finally {
-			etmService.collect(point);
-			log.debug(".validate finished in {} ms", point.getTransactionTime());
 		}
 	}
 

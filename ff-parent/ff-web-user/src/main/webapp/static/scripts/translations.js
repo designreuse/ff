@@ -10,8 +10,12 @@ function config($translateProvider) {
 			CROATIAN: 'Croatian',
 			
 			LOGOUT: 'Logout',
+			SETTINGS: 'Settings',
 			
 			HEADER_MAIN: 'Fund Finder',
+			HEADER_PERSONAL_DATA: 'Personal data',
+			HEADER_EMAIL: 'Email',
+			HEADER_CHANGE_PASSWORD: 'Change password',
 			
 			MENU_TENDERS: 'Tenders',
 			MENU_INVESTMENTS: 'Investments',
@@ -29,6 +33,14 @@ function config($translateProvider) {
 			LABEL_READ_MORE: 'Read more',
 			LABEL_COMPANY_NAME: 'Name',
 			LABEL_COMPANY_CODE: 'Identification code',
+			LABEL_FIRST_NAME: 'First name',
+			LABEL_LAST_NAME: 'Last name',
+			LABEL_EMAIL: 'Email',
+			LABEL_NEW_PASSWORD: 'New password',
+			LABEL_CONFIRM_PASSWORD: 'Confirm password',
+			
+			INCOMPLETE_PROFILE_HDR: 'Incomplete company profile',
+			INCOMPLETE_PROFILE_MSG: 'Please fill out all mandatory items in your company profile.',
 		})
 	
 		// ===========================================================================
@@ -40,8 +52,12 @@ function config($translateProvider) {
 			CROATIAN: 'Hrvatski',
 			
 			LOGOUT: 'Odjava',
+			SETTINGS: 'Postavke',
 			
 			HEADER_MAIN: 'Fund Finder',
+			HEADER_PERSONAL_DATA: 'Osobni podaci',
+			HEADER_EMAIL: 'Email',
+			HEADER_CHANGE_PASSWORD: 'Promjena zaporka',
 			
 			MENU_TENDERS: 'Natječaji',
 			MENU_INVESTMENTS: 'Investicije',
@@ -59,6 +75,14 @@ function config($translateProvider) {
 			LABEL_READ_MORE: 'Pročitajte više',
 			LABEL_COMPANY_NAME: 'Name',
 			LABEL_COMPANY_CODE: 'Identification code',
+			LABEL_FIRST_NAME: 'Ime',
+			LABEL_LAST_NAME: 'Prezime',
+			LABEL_EMAIL: 'Email',
+			LABEL_NEW_PASSWORD: 'Nova zaporka',
+			LABEL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
+			
+			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil kompanije',
+			INCOMPLETE_PROFILE_MSG: 'Please fill out all mandatory items in your company profile.',
 		});
 	
 	$translateProvider.preferredLanguage("en");

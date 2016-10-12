@@ -27,4 +27,8 @@ public class AppUser {
 
 	private List<String> roles;
 
+	private String firstName;
+
+	private String lastName;
+
 }

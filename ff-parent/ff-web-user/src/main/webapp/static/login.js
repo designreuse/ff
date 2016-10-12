@@ -1,4 +1,4 @@
-angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
+angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'angular-ladda'])
 
 // ================================================================================
 //	CONSTANT
@@ -11,7 +11,6 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
 //	CONFIG
 // ================================================================================
 .config(function($httpProvider, $translateProvider, constants) {  
-	
 	// configure interceptors
 	$httpProvider.interceptors.push(function($location) {  
 		var path = {
@@ -33,7 +32,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
 			LBL_USERNAME: 'Username',
 			LBL_PASSWORD: 'Password',
 			LBL_CONFIRM_PASSWORD: 'Confirm password',
-			LBL_FORGOT_PASSWORD: 'Forgot password?',
+			LBL_RESET_PASSWORD: 'Reset password',
 			LBL_REGISTRATION: 'Registration',
 			LBL_CANCEL: 'Cancel',
 			LBL_TERMS_OF_USE: 'Terms of use',
@@ -52,8 +51,12 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
 			HDR_ERROR: 'Error',
 			
 			MSG_REGISTRATION_SUCCESS: 'Your registration form has been successfully submitted.<p>In a few minutes you should receive confirmation email. Please click the URL from email to complete registration. After that you can login to Fund Finder.',
-			MSG_REGISTRATION_ERROR: 'We are sorry, but your registration has failed.<p>For more information please contact customer support service.',
-			MSG_REGISTRATION_CONFLICT: 'User with entered email already exists in Fund Finder system.'
+			MSG_REGISTRATION_ERROR: 'We are sorry, but action has failed.<p>For more information please contact customer support service.',
+			MSG_REGISTRATION_CONFLICT: 'User with entered email already exists in Fund Finder system.',
+				
+			MSG_RESET_PASSWORD_SUCCESS: 'New password has been sent to your email.',
+			MSG_RESET_PASSWORD_ERROR: 'We are sorry, but action has failed.<p>For more information please contact customer support service.',
+			MSG_RESET_PASSWORD_NOT_FOUND: 'User with entered email not found in Fund Finder system.',
 		});
 	$translateProvider.preferredLanguage("en");
 })
@@ -86,13 +89,41 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
 		});
 	};
 	
-	$scope.send = function() {
-		console.log($scope.email);
+	$scope.resetPassword = function() {
+		$scope.processingResetPassword = true;
+		$http.post("/api/v1/users/resetPassword", $scope.user)
+			.success(function(data, status, headers, config) {
+				$scope.processingResetPassword = false;
+				if (status == 200) {
+					swal({
+						title: $translate('HDR_SUCCESS'), html: $translate('MSG_RESET_PASSWORD_SUCCESS'), type: 'success', timer: 30000, width: 800, confirmButtonText: $translate('BTN_CLOSE') 
+					}).then(function() {
+						$timeout(function() {
+							$scope.showLogin();
+						}, 100);
+					});
+				};
+			})
+			.error(function(data, status, headers, config) {
+				$scope.processingResetPassword = false;
+				if (status == 404) {
+					swal({
+						title: $translate('HDR_WARNING'), html: $translate('MSG_RESET_PASSWORD_NOT_FOUND'), type: 'warning', timer: 30000, width: 800, confirmButtonText: $translate('BTN_CLOSE') 
+					});
+				} else {
+					$log.error(data);
+					swal({
+						title: $translate('HDR_ERROR'), html: $translate('MSG_RESET_PASSWORD_ERROR'), type: 'error', timer: 30000, width: 800, confirmButtonText: $translate('BTN_CLOSE') 
+					});
+				}
+			});
 	};
 	
 	$scope.register = function() {
+		$scope.processingRegister = true;
 		$http.post("/api/v1/users/register", $scope.user)
 			.success(function(data, status, headers, config) {
+				$scope.processingRegister = false;
 				if (status == 200) {
 					swal({
 						title: $translate('HDR_SUCCESS'), html: $translate('MSG_REGISTRATION_SUCCESS'), type: 'success', timer: 30000, width: 800, confirmButtonText: $translate('BTN_CLOSE') 
@@ -101,9 +132,10 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
 							$scope.showLogin();
 						}, 100);
 					});
-				}
+				};
 			})
 			.error(function(data, status, headers, config) {
+				$scope.processingRegister = false;
 				if (status == 409) {
 					swal({
 						title: $translate('HDR_WARNING'), html: $translate('MSG_REGISTRATION_CONFLICT'), type: 'warning', timer: 30000, width: 800, confirmButtonText: $translate('BTN_CLOSE') 
@@ -119,24 +151,24 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router'])
 	
 	$scope.showLogin = function() {
 		$scope.loginVisible = true;
-		$scope.forgotPasswordVisible = false;
+		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = false;
 		
 		$scope.username = undefined;
 		$scope.password = undefined;
 	};
 	
-	$scope.showForgotPassword = function() {
+	$scope.showResetPassword = function() {
 		$scope.loginVisible = false;
-		$scope.forgotPasswordVisible = true;
+		$scope.resetPasswordVisible = true;
 		$scope.registrationVisible = false;
 		
-		$scope.email = undefined;
+		$scope.user = { 'firstName' : undefined, 'lastName' : undefined, 'email' : undefined, 'password' : undefined, 'confirmPassword' : undefined, 'status' : 'WAITING_CONFIRMATION', 'company' : { 'name' : undefined } };
 	};
 	
 	$scope.showRegistration = function() {
 		$scope.loginVisible = false;
-		$scope.forgotPasswordVisible = false;
+		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = true;
 		
 		$scope.user = { 'firstName' : undefined, 'lastName' : undefined, 'email' : undefined, 'password' : undefined, 'confirmPassword' : undefined, 'status' : 'WAITING_CONFIRMATION', 'company' : { 'name' : undefined } };

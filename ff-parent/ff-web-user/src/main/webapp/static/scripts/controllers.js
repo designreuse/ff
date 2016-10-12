@@ -16,6 +16,10 @@ angular.module('FundFinder')
 			});
 	};
 	
+	$scope.settings = function() {
+		$state.go('settings.overview');
+	};
+	
 	// change language function
 	$scope.changeLanguage = function(langKey) {
 		$translate.use(langKey);

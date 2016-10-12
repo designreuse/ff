@@ -64,6 +64,7 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $filt
 		CompanyService.save($scope.company)
 			.success(function(data, status, headers, config) {
 				if (status == 200) {
+					$rootScope.validateProfile();
 					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
 				} else {
 					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));

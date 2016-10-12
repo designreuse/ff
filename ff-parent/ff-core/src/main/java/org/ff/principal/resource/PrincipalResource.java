@@ -20,4 +20,10 @@ public class PrincipalResource {
 	@JsonProperty("role")
 	private String role;
 
+	@JsonProperty("firstName")
+	private String firstName;
+
+	@JsonProperty("lastName")
+	private String lastName;
+
 }

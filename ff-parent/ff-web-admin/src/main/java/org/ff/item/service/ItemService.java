@@ -14,7 +14,6 @@ import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemEntityType;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Item.ItemType;
-import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.specification.ItemSpecification;
 import org.ff.resource.item.ItemOptionResource;
@@ -143,8 +142,6 @@ public class ItemService extends BaseService {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.item", null, locale), id }, locale));
 		}
-
-		bulkDelete(TenderItem.class, "item", entity);
 
 		repository.delete(entity);
 	}

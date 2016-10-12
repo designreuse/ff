@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.Root;
 
 import org.ff.properties.BaseProperties;
 import org.ff.uigrid.UiGridResource;
@@ -44,14 +42,6 @@ public class BaseService {
 			orders.add(new Order((uiGridSortResource.getDirection().equals("asc")) ? Direction.ASC : Direction.DESC, uiGridSortResource.getName()));
 		}
 		return new Sort(orders);
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void bulkDelete(Class clazz, String where, Object object) {
-		CriteriaDelete criteriaDelete = entityManager.getCriteriaBuilder().createCriteriaDelete(clazz);
-		Root root = criteriaDelete.from(clazz);
-		criteriaDelete.where(entityManager.getCriteriaBuilder().equal(root.get(where), object));
-		entityManager.createQuery(criteriaDelete).executeUpdate();
 	}
 
 	protected List<Date> getDateRange(String date) {

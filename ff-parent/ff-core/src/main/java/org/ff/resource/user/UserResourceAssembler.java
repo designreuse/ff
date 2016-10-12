@@ -9,7 +9,9 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.resource.company.CompanyResourceAssembler;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,7 +30,9 @@ public class UserResourceAssembler {
 		resource.setFirstName(entity.getFirstName());
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
-		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
+		if (!light) {
+			resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
+		}
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());
@@ -48,12 +52,14 @@ public class UserResourceAssembler {
 		User entity = new User();
 		entity.setStatus((resource.getStatus() != null) ? resource.getStatus() : User.UserStatus.INACTIVE);
 		if (entity.getStatus() == UserStatus.WAITING_CONFIRMATION) {
-			entity.setEmailConfirmationCode(System.currentTimeMillis() + "-" + UUID.randomUUID().toString());
+			long now = System.currentTimeMillis();
+			entity.setRegistrationCode(now + "-" + UUID.randomUUID().toString());
+			entity.setRegistrationCodeSentDate(new DateTime(now));
 		}
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
-		entity.setPassword(resource.getPassword());
+		entity.setPassword(new MessageDigestPasswordEncoder("SHA-1").encodePassword(resource.getPassword(), null));
 		Company company = null;
 		if (resource.getCompany() != null) {
 			company = companyResourceAssembler.createEntity(resource.getCompany());
@@ -68,7 +74,6 @@ public class UserResourceAssembler {
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
-		entity.setPassword(resource.getPassword());
 		Company company = null;
 		if (resource.getCompany() != null) {
 			company = companyResourceAssembler.updateEntity(companyRepository.findOne(resource.getCompany().getId()), resource.getCompany());

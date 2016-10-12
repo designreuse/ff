@@ -21,4 +21,6 @@ public class BaseProperties {
 
 	private Boolean runBatch;
 
+	private String url;
+
 }

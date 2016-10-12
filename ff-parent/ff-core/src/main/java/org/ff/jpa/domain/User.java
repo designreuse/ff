@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,14 +50,22 @@ public class User extends AbstractEntity {
 	@Column(name = "email", nullable = false, length = 255)
 	private String email;
 
-	@Column(name = "email_confirmation_code", nullable = false, length = 255)
-	private String emailConfirmationCode;
-
 	@Nationalized
 	@Column(name = "password", nullable = false, length = 128)
 	private String password;
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
 	private Company company;
+
+	@Column(name = "registration_code", nullable = false, length = 255)
+	private String registrationCode;
+
+	@Column(name = "registration_code_sent", nullable = false)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime registrationCodeSentDate;
+
+	@Column(name = "registration_code_confirmed", nullable = true)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime registrationCodeConfirmedDate;
 
 }

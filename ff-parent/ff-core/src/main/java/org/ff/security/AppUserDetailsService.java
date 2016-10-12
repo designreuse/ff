@@ -2,8 +2,8 @@ package org.ff.security;
 
 import java.util.Arrays;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.security.AppUser.AppUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
-	private static String ADMIN_USERNAME = "admin";
-	private static String ADMIN_PASSWORD = "admin";
-
 	@Autowired
 	private UserRepository userRepository;
 
@@ -28,14 +25,11 @@ public class AppUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("Authenticating user with username [{}]", username);
 
+		User user = userRepository.findByEmail(username);
+
 		AppUser appUser = null;
-		if (ADMIN_USERNAME.equals(username)) {
-			appUser = new AppUser(username, DigestUtils.sha1Hex(ADMIN_PASSWORD), false, false, true, false, Arrays.asList(AppUserRole.ROLE_ADMIN.name()));
-		} else {
-			User user = userRepository.findByEmail(username);
-			if (user != null) {
-				appUser = new AppUser(user.getEmail(), DigestUtils.sha1Hex(user.getPassword()), false, false, true, false, Arrays.asList(AppUserRole.ROLE_USER.name()));
-			}
+		if (user != null && user.getStatus() == UserStatus.ACTIVE) {
+			appUser = new AppUser(user.getEmail(), user.getPassword(), false, false, true, false, Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName());
 		}
 
 		if (appUser == null) {

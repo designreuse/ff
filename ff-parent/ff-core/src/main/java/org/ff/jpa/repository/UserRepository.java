@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<User, Integer>, JpaSpecif
 
 	User findByEmail(String email);
 
+	User findByRegistrationCode(String registrationCode);
+
 }

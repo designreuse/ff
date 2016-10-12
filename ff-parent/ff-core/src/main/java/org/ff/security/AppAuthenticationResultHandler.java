@@ -9,13 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ff.security.AppUser.AppUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -37,15 +35,8 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		Map<String, String> data = new HashMap<>();
-		if (isAdmin(authentication)) {
-			data.put(MESSAGE, "Login success");
-			data.put(URL, contextPath + "/#/dashboard/overview");
-		} else if (isUser(authentication)) {
-			data.put(MESSAGE, "Login success");
-			data.put(URL, contextPath + "/#/tenders/overview");
-		} else {
-			data.put(MESSAGE, "Invalid role");
-		}
+		data.put(MESSAGE, "Login success");
+		data.put(URL, contextPath + "/#/tenders/overview");
 		objectMapper.writeValue(response.getOutputStream(), data);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -58,24 +49,6 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 		objectMapper.writeValue(response.getOutputStream(), data);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-	}
-
-	private boolean isAdmin(Authentication authentication) {
-		for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-			if (grantedAuthority.getAuthority().equals(AppUserRole.ROLE_ADMIN.name())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isUser(Authentication authentication) {
-		for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-			if (grantedAuthority.getAuthority().equals(AppUserRole.ROLE_USER.name())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
