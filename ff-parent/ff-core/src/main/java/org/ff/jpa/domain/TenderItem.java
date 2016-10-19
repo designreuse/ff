@@ -2,7 +2,6 @@ package org.ff.jpa.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +32,7 @@ public class TenderItem extends AbstractEntity {
 	@JoinColumn(name = "tender")
 	private Tender tender;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "item", nullable = true)
 	private Item item;
 

@@ -18,13 +18,8 @@ public class SseService {
 	public SseEmitter getEmitter() {
 		SseEmitter emitter = new SseEmitter();
 
-		emitter.onCompletion(() -> {
-			log.trace("{} is no longer usable", emitter);
-			emitters.remove(emitter);
-		});
-		emitter.onTimeout(() -> {
-			log.trace("{} timed out", emitter);
-		});
+		emitter.onCompletion(new CompletionHandler(emitter));
+		emitter.onTimeout(new TimeoutHandler(emitter));
 
 		emitters.add(emitter);
 		log.trace("New emitter created: {}", emitter);
@@ -42,6 +37,37 @@ public class SseService {
 				log.trace("Sending event to [" + emitter + "] failed", e.getMessage());
 			}
 		}
+	}
+
+	private class CompletionHandler implements Runnable {
+
+		SseEmitter emitter;
+
+		CompletionHandler(SseEmitter emitter) {
+			this.emitter = emitter;
+		}
+
+		@Override
+		public void run() {
+			log.trace("{} is no longer usable", emitter);
+			emitters.remove(emitter);
+		}
+
+	}
+
+	private class TimeoutHandler implements Runnable {
+
+		SseEmitter emitter;
+
+		TimeoutHandler(SseEmitter emitter) {
+			this.emitter = emitter;
+		}
+
+		@Override
+		public void run() {
+			log.trace("{} timed out", emitter);
+		}
+
 	}
 
 }
