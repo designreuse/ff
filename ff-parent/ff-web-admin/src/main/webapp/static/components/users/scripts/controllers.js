@@ -410,8 +410,173 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 // ========================================================================
 //	DETAILS CONTROLLER
 // ========================================================================
-function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService) {
+function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService, UserEmailsService) {
 	var $translate = $filter('translate');
+	
+	// ========================================================================================================================
+	//	E-mails grid [start]
+	// ========================================================================================================================
+	
+	$scope.gridOptions4Emails = {
+			rowHeight: $rootScope.rowHeight,
+			paginationPageSize: $rootScope.paginationPageSize,
+			paginationPageSizes: $rootScope.paginationPageSizes,
+			enableFiltering: true,
+			useExternalFiltering: true,
+			useExternalSorting: true,
+			useExternalPagination: true,
+			enableColumnMenus: false,
+			enableHorizontalScrollbar: uiGridConstants.scrollbars.NEVER,
+			enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
+			columnDefs: [
+				{
+					displayName: $translate('COLUMN_SEND_DATE'),
+					field: 'creationDate',
+					type: 'date',
+					cellFilter: 'date:grid.appScope.dateTimeFormat',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: false,
+					filterHeaderTemplate: 
+						'<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters">' +
+							'<div class="input-group">' +
+								'<input id="filterCreationDate" date-range-picker options="grid.appScope.dpOptions4Emails" class="form-control date-picker ui-grid-filter-datepicker" type="text" readonly="readonly" style="background: white;" ng-model="grid.appScope.dpCreationDate" />' +
+								'<span class="input-group-addon ui-grid-filter-datepicker-span" ng-click="grid.appScope.clearDateFilterGlobal([\'filterCreationDate\'], grid.appScope.gridApi4Emails)"><i class="ui-grid-icon-cancel ui-grid-filter-datepicker-i"></i></span>' +
+							'</div>' + 
+						'</div>',
+					width: 175
+				},
+				{
+					displayName: $translate('COLUMN_TO'),
+					field: 'user.email',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss',
+					width: 225
+				},
+				{
+					displayName: $translate('COLUMN_SUBJECT'),
+					field: 'email.subject',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				}
+			],
+			onRegisterApi: function(gridApi) {
+				$scope.gridApi4Emails = gridApi;
+				
+				// register pagination changed handler
+				$scope.gridApi4Emails.pagination.on.paginationChanged($scope, function(currentPage, pageSize) {
+					$scope.getPage4Emails(currentPage, pageSize);
+				});
+				
+				// register sort changed handler 
+				$scope.gridApi4Emails.core.on.sortChanged($scope, $scope.sortChanged4Emails);
+				
+				// register filter changed handler
+				$scope.gridApi4Emails.core.on.filterChanged($scope, function() {
+					var grid = this.grid;
+					
+					var filterArray = new Array();
+					for (var i=0; i<grid.columns.length; i++) {
+						var name = grid.columns[i].field;
+						var term = grid.columns[i].filters[0].term;
+						if (name && term) {
+							filterArray.push({
+								"name" : name,
+								"term" : term
+							});
+						}
+					}
+					
+					// date filters (e.g. creationDate, lastModifiedDate)
+					$rootScope.processDateFilters($('#filterCreationDate'), null, filterArray);
+					
+					$scope.filterArray4Emails = filterArray;
+					$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+				});
+				
+				$scope.gridApi4Emails.core.on.rowsRendered($scope, function(b, f, i) {
+					var newHeight = ($scope.gridApi4Emails.core.getVisibleRows($scope.gridApi4Emails.grid).length * $rootScope.rowHeight) + (($scope.gridOptions4Emails.totalItems == 0) ? $rootScope.heightNoData : $rootScope.heightCorrectionFactor);
+					angular.element(document.getElementsByClassName('grid')[0]).css('height', newHeight + 'px');
+				});
+				
+				// set initial sort
+				if (!$scope.sortArray4Emails) {
+					var sortArray = new Array();
+					sortArray.push({ name: "creationDate", priority: 0, direction: uiGridConstants.DESC });
+					$scope.sortArray4Emails = sortArray;			
+				}
+				
+				// initial load
+				$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+			}
+		};
+	
+	$scope.getPage4Emails = function(page, size) {
+		$scope.loading4Emails = true;
+		
+		if (!$scope.filterArray4Emails) {
+			$scope.filterArray4Emails = new Array();
+		}
+		$scope.filterArray4Emails.push({ "name" : "user.id", "term" : $stateParams.id });
+		
+		var uiGridResource = {
+			"pagination" : { "page" : page - 1, "size" : size },
+			"sort" : $scope.sortArray4Emails,
+			"filter" : $scope.filterArray4Emails
+		};
+		
+		UserEmailsService.getPage(uiGridResource)
+			.success(function(data, status, headers, config) {
+				$scope.loading4Emails = false;
+				$scope.gridOptions4Emails.data = data.data;
+				$scope.gridOptions4Emails.totalItems = data.total;
+			})
+			.error(function(data, status, headers, config) {
+				$scope.loading4Emails = false;
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.sortChanged4Emails = function (grid, sortColumns) {
+		var sortArray = new Array();
+		for (var i=0; i<sortColumns.length; i++) {
+			sortArray.push({
+				"name" : sortColumns[i].field,
+				"priority" : sortColumns[i].sort.priority,
+				"direction" : sortColumns[i].sort.direction
+			});
+		}
+		$scope.sortArray4Emails = sortArray;
+		$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+	};
+	
+	$scope.dpOptions4Emails = {
+		opens: 'left',
+		format: $rootScope.dateFormat.toUpperCase(),
+		ranges: $rootScope.datePickerRanges,
+		locale: { 
+			customRangeLabel: $translate('DATETIMEPICKER_CUSTOM') 
+		}, 
+		showDropdowns: true,
+		eventHandlers: {
+			'apply.daterangepicker': function(ev, picker) {
+				$rootScope.applyDateFilterGlobal($scope.gridApi4Emails);
+			}
+		}
+	};
+	
+	// ========================================================================================================================
+	//	E-mails grid [end]
+	// ========================================================================================================================
 	
 	$scope.back = function() {
 		$state.go('users.overview');
@@ -424,16 +589,40 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 	    return $sce.trustAsHtml(html);
 	}
 	
-	// initial load
-	UsersService.getEntity($stateParams.id)
-		.success(function(data, status) {
-			if (status == 200) {
-				$scope.entity = data;
-			} else {
+	$scope.getEntity = function() {
+		UsersService.getEntity($stateParams.id)
+			.success(function(data, status) {
+				if (status == 200) {
+					$scope.entity = data;
+					$scope.email = { "subject" : null, "text" : null, "users" : [$scope.entity] };
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			}
-		})
-		.error(function(data, status) {
-			toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-		});	
+			});	
+	};
+	
+	$scope.sendEmail = function() {
+		$scope.sendingEmail = true;
+		
+		UsersService.sendEmail($scope.email)
+			.success(function(data, status) {
+				toastr.success($translate('ACTION_SEND_EMAIL_SUCCESS_MESSAGE'));
+				$scope.sendingEmail = false;
+				$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_SEND_EMAIL_FAILURE_MESSAGE'));
+				$scope.sendingEmail = false;
+			});
+	};
+	
+	$scope.resetEmail = function() {
+		$scope.email = { "subject" : null, "text" : null, "users" : [$scope.entity] };
+	}
+	
+	// initial load
+	$scope.getEntity();
 };

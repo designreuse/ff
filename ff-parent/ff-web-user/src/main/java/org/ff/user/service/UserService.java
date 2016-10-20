@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.ff.email.EmailService;
+import org.ff.email.MailSenderService;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.UserRepository;
@@ -43,7 +43,7 @@ public class UserService extends BaseService {
 	private UserResourceAssembler resourceAssembler;
 
 	@Autowired
-	private EmailService emailService;
+	private MailSenderService mailSender;
 
 	@Autowired
 	private Configuration configuration;
@@ -69,7 +69,7 @@ public class UserService extends BaseService {
 				new Object[] { baseProperties.getUrl() + "/api/v1/users?registrationCode=" + user.getRegistrationCode() }, locale));
 
 		try {
-			emailService.send(user.getEmail(), messageSource.getMessage("email.registration.subject", null, locale),
+			mailSender.send(user.getEmail(), messageSource.getMessage("email.registration.subject", null, locale),
 					FreeMarkerTemplateUtils.processTemplateIntoString(configuration.getTemplate("email_registration.ftl"), model));
 		} catch (Exception e) {
 			log.error("Sending registration email failed", e);
@@ -97,7 +97,7 @@ public class UserService extends BaseService {
 		model.put("data", messageSource.getMessage("email.resetPassword.body", new Object[] { password }, locale));
 
 		try {
-			emailService.send(user.getEmail(), messageSource.getMessage("email.resetPassword.subject", null, locale),
+			mailSender.send(user.getEmail(), messageSource.getMessage("email.resetPassword.subject", null, locale),
 					FreeMarkerTemplateUtils.processTemplateIntoString(configuration.getTemplate("email_resetPassword.ftl"), model));
 		} catch (Exception e) {
 			log.error("Sending reset password email failed", e);

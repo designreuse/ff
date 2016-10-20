@@ -21,9 +21,11 @@ import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.AlgorithmItemRepository;
 import org.ff.jpa.repository.ItemOptionRepository;
 import org.ff.jpa.repository.TenderRepository;
+import org.ff.jpa.repository.UserRepository;
 import org.ff.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,72 @@ public class AlgorithmService extends BaseService {
 
 	@Autowired
 	private ItemOptionRepository itemOptionRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	public List<User> findUsers4Tender(Tender tender) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findUsers4Tender");
+
+		List<User> result = new ArrayList<>();
+
+		try {
+			log.debug("Find users for tender [{}]...", tender.getId());
+
+			// active algorithm items
+			List<AlgorithmItem> algorithmItems = algorithmItemRepository.findByStatusOrderByCode(AlgorithmItemStatus.ACTIVE);
+
+			for (User user : userRepository.findByStatus(UserStatus.ACTIVE)) {
+				if (user.getCompany() == null) {
+					continue;
+				}
+
+				Set<CompanyItem> companyItems = user.getCompany().getItems();
+
+				Map<AlgorithmItem, Boolean> match4AlgorithmItem = new HashMap<>();
+
+				for (AlgorithmItem algorithmItem : algorithmItems) {
+					if (processAlgorithmItem(tender, companyItems, algorithmItem) == Boolean.TRUE) {
+						match4AlgorithmItem.put(algorithmItem, Boolean.TRUE);
+						log.debug("Algorithm item [{}]: match", algorithmItem.getCode());
+					} else {
+						match4AlgorithmItem.put(algorithmItem, Boolean.FALSE);
+						log.debug("Algorithm item [{}]: no match", algorithmItem.getCode());
+					}
+				}
+
+				// conditional item check
+				for (Entry<AlgorithmItem, Boolean> entry : match4AlgorithmItem.entrySet()) {
+					if (entry.getValue() == Boolean.FALSE && entry.getKey().getType() == AlgorithmItemType.CONDITIONAL) {
+						if (StringUtils.isNotBlank(entry.getKey().getConditionalItemCode())) {
+							log.debug("Initiating conditional processing for algorithm item [{}]...", entry.getKey().getCode());
+							AlgorithmItem conditionalItem = algorithmItemRepository.findByCode(entry.getKey().getConditionalItemCode());
+							if (match4AlgorithmItem.get(conditionalItem) == Boolean.TRUE) {
+								match4AlgorithmItem.put(entry.getKey(), Boolean.TRUE);
+								log.debug("Conditional algorithm item [{}]: match", conditionalItem.getCode());
+							}
+						}
+					}
+				}
+
+				boolean match4Tender = true;
+				for (Entry<AlgorithmItem, Boolean> entry : match4AlgorithmItem.entrySet()) {
+					if (entry.getValue() == Boolean.FALSE && entry.getKey().getType() != AlgorithmItemType.OPTIONAL) {
+						match4Tender = false;
+					}
+				}
+
+				if (match4Tender) {
+					result.add(user);
+				}
+			}
+
+			return result;
+		} finally {
+			etmService.collect(point);
+			log.debug("{} users found in {} ms for tender [{}]", result.size(), point.getTransactionTime(), tender.getId());
+		}
+	}
 
 	public List<Tender> findTenders4User(User user) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findTenders4User");

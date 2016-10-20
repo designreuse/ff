@@ -19,6 +19,7 @@ function config($translateProvider) {
 			MENU_CITIES: 'Cities',
 			MENU_COUNTIES: 'Counties',
 			MENU_DASHBOARD: 'Dashboard',
+			MENU_USER_GROUPS: 'User groups',
 
 			HEADER_MAIN: 'Administration console',
 			HEADER_USER_DETAILS: 'User details',
@@ -45,6 +46,10 @@ function config($translateProvider) {
 			HEADER_CITY_EDIT: 'Edit city',
 			HEADER_ALGORITHM_ITEM_ADD: 'Add algorithm item',
 			HEADER_ALGORITHM_ITEM_EDIT: 'Edit algorithm item',
+			HEADER_EMAIL_SEND: 'Send e-mail',
+			HEADER_EMAIL_HISTORY: 'History',
+			HEADER_USER_GROUP_ADD: 'Add user group',
+			HEADER_USER_GROUP_EDIT: 'Edit user group',
 			
 			TAB_PREVIEW: 'Preview',
 			TAB_STATISTICS: 'Statistics',
@@ -55,6 +60,7 @@ function config($translateProvider) {
 			TAB_CUSTOM_ITEMS: 'Custom items',
 			TAB_INVESTMENTS: 'Investments',
 			TAB_TENDERS: 'Tenders',
+			TAB_EMAIL: 'E-mails',
 			
 			LABEL_NAME: 'Name',
 			LABEL_CODE: 'Code',
@@ -62,6 +68,7 @@ function config($translateProvider) {
 			LABEL_TYPE: 'Type',
 			LABEL_IMAGE: 'Image',
 			LABEL_USER: 'User',
+			LABEL_USERS: 'Users',
 			LABEL_ENTITY_TYPE: 'Enitity type',
 			LABEL_ENTITY_ATTRIBUTES: 'Entity attributes',
 			LABEL_STATISTICS_FOR: 'Statistics for',
@@ -92,6 +99,10 @@ function config($translateProvider) {
 			LABEL_OPERATOR_NOTE: 'Operator is automatically set by the system based on the type of selected company and tender items',
 			LABEL_CONDITIONAL_ITEM: 'Conditional item',
 			LABEL_DEVELOPMENT_INDEX: 'Development index',
+			LABEL_SEND_EMAIL_TO: 'To',
+			LABEL_SEND_EMAIL_SUBJECT: 'Subject',
+			LABEL_SEND_EMAIL_TEXT: 'Text',
+			LABEL_SEND_EMAIL_TO_PLACEHOLDER: 'Please select...',
 			
 			UI_GRID_LOADING_DATA: 'Loading data...',
 			UI_GRID_NO_DATA: 'No data',
@@ -123,6 +134,9 @@ function config($translateProvider) {
 			COLUMN_TENDER_ITEM_TEXT: 'Tender item text',
 			COLUMN_OPERATOR: 'Operator',
 			COLUMN_DEVELOPMENT_INDEX: 'Development index',
+			COLUMN_SEND_DATE: 'Send date',
+			COLUMN_TO: 'To',
+			COLUMN_SUBJECT: 'Subject',
 
 			DATETIMEPICKER_TODAY: 'Today',
 			DATETIMEPICKER_YESTERDAY: 'Yesterday',
@@ -179,7 +193,10 @@ function config($translateProvider) {
 			BOOLEAN_TRUE: 'Yes',
 			BOOLEAN_FALSE: 'No',
 			
+			USER_GROUP_METATAG_MATCHING_USERS: 'Matching users',
+			
 			ENTITY_USER: 'User',
+			ENTITY_USER_GROUP: 'User group',
 			ENTITY_TENDER: 'Tender',
 			ENTITY_ARTICLE: 'Article',
 			ENTITY_INVESTMENT: 'Investment',
@@ -213,6 +230,9 @@ function config($translateProvider) {
 			ACTION_DELETE_SUCCESS_MESSAGE: '{{entity}} successfully deleted',
 			ACTION_DELETE_FAILURE_MESSAGE: 'Deleting {{entity}} failed',
 			ACTION_LOAD_FAILURE_MESSAGE: 'Loading data failed',
+			ACTION_SEND_EMAIL_SUCCESS_MESSAGE: 'Sending email successful',
+			ACTION_SEND_EMAIL_FAILURE_MESSAGE: 'Sending email failed',
+			ACTION_SEND_EMAIL_HTTP_STATUS_202_MESSAGE: 'Sending email aborted as no eligible recipient found',
 			
 			DIALOG_DELETE_HEADER: 'Delete {{entity}}',
 			DIALOG_DELETE_MESSAGE: 'Do you really want to delete {{entity}}?',
@@ -231,6 +251,22 @@ function config($translateProvider) {
 			BUTTON_CLOSE: 'Close',
 			BUTTON_SELECT: 'Select...',
 			BUTTON_DELETE: 'Delete',
+			BUTTON_SEND: 'Send',
+			BUTTON_RESET: 'Reset',
+			
+			DUALLIST_FILTER_CLEAR: 'Clear',
+			DUALLIST_FILTER_PLACEHOLDER: 'Filter',
+			DUALLIST_MOVE_ALL: 'Move all',
+			DUALLIST_MOVE_SELECTED: 'Move selected',
+			DUALLIST_REMOVE_ALL: 'Remove all',
+			DUALLIST_REMOVE_SELECTED: 'Remove selected',
+			DUALLIST_SELECTED_LIST_LABEL: 'Assigned',
+			DUALLIST_UNSELECTED_LIST_LABEL: 'Unassigned',
+			DUALLIST_ACCESS_NOT_ALLOWED_LIST_LABEL: 'Access not allowed',
+			DUALLIST_ACCESS_ALLOWED_LIST_LABEL: 'Access allowed',
+			DUALLIST_INFO_ALL: 'Showing all {0}',
+			DUALLIST_INFO_EMPTY: 'Empty list',
+			DUALLIST_INFO_FILTERED: '<span class="label label-warning">Filtered</span> {0} from {1}',
 		});
 	
 	$translateProvider.preferredLanguage("en");

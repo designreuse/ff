@@ -1,11 +1,13 @@
 package org.ff.user.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
+import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.user.UserResource;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
@@ -53,6 +55,16 @@ public class UserController extends BaseController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET)
+	public List<UserResource> findAll(Principal principal) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
+		try {
+			return userService.findAll();
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public UserResource save(Principal principal, @RequestBody UserResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
@@ -90,6 +102,18 @@ public class UserController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			userService.delete(id, localeResolver.resolveLocale(request));
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value="/email")
+	public void sendEmail(Principal principal, @RequestBody SendEmailResource resource) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".sendEmail");
+		try {
+			userService.sendEmail(resource);
+		} catch (RuntimeException e) {
+			throw processException(e);
 		} finally {
 			etmService.collect(point);
 		}

@@ -379,8 +379,172 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $
 // ========================================================================
 //	DETAILS CONTROLLER
 // ========================================================================
-function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, $sce, uiGridConstants, TendersService, ImpressionsService) {
+function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, $sce, uiGridConstants, TendersService, ImpressionsService, UserGroupsService, UserEmailsService) {
 	var $translate = $filter('translate');
+	
+	// ========================================================================================================================
+	//	E-mails grid [start]
+	// ========================================================================================================================
+	
+	$scope.gridOptions4Emails = {
+			rowHeight: $rootScope.rowHeight,
+			paginationPageSize: $rootScope.paginationPageSize,
+			paginationPageSizes: $rootScope.paginationPageSizes,
+			enableFiltering: true,
+			useExternalFiltering: true,
+			useExternalSorting: true,
+			useExternalPagination: true,
+			enableColumnMenus: false,
+			enableHorizontalScrollbar: uiGridConstants.scrollbars.NEVER,
+			enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
+			columnDefs: [
+				{
+					displayName: $translate('COLUMN_SEND_DATE'),
+					field: 'creationDate',
+					type: 'date',
+					cellFilter: 'date:grid.appScope.dateTimeFormat',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					filterHeaderTemplate: 
+						'<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters">' +
+							'<div class="input-group">' +
+								'<input id="filterCreationDate" date-range-picker options="grid.appScope.dpOptions4Emails" class="form-control date-picker ui-grid-filter-datepicker" type="text" readonly="readonly" style="background: white;" ng-model="grid.appScope.dpCreationDate" />' +
+								'<span class="input-group-addon ui-grid-filter-datepicker-span" ng-click="grid.appScope.clearDateFilterGlobal([\'filterCreationDate\'], grid.appScope.gridApi4Emails)"><i class="ui-grid-icon-cancel ui-grid-filter-datepicker-i"></i></span>' +
+							'</div>' + 
+						'</div>',
+					width: 175
+				},
+				{
+					displayName: $translate('COLUMN_TO'),
+					field: 'user.email',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss',
+					width: 225
+				},
+				{
+					displayName: $translate('COLUMN_SUBJECT'),
+					field: 'email.subject',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				}
+			],
+			onRegisterApi: function(gridApi) {
+				$scope.gridApi4Emails = gridApi;
+				
+				// register pagination changed handler
+				$scope.gridApi4Emails.pagination.on.paginationChanged($scope, function(currentPage, pageSize) {
+					$scope.getPage4Emails(currentPage, pageSize);
+				});
+				
+				// register sort changed handler 
+				$scope.gridApi4Emails.core.on.sortChanged($scope, $scope.sortChanged4Emails);
+				
+				// register filter changed handler
+				$scope.gridApi4Emails.core.on.filterChanged($scope, function() {
+					var grid = this.grid;
+					
+					var filterArray = new Array();
+					for (var i=0; i<grid.columns.length; i++) {
+						var name = grid.columns[i].field;
+						var term = grid.columns[i].filters[0].term;
+						if (name && term) {
+							filterArray.push({
+								"name" : name,
+								"term" : term
+							});
+						}
+					}
+					
+					// date filters (e.g. creationDate, lastModifiedDate)
+					$rootScope.processDateFilters($('#filterCreationDate'), null, filterArray);
+					
+					$scope.filterArray4Emails = filterArray;
+					$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+				});
+				
+				$scope.gridApi4Emails.core.on.rowsRendered($scope, function(b, f, i) {
+					var newHeight = ($scope.gridApi4Emails.core.getVisibleRows($scope.gridApi4Emails.grid).length * $rootScope.rowHeight) + (($scope.gridOptions4Emails.totalItems == 0) ? $rootScope.heightNoData : $rootScope.heightCorrectionFactor);
+					angular.element(document.getElementsByClassName('grid')[0]).css('height', newHeight + 'px');
+				});
+				
+				// set initial sort
+				if (!$scope.sortArray4Emails) {
+					var sortArray = new Array();
+					sortArray.push({ name: "creationDate", priority: 0, direction: uiGridConstants.DESC });
+					$scope.sortArray4Emails = sortArray;			
+				}
+				
+				// initial load
+				$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+			}
+		};
+	
+	$scope.getPage4Emails = function(page, size) {
+		$scope.loading4Emails = true;
+		
+		if (!$scope.filterArray4Emails) {
+			$scope.filterArray4Emails = new Array();
+		}
+		$scope.filterArray4Emails.push({ "name" : "tender.id", "term" : $stateParams.id });
+		
+		var uiGridResource = {
+			"pagination" : { "page" : page - 1, "size" : size },
+			"sort" : $scope.sortArray4Emails,
+			"filter" : $scope.filterArray4Emails
+		};
+		
+		UserEmailsService.getPage(uiGridResource)
+			.success(function(data, status, headers, config) {
+				$scope.loading4Emails = false;
+				$scope.gridOptions4Emails.data = data.data;
+				$scope.gridOptions4Emails.totalItems = data.total;
+			})
+			.error(function(data, status, headers, config) {
+				$scope.loading4Emails = false;
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.sortChanged4Emails = function (grid, sortColumns) {
+		var sortArray = new Array();
+		for (var i=0; i<sortColumns.length; i++) {
+			sortArray.push({
+				"name" : sortColumns[i].field,
+				"priority" : sortColumns[i].sort.priority,
+				"direction" : sortColumns[i].sort.direction
+			});
+		}
+		$scope.sortArray4Emails = sortArray;
+		$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+	};
+	
+	$scope.dpOptions4Emails = {
+		opens: 'left',
+		format: $rootScope.dateFormat.toUpperCase(),
+		ranges: $rootScope.datePickerRanges,
+		locale: { 
+			customRangeLabel: $translate('DATETIMEPICKER_CUSTOM') 
+		}, 
+		showDropdowns: true,
+		eventHandlers: {
+			'apply.daterangepicker': function(ev, picker) {
+				$rootScope.applyDateFilterGlobal($scope.gridApi4Emails);
+			}
+		}
+	};
+	
+	// ========================================================================================================================
+	//	E-mails grid [end]
+	// ========================================================================================================================
 	
 	$scope.showEditButton = $stateParams.showEditButton;
 	
@@ -413,22 +577,20 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 		}
 	};
 	
-	// initial load
-	TendersService.getEntity($stateParams.id)
-		.success(function(data, status) {
-			if (status == 200) {
+	$scope.getEntity = function() {
+		TendersService.getEntity($stateParams.id)
+			.success(function(data, status) {
 				$scope.entity = data;
-			} else {
+				$scope.email = { "tenderId" : $scope.entity.id, "subject" : null, "userGroups" : null };
+			})
+			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			}
-		})
-		.error(function(data, status) {
-			toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-		});
+			});
+	};
 	
-	ImpressionsService.getStatisticsPeriods()
-		.success(function(data, status) {
-			if (status == 200) {
+	$scope.getStatisticsPeriods = function() {
+		ImpressionsService.getStatisticsPeriods()
+			.success(function(data, status) {
 				$scope.statisticsPeriods = new Array();
 				$.each(data, function(key, value) {
 					if (value == 'LAST_7_DAYS') {
@@ -439,28 +601,61 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 				});
 				$scope.statisticsPeriod = $scope.statisticsPeriods[0];
 				$scope.getImpressionStatistics($scope.statisticsPeriod);
-			} else {
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			}
-		})
-		.error(function(data, status) {
-			toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-		});
-	
-	$scope.getImpressionStatistics = function(statisticsPeriod) {
-		ImpressionsService.getImpressionStatistics("TENDER", $stateParams.id, statisticsPeriod.value)
-			.success(function(data, status) {
-				if (status == 200) {
-					$scope.impressionStatistics = data;
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-				}
 			})
 			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			});
+	};
+	
+	$scope.getImpressionStatistics = function(statisticsPeriod) {
+		ImpressionsService.getImpressionStatistics("TENDER", $stateParams.id, statisticsPeriod.value)
+			.success(function(data, status) {
+				$scope.impressionStatistics = data;
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.getUserGroups = function() {
+		UserGroupsService.getEntities()
+			.success(function(data, status) {
+				$scope.userGroups = data;
+				$scope.userGroups.push({ "metaTag" : "MATCHING_USERS", "name" : $translate('USER_GROUP_METATAG_MATCHING_USERS') });
+				console.log($scope.userGroups);
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.sendEmail = function() {
+		$scope.sendingEmail = true;
+		
+		TendersService.sendEmail($scope.email)
+			.success(function(data, status) {
+				$scope.sendingEmail = false;
+				if (status == 200) {
+					toastr.success($translate('ACTION_SEND_EMAIL_SUCCESS_MESSAGE'));
+					$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
+				} else if (status == 202) {
+					toastr.warning($translate('ACTION_SEND_EMAIL_HTTP_STATUS_202_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_SEND_EMAIL_FAILURE_MESSAGE'));
+				$scope.sendingEmail = false;
+			});
+	};
+	
+	$scope.resetEmail = function() {
+		$scope.email = { "tenderId" : $scope.entity.id, "subject" : null, "userGroups" : null };
 	}
 	
+	// initial load
+	$scope.getEntity();
+	$scope.getUserGroups();	
+	$scope.getStatisticsPeriods();
 };
 
 // ========================================================================

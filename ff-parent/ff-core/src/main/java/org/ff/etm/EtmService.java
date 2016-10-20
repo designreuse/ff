@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.ff.email.EmailService;
+import org.ff.email.MailSenderService;
 import org.ff.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,7 +39,7 @@ public class EtmService {
 	private BaseProperties ffProperties;
 
 	@Autowired
-	private EmailService emailService;
+	private MailSenderService mailSender;
 
 	@Autowired
 	private Configuration configuration;
@@ -104,7 +104,7 @@ public class EtmService {
 					Map<String, Object> model = new HashMap<String, Object>();
 					model.put("data", stringWriter.toString());
 
-					emailService.send(etmProperties.getSendEmailTo(), subject, FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
+					mailSender.send(etmProperties.getSendEmailTo(), subject, FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
 				} catch (Exception e) {
 					log.error("Sending ETM e-mail failed", e);
 				}

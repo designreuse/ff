@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
+import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.tender.TenderResource;
 import org.ff.tender.service.TenderService;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,6 +92,18 @@ public class TenderController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			tenderService.delete(id, localeResolver.resolveLocale(request));
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value="/email")
+	public ResponseEntity<?> sendEmail(Principal principal, @RequestBody SendEmailResource resource) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".sendEmail");
+		try {
+			return tenderService.sendEmail(resource);
+		} catch (RuntimeException e) {
+			throw processException(e);
 		} finally {
 			etmService.collect(point);
 		}

@@ -30,9 +30,7 @@ public class UserResourceAssembler {
 		resource.setFirstName(entity.getFirstName());
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
-		if (!light) {
-			resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
-		}
+		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());

@@ -1,25 +1,41 @@
 package org.ff.tender.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.ff.counters.service.CountersService;
+import org.ff.email.MailSenderService;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
+import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.Item.ItemEntityType;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.Tender.TenderStatus;
+import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserStatus;
+import org.ff.jpa.domain.UserEmail;
+import org.ff.jpa.repository.EmailRepository;
 import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.repository.TenderRepository;
+import org.ff.jpa.repository.UserEmailRepository;
+import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.TenderSpecification;
+import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.image.ImageResource;
 import org.ff.resource.item.ItemResourceAssembler;
 import org.ff.resource.tender.TenderResource;
 import org.ff.resource.tender.TenderResourceAssembler;
+import org.ff.resource.user.UserResource;
+import org.ff.resource.user.UserResourceAssembler;
+import org.ff.resource.usergroup.UserGroupResource;
+import org.ff.resource.usergroup.UserGroupResource.UserGroupMetaTag;
 import org.ff.service.BaseService;
+import org.ff.service.algorithm.AlgorithmService;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridFilterResource;
 import org.ff.uigrid.UiGridResource;
@@ -28,9 +44,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -54,6 +75,27 @@ public class TenderService extends BaseService {
 
 	@Autowired
 	private CountersService countersService;
+
+	@Autowired
+	private EmailRepository emailRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private UserResourceAssembler userResourceAssembler;
+
+	@Autowired
+	private UserEmailRepository userEmailRepository;
+
+	@Autowired
+	private MailSenderService mailSender;
+
+	@Autowired
+	private Configuration configuration;
+
+	@Autowired
+	private AlgorithmService algorithmService;
 
 	@Transactional(readOnly = true)
 	public TenderResource find(Integer id, Locale locale) {
@@ -186,6 +228,56 @@ public class TenderService extends BaseService {
 			return new TenderSpecification(new SearchCriteria(resource.getName(), SearchOperation.BETWEEN, getDateRange(resource.getTerm())));
 		} else {
 			return new TenderSpecification(new SearchCriteria(resource.getName(), SearchOperation.CONTAINS, resource.getTerm()));
+		}
+	}
+
+	@Transactional
+	public ResponseEntity<?> sendEmail(SendEmailResource resource) {
+		try {
+			Tender tender = repository.findOne(resource.getTenderId());
+
+			Template template = configuration.getTemplate("email_tender.ftl");
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("tenderName", tender.getName());
+			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+			Email email = new Email();
+			email.setSubject(resource.getSubject());
+			email.setText(text);
+
+			List<String> to = new ArrayList<>();
+			for (UserGroupResource userGroup : resource.getUserGroups()) {
+				if (userGroup.getMetaTag() == UserGroupMetaTag.MATCHING_USERS) {
+					List<User> users = algorithmService.findUsers4Tender(tender);
+					userGroup.setUsers(userResourceAssembler.toResources(users, true));
+				}
+
+				if (userGroup.getUsers() != null) {
+					for (UserResource userResource : userGroup.getUsers()) {
+						User user = userRepository.findOne(userResource.getId());
+						if (user.getStatus() != UserStatus.ACTIVE) {
+							continue;
+						}
+						to.add(user.getEmail());
+
+						UserEmail userEmail = new UserEmail();
+						userEmail.setEmail(email);
+						userEmail.setUser(user);
+						userEmail.setTender(tender);
+						userEmailRepository.save(userEmail);
+					}
+				}
+			}
+
+			if (!to.isEmpty()) {
+				mailSender.send(to.toArray(new String[to.size()]), resource.getSubject(), text);
+				emailRepository.save(email);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Sending e-mail failed", e);
 		}
 	}
 

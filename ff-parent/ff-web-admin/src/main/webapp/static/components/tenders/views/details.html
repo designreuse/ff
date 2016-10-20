@@ -4,12 +4,30 @@
     </div>
 </div>
 
+<style>
+    .chosen-container-single {
+        width: 100%;
+    }
+    .chosen-container-single .chosen-single {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi {
+        width: 100%;
+    }
+    .chosen-container-multi .chosen-choices {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi .chosen-choices li.search-field .default {
+        color: #b0b0b0 !important;
+    }
+</style>
+
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
             <div class="tabs-container">
                 <uib-tabset>
-                    <uib-tab> 
+                    <uib-tab>
                         <uib-tab-heading>{{ 'TAB_PREVIEW' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <h1 style="margin-top: 0px; padding: 5px;">{{entity.name}}</h1>
@@ -76,6 +94,54 @@
 								</div>
 							</div>
 						</div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_EMAIL' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div ng-if="entity.status == 'ACTIVE'" class="row m-l-xs m-r-xs">
+                                <h3>{{ 'HEADER_EMAIL_SEND' | translate }}</h3>
+                                <hr style="margin-top: 0px; margin-bottom: 10px;">
+                            </div>
+                            <div ng-if="entity.status == 'ACTIVE'" class="row m-l-xs m-r-xs">
+                                <div class="input-group" style="width: 100%">
+                                    <span class="input-group-addon" style="background: #f8f8f8; width: 100px; text-align: right;">
+                                        <small>{{ 'LABEL_SEND_EMAIL_TO' | translate }}</small>                                               
+                                    </span>
+                                    <select chosen multiple placeholder-text-multiple="'{{ 'LABEL_SEND_EMAIL_TO_PLACEHOLDER' | translate }}'" 
+                                        width="1" ng-required="true" ng-model="email.userGroups" options="userGroups" 
+                                        ng-options="userGroup.name for userGroup in userGroups track by userGroup.id"></select>
+                                </div>
+                                <div class="input-group m-t-xs" style="width: 100%">
+                                    <span class="input-group-addon" style="background: #f8f8f8; width: 100px; text-align: right;">
+                                        <small>{{ 'LABEL_SEND_EMAIL_SUBJECT' | translate }}</small>                                               
+                                    </span>
+                                    <input ng-model="email.subject" type="text" class="form-control ff-form-control" name="emailSubject" ng-required="true" maxlength="512" />
+                                </div>
+                                <button ladda="sendingEmail" data-style="zoom-in" ng-disabled="!email.userGroups || email.userGroups.length == 0 || !email.subject || email.subject.length == 0" ng-click="sendEmail()" class="btn btn-primary pull-right m-t-sm"><i class="fa fa-send"></i> {{ 'BUTTON_SEND' | translate }}</button>
+                                <button ng-click="resetEmail()" class="btn btn-white pull-right m-t-sm m-r-sm">{{ 'BUTTON_RESET' | translate }}</button>
+                            </div>
+                            
+                            <div class="row m-l-xs m-r-xs">
+                                <h3>{{ 'HEADER_EMAIL_HISTORY' | translate }}</h3>
+                                <hr style="margin-top: 0px; margin-bottom: 10px;">
+                            </div>
+                            <div class="row m-l-xs m-r-xs">
+                                <div ui-grid="gridOptions4Emails" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid m-b-sm">
+                                    <div class="grid-msg-overlay" ng-hide="!loading4Emails">
+                                        <div class="msg">
+                                            <span>
+                                                {{ 'UI_GRID_LOADING_DATA' | translate }} <i class="fa fa-spinner fa-spin"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="grid-msg-overlay" ng-hide="loading4Emails || gridOptions4Emails.data.length">
+                                        <div class="msg">
+                                            <span>{{ 'UI_GRID_NO_DATA' | translate }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </uib-tab>
                 </uib-tabset>
             </div>

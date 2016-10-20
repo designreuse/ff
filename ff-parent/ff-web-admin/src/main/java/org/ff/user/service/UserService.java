@@ -1,18 +1,29 @@
 package org.ff.user.service;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.ff.counters.service.CountersService;
+import org.ff.email.MailSenderService;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
+import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
+import org.ff.jpa.domain.UserEmail;
+import org.ff.jpa.repository.EmailRepository;
+import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.UserSpecification;
+import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.tender.TenderResourceAssembler;
 import org.ff.resource.user.UserResource;
 import org.ff.resource.user.UserResourceAssembler;
@@ -28,7 +39,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,6 +66,39 @@ public class UserService extends BaseService {
 
 	@Autowired
 	private CountersService countersService;
+
+	@Autowired
+	private Collator collator;
+
+	@Autowired
+	private Configuration configuration;
+
+	@Autowired
+	private EmailRepository emailRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private UserEmailRepository userEmailRepository;
+
+	@Autowired
+	private MailSenderService mailSender;
+
+	@Transactional(readOnly = true)
+	public List<UserResource> findAll() {
+		log.debug("Finding users...");
+
+		List<UserResource> result = resourceAssembler.toResources(repository.findAll(), true);
+		Collections.sort(result, new Comparator<UserResource>() {
+			@Override
+			public int compare(UserResource o1, UserResource o2) {
+				return collator.compare(o1.getLastName(), o2.getLastName());
+			}
+		});
+
+		return result;
+	}
 
 	@Transactional(readOnly = true)
 	public UserResource find(Integer id, Locale locale) {
@@ -185,6 +232,96 @@ public class UserService extends BaseService {
 		} else {
 			return new UserSpecification(new SearchCriteria(resource.getName(), SearchOperation.CONTAINS, resource.getTerm()));
 		}
+	}
+
+	@Transactional
+	public void sendEmail(SendEmailResource resource) {
+		try {
+			Template template = configuration.getTemplate("email_user.ftl");
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("text", textToHTML(resource.getText()));
+			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+			Email email = new Email();
+			email.setSubject(resource.getSubject());
+			email.setText(text);
+			emailRepository.save(email);
+
+			List<String> to = new ArrayList<>();
+			for (UserResource userResource : resource.getUsers()) {
+				User user = userRepository.findOne(userResource.getId());
+				to.add(user.getEmail());
+
+				UserEmail userEmail = new UserEmail();
+				userEmail.setEmail(email);
+				userEmail.setUser(user);
+				userEmailRepository.save(userEmail);
+			}
+
+			mailSender.send(to.toArray(new String[to.size()]), resource.getSubject(), text);
+		} catch (Exception e) {
+			throw new RuntimeException("Sending e-mail failed", e);
+		}
+	}
+
+	public static String textToHTML(String text) {
+		if (text == null) {
+			return null;
+		}
+		int length = text.length();
+		boolean prevSlashR = false;
+		StringBuffer out = new StringBuffer();
+		for (int i = 0; i < length; i++) {
+			char ch = text.charAt(i);
+			switch(ch) {
+				case '\r':
+					if (prevSlashR) {
+						out.append("<br>");
+					}
+					prevSlashR = true;
+					break;
+				case '\n':
+					prevSlashR = false;
+					out.append("<br>");
+					break;
+				case '"':
+					if (prevSlashR) {
+						out.append("<br>");
+						prevSlashR = false;
+					}
+					out.append("&quot;");
+					break;
+				case '<':
+					if (prevSlashR) {
+						out.append("<br>");
+						prevSlashR = false;
+					}
+					out.append("&lt;");
+					break;
+				case '>':
+					if (prevSlashR) {
+						out.append("<br>");
+						prevSlashR = false;
+					}
+					out.append("&gt;");
+					break;
+				case '&':
+					if (prevSlashR) {
+						out.append("<br>");
+						prevSlashR = false;
+					}
+					out.append("&amp;");
+					break;
+				default:
+					if (prevSlashR) {
+						out.append("<br>");
+						prevSlashR = false;
+					}
+					out.append(ch);
+					break;
+			}
+		}
+		return out.toString();
 	}
 
 }

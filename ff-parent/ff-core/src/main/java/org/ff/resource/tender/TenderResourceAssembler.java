@@ -103,11 +103,11 @@ public class TenderResourceAssembler {
 				for (TenderItem tenderItem : tenderItems) {
 					if (itemResource.getId().equals(tenderItem.getItem().getId())) {
 						if (itemResource.getType() == ItemType.NUMBER) {
-							itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
+							itemResource.setValue((tenderItem.getValue() != null) ? Integer.parseInt(tenderItem.getValue()) : null);
 							itemResource.setValueMapped(tenderItem.getValue());
 						} else if (itemResource.getType() == ItemType.RADIO) {
-							itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
-							itemResource.setValueMapped(itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText());
+							itemResource.setValue((tenderItem.getValue() != null) ? Integer.parseInt(tenderItem.getValue()) : null);
+							itemResource.setValueMapped((tenderItem.getValue() != null) ? itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText() : null);
 						} else if (itemResource.getType() == ItemType.COUNTIES) {
 							if (StringUtils.isNotBlank(tenderItem.getValue())) {
 								List<CountyResource> value = new ArrayList<>();

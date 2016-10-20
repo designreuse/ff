@@ -22,4 +22,7 @@ angular.module('FundFinder')
 	this.getPage = function(resource) {
 		return $http.post('/api/v1/tenders/page', resource);
 	};
+	this.sendEmail = function(resource) {
+		return $http.post('/api/v1/tenders/email', resource);
+	};
 });

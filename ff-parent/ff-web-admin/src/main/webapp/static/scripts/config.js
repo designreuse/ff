@@ -100,7 +100,15 @@ angular.module('FundFinder')
 	        templateUrl: "/components/users/views/details.html",
 	        controller: 'UsersDetailsController',
 	        params: { 'id' : null },
-	        data: { pageTitle: 'User details' }
+	        data: { pageTitle: 'User details' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/useremails/scripts/services.js']
+	        		});
+	        	}
+	        }
 	    })
 	    
 		// TENDERS
@@ -135,7 +143,10 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/impressions/scripts/services.js']
+	        			files: ['components/impressions/scripts/services.js',
+	        			        'components/users/scripts/services.js',
+	        			        'components/usergroups/scripts/services.js',
+	        			        'components/useremails/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -476,9 +487,44 @@ angular.module('FundFinder')
 	        }
 	    })
 	    
+	    .state('settings.usergroups_overview', {
+	    	url: "/usergroups/overview",
+	        templateUrl: "/components/usergroups/views/overview.html",
+	        controller: 'UserGroupsOverviewController',
+	        data: { pageTitle: 'User groups overview' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/usergroups/scripts/controllers.js',
+	        			        'components/usergroups/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('settings.usergroups_edit', {
+	    	url: "/usergroups/edit/:id",
+	    	params: { 'id' : null },
+	        templateUrl: "/components/usergroups/views/edit.html",
+	        controller: 'UserGroupsEditController',
+	        data: { pageTitle: 'Edit user group' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/usergroups/scripts/controllers.js',
+	        			        'components/usergroups/scripts/services.js',
+	        			        'components/users/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    
 })
 
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $templateCache, ModalService, constants, CountersService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $templateCache, $filter, ModalService, constants, CountersService) {
+	var $translate = $filter('translate');
+	
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -564,7 +610,37 @@ angular.module('FundFinder')
 	}
 	
 	// =======================================
-	// 	custom ui-grid-filter
+	// 	Date picker ranges
+	// =======================================
+	var datePickerRanges = {};
+	datePickerRanges[$translate('DATETIMEPICKER_TODAY')] = [moment(), moment()];
+	datePickerRanges[$translate('DATETIMEPICKER_YESTERDAY')] = [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	datePickerRanges[$translate('DATETIMEPICKER_LAST_7_DAYS')] = [moment().subtract(6, 'days'), moment()],
+	datePickerRanges[$translate('DATETIMEPICKER_LAST_30_DAYS')] = [moment().subtract(29, 'days'), moment()],
+	datePickerRanges[$translate('DATETIMEPICKER_THIS_MONTH')] = [moment().startOf('month'), moment().endOf('month')],
+	datePickerRanges[$translate('DATETIMEPICKER_LAST_MONTH')] = [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	
+	$rootScope.datePickerRanges = datePickerRanges;
+	
+	// =======================================
+	// 	Date filter clear/apply
+	// =======================================
+	
+	$rootScope.clearDateFilterGlobal = function(fields, gridApi) {
+		$.each(fields, function(index, field) {
+			$('#' + field).val(null);
+			$rootScope.applyDateFilterGlobal(gridApi);
+		});
+	};
+	
+	$rootScope.applyDateFilterGlobal = function(gridApi) {
+		setTimeout(function() {
+			gridApi.core.raise.filterChanged();
+		}, 100);
+	};
+	
+	// =======================================
+	// 	Custom UI grid filter
 	// =======================================
 	$templateCache.put('ui-grid/ui-grid-filter-bss',
 		"<div class=\"ui-grid-filter-container\" ng-repeat=\"colFilter in col.filters\" ng-class=\"{'ui-grid-filter-cancel-button-hidden' : colFilter.disableCancelFilterButton === true }\">" +
