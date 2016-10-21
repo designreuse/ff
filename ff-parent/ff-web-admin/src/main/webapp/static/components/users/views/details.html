@@ -76,7 +76,7 @@
                         </div>
                     </uib-tab>
                     <uib-tab> 
-                        <uib-tab-heading>{{ 'TAB_TENDERS' | translate }}</uib-tab-heading>
+                        <uib-tab-heading>{{ 'TAB_MATCHING_TENDERS' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <label ng-repeat="tender in entity.company.tenders" class="ff-label">{{ tender.name }}<i uib-tooltip="{{ 'ACTION_TOOLTIP_DETAILS' | translate }}" ui-sref="tenders.details({ id: tender.id })" class="fa fa-lg fa-arrow-circle-right pull-right" style="padding-top: 3px; cursor: pointer;"></i></label>
                         </div>

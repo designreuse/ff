@@ -281,4 +281,8 @@ public class TenderService extends BaseService {
 		}
 	}
 
+	public List<UserResource> findMatchingUsers(Integer id) {
+		return userResourceAssembler.toResources(algorithmService.findUsers4Tender(repository.findOne(id)), true);
+	}
+
 }

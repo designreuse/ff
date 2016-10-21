@@ -59,8 +59,9 @@ function config($translateProvider) {
 			TAB_COMMON_ITEMS: 'Common items',
 			TAB_CUSTOM_ITEMS: 'Custom items',
 			TAB_INVESTMENTS: 'Investments',
-			TAB_TENDERS: 'Tenders',
 			TAB_EMAIL: 'E-mails',
+			TAB_MATCHING_USERS: 'Matching users',
+			TAB_MATCHING_TENDERS: 'Matching tenders',
 			
 			LABEL_NAME: 'Name',
 			LABEL_CODE: 'Code',

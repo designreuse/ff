@@ -473,7 +473,7 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 				
 				$scope.gridApi4Emails.core.on.rowsRendered($scope, function(b, f, i) {
 					var newHeight = ($scope.gridApi4Emails.core.getVisibleRows($scope.gridApi4Emails.grid).length * $rootScope.rowHeight) + (($scope.gridOptions4Emails.totalItems == 0) ? $rootScope.heightNoData : $rootScope.heightCorrectionFactor);
-					angular.element(document.getElementsByClassName('grid')[0]).css('height', newHeight + 'px');
+					angular.element(document.getElementsByClassName('grid4Emails')[0]).css('height', newHeight + 'px');
 				});
 				
 				// set initial sort
@@ -544,6 +544,88 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	
 	// ========================================================================================================================
 	//	E-mails grid [end]
+	// ========================================================================================================================
+	
+	// ========================================================================================================================
+	//	Users grid [start]
+	// ========================================================================================================================
+	
+	$scope.gridOptions4Users = {
+			rowHeight: $rootScope.rowHeight,
+			paginationPageSize: $rootScope.paginationPageSize,
+			paginationPageSizes: $rootScope.paginationPageSizes,
+			enableFiltering: true,
+			useExternalFiltering: false,
+			useExternalSorting: false,
+			useExternalPagination: false,
+			enableColumnMenus: false,
+			enableHorizontalScrollbar: uiGridConstants.scrollbars.NEVER,
+			enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
+			columnDefs: [
+				{
+					displayName: $translate('COLUMN_FIRST_NAME'),
+					field: 'firstName',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				},
+				{
+					displayName: $translate('COLUMN_LAST_NAME'),
+					field: 'lastName',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				},
+				{
+					displayName: $translate('COLUMN_EMAIL'),
+					field: 'email',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				},
+				{
+					displayName: $translate('COLUMN_COMPANY'),
+					field: 'company.name',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: false,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				}
+			],
+			onRegisterApi: function(gridApi) {
+				$scope.gridApi4Users = gridApi;
+				
+				$scope.gridApi4Users.core.on.rowsRendered($scope, function(b, f, i) {
+					var newHeight = ($scope.gridApi4Users.core.getVisibleRows($scope.gridApi4Users.grid).length * $rootScope.rowHeight) + (($scope.gridOptions4Users.totalItems == 0) ? $rootScope.heightNoDataRevisions : $rootScope.heightCorrectionFactor);
+					angular.element(document.getElementsByClassName('grid4Users')[0]).css('height', newHeight + 'px');
+				});
+			}
+		};
+
+	$scope.findMatchingUsers = function() {
+		TendersService.findMatchingUsers($stateParams.id)
+			.success(function(data, status, headers, config) {
+				$scope.gridOptions4Users.data = data;
+				$scope.gridOptions4Users.totalItems = data.length;
+			})
+			.error(function(data, status, headers, config) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	// ========================================================================================================================
+	//	Users grid [end]
 	// ========================================================================================================================
 	
 	$scope.showEditButton = $stateParams.showEditButton;
@@ -622,7 +704,6 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 			.success(function(data, status) {
 				$scope.userGroups = data;
 				$scope.userGroups.push({ "metaTag" : "MATCHING_USERS", "name" : $translate('USER_GROUP_METATAG_MATCHING_USERS') });
-				console.log($scope.userGroups);
 			})
 			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));

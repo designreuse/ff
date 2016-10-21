@@ -126,7 +126,7 @@
                                 <hr style="margin-top: 0px; margin-bottom: 10px;">
                             </div>
                             <div class="row m-l-xs m-r-xs">
-                                <div ui-grid="gridOptions4Emails" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid m-b-sm">
+                                <div ui-grid="gridOptions4Emails" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid4Emails m-b-sm">
                                     <div class="grid-msg-overlay" ng-hide="!loading4Emails">
                                         <div class="msg">
                                             <span>
@@ -141,6 +141,12 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab select="findMatchingUsers()"> 
+                        <uib-tab-heading>{{ 'TAB_MATCHING_USERS' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div ui-grid="gridOptions4Users" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid4Users m-b-sm"></div>
                         </div>
                     </uib-tab>
                 </uib-tabset>

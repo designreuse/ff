@@ -625,7 +625,6 @@ angular.module('FundFinder')
 	// =======================================
 	// 	Date filter clear/apply
 	// =======================================
-	
 	$rootScope.clearDateFilterGlobal = function(fields, gridApi) {
 		$.each(fields, function(index, field) {
 			$('#' + field).val(null);

@@ -25,4 +25,7 @@ angular.module('FundFinder')
 	this.sendEmail = function(resource) {
 		return $http.post('/api/v1/tenders/email', resource);
 	};
+	this.findMatchingUsers = function(id) {
+		return $http.get('/api/v1/tenders/' + id + "/users");
+	};
 });

@@ -1,6 +1,7 @@
 package org.ff.tender.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +9,7 @@ import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
 import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.tender.TenderResource;
+import org.ff.resource.user.UserResource;
 import org.ff.tender.service.TenderService;
 import org.ff.uigrid.PageableResource;
 import org.ff.uigrid.UiGridResource;
@@ -104,6 +106,16 @@ public class TenderController extends BaseController {
 			return tenderService.sendEmail(resource);
 		} catch (RuntimeException e) {
 			throw processException(e);
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value="/{id}/users")
+	public List<UserResource> findMatchingUsers(Principal principal, @PathVariable Integer id) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findMatchingUsers");
+		try {
+			return tenderService.findMatchingUsers(id);
 		} finally {
 			etmService.collect(point);
 		}
