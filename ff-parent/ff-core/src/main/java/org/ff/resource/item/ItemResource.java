@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ff.jpa.domain.Item.ItemEntityType;
+import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Item.ItemType;
 
@@ -34,6 +35,12 @@ public class ItemResource {
 
 	@JsonProperty("type")
 	private ItemType type;
+
+	@JsonProperty("metaTag")
+	private ItemMetaTag metaTag;
+
+	@JsonProperty("widgetItem")
+	private Boolean widgetItem;
 
 	@JsonProperty("mandatory")
 	private Boolean mandatory;

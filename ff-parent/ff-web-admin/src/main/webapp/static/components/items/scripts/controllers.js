@@ -652,6 +652,16 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 			});		
 	};
 	
+	$scope.getMetaTags = function() {
+		ItemsService.getMetaTags($stateParams.id)
+			.success(function(data, status) {
+				$scope.metaTags = data;
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
 	$scope.typeChanged = function() {
 		if ($scope.entity.type == 'TEXT') {
 			$scope.typeDescription = $translate('ITEM_TYPE_TEXT_DESCRIPTION');
@@ -697,5 +707,6 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 	};
 	
 	// initial load
+	$scope.getMetaTags();
 	$scope.getEntity($stateParams.entityType, $stateParams.id);
 };

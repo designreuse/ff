@@ -112,4 +112,14 @@ public class ItemController extends BaseController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value="/{id}/metatags")
+	public List<String> getMetatags(Principal principal, @PathVariable Integer id) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getMetatags");
+		try {
+			return itemService.getMetatags(id);
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
 }

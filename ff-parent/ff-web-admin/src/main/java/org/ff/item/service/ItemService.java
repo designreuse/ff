@@ -12,6 +12,7 @@ import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemEntityType;
+import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Item.ItemType;
 import org.ff.jpa.repository.ItemRepository;
@@ -205,6 +206,19 @@ public class ItemService extends BaseService {
 		} else {
 			return new ItemSpecification(new SearchCriteria(resource.getName(), SearchOperation.CONTAINS, resource.getTerm()));
 		}
+	}
+
+	public List<String> getMetatags(Integer id) {
+		Item item = repository.findOne(id);
+		List<String> result = new ArrayList<>();
+		for (ItemMetaTag itemMetaTag : ItemMetaTag.values()) {
+			if (item.getEntityType() == ItemEntityType.TENDER && itemMetaTag.name().startsWith("TENDER")) {
+				result.add(itemMetaTag.name());
+			} else if (item.getEntityType() == ItemEntityType.COMPANY && itemMetaTag.name().startsWith("COMPANY")) {
+				result.add(itemMetaTag.name());
+			}
+		}
+		return result;
 	}
 
 }

@@ -16,13 +16,22 @@ p span {
 	<div masonry>
         <div class="masonry-brick ff-masonry-brick" ng-repeat="tender in tenders">
             <small class="label-default pull-right ff-masonry-brick-date ">{{tender.lastModifiedDate | date : dateFormat}}</small>
-            <h5 class="p-xs ff-masonry-brick-title">
+            <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
                 <a class="ff-a" ui-sref="tenders.details({ id: tender.id })">{{tender.name}}</a>
             </h5>
             <a ui-sref="tenders.details({ id: tender.id })">
                 <img class="img-rounded ff-masonry-brick-img" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="100%">
             </a>
-            <p data-ng-bind="tender.text | htmlToPlaintext" class="ff-masonry-brick-text" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(tender)"></p>
+            <p style="margin-bottom: 0px;" data-ng-bind="tender.text | htmlToPlaintext" class="ff-masonry-brick-text" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(tender)"></p>
+            <div class="form-group" ng-repeat="item in tender.items">
+                <div class="col-sm-12" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+                    <label class="ff-masonry-brick-label">{{ item.text }}</label>
+                    <div ng-if="item.type == 'HYPERLINK'" class="ff-masonry-brick-value">
+                        <a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a>
+                    </div>
+                    <div ng-if="item.type != 'HYPERLINK'" class="ff-masonry-brick-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -31,6 +31,7 @@ public class Item extends AbstractEntity {
 	public enum ItemEntityType { TENDER, COMPANY };
 	public enum ItemStatus { ACTIVE, INACTIVE };
 	public enum ItemType { TEXT, TEXT_AREA, TEXT_EDITOR, NUMBER, DATE, DATE_TIME, RADIO, CHECKBOX, SELECT, MULTISELECT, HYPERLINK, CITY, COUNTIES, NKD, NKDS, INVESTMENTS };
+	public enum ItemMetaTag { TENDER_START_DATE, TENDER_END_DATE, COMPANY_SECTOR, COMPANY_LOCATION, COMPANY_INVESTMENT, COMPANY_REVENUE };
 
 	@Id
 	@Column(name = "id")
@@ -54,6 +55,13 @@ public class Item extends AbstractEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false, length = 32)
 	private ItemType type;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "meta_tag", nullable = true, length = 64)
+	private ItemMetaTag metaTag;
+
+	@Column(name = "widget_item", nullable = true)
+	private Boolean widgetItem;
 
 	@Column(name = "mandatory", nullable = false)
 	private Boolean mandatory;

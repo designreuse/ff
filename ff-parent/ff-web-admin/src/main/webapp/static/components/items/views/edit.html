@@ -67,6 +67,23 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_METATAG' | translate }}</label>
+                        <select chosen class="form-control ff-form-control" ng-model="entity.metaTag" allow-single-deselect="true" options="metaTags" ng-options="metaTags for metaTags in metaTags track by metaTags">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div ng-if="entity.entityType == 'TENDER'" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_WIDGET_ITEM' | translate }}</label>
+                        <div class="m-t-xs">
+                            <span class="m-l-sm"><input ng-model="entity.widgetItem" type="radio" ng-value="true" icheck class="form-control" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
+                            <span class="m-l-sm"><input ng-model="entity.widgetItem" type="radio" ng-value="false" icheck class="form-control" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_TEXT' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.text.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.text.$valid }"></i></span>
                         </label>
