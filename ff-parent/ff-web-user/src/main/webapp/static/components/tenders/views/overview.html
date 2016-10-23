@@ -22,7 +22,7 @@ p span {
             <a ui-sref="tenders.details({ id: tender.id })">
                 <img class="img-rounded ff-masonry-brick-img" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="100%">
             </a>
-            <p style="margin-bottom: 0px;" data-ng-bind="tender.text | htmlToPlaintext" class="ff-masonry-brick-text" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(tender)"></p>
+            <p style="margin-bottom: 5px;" data-ng-bind="tender.text | htmlToPlaintext" class="ff-masonry-brick-text" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(tender)"></p>
             <div class="form-group" ng-repeat="item in tender.items">
                 <div class="col-sm-12" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
                     <label class="ff-masonry-brick-label">{{ item.text }}</label>

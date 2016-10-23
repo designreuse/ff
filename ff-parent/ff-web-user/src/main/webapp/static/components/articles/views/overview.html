@@ -16,7 +16,7 @@ p span {
 	<div masonry>
 		<div class="masonry-brick ff-masonry-brick" ng-repeat="article in articles">
             <small class="label-default pull-right ff-masonry-brick-date ">{{article.lastModifiedDate | date : dateFormat}}</small>
-            <h5 class="p-xs ff-masonry-brick-title">
+            <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
                 <a class="ff-a" ui-sref="articles.details({ id: article.id })">{{article.name}}</a>
             </h5>
             <a ui-sref="articles.details({ id: article.id })">
