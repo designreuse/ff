@@ -105,7 +105,8 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/useremails/scripts/services.js']
+	        			files: ['components/useremails/scripts/services.js',
+	        			        'components/emails/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -146,6 +147,7 @@ angular.module('FundFinder')
 	        			files: ['components/impressions/scripts/services.js',
 	        			        'components/users/scripts/services.js',
 	        			        'components/usergroups/scripts/services.js',
+	        			        'components/emails/scripts/services.js',
 	        			        'components/useremails/scripts/services.js']
 	        		});
 	        	}

@@ -17,10 +17,11 @@
         'ui.router',							// http://angular-ui.github.io/ui-router/site/#/api/ui.router
         'ui.bootstrap',							// https://angular-ui.github.io/bootstrap/
         'ui.grid',								// http://ui-grid.info/
+        'ui.grid.autoResize',
+        'ui.grid.expandable',
     	'ui.grid.pagination',
-    	'ui.grid.selection',
-    	'ui.grid.autoResize',
     	'ui.grid.saveState',
+    	'ui.grid.selection'
     ])
 })();
 

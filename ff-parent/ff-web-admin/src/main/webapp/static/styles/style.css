@@ -240,7 +240,7 @@
 	font-size: 12px !important;
 }
 
-.ff-grid-button, .bss-grid-button:active, .bss-grid-button:focus {
+.ff-grid-button, .ff-grid-button:active, .ff-grid-button:focus {
     border-width: 0px !important;
     background: transparent !important;
 }
@@ -306,6 +306,13 @@
     color: white;
     font-size: 24px;
     vertical-align: super;
+}
+
+.ff-grid-extension {
+    width: 100%;
+    border-top: 1px solid #d4d4d4;
+    border-bottom: 1px solid #d4d4d4;
+    height: 125px;
 }
 
 /* ************************************************************ */

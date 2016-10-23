@@ -410,7 +410,7 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 // ========================================================================
 //	DETAILS CONTROLLER
 // ========================================================================
-function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService, UserEmailsService) {
+function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService, UserEmailsService, EmailsService) {
 	var $translate = $filter('translate');
 	
 	// ========================================================================================================================
@@ -428,7 +428,31 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 			enableColumnMenus: false,
 			enableHorizontalScrollbar: uiGridConstants.scrollbars.NEVER,
 			enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
+			expandableRowTemplate: 'email-exp.html',
+	        expandableRowHeight: 125,
+	        expandableRowScope: { 
+	        	toTrusted: function(html) {
+	        		console.log(html);
+	        		return $sce.trustAsHtml(html);
+	        	}
+	        },
+	        enableExpandableRowHeader: false,
 			columnDefs: [
+				{
+					name: '  ',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: false,
+					enableFiltering: false,
+					enableHiding: false,
+					exporterSuppressExport: true,
+					width: 32,
+					cellTemplate:
+						'<div style="padding-top: 1px">' +
+							'<button ng-if="!row.isExpanded" uib-tooltip="{{\'ACTION_TOOLTIP_EXPAND\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.expandRow4Emails(row)" class="btn-xs btn-white m-l-xs m-t-xxs ff-grid-button"><i class="fa fa-plus"></i></button>' +
+							'<button ng-if="row.isExpanded" uib-tooltip="{{\'ACTION_TOOLTIP_COLLAPSE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.collapseRow4Emails(row)" class="btn-xs btn-white m-l-xs m-t-xxs ff-grid-button"><i class="fa fa-minus"></i></button>' +
+						'</div>'
+				},
 				{
 					displayName: $translate('COLUMN_SEND_DATE'),
 					field: 'creationDate',
@@ -472,6 +496,25 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 			onRegisterApi: function(gridApi) {
 				$scope.gridApi4Emails = gridApi;
 				
+				$scope.gridApi4Emails.expandable.on.rowExpandedStateChanged($scope, function(row) {
+					if (row.isExpanded) {
+						EmailsService.getEntity(row.entity.email.id)
+							.success(function(data, status) {
+								if (status == 200) {
+									row.entity.email = data;
+								} else {
+									toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+								}
+							})
+							.error(function(data, status) {
+								toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+							});
+					}
+					
+					// refresh grid (to update the height)
+					$scope.gridApi4Emails.core.queueGridRefresh();
+				});
+				
 				// register pagination changed handler
 				$scope.gridApi4Emails.pagination.on.paginationChanged($scope, function(currentPage, pageSize) {
 					$scope.getPage4Emails(currentPage, pageSize);
@@ -504,8 +547,11 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 				});
 				
 				$scope.gridApi4Emails.core.on.rowsRendered($scope, function(b, f, i) {
-					var newHeight = ($scope.gridApi4Emails.core.getVisibleRows($scope.gridApi4Emails.grid).length * $rootScope.rowHeight) + (($scope.gridOptions4Emails.totalItems == 0) ? $rootScope.heightNoData : $rootScope.heightCorrectionFactor);
-					angular.element(document.getElementsByClassName('grid')[0]).css('height', newHeight + 'px');
+					var cntExpandedRows = $scope.gridApi4Emails.expandable.getExpandedRows($scope.gridApi4Emails.grid).length;
+					var newHeight = ($scope.gridApi4Emails.core.getVisibleRows($scope.gridApi4Emails.grid).length * $rootScope.rowHeight) 
+						+ (cntExpandedRows * ($scope.gridApi4Emails.grid.options.expandableRowHeight + 2)) 
+						+ (($scope.gridOptions4Emails.totalItems == 0) ? $rootScope.heightNoData : $rootScope.heightCorrectionFactor);
+					angular.element(document.getElementsByClassName('grid4Emails')[0]).css('height', newHeight + 'px');
 				});
 				
 				// set initial sort
@@ -519,6 +565,14 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 				$scope.getPage4Emails($scope.gridApi4Emails.pagination.getPage(), $scope.gridOptions4Emails.paginationPageSize);
 			}
 		};
+	
+	$scope.expandRow4Emails = function(row) {
+		$scope.gridApi4Emails.expandable.expandRow(row.entity);
+	};
+	
+	$scope.collapseRow4Emails = function(row) {
+		$scope.gridApi4Emails.expandable.collapseRow(row.entity);
+	};
 	
 	$scope.getPage4Emails = function(page, size) {
 		$scope.loading4Emails = true;

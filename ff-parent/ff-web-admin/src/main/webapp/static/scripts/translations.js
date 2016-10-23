@@ -220,6 +220,8 @@ function config($translateProvider) {
 			ACTION_TOOLTIP_EDIT: 'Edit',
 			ACTION_TOOLTIP_DELETE: 'Delete',
 			ACTION_TOOLTIP_DETAILS: 'Details',
+			ACTION_TOOLTIP_EXPAND: 'Expand',
+			ACTION_TOOLTIP_COLLAPSE: 'Collapse',
 			
 			TOOLTIP_TOTAL_IMPRESSIONS: 'Total impressions',
 			TOOLTIP_UNIQUE_IMPRESSIONS: 'Unique impressions',
