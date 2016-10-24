@@ -20,6 +20,7 @@ function config($translateProvider) {
 			MENU_COUNTIES: 'Counties',
 			MENU_DASHBOARD: 'Dashboard',
 			MENU_USER_GROUPS: 'User groups',
+			MENU_STATISTICS: 'Statistics',
 
 			HEADER_MAIN: 'Administration console',
 			HEADER_USER_DETAILS: 'User details',
@@ -62,6 +63,11 @@ function config($translateProvider) {
 			TAB_EMAIL: 'E-mails',
 			TAB_MATCHING_USERS: 'Matching users',
 			TAB_MATCHING_TENDERS: 'Matching tenders',
+			
+			TAB_STATS_COMPANIES_BY_COUNTIES: 'Companies by counties',
+			TAB_STATS_COMPANIES_BY_INVESTMENTS: 'Companies by investments',
+			TAB_STATS_COMPANIES_BY_REVENUES: 'Companies by revenues',
+			TAB_STATS_COMPANIES_BY_SECTORS: 'Companies by sectors',
 			
 			LABEL_NAME: 'Name',
 			LABEL_CODE: 'Code',
@@ -140,6 +146,10 @@ function config($translateProvider) {
 			COLUMN_SEND_DATE: 'Send date',
 			COLUMN_TO: 'To',
 			COLUMN_SUBJECT: 'Subject',
+			COLUMN_INVESTMENT: 'Investment',
+			COLUMN_REVENUE: 'Revenue',
+			COLUMN_SECTOR: 'Sector',
+			COLUMN_NO_OF_COMPANIES: 'Number of companies',
 
 			DATETIMEPICKER_TODAY: 'Today',
 			DATETIMEPICKER_YESTERDAY: 'Yesterday',
@@ -225,6 +235,8 @@ function config($translateProvider) {
 			
 			TOOLTIP_TOTAL_IMPRESSIONS: 'Total impressions',
 			TOOLTIP_UNIQUE_IMPRESSIONS: 'Unique impressions',
+			TOOLTIP_CHART_VIEW: 'Chart view',
+			TOOLTIP_TABLE_VIEW: 'Table view',
 			
 			ACTION_ACTIVATE_SUCCESS_MESSAGE: '{{entity}} successfully activated',
 			ACTION_ACTIVATE_FAILURE_MESSAGE: 'Activating {{entity}} failed',
@@ -246,6 +258,9 @@ function config($translateProvider) {
 			POSTSCRIPT_ITEM_POSITION: 'Value must be between 1 and 1000',
 			
 			VALIDATION_FAILED_HEADER: 'Validation failed',
+			
+			ERR_MSG_001: 'Company item with meta tag COMPANY_LOCATION not found',
+			ERR_MSG_002: 'Meta tag COMPANY_LOCATION found in more then one company item',
 			
 			BUTTON_YES: 'Yes',
 			BUTTON_NO: 'No',

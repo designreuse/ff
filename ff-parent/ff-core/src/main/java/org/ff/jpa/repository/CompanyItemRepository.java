@@ -12,6 +12,8 @@ public interface CompanyItemRepository extends CrudRepository<CompanyItem, Integ
 
 	List<CompanyItem> findByCompany(Company company);
 
+	List<CompanyItem> findByItem(Item item);
+
 	CompanyItem findByCompanyAndItem(Company company, Item item);
 
 }

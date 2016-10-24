@@ -208,13 +208,12 @@ public class ItemService extends BaseService {
 		}
 	}
 
-	public List<String> getMetatags(Integer id) {
-		Item item = repository.findOne(id);
+	public List<String> getMetatags(ItemEntityType entityType) {
 		List<String> result = new ArrayList<>();
 		for (ItemMetaTag itemMetaTag : ItemMetaTag.values()) {
-			if (item.getEntityType() == ItemEntityType.TENDER && itemMetaTag.name().startsWith("TENDER")) {
+			if (entityType == ItemEntityType.TENDER && itemMetaTag.name().startsWith("TENDER")) {
 				result.add(itemMetaTag.name());
-			} else if (item.getEntityType() == ItemEntityType.COMPANY && itemMetaTag.name().startsWith("COMPANY")) {
+			} else if (entityType == ItemEntityType.COMPANY && itemMetaTag.name().startsWith("COMPANY")) {
 				result.add(itemMetaTag.name());
 			}
 		}

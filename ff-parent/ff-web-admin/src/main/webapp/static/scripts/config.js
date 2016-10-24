@@ -73,6 +73,29 @@ angular.module('FundFinder')
 	        data: { pageTitle: 'Dashboard' }
 	    })
 	    
+	    // STATISTICS
+		.state('statistics', {
+	        abstract: true,
+	        url: "/statistics",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/statistics/scripts/controllers.js',
+	        			        'components/statistics/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('statistics.overview', {
+	        url: "/overview",
+	        templateUrl: "/components/statistics/views/overview.html",
+	        controller: 'StatisticsController',
+	        data: { pageTitle: 'Statistics' }
+	    })
+	    
 		// USERS
 		.state('users', {
 	        abstract: true,

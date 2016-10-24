@@ -619,6 +619,7 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 				if (status == 200) {
 					$scope.entity = data;
 					$scope.typeChanged();
+					$scope.getMetaTags($scope.entity.entityType);
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -652,8 +653,8 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 			});		
 	};
 	
-	$scope.getMetaTags = function() {
-		ItemsService.getMetaTags($stateParams.id)
+	$scope.getMetaTags = function(entityType) {
+		ItemsService.getMetaTags(entityType)
 			.success(function(data, status) {
 				$scope.metaTags = data;
 			})
@@ -707,6 +708,5 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 	};
 	
 	// initial load
-	$scope.getMetaTags();
 	$scope.getEntity($stateParams.entityType, $stateParams.id);
 };

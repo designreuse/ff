@@ -102,6 +102,11 @@
 			<artifactId>angular-chart.js</artifactId>
 			<version>0.8.8</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

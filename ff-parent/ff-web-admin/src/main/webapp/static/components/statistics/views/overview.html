@@ -1,0 +1,149 @@
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1>{{ 'MENU_STATISTICS' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="tabs-container">
+                <uib-tabset>
+                    
+                    <uib-tab select="getCompaniesByCounties()">
+                        <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_COUNTIES' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div class="pull-right">
+                                <button ng-click="changeCompaniesByCountiesView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : companiesByCountiesView == 'TABLE_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="changeCompaniesByCountiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByCountiesView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                            </div>
+                            <div class="col-lg-12 m-t-sm" ng-if="companiesByCountiesView == 'CHART_VIEW'">
+                                <canvas id="{{typeCompaniesByCounties}}" class="chart chart-bar" chart-data="dataCompaniesByCounties" chart-labels="labelsCompaniesByCounties4ChartView" chart-click="showCompanies"></canvas>
+                            </div>
+                            <div class="col-lg-12 m-t-md" ng-if="companiesByCountiesView == 'TABLE_VIEW'">
+								<table width="100%" class="table">
+									<thead>
+										<tr>
+										   <th>{{ 'COLUMN_COUNTY' | translate }}</th>
+										   <th style="text-align: right; width: 150px;">{{ 'COLUMN_NO_OF_COMPANIES' | translate }}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="county in labelsCompaniesByCounties4TableView">
+											<td>{{ county }}</td>
+											<td style="text-align: right;">{{ dataCompaniesByCounties[0][$index] }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+                        </div>
+                    </uib-tab>
+                    
+                    <uib-tab select="getCompaniesByInvestments()">
+                        <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_INVESTMENTS' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div class="pull-right">
+                                <button ng-click="changeCompaniesByInvestmentsView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : companiesByInvestmentsView == 'TABLE_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="changeCompaniesByInvestmentsView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByInvestmentsView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                            </div>
+                            <div class="col-lg-12 m-t-sm" ng-if="companiesByInvestmentsView == 'CHART_VIEW'">
+                                <canvas id="{{typeCompaniesByInvestments}}" class="chart chart-bar" chart-data="dataCompaniesByInvestments" chart-labels="labelsCompaniesByInvestments4ChartView" chart-click="showCompanies"></canvas>
+                            </div>
+                            <div class="col-lg-12 m-t-md" ng-if="companiesByInvestmentsView == 'TABLE_VIEW'">
+                                <table width="100%" class="table">
+                                    <thead>
+                                        <tr>
+                                           <th>{{ 'COLUMN_INVESTMENT' | translate }}</th>
+                                           <th style="text-align: right; width: 150px;">{{ 'COLUMN_NO_OF_COMPANIES' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="county in labelsCompaniesByInvestments4TableView">
+                                            <td>{{ county }}</td>
+                                            <td style="text-align: right;">{{ dataCompaniesByInvestments[0][$index] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    
+                    <uib-tab select="getCompaniesByRevenues()">
+                        <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_REVENUES' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div class="pull-right">
+                                <button ng-click="changeCompaniesByRevenuesView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : companiesByRevenuesView == 'TABLE_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="changeCompaniesByRevenuesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByRevenuesView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                            </div>
+                            <div class="col-lg-12 m-t-sm" ng-if="companiesByRevenuesView == 'CHART_VIEW'">
+                                <canvas id="{{typeCompaniesByRevenues}}" class="chart chart-bar" chart-data="dataCompaniesByRevenues" chart-labels="labelsCompaniesByRevenues4ChartView" chart-click="showCompanies"></canvas>
+                            </div>
+                            <div class="col-lg-12 m-t-md" ng-if="companiesByRevenuesView == 'TABLE_VIEW'">
+                                <table width="100%" class="table">
+                                    <thead>
+                                        <tr>
+                                           <th>{{ 'COLUMN_REVENUE' | translate }}</th>
+                                           <th style="text-align: right; width: 150px;">{{ 'COLUMN_NO_OF_COMPANIES' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="county in labelsCompaniesByRevenues4TableView">
+                                            <td>{{ county }}</td>
+                                            <td style="text-align: right;">{{ dataCompaniesByRevenues[0][$index] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    
+                    <uib-tab select="getCompaniesBySectors()">
+                        <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_SECTORS' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            <div class="pull-right">
+                                <button ng-click="changeCompaniesBySectorsView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : companiesBySectorsView == 'TABLE_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="changeCompaniesBySectorsView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
+                                    <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesBySectorsView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                            </div>
+                            <div class="col-lg-12 m-t-sm" ng-if="companiesBySectorsView == 'CHART_VIEW'">
+                                <canvas id="{{typeCompaniesBySectors}}" class="chart chart-bar" chart-data="dataCompaniesBySectors" chart-labels="labelsCompaniesBySectors4ChartView" chart-click="showCompanies"></canvas>
+                            </div>
+                            <div class="col-lg-12 m-t-md" ng-if="companiesBySectorsView == 'TABLE_VIEW'">
+                                <table width="100%" class="table">
+                                    <thead>
+                                        <tr>
+                                           <th>{{ 'COLUMN_SECTOR' | translate }}</th>
+                                           <th style="text-align: right; width: 150px;">{{ 'COLUMN_NO_OF_COMPANIES' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="county in labelsCompaniesBySectors4TableView">
+                                            <td>{{ county }}</td>
+                                            <td style="text-align: right;">{{ dataCompaniesBySectors[0][$index] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    
+                </uib-tabset>
+            </div>            	  
+		</div>
+	</div>
+</div>
