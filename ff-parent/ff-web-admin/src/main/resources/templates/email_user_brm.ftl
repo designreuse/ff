@@ -9,12 +9,7 @@
                 ${originalEmailText}
             </blockquote>
             
-            Has just been sent to these users: 
-            <ul>
-                <#list users as user>
-                    <li>${user}</li>
-                </#list>
-            </ul>
+            Has just been sent to ${user}
         </div>
     </body>
 </html>

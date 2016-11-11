@@ -290,7 +290,7 @@ public class TenderService extends BaseService {
 
 				// send e-mail to business relationship manager(s)
 				for (Entry<String, Set<String>> entry : businessRelationshipManagers.entrySet()) {
-					sendEmail2Brm(entry.getKey(), entry.getValue(), resource.getSubject(), text);
+					sendEmail2BusinessRelationshipManager(entry.getKey(), entry.getValue(), resource.getSubject(), text);
 				}
 
 				return new ResponseEntity<>(HttpStatus.OK);
@@ -302,7 +302,7 @@ public class TenderService extends BaseService {
 		}
 	}
 
-	private void sendEmail2Brm(String to, Set<String> users, String originalEmailSubject, String originalEmailText) {
+	private void sendEmail2BusinessRelationshipManager(String to, Set<String> users, String originalEmailSubject, String originalEmailText) {
 		try {
 			Template template = configuration.getTemplate("email_tender_brm.ftl");
 			Map<String, Object> model = new HashMap<String, Object>();

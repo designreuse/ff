@@ -259,20 +259,34 @@ public class UserService extends BaseService {
 			email.setText(text);
 			emailRepository.save(email);
 
-			List<String> to = new ArrayList<>();
-			for (UserResource userResource : resource.getUsers()) {
-				User user = userRepository.findOne(userResource.getId());
-				to.add(user.getEmail());
+			User user = userRepository.findOne(resource.getUsers().get(0).getId());
 
-				UserEmail userEmail = new UserEmail();
-				userEmail.setEmail(email);
-				userEmail.setUser(user);
-				userEmailRepository.save(userEmail);
+			UserEmail userEmail = new UserEmail();
+			userEmail.setEmail(email);
+			userEmail.setUser(user);
+			userEmailRepository.save(userEmail);
+
+			mailSender.send(user.getEmail(), resource.getSubject(), text);
+
+			if (user.getBusinessRelationshipManager() != null) {
+				sendEmail2BusinessRelationshipManager(user.getBusinessRelationshipManager().getEmail(), user.getEmail(), resource.getSubject(), text);
 			}
-
-			mailSender.send(to.toArray(new String[to.size()]), resource.getSubject(), text);
 		} catch (Exception e) {
 			throw new RuntimeException("Sending e-mail failed", e);
+		}
+	}
+
+	private void sendEmail2BusinessRelationshipManager(String to, String user, String originalEmailSubject, String originalEmailText) {
+		try {
+			Template template = configuration.getTemplate("email_user_brm.ftl");
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("originalEmailText", originalEmailText);
+			model.put("user", user);
+			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+			mailSender.send(to, "FYI: " + originalEmailSubject, text);
+		} catch (Exception e) {
+			log.error(String.format("Sending e-mail to business relationship manager [%s] failed", to), e);
 		}
 	}
 
