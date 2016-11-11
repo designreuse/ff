@@ -23,4 +23,8 @@ public class BaseProperties {
 
 	private String url;
 
+	private String sovaUrl;
+
+	private String sovaApplication;
+
 }

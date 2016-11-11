@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema targetNamespace="http://controller.web.SOVAServices.zaba.hr/" version="1.0" xmlns:tns="http://controller.web.SOVAServices.zaba.hr/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="getTest" type="tns:getTest"/>
+
+  <xs:element name="getTestResponse" type="tns:getTestResponse"/>
+
+  <xs:element name="wSFunkcijaPO" type="tns:wSFunkcijaPO"/>
+
+  <xs:element name="wSFunkcijaPOResponse" type="tns:wSFunkcijaPOResponse"/>
+
+  <xs:element name="wSKorisnikAplikacija" type="tns:wSKorisnikAplikacija"/>
+
+  <xs:element name="wSKorisnikAplikacijaResponse" type="tns:wSKorisnikAplikacijaResponse"/>
+
+  <xs:element name="wSKorisnikAutorizacija" type="tns:wSKorisnikAutorizacija"/>
+
+  <xs:element name="wSKorisnikAutorizacijaResponse" type="tns:wSKorisnikAutorizacijaResponse"/>
+
+  <xs:element name="wSKorisnikPOSifra" type="tns:wSKorisnikPOSifra"/>
+
+  <xs:element name="wSKorisnikPOSifraResponse" type="tns:wSKorisnikPOSifraResponse"/>
+
+  <xs:element name="wsAplikativneAkcije" type="tns:wsAplikativneAkcije"/>
+
+  <xs:element name="wsAplikativneAkcijePO" type="tns:wsAplikativneAkcijePO"/>
+
+  <xs:element name="wsAplikativneAkcijePOResponse" type="tns:wsAplikativneAkcijePOResponse"/>
+
+  <xs:element name="wsAplikativneAkcijeResponse" type="tns:wsAplikativneAkcijeResponse"/>
+
+  <xs:element name="wsKorisnikAutorizacijaPO" type="tns:wsKorisnikAutorizacijaPO"/>
+
+  <xs:element name="wsKorisnikAutorizacijaPOResponse" type="tns:wsKorisnikAutorizacijaPOResponse"/>
+
+  <xs:complexType name="wSKorisnikPOSifra">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSKorisnikPOSifraResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsKorisnikPOSifraData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsKorisnikPOSifraData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="funkcija" type="xs:string"/>
+      <xs:element minOccurs="0" name="idpo" type="xs:string"/>
+      <xs:element minOccurs="0" name="iznosPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="putanja" type="xs:string"/>
+      <xs:element minOccurs="0" name="sifraPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="zamjenjuje" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsKorisnikAutorizacijaPO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg3" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsKorisnikAutorizacijaPOResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsKorisnikAutorizacijaPOData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsKorisnikAutorizacijaPOData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aplikacija" type="xs:string"/>
+      <xs:element minOccurs="0" name="funkcija" type="xs:string"/>
+      <xs:element minOccurs="0" name="iznosPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="kombinacijaPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="naziv" type="xs:string"/>
+      <xs:element minOccurs="0" name="opis" type="xs:string"/>
+      <xs:element minOccurs="0" name="putanja" type="xs:string"/>
+      <xs:element minOccurs="0" name="sifraPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="zamjenjuje" type="xs:string"/>
+      <xs:element minOccurs="0" name="iDPO" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSKorisnikAutorizacija">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSKorisnikAutorizacijaResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsKorinikAutorizacijaoData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsKorinikAutorizacijaoData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aplikacija" type="xs:string"/>
+      <xs:element minOccurs="0" name="funkcija" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTest">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="getTestResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsAplikativneAkcijePO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg3" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsAplikativneAkcijePOResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsAplikativneAkcijePOData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsAplikativneAkcijePOData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="sifraAkcije" type="xs:string"/>
+      <xs:element minOccurs="0" name="sifraPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipAkcije" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipPO" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSFunkcijaPO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg1" type="tns:wsFunkcijaPoParametri"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsFunkcijaPoParametri">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="strTip" type="xs:string"/>
+      <xs:element minOccurs="0" name="strVrijednostPO" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSFunkcijaPOResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsZaposlenikPOData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsZaposlenikPOData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="brojRadnika" type="xs:string"/>
+      <xs:element minOccurs="0" name="iznosPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="kombinacijaPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="sifraPO" type="xs:string"/>
+      <xs:element minOccurs="0" name="iDPO" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsAplikativneAkcije">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsAplikativneAkcijeResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsAplikativneAkcijeData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsAplikativneAkcijeData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="sifraAkcije" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipAkcije" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSKorisnikAplikacija">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wSKorisnikAplikacijaResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:wsKorisnikAplikacijaData"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsKorisnikAplikacijaData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aplikacija" type="xs:string"/>
+      <xs:element minOccurs="0" name="naziv" type="xs:string"/>
+      <xs:element minOccurs="0" name="putanja" type="xs:string"/>
+      <xs:element minOccurs="0" name="tip" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

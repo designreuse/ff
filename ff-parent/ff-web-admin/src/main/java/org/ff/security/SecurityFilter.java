@@ -11,7 +11,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.security.AppUser.AppUserRole;
+import org.ff.sova.SovaClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class SecurityFilter implements Filter {
 
+	@Autowired
+	private SovaClient sovaClient;
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 		SecurityContext context = SecurityContextHolder.getContext();
@@ -38,8 +44,8 @@ public class SecurityFilter implements Filter {
 			if (httpRequest.getUserPrincipal() != null) {
 				// when in security realm (e.g. WebSphere)
 				log.trace("Authenticating user [{}]...", httpRequest.getUserPrincipal().getName());
-				authentication = new UsernamePasswordAuthenticationToken(
-						httpRequest.getUserPrincipal().getName(), null, getGrantedAuthorities(httpRequest));
+				authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
+						null, getGrantedAuthority(sovaClient.wsKorisnikAutorizacija(httpRequest.getUserPrincipal().getName())));
 			} else {
 				// stand alone
 				log.trace("Authenticating unknown user...");
@@ -62,15 +68,9 @@ public class SecurityFilter implements Filter {
 		log.trace("Destroying [{}]", this.getClass().getSimpleName());
 	}
 
-	private List<GrantedAuthority> getGrantedAuthorities(HttpServletRequest httpRequest) {
-		if (httpRequest.isUserInRole(AppUserRole.ROLE_ADMIN.name())) {
-			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name());
-		} else if (httpRequest.isUserInRole(AppUserRole.ROLE_OPERATOR_L1.name())) {
-			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_OPERATOR_L1.name());
-		} else if (httpRequest.isUserInRole(AppUserRole.ROLE_OPERATOR_L2.name())) {
-			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_OPERATOR_L2.name());
-		} else if (httpRequest.isUserInRole(AppUserRole.ROLE_OPERATOR_L3.name())) {
-			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_OPERATOR_L3.name());
+	private List<GrantedAuthority> getGrantedAuthority(String role) {
+		if (StringUtils.isNotBlank(role)) {
+			return AuthorityUtils.createAuthorityList(role);
 		} else {
 			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_UNKNOWN.name());
 		}
