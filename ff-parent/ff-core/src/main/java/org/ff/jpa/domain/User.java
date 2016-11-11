@@ -73,4 +73,8 @@ public class User extends AbstractEntity {
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime registrationCodeConfirmedDate;
 
+	@Column(name = "last_login", nullable = true)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime lastLoginDate;
+
 }

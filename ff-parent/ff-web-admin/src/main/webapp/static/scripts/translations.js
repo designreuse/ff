@@ -95,6 +95,7 @@ function config($translateProvider) {
 			LABEL_EMAIL: 'Email',
 			LABEL_CREATION_DATE: 'Registered',
 			LABEL_LAST_MODIFIED_DATE: 'Last modified',
+			LABEL_LAST_LOGIN_DATE: 'Last login',
 			LABEL_COMPANY_NAME: 'Name',
 			LABEL_COMPANY_CODE: 'Identification code',
 			LABEL_EDIT: 'EDIT',

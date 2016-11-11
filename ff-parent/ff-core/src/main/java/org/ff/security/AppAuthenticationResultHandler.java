@@ -9,6 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ff.jpa.domain.User;
+import org.ff.jpa.repository.UserRepository;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -32,8 +35,17 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	private UserRepository userRepository;
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		User user = userRepository.findByEmail(authentication.getName());
+		if (user != null) {
+			user.setLastLoginDate(new DateTime());
+			userRepository.save(user);
+		}
+
 		Map<String, String> data = new HashMap<>();
 		data.put(MESSAGE, "Login success");
 		data.put(URL, contextPath + "/#/tenders/overview");
