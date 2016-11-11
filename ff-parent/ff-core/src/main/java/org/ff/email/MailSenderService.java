@@ -18,7 +18,7 @@ public class MailSenderService {
 	private JavaMailSender mailSender;
 
 	public void send(final String to, final String subject, final String text) {
-		log.debug("Seding e-mail with subject [{}] to [{}]", subject, to);
+		log.debug("Sending e-mail with subject [{}] to [{}]", subject, to);
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			@Override
@@ -34,7 +34,7 @@ public class MailSenderService {
 	}
 
 	public void send(final String[] to, final String subject, final String text) {
-		log.debug("Seding e-mail with subject [{}] to [{}]", subject, to);
+		log.debug("Sending e-mail with subject [{}] to {}", subject, to);
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			@Override

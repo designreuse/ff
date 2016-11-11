@@ -21,6 +21,7 @@ function config($translateProvider) {
 			MENU_DASHBOARD: 'Dashboard',
 			MENU_USER_GROUPS: 'User groups',
 			MENU_STATISTICS: 'Statistics',
+			MENU_BUSINESSRELATIONSHIPMANAGERS: 'Business relationship managers',
 
 			HEADER_MAIN: 'Administration console',
 			HEADER_USER_DETAILS: 'User details',
@@ -51,6 +52,8 @@ function config($translateProvider) {
 			HEADER_EMAIL_HISTORY: 'History',
 			HEADER_USER_GROUP_ADD: 'Add user group',
 			HEADER_USER_GROUP_EDIT: 'Edit user group',
+			HEADER_BRM_ADD: 'Add business relationship manager',
+			HEADER_BRM_EDIT: 'Edit business relationship manager',
 			
 			TAB_PREVIEW: 'Preview',
 			TAB_STATISTICS: 'Statistics',
@@ -63,6 +66,7 @@ function config($translateProvider) {
 			TAB_EMAIL: 'E-mails',
 			TAB_MATCHING_USERS: 'Matching users',
 			TAB_MATCHING_TENDERS: 'Matching tenders',
+			TAB_BRM: 'Business relationship manager',
 			
 			TAB_STATS_COMPANIES_BY_COUNTIES: 'Companies by counties',
 			TAB_STATS_COMPANIES_BY_INVESTMENTS: 'Companies by investments',
@@ -86,6 +90,8 @@ function config($translateProvider) {
 			LABEL_COUNTY: 'County',
 			LABEL_FIRST_NAME: 'First name',
 			LABEL_LAST_NAME: 'Last name',
+			LABEL_PHONE: 'Phone',
+			LABEL_MOBILE: 'Mobile',
 			LABEL_EMAIL: 'Email',
 			LABEL_CREATION_DATE: 'Registered',
 			LABEL_LAST_MODIFIED_DATE: 'Last modified',
@@ -150,6 +156,8 @@ function config($translateProvider) {
 			COLUMN_REVENUE: 'Revenue',
 			COLUMN_SECTOR: 'Sector',
 			COLUMN_NO_OF_COMPANIES: 'Number of companies',
+			COLUMN_PHONE: 'Phone',
+			COLUMN_MOBILE: 'Mobile',
 
 			DATETIMEPICKER_TODAY: 'Today',
 			DATETIMEPICKER_YESTERDAY: 'Yesterday',
@@ -218,6 +226,7 @@ function config($translateProvider) {
 			ENTITY_NKD: 'NKD',
 			ENTITY_COUNTY: 'County',
 			ENTITY_CITY: 'City',
+			ENTITY_BRM: 'Business relationship manager',
 			
 			ROLE_ADMIN: 'Administrator',
 			ROLE_OPERATOR_L1: 'Operator L1',

@@ -22,4 +22,7 @@ angular.module('FundFinder')
 	this.sendEmail = function(resource) {
 		return $http.post('/api/v1/users/email', resource);
 	};
+	this.setBusinessRelationshipManager = function(id, resource) {
+		return $http.post('/api/v1/users/' + id + '/brm', resource);
+	};
 });

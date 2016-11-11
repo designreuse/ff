@@ -129,7 +129,8 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: ['components/useremails/scripts/services.js',
-	        			        'components/emails/scripts/services.js']
+	        			        'components/emails/scripts/services.js',
+	        			        'components/businessrelationshipmanagers/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -540,6 +541,38 @@ angular.module('FundFinder')
 	        			files: ['components/usergroups/scripts/controllers.js',
 	        			        'components/usergroups/scripts/services.js',
 	        			        'components/users/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    
+	    .state('settings.businessrelationshipmanagers_overview', {
+	    	url: "/businessrelationshipmanagers/overview",
+	        templateUrl: "/components/businessrelationshipmanagers/views/overview.html",
+	        controller: 'BusinessRelationshipManagerOverviewController',
+	        data: { pageTitle: 'Business relationship managers overview' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/businessrelationshipmanagers/scripts/controllers.js',
+	        			        'components/businessrelationshipmanagers/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('settings.businessrelationshipmanagers_edit', {
+	    	url: "/businessrelationshipmanagers/edit/:id",
+	    	params: { 'id' : null },
+	        templateUrl: "/components/businessrelationshipmanagers/views/edit.html",
+	        controller: 'BusinessRelationshipManagerEditController',
+	        data: { pageTitle: 'Edit business relationship manager' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/businessrelationshipmanagers/scripts/controllers.js',
+	        			        'components/businessrelationshipmanagers/scripts/services.js']
 	        		});
 	        	}
 	        }

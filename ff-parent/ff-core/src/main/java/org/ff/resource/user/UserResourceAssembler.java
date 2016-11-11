@@ -8,6 +8,7 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.CompanyRepository;
+import org.ff.resource.businessrelationshipmanager.BusinessRelationshipManagerResourceAssembler;
 import org.ff.resource.company.CompanyResourceAssembler;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class UserResourceAssembler {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	@Autowired
+	private BusinessRelationshipManagerResourceAssembler businessRelationshipManagerResourceAssembler;
+
 	public UserResource toResource(User entity, boolean light) {
 		UserResource resource = new UserResource();
 		resource.setId(entity.getId());
@@ -31,6 +35,7 @@ public class UserResourceAssembler {
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
 		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
+		resource.setBusinessRelationshipManager((entity.getBusinessRelationshipManager() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManager()) : null);
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());

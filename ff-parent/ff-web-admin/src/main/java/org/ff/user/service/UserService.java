@@ -19,10 +19,12 @@ import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.domain.UserEmail;
+import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.EmailRepository;
 import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.UserSpecification;
+import org.ff.resource.businessrelationshipmanager.BusinessRelationshipManagerResource;
 import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.tender.TenderResourceAssembler;
 import org.ff.resource.user.UserResource;
@@ -85,6 +87,9 @@ public class UserService extends BaseService {
 	@Autowired
 	private MailSenderService mailSender;
 
+	@Autowired
+	private BusinessRelationshipManagerRepository businessRelationshipManagerRepository;
+
 	@Transactional(readOnly = true)
 	public List<UserResource> findAll() {
 		log.debug("Finding users...");
@@ -138,6 +143,13 @@ public class UserService extends BaseService {
 		countersService.sendEvent();
 
 		return resource;
+	}
+
+	@Transactional
+	public void setBusinessRelationshipManager(Integer userId, BusinessRelationshipManagerResource resource) {
+		User entity = repository.findOne(userId);
+		entity.setBusinessRelationshipManager((resource != null) ? businessRelationshipManagerRepository.findOne(resource.getId()) : null);;
+		repository.save(entity);
 	}
 
 	@Transactional

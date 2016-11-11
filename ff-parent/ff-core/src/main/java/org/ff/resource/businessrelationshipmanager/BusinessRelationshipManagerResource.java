@@ -1,10 +1,6 @@
-package org.ff.resource.user;
+package org.ff.resource.businessrelationshipmanager;
 
 import java.util.Date;
-
-import org.ff.jpa.domain.User.UserStatus;
-import org.ff.resource.businessrelationshipmanager.BusinessRelationshipManagerResource;
-import org.ff.resource.company.CompanyResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -14,13 +10,10 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class UserResource {
+public class BusinessRelationshipManagerResource {
 
 	@JsonProperty("id")
 	private Integer id;
-
-	@JsonProperty("status")
-	private UserStatus status;
 
 	@JsonProperty("firstName")
 	private String firstName;
@@ -28,17 +21,14 @@ public class UserResource {
 	@JsonProperty("lastName")
 	private String lastName;
 
+	@JsonProperty("phone")
+	private String phone;
+
+	@JsonProperty("mobile")
+	private String mobile;
+
 	@JsonProperty("email")
 	private String email;
-
-	@JsonProperty("password")
-	private String password;
-
-	@JsonProperty("company")
-	private CompanyResource company;
-
-	@JsonProperty("businessRelationshipManager")
-	private BusinessRelationshipManagerResource businessRelationshipManager;
 
 	@JsonProperty("creationDate")
 	private Date creationDate;

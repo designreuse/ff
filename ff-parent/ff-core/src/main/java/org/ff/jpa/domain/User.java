@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -52,6 +54,10 @@ public class User extends AbstractEntity {
 	@Nationalized
 	@Column(name = "password", nullable = false, length = 128)
 	private String password;
+
+	@ManyToOne
+	@JoinColumn(name = "business_relationship_manager", nullable = true)
+	private BusinessRelationshipManager businessRelationshipManager;
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private Company company;

@@ -2,15 +2,20 @@ package org.ff.tender.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ff.counters.service.CountersService;
 import org.ff.email.MailSenderService;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
+import org.ff.jpa.domain.BusinessRelationshipManager;
 import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.Item.ItemEntityType;
 import org.ff.jpa.domain.Item.ItemStatus;
@@ -245,7 +250,8 @@ public class TenderService extends BaseService {
 			email.setSubject(resource.getSubject());
 			email.setText(text);
 
-			List<String> to = new ArrayList<>();
+			Set<String> to = new HashSet<>();
+			Map<String, Set<String>> businessRelationshipManagers = new HashMap<>();
 			for (UserGroupResource userGroup : resource.getUserGroups()) {
 				if (userGroup.getMetaTag() == UserGroupMetaTag.MATCHING_USERS) {
 					List<User> users = algorithmService.findUsers4Tender(tender);
@@ -258,7 +264,16 @@ public class TenderService extends BaseService {
 						if (user.getStatus() != UserStatus.ACTIVE) {
 							continue;
 						}
+
 						to.add(user.getEmail());
+
+						BusinessRelationshipManager brm = user.getBusinessRelationshipManager();
+						if (brm != null && StringUtils.isNotBlank(brm.getEmail())) {
+							if (!businessRelationshipManagers.containsKey(brm.getEmail())) {
+								businessRelationshipManagers.put(brm.getEmail(), new HashSet<String>());
+							}
+							businessRelationshipManagers.get(brm.getEmail()).add(user.getEmail());
+						}
 
 						UserEmail userEmail = new UserEmail();
 						userEmail.setEmail(email);
@@ -272,12 +287,32 @@ public class TenderService extends BaseService {
 			if (!to.isEmpty()) {
 				mailSender.send(to.toArray(new String[to.size()]), resource.getSubject(), text);
 				emailRepository.save(email);
+
+				// send e-mail to business relationship manager(s)
+				for (Entry<String, Set<String>> entry : businessRelationshipManagers.entrySet()) {
+					sendEmail2Brm(entry.getKey(), entry.getValue(), resource.getSubject(), text);
+				}
+
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Sending e-mail failed", e);
+		}
+	}
+
+	private void sendEmail2Brm(String to, Set<String> users, String originalEmailSubject, String originalEmailText) {
+		try {
+			Template template = configuration.getTemplate("email_tender_brm.ftl");
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("originalEmailText", originalEmailText);
+			model.put("users", users);
+			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+			mailSender.send(to, "FYI: " + originalEmailSubject, text);
+		} catch (Exception e) {
+			log.error(String.format("Sending e-mail to business relationship manager [%s] failed", to), e);
 		}
 	}
 

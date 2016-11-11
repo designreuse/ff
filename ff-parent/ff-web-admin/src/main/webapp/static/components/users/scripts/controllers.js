@@ -410,7 +410,7 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 // ========================================================================
 //	DETAILS CONTROLLER
 // ========================================================================
-function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService, UserEmailsService, EmailsService) {
+function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService, UserEmailsService, EmailsService, BusinessRelationshipManagerService) {
 	var $translate = $filter('translate');
 	
 	// ========================================================================================================================
@@ -677,6 +677,36 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 		$scope.email = { "subject" : null, "text" : null, "users" : [$scope.entity] };
 	}
 	
+	// Business relationship manager
+	$scope.getBusinessRelationshipManagers = function() {
+		BusinessRelationshipManagerService.getEntities()
+			.success(function(data, status) {
+				if (status == 200) {
+					$scope.businessRelationshipManagers = data;
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});	
+	};
+	
+	$scope.setBusinessRelationshipManager = function() {
+		UsersService.setBusinessRelationshipManager($scope.entity.id, $scope.entity.businessRelationshipManager)
+			.success(function(data, status) {
+				if (status == 200) {
+					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
+				} else {
+					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+			});	
+	};
+	
 	// initial load
 	$scope.getEntity();
+	$scope.getBusinessRelationshipManagers();
 };

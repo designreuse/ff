@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
+import org.ff.resource.businessrelationshipmanager.BusinessRelationshipManagerResource;
 import org.ff.resource.email.SendEmailResource;
 import org.ff.resource.user.UserResource;
 import org.ff.uigrid.PageableResource;
@@ -112,6 +113,18 @@ public class UserController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".sendEmail");
 		try {
 			userService.sendEmail(resource);
+		} catch (RuntimeException e) {
+			throw processException(e);
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value="/{id}/brm")
+	public void setBusinessRelationshipManager(Principal principal, @PathVariable Integer id, @RequestBody(required=false) BusinessRelationshipManagerResource resource) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".setBusinessRelationshipManager");
+		try {
+			userService.setBusinessRelationshipManager(id, resource);
 		} catch (RuntimeException e) {
 			throw processException(e);
 		} finally {
