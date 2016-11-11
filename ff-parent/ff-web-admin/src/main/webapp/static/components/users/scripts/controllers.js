@@ -636,11 +636,12 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 		$state.go('users.overview');
 	};
 	
+	var trusted = {};
 	$scope.toTrusted = function(html) {
 		if (html) {
 			html = html.replace(/\r?\n/g, '<br />');
 		}
-	    return $sce.trustAsHtml(html);
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
 	}
 	
 	$scope.getEntity = function() {

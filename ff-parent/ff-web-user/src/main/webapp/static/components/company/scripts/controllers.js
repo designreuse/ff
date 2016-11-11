@@ -4,9 +4,17 @@ angular.module('FundFinder')
 // ========================================================================
 //	EDIT CONTROLLER
 // ========================================================================
-function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $filter, CompanyService, NkdsService, CitiesService) {
+function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce, $filter, CompanyService, NkdsService, CitiesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
+	
+	var trusted = {};
+	$scope.toTrusted = function(html) {
+		if (html) {
+			html = html.replace(/\r?\n/g, '<br />');
+		}
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
+	}
 	
 	$scope.getNkds = function() {
 		NkdsService.getEntities()

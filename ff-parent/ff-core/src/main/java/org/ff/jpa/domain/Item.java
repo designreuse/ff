@@ -74,6 +74,11 @@ public class Item extends AbstractEntity {
 	@Column(name = "text", nullable = false)
 	private String text;
 
+	@Lob
+	@Nationalized
+	@Column(name = "help", nullable = true)
+	private String help;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "item", orphanRemoval = true)
 	@OrderBy("position")
 	private Set<ItemOption> options;

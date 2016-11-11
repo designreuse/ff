@@ -52,6 +52,7 @@
                 <div class="form-group" ng-repeat="(parentIndex, item) in company.items">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ item.text }}
+                            <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup>
                             <span ng-if="item.mandatory" class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'item'+parentIndex}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'item'+parentIndex}}.$valid }"></i></span>
                         </label>
                         <input ng-if="item.type == 'TEXT'" ng-model="item.value" type="text" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" />

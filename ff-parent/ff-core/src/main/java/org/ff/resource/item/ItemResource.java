@@ -51,6 +51,9 @@ public class ItemResource {
 	@JsonProperty("text")
 	private String text;
 
+	@JsonProperty("help")
+	private String help;
+
 	@JsonProperty("options")
 	private List<ItemOptionResource> options;
 

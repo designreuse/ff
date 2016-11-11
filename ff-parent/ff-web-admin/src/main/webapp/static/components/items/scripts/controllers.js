@@ -469,11 +469,12 @@ function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, 
 	
 	$scope.entityType = $stateParams.entityType;
 	
+	var trusted = {};
 	$scope.toTrusted = function(html) {
 		if (html) {
 			html = html.replace(/\r?\n/g, '<br />');
 		}
-	    return $sce.trustAsHtml(html);
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
 	}
 	
 	$scope.editEntity = function() {
@@ -706,6 +707,16 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 	$scope.back = function() {
 		$state.go('settings.items_overview_' + $stateParams.entityType, { 'entityType' : $stateParams.entityType });
 	};
+	
+	$scope.summernoteOptions = {
+		    height: 300,
+		    focus: false,
+		    airMode: false,
+		    toolbar: [
+		            ['style', ['bold', 'italic', 'underline']],
+		            ['alignment', ['ul', 'ol', 'paragraph']]
+		    ]
+		};
 	
 	// initial load
 	$scope.getEntity($stateParams.entityType, $stateParams.id);

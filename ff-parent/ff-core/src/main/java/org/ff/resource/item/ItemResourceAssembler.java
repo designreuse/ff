@@ -31,6 +31,7 @@ public class ItemResourceAssembler {
 		resource.setMandatory(entity.getMandatory());
 		resource.setPosition(entity.getPosition());
 		resource.setText(entity.getText());
+		resource.setHelp(entity.getHelp());
 		if (entity.getOptions() != null && !entity.getOptions().isEmpty()) {
 			resource.setOptions(itemOptionResourceAssembler.toResources(entity.getOptions(), light));
 		} else {
@@ -63,6 +64,7 @@ public class ItemResourceAssembler {
 		entity.setMandatory((resource.getMandatory() != null) ? resource.getMandatory() : Boolean.FALSE);
 		entity.setPosition(resource.getPosition());
 		entity.setText(resource.getText());
+		entity.setHelp(resource.getHelp());
 
 		if (entity.getOptions() == null) {
 			entity.setOptions(new HashSet<ItemOption>());
@@ -90,6 +92,7 @@ public class ItemResourceAssembler {
 		entity.setMandatory((resource.getMandatory() != null) ? resource.getMandatory() : Boolean.FALSE);
 		entity.setPosition(resource.getPosition());
 		entity.setText(resource.getText());
+		entity.setHelp(resource.getHelp());
 
 		if (entity.getOptions() == null) {
 			entity.setOptions(new LinkedHashSet<ItemOption>());

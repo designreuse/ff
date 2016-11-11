@@ -39,6 +39,7 @@
                                 <div class="col-lg-6" style="padding-left: 0px; padding-right: 10px;">
 	                                <h3>{{ 'LABEL_EDIT' | translate }}<br><small class="ff-postscript" style="margin-left: 0px;">{{ 'LABEL_EDIT_POSTSCRIPT' | translate }}</small></h3>
 	                                <label class="ff-label">{{ entity.text }}
+                                        <sup ng-if="entity.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(entity.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup>
 	                                    <span ng-if="entity.mandatory" class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.entity.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.entity.$valid }"></i></span>
 	                                </label>
 	                                <input ng-if="entity.type == 'TEXT'" ng-model="entity.value" type="text" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" maxlength="512" />
@@ -73,7 +74,7 @@
                                 </div>
                                 <div class="col-lg-6" style="padding-left: 0px; padding-right: 0px;">
                                     <h3>{{ 'LABEL_DISPLAY' | translate }}<br><small class="ff-postscript" style="margin-left: 0px;">{{ 'LABEL_DISPLAY_POSTSCRIPT' | translate }}</small></h3>
-                                    <label class="ff-label">{{ entity.text }}</label>
+                                    <label class="ff-label">{{ entity.text }} <sup ng-if="entity.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(entity.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>
                                     <div ng-if="entity.type == 'TEXT' || entity.type == 'TEXT_AREA'" style="padding-left: 10px;" ng-bind-html="toTrusted(entity.value)"></div>
                                     <div ng-if="entity.type == 'DATE'" style="padding-left: 10px;">{{ entity.value | date:dateFormat }}</div>
                                     <div ng-if="entity.type == 'CITY'" style="padding-left: 10px;">{{ entity.value.name }}</div>

@@ -81,7 +81,7 @@
                             
                             <div class="form-group" ng-repeat="item in entity.company.items">
                                 <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
-                                    <label class="ff-label">{{ item.text }}</label>
+                                    <label class="ff-label">{{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>
                                     <div ng-if="item.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
                                     <div ng-if="item.type != 'HYPERLINK'" style="padding-left: 10px;" ng-bind-html="toTrusted(item.valueMapped)"></div>
                                 </div>

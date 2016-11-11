@@ -401,7 +401,6 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	        expandableRowHeight: 125,
 	        expandableRowScope: { 
 	        	toTrusted: function(html) {
-	        		console.log(html);
 	        		return $sce.trustAsHtml(html);
 	        	}
 	        },
@@ -684,11 +683,12 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	
 	$scope.showEditButton = $stateParams.showEditButton;
 	
+	var trusted = {};
 	$scope.toTrusted = function(html) {
 		if (html) {
 			html = html.replace(/\r?\n/g, '<br />');
 		}
-	    return $sce.trustAsHtml(html);
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
 	}
 	
 	$scope.editEntity = function() {
@@ -796,8 +796,16 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 // ========================================================================
 //	EDIT CONTROLLER
 // ========================================================================
-function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, TendersService, CountiesService, NkdsService, InvestmentsService) {
+function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $sce, $timeout, $filter, uiGridConstants, TendersService, CountiesService, NkdsService, InvestmentsService) {
 	var $translate = $filter('translate');
+	
+	var trusted = {};
+	$scope.toTrusted = function(html) {
+		if (html) {
+			html = html.replace(/\r?\n/g, '<br />');
+		}
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
+	}
 	
 	$scope.summernoteOptions = {
 		    height: 300,

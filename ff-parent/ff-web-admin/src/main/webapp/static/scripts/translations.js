@@ -118,6 +118,7 @@ function config($translateProvider) {
 			LABEL_SEND_EMAIL_TO_PLACEHOLDER: 'Please select...',
 			LABEL_METATAG: 'Meta tag',
 			LABEL_WIDGET_ITEM: 'Show as widget item',
+			LABEL_HELP: 'Help',
 			
 			UI_GRID_LOADING_DATA: 'Loading data...',
 			UI_GRID_NO_DATA: 'No data',
