@@ -27,7 +27,7 @@ public class UserEmail extends AbstractEntity {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "user", nullable = true)
+	@JoinColumn(name = "\"user\"", nullable = true)
 	private User user;
 
 	@ManyToOne

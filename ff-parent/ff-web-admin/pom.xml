@@ -144,6 +144,7 @@
 					<packagingExcludes>WEB-INF/classes/static/**,WEB-INF/classes/WEB-INF/**</packagingExcludes>
 				</configuration>
 			</plugin>
+			<!--  
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
@@ -165,6 +166,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 
