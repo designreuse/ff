@@ -110,7 +110,7 @@ public class UserService extends BaseService {
 		log.debug("Finding user [{}]...", id);
 
 		User entity = repository.findOne(id);
-		if (entity == null) {
+		if (entity == null || Boolean.TRUE == entity.getDemoUser()) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.user", null, locale), id }, locale));
 		}
@@ -157,7 +157,7 @@ public class UserService extends BaseService {
 		log.debug("Activating user [{}]...", id);
 
 		User entity = repository.findOne(id);
-		if (entity == null) {
+		if (entity == null || Boolean.TRUE == entity.getDemoUser()) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.user", null, locale), id }, locale));
 		}
@@ -173,7 +173,7 @@ public class UserService extends BaseService {
 		log.debug("Deactivating user [{}]...", id);
 
 		User entity = repository.findOne(id);
-		if (entity == null) {
+		if (entity == null || Boolean.TRUE == entity.getDemoUser()) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.user", null, locale), id }, locale));
 		}
@@ -189,7 +189,7 @@ public class UserService extends BaseService {
 		log.debug("Deleting user [{}]...", id);
 
 		User entity = repository.findOne(id);
-		if (entity == null) {
+		if (entity == null || Boolean.TRUE == entity.getDemoUser()) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.user", null, locale), id }, locale));
 		}

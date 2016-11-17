@@ -31,7 +31,7 @@ public class CountersService {
 
 	public CountersResource findAll() {
 		CountersResource resource = new CountersResource();
-		resource.setCntUsers(userRepository.count());
+		resource.setCntUsers(userRepository.countByDemoUser(Boolean.FALSE));
 		resource.setCntTenders(tenderRepository.count());
 		resource.setCntInvestments(investmentRepository.count());
 		resource.setCntArticles(articleRepository.count());

@@ -21,4 +21,6 @@ public interface UserRepository extends CrudRepository<User, Integer>, JpaSpecif
 
 	User findByDemoUser(Boolean demoUser);
 
+	Long countByDemoUser(Boolean demoUser);
+
 }

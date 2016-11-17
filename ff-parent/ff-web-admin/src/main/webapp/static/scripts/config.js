@@ -50,7 +50,9 @@ angular.module('FundFinder')
 	$urlRouterProvider.when('', '/dashboard/overview').otherwise('/dashboard/overview');
 	
 	$stateProvider
+		// ==========================================
 		// DASHBOARD
+		// ==========================================
 		.state('dashboard', {
 	        abstract: true,
 	        url: "/dashboard",
@@ -73,7 +75,9 @@ angular.module('FundFinder')
 	        data: { pageTitle: 'Dashboard' }
 	    })
 	    
-	    // STATISTICS
+	    // ==========================================
+	    // 	STATISTICS
+	    // ==========================================
 		.state('statistics', {
 	        abstract: true,
 	        url: "/statistics",
@@ -96,7 +100,9 @@ angular.module('FundFinder')
 	        data: { pageTitle: 'Statistics' }
 	    })
 	    
-		// USERS
+	    // ==========================================
+		// 	USERS
+	    // ==========================================
 		.state('users', {
 	        abstract: true,
 	        url: "/users",
@@ -136,7 +142,9 @@ angular.module('FundFinder')
 	        }
 	    })
 	    
-		// TENDERS
+	    // ==========================================
+		// 	TENDERS
+	    // ==========================================
 		.state('tenders', {
 	        abstract: true,
 	        url: "/tenders",
@@ -195,7 +203,9 @@ angular.module('FundFinder')
 	        }
 	    })
 	    
-		// INVESTMENTS
+	    // ==========================================
+		// 	INVESTMENTS
+	    // ==========================================
 		.state('investments', {
 	        abstract: true,
 	        url: "/investments",
@@ -232,7 +242,9 @@ angular.module('FundFinder')
 	        data: { pageTitle: 'Edit investment' }
 	    })
 	    
-	    // ARTICLES
+	    // ==========================================
+	    // 	ARTICLES
+	    // ==========================================
 		.state('articles', {
 	        abstract: true,
 	        url: "/articles",
@@ -270,6 +282,9 @@ angular.module('FundFinder')
 	        data: { pageTitle: 'Edit article' }
 	    })
 	
+	    // ==========================================
+	    // 	SETTINGS
+	    // ==========================================
 		.state('settings', {
 	        abstract: true,
 	        url: "/settings",

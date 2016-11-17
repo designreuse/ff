@@ -48,6 +48,9 @@ public class UserResourceAssembler {
 	public List<UserResource> toResources(Iterable<User> entities, boolean light) {
 		List<UserResource> resources = new ArrayList<>();
 		for (User entity : entities) {
+			if (Boolean.TRUE == entity.getDemoUser()) {
+				continue;
+			}
 			resources.add(toResource(entity, light));
 		}
 		return resources;
@@ -71,6 +74,7 @@ public class UserResourceAssembler {
 			company.setUser(entity);
 		}
 		entity.setCompany(company);
+		entity.setDemoUser((resource.getDemoUser() != null) ? resource.getDemoUser() : Boolean.FALSE);
 		return entity;
 	}
 
@@ -85,6 +89,7 @@ public class UserResourceAssembler {
 			company.setUser(entity);
 		}
 		entity.setCompany(company);
+		entity.setDemoUser((resource.getDemoUser() != null) ? resource.getDemoUser() : Boolean.FALSE);
 		return entity;
 	}
 
