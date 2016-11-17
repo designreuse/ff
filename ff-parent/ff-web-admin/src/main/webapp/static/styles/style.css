@@ -192,7 +192,7 @@
 /*  summernote editor                                           */
 /* ************************************************************ */
 .note-editor {
-    border: 1px solid #e5e6e7;
+    border: 1px solid #e5e6e7 !important;
 }
 	
 .note-editable {

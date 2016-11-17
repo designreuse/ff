@@ -29,7 +29,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
 		AppUser appUser = null;
 		if (user != null && user.getStatus() == UserStatus.ACTIVE) {
-			appUser = new AppUser(user.getEmail(), user.getPassword(), false, false, true, false, Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName());
+			appUser = new AppUser(user.getEmail(), user.getPassword(), false, false, true, false, Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(), user.getDemoUser());
 		}
 
 		if (appUser == null) {

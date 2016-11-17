@@ -11,5 +11,6 @@
         </dependent-module>
         <property name="context-root" value="fundfinder"/>
         <property name="java-output-path" value="/ff-web-user/target/classes"/>
+        <property name="component.exclusion.patterns" value="WEB-INF/classes/static/**,WEB-INF/classes/WEB-INF/**"/>
     </wb-module>
 </project-modules>

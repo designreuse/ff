@@ -5,7 +5,6 @@
         'chart.js',
         'datePicker',							// https://github.com/g00fy-/angular-datepicker
         'daterangepicker',						// https://github.com/fragaria/angular-daterangepicker
-        'diff-match-patch',
         'frapontillo.bootstrap-duallistbox',	// http://frapontillo.github.io/angular-bootstrap-duallistbox/
         'angular-ladda',						// http://remotty.github.io/angular-ladda/
         'localytics.directives',				// http://leocaseiro.github.io/angular-chosen/

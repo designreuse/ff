@@ -31,4 +31,6 @@ public class AppUser {
 
 	private String lastName;
 
+	private Boolean demoUser;
+
 }

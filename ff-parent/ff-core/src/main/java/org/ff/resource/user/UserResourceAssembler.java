@@ -37,6 +37,7 @@ public class UserResourceAssembler {
 		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
 		resource.setBusinessRelationshipManager((entity.getBusinessRelationshipManager() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManager()) : null);
 		resource.setLastLoginDate(entity.getLastLoginDate().toDate());
+		resource.setDemoUser(entity.getDemoUser());
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());

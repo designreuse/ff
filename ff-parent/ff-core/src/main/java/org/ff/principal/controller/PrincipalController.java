@@ -20,11 +20,11 @@ public class PrincipalController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (authentication.getPrincipal() instanceof AppUserDetails) {
 				AppUserDetails principal = (AppUserDetails) authentication.getPrincipal();
-				resource = new PrincipalResource(principal.getUsername(), principal.getAuthorities().iterator().next().toString(), principal.getUser().getFirstName(), principal.getUser().getLastName());
+				resource = new PrincipalResource(principal.getUsername(), principal.getAuthorities().iterator().next().toString(), principal.getUser().getFirstName(), principal.getUser().getLastName(), principal.getUser().getDemoUser());
 			} else if (authentication instanceof UsernamePasswordAuthenticationToken) {
 				UsernamePasswordAuthenticationToken principal = (UsernamePasswordAuthenticationToken) authentication;
 				resource = new PrincipalResource();
-				resource = new PrincipalResource(principal.getName(), principal.getAuthorities().iterator().next().toString(), null, null);
+				resource = new PrincipalResource(principal.getName(), principal.getAuthorities().iterator().next().toString(), null, null, null);
 			}
 		}
 

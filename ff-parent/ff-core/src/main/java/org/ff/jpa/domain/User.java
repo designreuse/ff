@@ -62,10 +62,10 @@ public class User extends AbstractEntity {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private Company company;
 
-	@Column(name = "registration_code", nullable = false, length = 255)
+	@Column(name = "registration_code", nullable = true, length = 255)
 	private String registrationCode;
 
-	@Column(name = "registration_code_sent", nullable = false)
+	@Column(name = "registration_code_sent", nullable = true)
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime registrationCodeSentDate;
 
@@ -76,5 +76,8 @@ public class User extends AbstractEntity {
 	@Column(name = "last_login", nullable = true)
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime lastLoginDate;
+
+	@Column(name = "demo_user", nullable = true)
+	private Boolean demoUser;
 
 }

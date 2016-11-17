@@ -11,7 +11,7 @@
                 <a ui-sref="company.edit">
                     <i class="fa fa-user"></i>
                     <span class="nav-label">{{ 'MENU_COMPANY' | translate }}</span>
-                    <i ng-if="profileIncomplete" class="fa fa-lg fa-exclamation-circle pull-right" 
+                    <i ng-if="!principal.demoUser && profileIncomplete" class="fa fa-lg fa-exclamation-circle pull-right" 
                         uib-popover="{{ 'INCOMPLETE_PROFILE_MSG' | translate }}" popover-title="{{ 'INCOMPLETE_PROFILE_HDR' | translate }}" popover-trigger="mouseenter" popover-append-to-body="true"></i>
                 </a>
             </li>

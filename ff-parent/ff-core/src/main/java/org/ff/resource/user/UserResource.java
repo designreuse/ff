@@ -43,6 +43,9 @@ public class UserResource {
 	@JsonProperty("lastLoginDate")
 	private Date lastLoginDate;
 
+	@JsonProperty("demoUser")
+	private Boolean demoUser;
+
 	@JsonProperty("creationDate")
 	private Date creationDate;
 

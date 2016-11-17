@@ -17,7 +17,7 @@
             <li uib-dropdown>
                 <a style="font-weight: normal;" uib-dropdown-toggle><i class="fa fa-user"></i> {{ principal.firstName }} {{ principal.lastName }} <b class="caret"></b></a>
                 <ul uib-dropdown-menu class="animated flipInX m-t-xs">
-                    <li><a style="font-weight: normal;" ng-click="settings()"><i class="fa fa-wrench m-r-xs"></i> {{ 'SETTINGS' | translate }}</a></li>
+                    <li ng-if="!principal.demoUser"><a style="font-weight: normal;" ng-click="settings()"><i class="fa fa-wrench m-r-xs"></i> {{ 'SETTINGS' | translate }}</a></li>
                     <li class="divider" style="margin: 0px;"></li>
                     <li><a style="font-weight: normal;" ng-click="logout()"><i class="fa fa-sign-out m-r-xs"></i> {{ 'LOGOUT' | translate }}</a></li>
                 </ul>

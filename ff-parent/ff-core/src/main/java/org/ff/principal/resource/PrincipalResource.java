@@ -26,4 +26,7 @@ public class PrincipalResource {
 	@JsonProperty("lastName")
 	private String lastName;
 
+	@JsonProperty("demoUser")
+	private Boolean demoUser;
+
 }
