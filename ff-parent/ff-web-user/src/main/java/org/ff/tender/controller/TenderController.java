@@ -5,11 +5,13 @@ import java.util.List;
 import org.ff.controller.BaseController;
 import org.ff.etm.EtmService;
 import org.ff.resource.tender.TenderResource;
+import org.ff.tender.resource.DemoResource;
 import org.ff.tender.service.TenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +38,17 @@ public class TenderController extends BaseController {
 		} finally {
 			etmService.collect(point);
 			log.debug(".findAll finished in {} ms", point.getTransactionTime());
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value="/demo")
+	public List<TenderResource> findAllDemo(@AuthenticationPrincipal UserDetails principal, @RequestBody DemoResource resource) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAllDemo");
+		try {
+			return tenderService.findAllDemo(principal, resource);
+		} finally {
+			etmService.collect(point);
+			log.debug(".findAllDemo finished in {} ms", point.getTransactionTime());
 		}
 	}
 

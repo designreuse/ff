@@ -144,7 +144,7 @@ public class CompanyResourceAssembler {
 				}
 
 				// set company item value
-				setEntityValue(item, itemResource, companyItem);
+				setEntityValue(itemResource, companyItem);
 
 				entity.getItems().add(companyItem);
 			}
@@ -201,27 +201,27 @@ public class CompanyResourceAssembler {
 		}
 	}
 
-	private void setEntityValue(Item item, ItemResource itemResource, CompanyItem companyItem) {
+	public void setEntityValue(ItemResource itemResource, CompanyItem companyItem) {
 		String value = null;
 
 		try {
 			if (itemResource.getValue() != null) {
-				if (item.getType() == ItemType.NUMBER) {
+				if (itemResource.getType() == ItemType.NUMBER) {
 					value = itemResource.getValue().toString();
-				} if (item.getType() == ItemType.DATE) {
+				} if (itemResource.getType() == ItemType.DATE) {
 					value = new DateTime(itemResource.getValue()).toString();
-				} else if (item.getType() == ItemType.RADIO) {
+				} else if (itemResource.getType() == ItemType.RADIO) {
 					value = itemResource.getValue().toString();
-				} else if (item.getType() == ItemType.SELECT) {
+				} else if (itemResource.getType() == ItemType.SELECT) {
 					ItemOptionResource itemOptionResource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), ItemOptionResource.class);
 					value = itemOptionResource.getId().toString();
-				} else if (item.getType() == ItemType.CITY) {
+				} else if (itemResource.getType() == ItemType.CITY) {
 					CityResource cityResource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), CityResource.class);
 					value = cityResource.getId().toString();
-				} else if (item.getType() == ItemType.NKD) {
+				} else if (itemResource.getType() == ItemType.NKD) {
 					NkdResource nkdResource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), NkdResource.class);
 					value = nkdResource.getId().toString();
-				} else if (item.getType() == ItemType.NKDS) {
+				} else if (itemResource.getType() == ItemType.NKDS) {
 					if (itemResource.getValue() != null) {
 						List<?> objects = (List<?>) itemResource.getValue();
 						if (!objects.isEmpty()) {

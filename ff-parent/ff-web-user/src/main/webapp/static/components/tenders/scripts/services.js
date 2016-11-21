@@ -7,4 +7,7 @@ angular.module('FundFinder')
 	this.findAll = function() {
 		return $http.get('/api/v1/tenders');
 	};
+	this.findAllDemo = function(resource) {
+		return $http.post('/api/v1/tenders/demo', resource);
+	};
 });

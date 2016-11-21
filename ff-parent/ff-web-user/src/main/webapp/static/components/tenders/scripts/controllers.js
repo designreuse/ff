@@ -5,22 +5,46 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW
 // ========================================================================
-function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, TendersService) {
+function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, SessionStorage, TendersService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
 	$scope.findAll = function() {
-		TendersService.findAll()
-			.success(function(data, status) {
-				if (status == 200) {
-					$scope.tenders = data;
-				} else {
+		if ($rootScope.principal.demoUser) {
+			var company = SessionStorage.getSession("company")
+			var investments = SessionStorage.getSession("investments");
+			
+			var demoResource = {
+				"company" : company,
+				"investments" : investments
+			};
+			
+			console.log(demoResource);
+			
+			TendersService.findAllDemo(demoResource)
+				.success(function(data, status, headers, config) {
+					if (status == 200) {
+						$scope.tenders = data;
+					} else {
+						toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+					}
+				})
+				.error(function(data, status, headers, config) {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-				}
-			})
-			.error(function(data, status) {
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			});
+				});	
+		} else {
+			TendersService.findAll()
+				.success(function(data, status) {
+					if (status == 200) {
+						$scope.tenders = data;
+					} else {
+						toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+					}
+				})
+				.error(function(data, status) {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				});
+		}
 	};
 	
 	$scope.showDetails = function(tender) {
