@@ -15,6 +15,7 @@ import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemType;
 import org.ff.jpa.domain.AlgorithmItem.Operator;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
+import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemType;
 import org.ff.jpa.domain.Tender;
@@ -63,8 +64,16 @@ public class AlgorithmService extends BaseService {
 			// active algorithm items
 			List<AlgorithmItem> algorithmItems = algorithmItemRepository.findByStatusOrderByCode(AlgorithmItemStatus.ACTIVE);
 
+			// tender investments
+			List<Integer> tenderInvestments = getTenderInvestments(tender);
+
 			for (User user : userRepository.findByStatus(UserStatus.ACTIVE)) {
 				if (user.getCompany() == null) {
+					continue;
+				}
+
+				// check if company investments match tender investments
+				if (!processCompany4Investments(user.getCompany(), tenderInvestments)) {
 					continue;
 				}
 
@@ -130,11 +139,19 @@ public class AlgorithmService extends BaseService {
 			// company items
 			Set<CompanyItem> companyItems = company.getItems();
 
+			// company investments
+			Set<Investment> companyInvestments = company.getInvestments();
+
 			// active tenders
 			Iterable<Tender> tenders = tenderRepository.findByStatus(TenderStatus.ACTIVE);
 
 			for (Tender tender : tenders) {
 				Map<AlgorithmItem, Boolean> match4AlgorithmItem = new HashMap<>();
+
+				// check if tender investments match company investments
+				if (!processTender4Investments(tender, companyInvestments)) {
+					continue;
+				}
 
 				for (AlgorithmItem algorithmItem : algorithmItems) {
 					if (processAlgorithmItem(tender, companyItems, algorithmItem) == Boolean.TRUE) {
@@ -177,6 +194,52 @@ public class AlgorithmService extends BaseService {
 			etmService.collect(point);
 			log.debug("{} tender(s) found in {} ms for {} [{}]", result.size(), point.getTransactionTime(), company.getName(), company.getId());
 		}
+	}
+
+	private Boolean processCompany4Investments(Company company, List<Integer> tenderInvestments) {
+		for (Investment investment : company.getInvestments()) {
+			if (tenderInvestments.contains(investment.getId())) {
+				// company has at least one investment required by the tender
+				return Boolean.TRUE;
+			}
+		}
+
+		return Boolean.FALSE;
+	}
+
+	private Boolean processTender4Investments(Tender tender, Set<Investment> companyInvestments) {
+		List<Integer> tenderInvestments = getTenderInvestments(tender);
+
+		if (tenderInvestments.isEmpty()) {
+			// tender is not restricted to any particular investment
+			return Boolean.TRUE;
+		}
+
+		for (Investment investment : companyInvestments) {
+			if (tenderInvestments.contains(investment.getId())) {
+				// company has at least one investment required by the tender
+				return Boolean.TRUE;
+			}
+		}
+
+		return Boolean.FALSE;
+	}
+
+	private List<Integer> getTenderInvestments(Tender tender) {
+		List<Integer> tenderInvestments = new ArrayList<>();
+
+		for (TenderItem tenderItem : tender.getItems()) {
+			if (ItemType.INVESTMENTS == tenderItem.getItem().getType()) {
+				if (StringUtils.isNotBlank(tenderItem.getValue())) {
+					for (String investmentId : tenderItem.getValue().split("\\|")) {
+						tenderInvestments.add(Integer.parseInt(investmentId));
+					}
+				}
+				break;
+			}
+		}
+
+		return tenderInvestments;
 	}
 
 	private Boolean processAlgorithmItem(Tender tender, Set<CompanyItem> companyItems, AlgorithmItem algorithmItem) {
