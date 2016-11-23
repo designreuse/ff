@@ -7,28 +7,28 @@
                     <span class="nav-label">{{ 'MENU_DASHBOARD' | translate }}</span>
                 </a>
             </li>
-			<li ng-class="{active: $state.includes('users')}">
+			<li ng-if="hasPermission(['users'])" ng-class="{active: $state.includes('users')}">
                 <a ui-sref="users.overview">
                     <i class="fa fa-users"></i>
                     <span class="nav-label">{{ 'MENU_USERS' | translate }}</span>
                     <span class="label label-default pull-right">{{cntUsers}}</span>
                 </a>
             </li>
-			<li ng-class="{active: $state.includes('tenders')}">
+			<li ng-if="hasPermission(['tenders'])" ng-class="{active: $state.includes('tenders')}">
                 <a ui-sref="tenders.overview">
                     <i class="fa fa-star"></i>
                     <span class="nav-label">{{ 'MENU_TENDERS' | translate }}</span>
                     <span class="label label-default pull-right">{{cntTenders}}</span>
                 </a>
             </li>
-			<li ng-class="{active: $state.includes('investments')}">
+			<li ng-if="hasPermission(['investments'])" ng-class="{active: $state.includes('investments')}">
                 <a ui-sref="investments.overview">
                     <i class="fa fa-university"></i>
                     <span class="nav-label">{{ 'MENU_INVESTMENTS' | translate }}</span>
                     <span class="label label-default pull-right">{{cntInvestments}}</span>
                 </a>
             </li>
-			<li ng-class="{active: $state.includes('articles')}">
+			<li ng-if="hasPermission(['articles'])" ng-class="{active: $state.includes('articles')}">
                 <a ui-sref="articles.overview">
                     <i class="fa fa-newspaper-o"></i>
                     <span class="nav-label">{{ 'MENU_ARTICLES' | translate }}</span>
@@ -36,14 +36,14 @@
                 </a>
             </li>
             
-            <li ng-class="{active: $state.includes('statistics')}">
+            <li ng-if="hasPermission(['statistics'])" ng-class="{active: $state.includes('statistics')}">
                 <a ui-sref="statistics.overview">
                     <i class="fa fa-area-chart"></i>
                     <span class="nav-label">{{ 'MENU_STATISTICS' | translate }}</span>
                 </a>
             </li>
             
-            <li ng-class="{active: $state.includes('settings')}">
+            <li ng-if="hasPermission(['settings'])" ng-class="{active: $state.includes('settings')}">
                 <a href="">
                     <i class="fa fa-cogs"></i>
                     <span class="nav-label">{{ 'MENU_SETTINGS' | translate }}</span>
@@ -58,6 +58,9 @@
                     </li>
                     <li ng-class="{active: $state.is('settings.items_overview_tender') || $state.is('settings.items_edit_tender') || $state.is('settings.items_details_tender')}">
                         <a class="ff-nav-second-level" ui-sref="settings.items_overview_tender({entityType : 'tender'})">{{ 'MENU_TENDER_ITEMS' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.roles_overview') || $state.is('settings.roles_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.roles_overview">{{ 'MENU_ROLES' | translate }}</a>
                     </li>
                     <li ng-class="{active: $state.is('settings.usergroups_overview') || $state.is('settings.usergroups_edit') }">
                         <a class="ff-nav-second-level" ui-sref="settings.usergroups_overview">{{ 'MENU_USER_GROUPS' | translate }}</a>

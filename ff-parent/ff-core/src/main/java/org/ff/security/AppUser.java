@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter @ToString
 public class AppUser {
 
-	public enum AppUserRole { ROLE_ADMIN, ROLE_OPERATOR_L1, ROLE_OPERATOR_L2, ROLE_OPERATOR_L3, ROLE_USER, ROLE_UNKNOWN }
+	public enum AppUserRole { ROLE_USER, ROLE_ADMIN }
 
 	private String username;
 

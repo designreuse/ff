@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ff.security.AppUser.AppUserRole;
 import org.ff.sova.SovaClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class SecurityFilter implements Filter {
+
+	@Autowired
+	private Environment environment;
 
 	@Autowired
 	private SovaClient sovaClient;
@@ -47,10 +51,15 @@ public class SecurityFilter implements Filter {
 				authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
 						null, getGrantedAuthority(sovaClient.wsKorisnikAutorizacija(httpRequest.getUserPrincipal().getName())));
 			} else {
-				// stand alone
-				log.trace("Authenticating unknown user...");
-				authentication = new UsernamePasswordAuthenticationToken(
-						"unknown", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_UNKNOWN.name()));
+				for (String profile : environment.getActiveProfiles()) {
+					// if development profile is active, use dummy authentication
+					if (profile.startsWith("dev")) {
+						log.trace("Authenticating unknown user (dev env)...");
+						authentication = new UsernamePasswordAuthenticationToken(
+								"Administrator", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name()));
+						break;
+					}
+				}
 			}
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -72,7 +81,7 @@ public class SecurityFilter implements Filter {
 		if (StringUtils.isNotBlank(role)) {
 			return AuthorityUtils.createAuthorityList(role);
 		} else {
-			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_UNKNOWN.name());
+			return AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name());
 		}
 	}
 

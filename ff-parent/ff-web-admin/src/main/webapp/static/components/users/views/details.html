@@ -146,7 +146,7 @@
                             </div>
                         </div>
                     </uib-tab>
-                    <uib-tab> 
+                    <uib-tab ng-if="hasPermission(['users.update'])"> 
                         <uib-tab-heading>{{ 'TAB_BRM' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <form name="form" class="form-horizontal ng-pristine ng-valid m-l-md" novalidate>

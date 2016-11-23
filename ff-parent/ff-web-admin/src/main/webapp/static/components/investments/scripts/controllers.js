@@ -10,6 +10,33 @@ function InvestmentsOverviewController($rootScope, $scope, $state, $log, $timeou
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
+	var calculateWidth = function() {
+		var width = 0;
+		var padding = 4;
+		var cnt = 0;
+		
+		if ($rootScope.hasPermission(['investments.read'])) {
+			width = width + 30;
+			cnt++;
+		}
+		if ($rootScope.hasPermission(['investments.update'])) {
+			width = width + 68;
+			cnt++;
+		}
+		if ($rootScope.hasPermission(['investments.delete'])) {
+			width = width + 26;
+			cnt++;
+		}
+
+		if (cnt == 1) {
+			width = width + padding;
+		} else if (cnt > 1) {
+			width = width + padding + (cnt * 2) ;
+		}
+		
+		return width;
+	};
+	
 	$scope.gridOptions = {
 			rowHeight: $rootScope.rowHeight,
 			paginationPageSize: $rootScope.paginationPageSize,
@@ -113,14 +140,14 @@ function InvestmentsOverviewController($rootScope, $scope, $state, $log, $timeou
 					enableSorting: false,
 					enableFiltering: false,
 					enableHiding: false,
-					width: 134,
+					width: calculateWidth(),
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +	
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
+							'<button ng-if="grid.appScope.hasPermission([\'investments.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +	
+							'<button ng-if="grid.appScope.hasPermission([\'investments.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
+							'<button ng-if="grid.appScope.hasPermission([\'investments.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'investments.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'investments.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
 						'</div>'
 				}
 			],

@@ -50,8 +50,25 @@ angular.module('FundFinder')
 	$urlRouterProvider.when('', '/dashboard/overview').otherwise('/dashboard/overview');
 	
 	$stateProvider
+	
 		// ==========================================
-		// DASHBOARD
+		// 	SECURITY
+  		// ==========================================
+		.state('security', {
+	        abstract: true,
+	        url: "/security",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal
+	    })
+	    .state('security.denied', {
+	    	url: "/denied",
+	        templateUrl: "/views/common/denied.html",
+	        controller: 'DeniedController',
+	        data: { pageTitle: 'Access denied' }
+	    })
+	    
+		// ==========================================
+		// 	DASHBOARD
 		// ==========================================
 		.state('dashboard', {
 	        abstract: true,
@@ -122,15 +139,24 @@ angular.module('FundFinder')
 	        url: "/overview",
 	        templateUrl: "/components/users/views/overview.html",
 	        controller: 'UsersOverviewController',
-	        data: { pageTitle: 'Users overview' }
+	        params: { 'permission' : 'users' },
+	        data: { pageTitle: 'Users overview' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 		.state('users.details', {
 	        url: "/details/:id",
 	        templateUrl: "/components/users/views/details.html",
 	        controller: 'UsersDetailsController',
-	        params: { 'id' : null },
+	        params: { 'id' : null, 'permission' : 'users.read' },
 	        data: { pageTitle: 'User details' },
 	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	},
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
@@ -164,15 +190,24 @@ angular.module('FundFinder')
 	        url: "/overview",
 	        templateUrl: "/components/tenders/views/overview.html",
 	        controller: 'TendersOverviewController',
-	        data: { pageTitle: 'Tenders overview' }
+	        params: { 'permission' : 'tenders' },
+	        data: { pageTitle: 'Tenders overview' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 		.state('tenders.details', {
 	        url: "/details/:id",
 	        templateUrl: "/components/tenders/views/details.html",
 	        controller: 'TendersDetailsController',
-	        params: { 'id' : null, 'showEditButton' : false },
+	        params: { 'id' : null, 'showEditButton' : false, 'permission' : 'tenders.read' },
 	        data: { pageTitle: 'Tender details' },
 	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	},
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
@@ -189,9 +224,12 @@ angular.module('FundFinder')
 	        url: "/edit/:id",
 	        templateUrl: "/components/tenders/views/edit.html",
 	        controller: 'TendersEditController',
-	        params: { 'id' : null },
+	        params: { 'id' : null, 'permission' : 'tenders.update' },
 	        data: { pageTitle: 'Edit tender' },
 	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	},
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
@@ -225,21 +263,37 @@ angular.module('FundFinder')
 	        url: "/overview",
 	        templateUrl: "/components/investments/views/overview.html",
 	        controller: 'InvestmentsOverviewController',
-	        data: { pageTitle: 'Investments overview' }
+	        params: { 'permission' : 'investments' },
+	        data: { pageTitle: 'Investments overview' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 		.state('investments.details', {
 	        url: "/details/:id",
 	        templateUrl: "/components/investments/views/details.html",
 	        controller: 'InvestmentsDetailsController',
-	        params: { 'id' : null, 'showEditButton' : false },
-	        data: { pageTitle: 'Investment details' }
+	        params: { 'id' : null, 'showEditButton' : false, 'permission' : 'investments.read' },
+	        data: { pageTitle: 'Investment details' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 	    .state('investments.edit', {
 	        url: "/edit/:id",
 	        templateUrl: "/components/investments/views/edit.html",
 	        controller: 'InvestmentsEditController',
-	        params: { 'id' : null },
-	        data: { pageTitle: 'Edit investment' }
+	        params: { 'id' : null, 'permission' : 'investments.update' },
+	        data: { pageTitle: 'Edit investment' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 	    
 	    // ==========================================
@@ -265,21 +319,37 @@ angular.module('FundFinder')
 	        url: "/overview",
 	        templateUrl: "/components/articles/views/overview.html",
 	        controller: 'ArticlesOverviewController',
-	        data: { pageTitle: 'Articles overview' }
+	        params: { 'permission' : 'articles' },
+	        data: { pageTitle: 'Articles overview' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 		.state('articles.details', {
 	        url: "/details/:id",
 	        templateUrl: "/components/articles/views/details.html",
 	        controller: 'ArticlesDetailsController',
-	        params: { 'id' : null },
-	        data: { pageTitle: 'Article details' }
+	        params: { 'id' : null, 'permission' : 'articles.read' },
+	        data: { pageTitle: 'Article details' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 	    .state('articles.edit', {
 	        url: "/edit/:id",
 	        templateUrl: "/components/articles/views/edit.html",
 	        controller: 'ArticlesEditController',
-	        params: { 'id' : null },
-	        data: { pageTitle: 'Edit article' }
+	        params: { 'id' : null, 'permission' : 'articles.update' },
+	        data: { pageTitle: 'Edit article' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
 	    })
 	
 	    // ==========================================
@@ -528,6 +598,39 @@ angular.module('FundFinder')
 	        }
 	    })
 	    
+	    .state('settings.roles_overview', {
+	    	url: "/roles/overview",
+	        templateUrl: "/components/roles/views/overview.html",
+	        controller: 'RolesOverviewController',
+	        data: { pageTitle: 'Roles overview' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/roles/scripts/controllers.js',
+	        			        'components/roles/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('settings.roles_edit', {
+	    	url: "/roles/edit/:id",
+	    	params: { 'id' : null },
+	        templateUrl: "/components/roles/views/edit.html",
+	        controller: 'RolesEditController',
+	        data: { pageTitle: 'Edit role' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/roles/scripts/controllers.js',
+	        			        'components/roles/scripts/services.js',
+	        			        'components/permissions/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    
 	    .state('settings.usergroups_overview', {
 	    	url: "/usergroups/overview",
 	        templateUrl: "/components/usergroups/views/overview.html",
@@ -595,7 +698,7 @@ angular.module('FundFinder')
 	    
 })
 
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $templateCache, $filter, ModalService, constants, CountersService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $templateCache, $filter, ModalService, grant, constants, CountersService) {
 	var $translate = $filter('translate');
 	
 	$rootScope.$state = $state;
@@ -780,4 +883,46 @@ angular.module('FundFinder')
 				});
 			}, 100);
 		});
+	
+	// =======================================
+	// 	permissions
+	// =======================================
+	$rootScope.hasPermission = function(permissions) {
+		for (i=0; i<$rootScope.principal.permissions.length; i++) { 
+			for (j=0; j<permissions.length; j++) {
+				if (permissions[j] === $rootScope.principal.permissions[i]) {
+					return true;
+				}					
+			}
+		}
+		return false;
+	};
+	
+	grant.addTest('hasPermission', function() {
+		if (!$rootScope.principal) {
+			$log.info('Getting principal');
+			
+			// get data synchronously
+			var request = new XMLHttpRequest();
+			request.open('GET', constants.contextPath + '/principal', false);
+			request.send(null);
+			
+			if (request.status == 200) {
+				$rootScope.principal = jQuery.parseJSON(request.response);
+			} else {
+				$log.error('Error occurred while getting principal!', status, data);
+			}
+		}
+		
+		var permission;
+		if (this.stateParams.id == 0 && this.stateParams.permission.endsWith(".update")) {
+			// special handling
+			permission = this.stateParams.permission.replace(".update", ".create");
+		} else {
+			permission = this.stateParams.permission;
+		}
+		
+		return $rootScope.hasPermission([permission]);
+	});
+	
 });

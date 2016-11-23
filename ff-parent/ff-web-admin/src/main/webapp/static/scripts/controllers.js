@@ -18,4 +18,11 @@ angular.module('FundFinder')
 // ====================================================================================
 .controller('NavigationController', function($rootScope, $scope, $http, $window, $log) {
 	
+})
+
+// ====================================================================================
+//	AccessDeniedController
+// ====================================================================================
+.controller('DeniedController', function($rootScope, $scope) {
+	
 });
