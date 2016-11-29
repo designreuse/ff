@@ -22,3 +22,4 @@ drop table [business_relationship_manager];
 drop table [role_permission];
 drop table [role];
 drop table [permission];
+drop table [schema_version];
