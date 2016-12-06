@@ -11,12 +11,14 @@ import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.ImpressionRepository;
+import org.ff.jpa.repository.InvestmentRepository;
 import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.resource.company.CompanyResource;
 import org.ff.resource.company.CompanyResourceAssembler;
 import org.ff.resource.image.ImageResourceAssembler;
+import org.ff.resource.investment.InvestmentResource;
 import org.ff.resource.item.ItemResource;
 import org.ff.resource.item.ItemResourceAssembler;
 import org.ff.resource.tender.TenderResource;
@@ -57,6 +59,9 @@ public class TenderService {
 
 	@Autowired
 	private CompanyResourceAssembler companyResourceAssembler;
+
+	@Autowired
+	private InvestmentRepository investmentRepository;
 
 	@Transactional(readOnly = true)
 	public List<TenderResource> findAll(UserDetails principal) {
@@ -113,6 +118,11 @@ public class TenderService {
 			// set company item value
 			companyResourceAssembler.setEntityValue(itemResource, companyItem);
 			company.getItems().add(companyItem);
+		}
+
+		company.getInvestments().clear();
+		for (InvestmentResource investmentResource : demoResource.getInvestments()) {
+			company.getInvestments().add(investmentRepository.findOne(investmentResource.getId()));
 		}
 
 		for (Tender tender : algorithmService.findTenders4User(user)) {
