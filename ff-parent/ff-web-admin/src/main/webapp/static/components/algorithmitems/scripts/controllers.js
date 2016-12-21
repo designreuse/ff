@@ -92,7 +92,7 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 				},
 				{
 					displayName: $translate('COLUMN_OPERATOR'),
-					field: 'operator',
+					field: 'operator.value',
 					type: 'string',
 					cellTooltip: false, 
 					enableSorting: true,
@@ -102,12 +102,14 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 						type: uiGridConstants.filter.SELECT,
 						disableCancelFilterButton: true,
 						selectOptions: [
-						    { value: 'EQUALS', label: $translate('OPERATOR_EQUALS') },
+						    { value: 'EQUAL', label: $translate('OPERATOR_EQUAL') },
+						    { value: 'GREATER_OR_EQUAL', label: $translate('OPERATOR_GREATER_OR_EQUAL') },
+						    { value: 'LESS_OR_EQUAL', label: $translate('OPERATOR_LESS_OR_EQUAL') },
 						    { value: 'IN', label: $translate('OPERATOR_IN') }
 						]
 					},
 					width: 100,
-					cellTemplate: '<div class="ui-grid-cell-contents">{{ (\'OPERATOR_\' + row.entity.operator) | translate }}</div>' 
+					cellTemplate: '<div class="ui-grid-cell-contents">{{ (\'OPERATOR_\' + row.entity.operator.value) | translate }}</div>' 
 				},
 				{
 					displayName: $translate('COLUMN_TENDER_ITEM_CODE'),
@@ -506,6 +508,7 @@ function AlgorithmItemsEditController($rootScope, $scope, $state, $stateParams, 
 			.success(function(data, status) {
 				if (status == 200) {
 					$scope.entity = data;
+					$scope.updateOperator();
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -539,21 +542,32 @@ function AlgorithmItemsEditController($rootScope, $scope, $state, $stateParams, 
 	};
 	
 	$scope.updateOperator = function() {
-		$scope.entity.operator = null;
 		if ($scope.entity.companyItem && $scope.entity.tenderItem) {
 			if ($scope.entity.companyItem.type == 'SELECT' && $scope.entity.tenderItem.type == 'MULTISELECT') {
-				$scope.entity.operator = 'IN';
-			} else if ($scope.entity.companyItem.type == 'RADIO' && $scope.entity.tenderItem.type == 'CHECKBOX') {
-				$scope.entity.operator = 'IN';
-			} else if ($scope.entity.companyItem.type == 'NKD' && $scope.entity.tenderItem.type == 'NKDS') {
-				$scope.entity.operator = 'IN';
-			} else if ($scope.entity.companyItem.type == 'NKDS' && $scope.entity.tenderItem.type == 'NKDS') {
-				$scope.entity.operator = 'IN';
+				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
+			} else if ($scope.entity.companyItem.type == 'SELECT' && $scope.entity.tenderItem.type == 'SELECT') {
+				$scope.operators = [{ 'value': 'EQUAL', 'name': $translate('OPERATOR_EQUAL') }];
+			} else if ($scope.entity.companyItem.type == 'NUMBER' && $scope.entity.tenderItem.type == 'NUMBER') {
+				$scope.operators = [{ 'value': 'GREATER_OR_EQUAL', 'name': $translate('OPERATOR_GREATER_OR_EQUAL') }];
+			} else if ($scope.entity.companyItem.type == 'DATE' && $scope.entity.tenderItem.type == 'NUMBER') {
+				$scope.operators = [{ 'value': 'GREATER_OR_EQUAL', 'name': $translate('OPERATOR_GREATER_OR_EQUAL') }, { 'value': 'LESS_OR_EQUAL', 'name': $translate('OPERATOR_LESS_OR_EQUAL') }];
+			} else if ($scope.entity.companyItem.type == 'SUBDIVISIONS1' && $scope.entity.tenderItem.type == 'MULTISELECT') {
+				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
+			} else if ($scope.entity.companyItem.type == 'SUBDIVISIONS2' && $scope.entity.tenderItem.type == 'MULTISELECT') {
+				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
+			} else if ($scope.entity.companyItem.type == 'ACTIVITIES' && $scope.entity.tenderItem.type == 'ACTIVITIES') {
+				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
+			} else {
+				$scope.operators = [];
+				$scope.entity.operator = null;
 			}
+		} else {
+			$scope.entity.operator = null;
 		}
 	};
 	
 	// initial load
+	$scope.operators = [];
 	$scope.getCompanyItems();
 	$scope.getTenderItems();
 	$scope.getConditionalItems();

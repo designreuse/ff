@@ -1,6 +1,6 @@
 package org.ff.sse.resource;
 
-import org.ff.counters.resource.CountersResource;
+import org.ff.rest.counters.resource.CountersResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

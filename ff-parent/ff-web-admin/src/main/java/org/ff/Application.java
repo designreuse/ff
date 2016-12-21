@@ -3,8 +3,8 @@ package org.ff;
 import java.text.Collator;
 import java.util.Locale;
 
+import org.ff.base.properties.BaseProperties;
 import org.ff.jpa.SpringSecurityAuditorAware;
-import org.ff.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

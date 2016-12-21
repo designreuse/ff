@@ -3,7 +3,7 @@ package org.ff.sova;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.ff.properties.BaseProperties;
+import org.ff.base.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 

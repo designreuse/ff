@@ -1,10 +1,3 @@
-<div class="row border-bottom">
-    <div class="col-lg-12">
-        <h1 ng-show="entityType == 'tender'">{{ 'HEADER_TENDER_ITEM_DETAILS' | translate }}</h1>
-        <h1 ng-show="entityType == 'company'">{{ 'HEADER_COMPANY_ITEM_DETAILS' | translate }}</h1>
-    </div>
-</div>
-
 <style>
     .panel {
         margin-bottom: 0px; 
@@ -27,6 +20,13 @@
     }
 </style>
 
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1 ng-show="entityType == 'tender'">{{ 'HEADER_TENDER_ITEM_DETAILS' | translate }}</h1>
+        <h1 ng-show="entityType == 'company'">{{ 'HEADER_COMPANY_ITEM_DETAILS' | translate }}</h1>
+    </div>
+</div>
+
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
@@ -42,19 +42,45 @@
                                         <sup ng-if="entity.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(entity.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup>
 	                                    <span ng-if="entity.mandatory" class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.entity.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.entity.$valid }"></i></span>
 	                                </label>
+	                                
+	                                <!-- TEXT -->
 	                                <input ng-if="entity.type == 'TEXT'" ng-model="entity.value" type="text" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" maxlength="512" />
+	                                
+                                    <!-- TEXT_AREA -->
+                                    <textarea ng-if="entity.type == 'TEXT_AREA'" ng-model="entity.value" rows="5" class="form-control ff-form-control" name="entity" style="resize: none;"></textarea>	                                
+	                                
+	                                <!-- NUMBER -->
 	                                <input ng-if="entity.type == 'NUMBER'" ng-model="entity.value" type="number" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
-	                                <textarea ng-if="entity.type == 'TEXT_AREA'" ng-model="entity.value" rows="5" class="form-control ff-form-control" name="entity" style="resize: none;" maxlength="4096"></textarea>
+	                                
+	                                <!-- CURRENCY -->
+									<div ng-if="entity.type == 'CURRENCY'" class="input-group">
+										<input ng-model="entity.value" type="number" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+										<span class="input-group-addon" style="border: none; padding: 0px;">
+                                            <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="entity.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>										
+										</span>
+									</div>
+									
+									<!-- PERCENTAGE -->
+                                    <div ng-if="entity.type == 'PERCENTAGE'" class="input-group">
+                                        <input ng-model="entity.value" type="number" min="0" max="100" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                    
+                                    <!-- RADIO -->
 	                                <div ng-if="entity.type == 'RADIO'" class="m-t-xxs">
 	                                    <div class="m-l-sm m-t-xs" ng-repeat="option in entity.options">
 	                                        <input ng-model="entity.value" type="radio" ng-value="{{option.id}}" icheck class="form-control" name="entity" ng-required="entity.mandatory" /> <span>{{ option.text }}</span><br>
 	                                    </div>
 	                                </div>
+	                                
+	                                <!-- CHECKBOX -->
 	                                <div ng-if="entity.type == 'CHECKBOX'" class="m-t-xxs">
 	                                    <div class="m-l-sm m-t-xs" ng-repeat="option in entity.options">
 	                                        <input ng-model="entity.value[option.id]" type="checkbox" icheck class="form-control" /> <span>{{ option.text }}</span><br>
 	                                    </div>
 	                                </div>
+	                                
+	                                <!-- DATE -->
 	                                <div ng-if="entity.type == 'DATE'">
 	                                    <div class="input-group">
 	                                        <input ng-required="entity.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate()" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="false" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate.opened" ng-model="entity.value" name="entity" />
@@ -63,31 +89,49 @@
 	                                        </span>
 	                                    </div>
 	                                </div>
-	                                <input ng-if="entity.type == 'HYPERLINK'" ng-model="entity.value" type="text" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
-	                                <select ng-if="entity.type == 'CITY'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="cities" ng-options="city.name for city in cities track by city.id"></select>
-	                                <select ng-if="entity.type == 'COUNTIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="counties" ng-options="county.name for county in counties track by county.id"></select>
-	                                <select ng-if="entity.type == 'NKD'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="nkds" ng-options="(nkd.area + '.' + nkd.activity + ' - ' + nkd.activityName) group by (nkd.sector + ' - ' + nkd.sectorName) for nkd in nkds track by nkd.id"></select>
-	                                <select ng-if="entity.type == 'NKDS'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="nkds" ng-options="nkd.id as (nkd.area + '.' + nkd.activity + ' - ' + nkd.activityName) group by (nkd.sector + ' - ' + nkd.sectorName) for nkd in nkds"></select>
-	                                <select ng-if="entity.type == 'INVESTMENTS'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
+	                                
+	                                <!-- SELECT -->
 	                                <select ng-if="entity.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="entity.options" ng-options="option.text for option in entity.options track by option.id"></select>
-	                                <select ng-if="entity.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="entity.options" ng-options="option.text for option in entity.options track by option.id"></select>
+                                    
+                                    <!-- MULTISELECT -->
+                                    <select ng-if="entity.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="entity.options" ng-options="option.text for option in entity.options track by option.id"></select>
+
+                                    <!-- HYPERLINK -->
+                                    <input ng-if="entity.type == 'HYPERLINK'" ng-model="entity.value" type="url" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+                                    
+                                    <!-- ACTIVITIES -->
+                                    <select ng-if="entity.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+                                    
+                                    <!-- SUBDIVISION2 -->
+                                    <select ng-if="entity.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+                                    	                                
+	                                <!-- SUBDIVISIONS1 -->
+	                                <select ng-if="entity.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+	                                
+	                                <!-- SUBDIVISIONS2 -->
+	                                <select ng-if="entity.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+	                                
+	                                <!-- INVESTMENTS_PRIMARY/INVESTMENTS_SECONDARY -->
+	                                <select ng-if="entity.type == 'INVESTMENTS_PRIMARY' || entity.type == 'INVESTMENTS_SECONDARY'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
                                 </div>
                                 <div class="col-lg-6" style="padding-left: 0px; padding-right: 0px;">
                                     <h3>{{ 'LABEL_DISPLAY' | translate }}<br><small class="ff-postscript" style="margin-left: 0px;">{{ 'LABEL_DISPLAY_POSTSCRIPT' | translate }}</small></h3>
                                     <label class="ff-label">{{ entity.text }} <sup ng-if="entity.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(entity.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>
                                     <div ng-if="entity.type == 'TEXT' || entity.type == 'TEXT_AREA'" style="padding-left: 10px;" ng-bind-html="toTrusted(entity.value)"></div>
-                                    <div ng-if="entity.type == 'DATE'" style="padding-left: 10px;">{{ entity.value | date:dateFormat }}</div>
-                                    <div ng-if="entity.type == 'CITY'" style="padding-left: 10px;">{{ entity.value.name }}</div>
-                                    <div ng-if="entity.type == 'COUNTIES'" style="padding-left: 10px;"><span ng-repeat="county in entity.value">{{ county.name }}<br></span></div>
-                                    <div ng-if="entity.type == 'NKD'" style="padding-left: 10px;">{{ entity.value.area + "." + entity.value.activity + " - " + entity.value.activityName }}</div>
-                                    <div ng-if="entity.type == 'NKDS'" style="padding-left: 10px;"><span ng-repeat="id in entity.value">{{ nkdPreview(id) }}<br></span></div>
-                                    <div ng-if="entity.type == 'CHECKBOX'" style="padding-left: 10px;" ng-bind-html="toTrusted(checkboxPreview(entity.value))"></div>
-                                    <div ng-if="entity.type == 'RADIO'" style="padding-left: 10px;" ng-bind-html="toTrusted(radioPreview(entity.value))"></div>
                                     <div ng-if="entity.type == 'NUMBER'" style="padding-left: 10px;">{{ entity.value }}</div>
-                                    <div ng-if="entity.type == 'INVESTMENTS'" style="padding-left: 10px;"><span ng-repeat="investment in entity.value">{{ investment.name }}<br></span></div>
-                                    <div ng-if="entity.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ entity.value }}" target="_blank">{{ entity.value }}</a></div>
+                                    <div ng-if="entity.type == 'CURRENCY'" style="padding-left: 10px;">{{ entity.value | currency : "" }} <span ng-if="entity.value">{{ entity.currency.code }}</span></div>
+                                    <div ng-if="entity.type == 'PERCENTAGE'" style="padding-left: 10px;">{{ entity.value }} <span ng-if="entity.value">%</span></div>
+                                    <div ng-if="entity.type == 'RADIO'" style="padding-left: 10px;" ng-bind-html="toTrusted(radioPreview(entity.value))"></div>
+                                    <div ng-if="entity.type == 'CHECKBOX'" style="padding-left: 10px;" ng-bind-html="toTrusted(checkboxPreview(entity.value))"></div>
+                                    <div ng-if="entity.type == 'DATE'" style="padding-left: 10px;">{{ entity.value | date:dateFormat }}</div>
                                     <div ng-if="entity.type == 'SELECT'" style="padding-left: 10px;">{{ entity.value.text }}</div>
                                     <div ng-if="entity.type == 'MULTISELECT'" style="padding-left: 10px;"><span ng-repeat="option in entity.value">{{ option.text }}<br></span></div>
+                                    <div ng-if="entity.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ entity.value }}" target="_blank">{{ entity.value }}</a></div>
+                                    <div ng-if="entity.type == 'ACTIVITIES'" style="padding-left: 10px;"><span ng-repeat="activity in entity.value">{{ activity.name }}<br></span></div>
+                                    <div ng-if="entity.type == 'SUBDIVISION2'" style="padding-left: 10px;">{{ entity.value.name }}</div>
+                                    <div ng-if="entity.type == 'SUBDIVISIONS1'" style="padding-left: 10px;"><span ng-repeat="subdivision1 in entity.value">{{ subdivision1.name }}<br></span></div>
+                                    <div ng-if="entity.type == 'SUBDIVISIONS2'" style="padding-left: 10px;"><span ng-repeat="subdivision2 in entity.value">{{ subdivision2.name }}<br></span></div>
+                                    <div ng-if="entity.type == 'INVESTMENTS_PRIMARY' || entity.type == 'INVESTMENTS_SECONDARY'" style="padding-left: 10px;"><span ng-repeat="investment in entity.value">{{ investment.name }}<br></span></div>
                                 </div>
                             </form>
                         </div>

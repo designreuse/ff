@@ -16,7 +16,7 @@ angular.module('FundFinder')
 	this.getEntity = function(id) {
 		return $http.get('/api/v1/tenders/' + id);
 	};
-	this.getEntities = function(id) {
+	this.getEntities = function() {
 		return $http.get('/api/v1/tenders');
 	};
 	this.getPage = function(resource) {

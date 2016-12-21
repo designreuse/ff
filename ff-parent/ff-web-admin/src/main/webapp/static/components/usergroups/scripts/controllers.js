@@ -45,7 +45,7 @@ function UserGroupsOverviewController($rootScope, $scope, $state, $log, $timeout
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: false,
-					cellTemplate:'<div class="ui-grid-cell-contents"><a class="ff-a" ng-click="grid.appScope.showEntity(row.entity)">{{row.entity.name}}</a></div>',
+					cellTemplate:'<div class="ui-grid-cell-contents"><a class="ff-a" ng-click="grid.appScope.editEntity(row.entity)">{{row.entity.name}}</a></div>',
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{

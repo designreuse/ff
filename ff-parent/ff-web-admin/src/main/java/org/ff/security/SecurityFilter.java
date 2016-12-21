@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.ff.security.AppUser.AppUserRole;
+import org.ff.common.security.AppUser.AppUserRole;
 import org.ff.sova.SovaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

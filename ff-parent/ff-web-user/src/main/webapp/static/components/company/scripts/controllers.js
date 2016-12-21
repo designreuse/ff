@@ -4,7 +4,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	EDIT CONTROLLER
 // ========================================================================
-function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce, $filter, SessionStorage, CompanyService, NkdsService, CitiesService) {
+function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce, $filter, SessionStorage, CompanyService, Subdivisions1Service, Subdivisions2Service, CurrenciesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -16,11 +16,11 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
 	}
 	
-	$scope.getNkds = function() {
-		NkdsService.getEntities()
+	$scope.getSubdivisions1 = function() {
+		Subdivisions1Service.getEntities()
 			.success(function(data, status) {
 				if (status == 200) {
-					$scope.nkds = data;
+					$scope.subdivisions1 = data;
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -30,11 +30,25 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 			});
 	};
 	
-	$scope.getCities = function() {
-		CitiesService.getEntities()
+	$scope.getSubdivisions2 = function() {
+		Subdivisions2Service.getEntities()
 			.success(function(data, status) {
 				if (status == 200) {
-					$scope.cities = data;
+					$scope.subdivisions2 = data;
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.getCurrencies = function() {
+		CurrenciesService.getEntities()
+			.success(function(data, status) {
+				if (status == 200) {
+					$scope.currencies = data;
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -114,7 +128,8 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 	};
 	
 	// initial load
-	$scope.getNkds();
-	$scope.getCities();
+	$scope.getCurrencies();
+	$scope.getSubdivisions1();
+	$scope.getSubdivisions2();
 	$scope.find();
 };

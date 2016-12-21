@@ -61,12 +61,7 @@
 	                        <label class="ff-label">{{ 'LABEL_OPERATOR' | translate }}
 	                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.operator.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.operator.$valid }"></i></span>
 	                        </label>
-	                        <select ng-required="true" chosen class="form-control" ng-model="entity.operator" name="operator" disabled="disabled">
-	                            <option value=""></option>
-	                            <option value="EQUALS">{{ 'OPERATOR_EQUALS' | translate }}</option>
-	                            <option value="IN">{{ 'OPERATOR_IN' | translate }}</option>
-	                        </select>
-	                        <small class="ff-postscript">{{ 'LABEL_OPERATOR_NOTE' | translate }}</small>
+	                        <select ng-required="true" chosen class="form-control" ng-model="entity.operator" name="operator" options="operators" ng-options="operator.name for operator in operators track by operator.value"></select>
 	                    </div>
 	                </div>
 	                <div class="form-group">

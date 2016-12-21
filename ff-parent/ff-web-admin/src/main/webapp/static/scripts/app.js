@@ -1,12 +1,14 @@
 (function () {
     angular.module('FundFinder', [
+        'angular-flot',							// https://github.com/develersrl/angular-flot
+        'angular-ladda',						// http://remotty.github.io/angular-ladda/
         'angular-loading-bar',					// https://github.com/chieffancypants/angular-loading-bar
         'angularModalService',					// https://github.com/dwmkerr/angular-modal-service
         'chart.js',
         'datePicker',							// https://github.com/g00fy-/angular-datepicker
         'daterangepicker',						// https://github.com/fragaria/angular-daterangepicker
+        'dibari.angular-ellipsis',				// https://github.com/dibari/angular-ellipsis
         'frapontillo.bootstrap-duallistbox',	// http://frapontillo.github.io/angular-bootstrap-duallistbox/
-        'angular-ladda',						// http://remotty.github.io/angular-ladda/
         'localytics.directives',				// http://leocaseiro.github.io/angular-chosen/
         'ngFileUpload',							// https://github.com/danialfarid/ng-file-upload
         'ngStorage',
@@ -21,7 +23,8 @@
         'ui.grid.expandable',
     	'ui.grid.pagination',
     	'ui.grid.saveState',
-    	'ui.grid.selection'
+    	'ui.grid.selection',
+    	'wu.masonry',							// https://github.com/passy/angular-masonry
     ])
 })();
 

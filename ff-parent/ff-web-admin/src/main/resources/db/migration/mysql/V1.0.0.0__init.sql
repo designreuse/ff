@@ -7,6 +7,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
+# Dump of table activity
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `activity`;
+
+CREATE TABLE `activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table algorithm_item
 # ------------------------------------------------------------
 
@@ -77,27 +94,6 @@ CREATE TABLE `business_relationship_manager` (
 
 
 
-# Dump of table city
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `city`;
-
-CREATE TABLE `city` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_by` varchar(128) DEFAULT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified_by` varchar(128) DEFAULT NULL,
-  `last_modified_date` datetime NOT NULL,
-  `development_index` varchar(32) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `county` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_1oe5j7dg7jmvamcrtplpubuc2` (`county`),
-  CONSTRAINT `FK_1oe5j7dg7jmvamcrtplpubuc2` FOREIGN KEY (`county`) REFERENCES `county` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table company
 # ------------------------------------------------------------
 
@@ -147,6 +143,7 @@ CREATE TABLE `company_item` (
   `creation_date` datetime NOT NULL,
   `last_modified_by` varchar(128) DEFAULT NULL,
   `last_modified_date` datetime NOT NULL,
+  `currency` varchar(8) DEFAULT NULL,
   `value` longtext,
   `company` int(11) DEFAULT NULL,
   `item` int(11) DEFAULT NULL,
@@ -155,23 +152,6 @@ CREATE TABLE `company_item` (
   KEY `FK_sejipjuelub5j2wd0ee898n41` (`item`),
   CONSTRAINT `FK_iffgmimr917ylxr63thetmbfq` FOREIGN KEY (`company`) REFERENCES `company` (`id`),
   CONSTRAINT `FK_sejipjuelub5j2wd0ee898n41` FOREIGN KEY (`item`) REFERENCES `item` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table county
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `county`;
-
-CREATE TABLE `county` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_by` varchar(128) DEFAULT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified_by` varchar(128) DEFAULT NULL,
-  `last_modified_date` datetime NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -263,13 +243,13 @@ CREATE TABLE `item` (
   `last_modified_by` varchar(128) DEFAULT NULL,
   `last_modified_date` datetime NOT NULL,
   `code` varchar(8) NOT NULL,
-  `entity_id` int(11) DEFAULT NULL,
   `entity_type` varchar(16) NOT NULL,
   `help` longtext,
   `mandatory` tinyint(1) NOT NULL,
   `meta_tag` varchar(64) DEFAULT NULL,
   `position` int(11) NOT NULL,
   `status` varchar(16) NOT NULL,
+  `summary_item` tinyint(1) DEFAULT NULL,
   `text` longtext NOT NULL,
   `type` varchar(32) NOT NULL,
   `widget_item` tinyint(1) DEFAULT NULL,
@@ -295,27 +275,6 @@ CREATE TABLE `item_option` (
   PRIMARY KEY (`id`),
   KEY `FK_gq6nqdsaic1mj0bpql5xhu521` (`item`),
   CONSTRAINT `FK_gq6nqdsaic1mj0bpql5xhu521` FOREIGN KEY (`item`) REFERENCES `item` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table nkd
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `nkd`;
-
-CREATE TABLE `nkd` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_by` varchar(128) DEFAULT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified_by` varchar(128) DEFAULT NULL,
-  `last_modified_date` datetime NOT NULL,
-  `activity` varchar(8) NOT NULL,
-  `activity_name` varchar(512) NOT NULL,
-  `area` varchar(8) NOT NULL,
-  `sector` varchar(8) NOT NULL,
-  `sector_name` varchar(512) NOT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -367,6 +326,45 @@ CREATE TABLE `role_permission` (
 
 
 
+# Dump of table subdivision1
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subdivision1`;
+
+CREATE TABLE `subdivision1` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `development_index` varchar(32) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table subdivision2
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subdivision2`;
+
+CREATE TABLE `subdivision2` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `development_index` varchar(32) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `subdivision1` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_tonwsn904l6qsuisbu6ci8ehv` (`subdivision1`),
+  CONSTRAINT `FK_tonwsn904l6qsuisbu6ci8ehv` FOREIGN KEY (`subdivision1`) REFERENCES `subdivision1` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table tender
 # ------------------------------------------------------------
 
@@ -400,6 +398,7 @@ CREATE TABLE `tender_item` (
   `creation_date` datetime NOT NULL,
   `last_modified_by` varchar(128) DEFAULT NULL,
   `last_modified_date` datetime NOT NULL,
+  `currency` varchar(8) DEFAULT NULL,
   `value` longtext,
   `item` int(11) DEFAULT NULL,
   `tender` int(11) DEFAULT NULL,

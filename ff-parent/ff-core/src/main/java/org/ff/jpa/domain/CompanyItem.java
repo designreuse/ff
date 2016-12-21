@@ -41,4 +41,8 @@ public class CompanyItem extends AbstractEntity {
 	@Column(name = "value", nullable = true)
 	private String value;
 
+	@Nationalized
+	@Column(name = "currency", nullable = true, length = 8)
+	private String currency;
+
 }

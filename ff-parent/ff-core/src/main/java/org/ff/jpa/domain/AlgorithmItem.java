@@ -25,7 +25,7 @@ public class AlgorithmItem extends AbstractEntity {
 
 	public enum AlgorithmItemType { MANDATORY, OPTIONAL, CONDITIONAL };
 	public enum AlgorithmItemStatus { ACTIVE, INACTIVE };
-	public enum Operator { EQUALS, IN };
+	public enum Operator { EQUAL, GREATER_OR_EQUAL, LESS_OR_EQUAL, IN };
 
 	@Id
 	@Column(name = "id")

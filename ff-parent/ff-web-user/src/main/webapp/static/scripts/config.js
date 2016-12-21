@@ -80,7 +80,8 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: ['components/tenders/scripts/controllers.js',
-	        			        'components/tenders/scripts/services.js']
+	        			        'components/tenders/scripts/services.js',
+	        			        'components/images/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -109,8 +110,9 @@ angular.module('FundFinder')
 	        			name: 'FundFinder',
 	        			files: ['components/company/scripts/controllers.js',
 	        			        'components/company/scripts/services.js',
-	        			        'components/nkds/scripts/services.js',
-	        			        'components/cities/scripts/services.js']
+	        			        'components/currencies/scripts/services.js',
+	        			        'components/subdivisions1/scripts/services.js',
+	        			        'components/subdivisions2/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -132,7 +134,12 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: ['components/investments/scripts/controllers.js',
-	        			        'components/investments/scripts/services.js']
+	        			        'components/investments/scripts/services.js',
+	        			        'components/company/scripts/services.js',
+	        			        'components/currencies/scripts/services.js',
+	        			        'components/activities/scripts/services.js',
+	        			        'components/subdivisions1/scripts/services.js',
+	        			        'components/subdivisions2/scripts/services.js']
 	        		});
 	        	}
 	        }

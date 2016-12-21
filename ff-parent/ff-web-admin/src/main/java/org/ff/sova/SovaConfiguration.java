@@ -1,6 +1,6 @@
 package org.ff.sova;
 
-import org.ff.properties.BaseProperties;
+import org.ff.base.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

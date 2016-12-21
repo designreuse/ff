@@ -223,6 +223,13 @@
 }   
 
 /* ************************************************************ */
+/*  flot charts                                                 */
+/* ************************************************************ */
+.legendLabel {
+	color: #404040;
+}
+
+/* ************************************************************ */
 /*  fund finder classes                                         */
 /* ************************************************************ */
 .ff-div-button {
@@ -293,7 +300,11 @@
 .ff-label {
 	width: 100%;
 	background: #f0f0f0;
-	padding: 10px;
+	padding: 8px;
+}
+
+.ff-value {
+    padding-left: 8px;
 }
 
 .ff-nav-second-level {
@@ -324,6 +335,47 @@
 
 .ff-text-muted {
     color: #bbbbbb;
+}
+
+.ff-masonry-brick {
+    border: 1px solid #e0e0e0; 
+    margin: 8px; 
+    padding: 0px; 
+    width: 300px; 
+    border-radius: 5px;
+}
+
+.ff-masonry-brick-date {
+    padding: 2px 5px 1px 5px; 
+    border-radius: 5px; 
+    margin-top: -9px; 
+    margin-right: 3px; 
+    color: white;
+}
+
+.ff-masonry-brick-title {
+    background: #f0f0f0; 
+    margin-top: 0px; 
+    width: 100%;
+}
+
+.ff-masonry-brick-img {
+    padding: 0px 5px;
+}
+
+.ff-masonry-brick-text {
+    margin: 5px; 
+    height: 100px;
+}
+
+.ff-masonry-brick-label {
+    width: 100%;
+    background: #f0f0f0;
+    padding: 5px;
+}
+
+.ff-masonry-brick-value {
+    padding: 0 5px;
 }
 
 /* ************************************************************ */

@@ -10,7 +10,7 @@
 	<parent>
         <groupId>org.ff</groupId>
         <artifactId>ff-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
     
 	<dependencies>
@@ -121,6 +121,24 @@
                 <configuration>
                     <packagingExcludes>WEB-INF/classes/static/**,WEB-INF/classes/WEB-INF/**</packagingExcludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <finalName>ff-web-user-${project.version}</finalName>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

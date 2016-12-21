@@ -16,21 +16,27 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 	selectOptions4Type.push({ value: 'TEXT', label: $translate('ITEM_TYPE_TEXT') });
 	selectOptions4Type.push({ value: 'TEXT_AREA', label: $translate('ITEM_TYPE_TEXT_AREA') });
 	selectOptions4Type.push({ value: 'NUMBER', label: $translate('ITEM_TYPE_NUMBER') });
+	selectOptions4Type.push({ value: 'CURRENCY', label: $translate('ITEM_TYPE_CURRENCY') });
+	if ($scope.entityType == 'tender') {
+		selectOptions4Type.push({ value: 'PERCENTAGE', label: $translate('ITEM_TYPE_PERCENTAGE') });
+	}
 	selectOptions4Type.push({ value: 'DATE', label: $translate('ITEM_TYPE_DATE') });
 	selectOptions4Type.push({ value: 'RADIO', label: $translate('ITEM_TYPE_RADIO') });
 	selectOptions4Type.push({ value: 'CHECKBOX', label: $translate('ITEM_TYPE_CHECKBOX') });
 	selectOptions4Type.push({ value: 'SELECT', label: $translate('ITEM_TYPE_SELECT') });
 	selectOptions4Type.push({ value: 'MULTISELECT', label: $translate('ITEM_TYPE_MULTISELECT') });
-	selectOptions4Type.push({ value: 'HYPERLINK', label: $translate('ITEM_TYPE_HYPERLINK') });
-	if ($scope.entityType == 'company') {
-		selectOptions4Type.push({ value: 'CITY', label: $translate('ITEM_TYPE_CITY') });
-		selectOptions4Type.push({ value: 'NKD', label: $translate('ITEM_TYPE_NKD') });
-	}
 	if ($scope.entityType == 'tender') {
-		selectOptions4Type.push({ value: 'COUNTIES', label: $translate('ITEM_TYPE_COUNTIES') });
-		selectOptions4Type.push({ value: 'INVESTMENTS', label: $translate('ITEM_TYPE_INVESTMENTS') });
+		selectOptions4Type.push({ value: 'HYPERLINK', label: $translate('ITEM_TYPE_HYPERLINK') });
 	}
-	selectOptions4Type.push({ value: 'NKDS', label: $translate('ITEM_TYPE_NKDS') });
+	if ($scope.entityType == 'company') {
+		selectOptions4Type.push({ value: 'SUBDIVISION2', label: $translate('ITEM_TYPE_SUBDIVISION2') });
+	}
+	selectOptions4Type.push({ value: 'SUBDIVISIONS1', label: $translate('ITEM_TYPE_SUBDIVISIONS1') });
+	selectOptions4Type.push({ value: 'SUBDIVISIONS2', label: $translate('ITEM_TYPE_SUBDIVISIONS2') });
+	if ($scope.entityType == 'tender') {
+		selectOptions4Type.push({ value: 'INVESTMENTS_PRIMARY', label: $translate('ITEM_TYPE_INVESTMENTS_PRIMARY') });
+		selectOptions4Type.push({ value: 'INVESTMENTS_SECONDARY', label: $translate('ITEM_TYPE_INVESTMENTS_SECONDARY') });
+	}
 	
 	$scope.gridOptions = {
 			rowHeight: $rootScope.rowHeight,
@@ -109,7 +115,7 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 						selectOptions: selectOptions4Type
 					},
 					enableHiding: true,
-					width: 100,
+					width: 150,
 					cellTemplate: '<div class="ui-grid-cell-contents">{{ (\'ITEM_TYPE_\' + row.entity.type) | translate }}</div>' 
 				},
 				{
@@ -129,6 +135,44 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 					},
 					width: 100,
 					cellTemplate:'<div ng-show="row.entity.mandatory" class="ui-grid-cell-contents" style="text-align: center;"><span class="fa fa-check-square-o"></span></div><div ng-show="!row.entity.mandatory" class="ui-grid-cell-contents" style="text-align: center;"><span class="fa fa-square-o"></span></div>'
+				},
+				{
+					displayName: $translate('COLUMN_SUMMARY_ITEM'),
+					field: 'summaryItem',
+					type: 'boolean',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: ($scope.entityType == 'tender') ? true : false,
+					visible: ($scope.entityType == 'tender') ? true : false,
+					filter: {
+						type: uiGridConstants.filter.SELECT,
+						disableCancelFilterButton: true,
+						selectOptions: [
+							{ value: 'true', label: $translate('BOOLEAN_TRUE') },
+							{ value: 'false', label: $translate('BOOLEAN_FALSE') }]
+					},
+					width: 100,
+					cellTemplate:'<div ng-show="row.entity.summaryItem" class="ui-grid-cell-contents" style="text-align: center;"><span class="fa fa-check-square-o"></span></div><div ng-show="!row.entity.summaryItem" class="ui-grid-cell-contents" style="text-align: center;"><span class="fa fa-square-o"></span></div>'
+				},
+				{
+					displayName: $translate('COLUMN_WIDGET_ITEM'),
+					field: 'widgetItem',
+					type: 'boolean',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: ($scope.entityType == 'tender') ? true : false,
+					visible: ($scope.entityType == 'tender') ? true : false,
+					filter: {
+						type: uiGridConstants.filter.SELECT,
+						disableCancelFilterButton: true,
+						selectOptions: [
+							{ value: 'true', label: $translate('BOOLEAN_TRUE') },
+							{ value: 'false', label: $translate('BOOLEAN_FALSE') }]
+					},
+					width: 100,
+					cellTemplate:'<div ng-show="row.entity.widgetItem" class="ui-grid-cell-contents" style="text-align: center;"><span class="fa fa-check-square-o"></span></div><div ng-show="!row.entity.widgetItem" class="ui-grid-cell-contents" style="text-align: center;"><span class="fa fa-square-o"></span></div>'
 				},
 				{
 					displayName: $translate('COLUMN_STATUS'),
@@ -464,7 +508,7 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 // ========================================================================
 //	DETAILS CONTROLLER
 // ========================================================================
-function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, $sce, uiGridConstants, ItemsService, CitiesService, CountiesService, NkdsService, InvestmentsService) {
+function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, $sce, uiGridConstants, ItemsService, Subdivisions1Service, Subdivisions2Service, ActivitiesService, InvestmentsService, CurrenciesService) {
 	var $translate = $filter('translate');
 	
 	$scope.entityType = $stateParams.entityType;
@@ -485,11 +529,11 @@ function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, 
 		$state.go('settings.items_overview_' + $stateParams.entityType, { 'entityType' : $stateParams.entityType });
 	};
 	
-	$scope.getCities = function() {
-		CitiesService.getEntities()
+	$scope.getSubdivisions1 = function() {
+		Subdivisions1Service.getEntities()
 			.success(function(data, status) {
 				if (status == 200) {
-					$scope.cities = data;
+					$scope.subdivisions1 = data;
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -499,11 +543,11 @@ function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, 
 			});
 	};
 	
-	$scope.getCounties = function() {
-		CountiesService.getEntities()
+	$scope.getSubdivisions2 = function() {
+		Subdivisions2Service.getEntities()
 			.success(function(data, status) {
 				if (status == 200) {
-					$scope.counties = data;
+					$scope.subdivisions2 = data;
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -512,17 +556,6 @@ function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, 
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			});
 	};
-	
-	$scope.nkdPreview = function(id) {
-		var result = "";
-		$.each($scope.nkds, function(index, object) {
-			if (object.id === id) {
-				result = object.area + "." + object.activity + " - " + object.activityName;
-				return;
-			}
-		});
-		return result;
-	}
 	
 	$scope.radioPreview = function(object) {
 		var result = "";
@@ -554,11 +587,11 @@ function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, 
 		return result;
 	}
 	
-	$scope.getNkds = function() {
-		NkdsService.getEntities()
+	$scope.getActivities = function() {
+		ActivitiesService.getEntities()
 			.success(function(data, status) {
 				if (status == 200) {
-					$scope.nkds = data;
+					$scope.activities = data;
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -582,21 +615,37 @@ function ItemsDetailsController($rootScope, $scope, $state, $stateParams, $log, 
 			});
 	};
 	
-	// initial load
-	$scope.getInvestments();
-	$scope.getCities();
-	$scope.getCounties();
-	$scope.getNkds();
-	
+	$scope.getCurrencies = function() {
+		CurrenciesService.getEntities()
+			.success(function(data, status) {
+				if (status == 200) {
+					$scope.currencies = data;
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+
 	$scope.dictPopupDate = { opened: false };
 	$scope.openPopupDate = function(index) {
 		$scope.dictPopupDate.opened = true;
 	};
 	
+	// initial load
+	$scope.getCurrencies();
+	$scope.getInvestments();
+	$scope.getSubdivisions1();
+	$scope.getSubdivisions2();
+	$scope.getActivities();
+	
 	ItemsService.getEntity($stateParams.entityType, $stateParams.id)
 		.success(function(data, status) {
 			if (status == 200) {
 				$scope.entity = data;
+				$scope.entity.currency = $scope.currencies[0];
 			} else {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			}
@@ -671,6 +720,10 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 			$scope.typeDescription = $translate('ITEM_TYPE_TEXT_AREA_DESCRIPTION');
 		} else if ($scope.entity.type == 'NUMBER') {
 			$scope.typeDescription = $translate('ITEM_TYPE_NUMBER_DESCRIPTION');
+		} else if ($scope.entity.type == 'CURRENCY') {
+			$scope.typeDescription = $translate('ITEM_TYPE_CURRENCY_DESCRIPTION');
+		} else if ($scope.entity.type == 'PERCENTAGE') {
+			$scope.typeDescription = $translate('ITEM_TYPE_PERCENTAGE_DESCRIPTION');
 		} else if ($scope.entity.type == 'DATE') {
 			$scope.typeDescription = $translate('ITEM_TYPE_DATE_DESCRIPTION');
 		} else if ($scope.entity.type == 'RADIO') {
@@ -683,15 +736,15 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 			$scope.typeDescription = $translate('ITEM_TYPE_MULTISELECT_DESCRIPTION');
 		} else if ($scope.entity.type == 'HYPERLINK') {
 			$scope.typeDescription = $translate('ITEM_TYPE_HYPERLINK_DESCRIPTION');
-		} else if ($scope.entity.type == 'CITY') {
-			$scope.typeDescription = $translate('ITEM_TYPE_CITY_DESCRIPTION');
-		} else if ($scope.entity.type == 'COUNTIES') {
-			$scope.typeDescription = $translate('ITEM_TYPE_COUNTIES_DESCRIPTION');
-		} else if ($scope.entity.type == 'NKD') {
-			$scope.typeDescription = $translate('ITEM_TYPE_NKD_DESCRIPTION');
-		} else if ($scope.entity.type == 'NKDS') {
-			$scope.typeDescription = $translate('ITEM_TYPE_NKDS_DESCRIPTION');
-		} else if ($scope.entity.type == 'INVESTMENTS') {
+		} else if ($scope.entity.type == 'SUBDIVISION1') {
+			$scope.typeDescription = $translate('ITEM_TYPE_SUBDIVISION1_DESCRIPTION');
+		} else if ($scope.entity.type == 'SUBDIVISION2') {
+			$scope.typeDescription = $translate('ITEM_TYPE_SUBDIVISION2_DESCRIPTION');
+		} else if ($scope.entity.type == 'SUBDIVISIONS1') {
+			$scope.typeDescription = $translate('ITEM_TYPE_SUBDIVISIONS1_DESCRIPTION');
+		} else if ($scope.entity.type == 'SUBDIVISIONS2') {
+			$scope.typeDescription = $translate('ITEM_TYPE_SUBDIVISIONS2_DESCRIPTION');
+		} else if ($scope.entity.type == 'INVESTMENTS_PRIMARY' || $scope.entity.type == 'INVESTMENTS_SECONDARY') {
 			$scope.typeDescription = $translate('ITEM_TYPE_INVESTMENTS_DESCRIPTION');
 		}
 	};

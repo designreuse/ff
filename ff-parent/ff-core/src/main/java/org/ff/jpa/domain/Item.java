@@ -30,8 +30,25 @@ public class Item extends AbstractEntity {
 
 	public enum ItemEntityType { TENDER, COMPANY };
 	public enum ItemStatus { ACTIVE, INACTIVE };
-	public enum ItemType { TEXT, TEXT_AREA, TEXT_EDITOR, NUMBER, DATE, DATE_TIME, RADIO, CHECKBOX, SELECT, MULTISELECT, HYPERLINK, CITY, COUNTIES, NKD, NKDS, INVESTMENTS };
-	public enum ItemMetaTag { TENDER_START_DATE, TENDER_END_DATE, COMPANY_SECTOR, COMPANY_LOCATION, COMPANY_INVESTMENT, COMPANY_REVENUE };
+	public enum ItemType { TEXT, TEXT_AREA, NUMBER, CURRENCY, PERCENTAGE, DATE, RADIO, CHECKBOX, SELECT, MULTISELECT, HYPERLINK, SUBDIVISION1, SUBDIVISION2, SUBDIVISIONS1, SUBDIVISIONS2, NKD, NKDS, ACTIVITIES, INVESTMENTS_PRIMARY, INVESTMENTS_SECONDARY };
+	public enum ItemMetaTag {
+		TENDER_START_DATE,
+		TENDER_END_DATE,
+		TENDER_SECTOR,
+		TENDER_ACTIVITIES,
+		TENDER_INVESTMENTS_PRIMARY,
+		TENDER_INVESTMENTS_SECONDARY,
+		COMPANY_SECTOR,
+		COMPANY_LOCATION,
+		COMPANY_REVENUE,
+		COMPANY_SIZE,
+		COMPANY_INVESTMENT_ACTIVITIES,
+		COMPANY_INVESTMENT_AMOUNT,
+		COMPANY_INVESTMENT_FINANCING_TYPE,
+		COMPANY_INVESTMENT_DESCRIPTION,
+		COMPANY_INVESTMENT_SUBDIVISIONS1,
+		COMPANY_INVESTMENT_SUBDIVISIONS2
+	};
 
 	@Id
 	@Column(name = "id")
@@ -45,9 +62,6 @@ public class Item extends AbstractEntity {
 	@Column(name = "entity_type", nullable = false, length = 16)
 	private ItemEntityType entityType;
 
-	@Column(name = "entity_id", nullable = true)
-	private Integer entityId;
-
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, length = 16)
 	private ItemStatus status;
@@ -59,6 +73,9 @@ public class Item extends AbstractEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "meta_tag", nullable = true, length = 64)
 	private ItemMetaTag metaTag;
+
+	@Column(name = "summary_item", nullable = true)
+	private Boolean summaryItem;
 
 	@Column(name = "widget_item", nullable = true)
 	private Boolean widgetItem;

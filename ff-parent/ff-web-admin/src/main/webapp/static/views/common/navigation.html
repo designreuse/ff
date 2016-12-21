@@ -59,6 +59,15 @@
                     <li ng-class="{active: $state.is('settings.items_overview_tender') || $state.is('settings.items_edit_tender') || $state.is('settings.items_details_tender')}">
                         <a class="ff-nav-second-level" ui-sref="settings.items_overview_tender({entityType : 'tender'})">{{ 'MENU_TENDER_ITEMS' | translate }}</a>
                     </li>
+                    <li ng-class="{active: $state.is('settings.activities_overview') || $state.is('settings.activities_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.activities_overview">{{ 'MENU_ACTIVITIES' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.subdivisions1_overview') || $state.is('settings.subdivisions1_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.subdivisions1_overview">{{ 'MENU_SUBDIVISIONS1' | translate }}</a>
+                    </li>
+                    <li ng-class="{active: $state.is('settings.subdivisions2_overview') || $state.is('settings.subdivisions2_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.subdivisions2_overview">{{ 'MENU_SUBDIVISIONS2' | translate }}</a>
+                    </li>
                     <li ng-class="{active: $state.is('settings.roles_overview') || $state.is('settings.roles_edit') }">
                         <a class="ff-nav-second-level" ui-sref="settings.roles_overview">{{ 'MENU_ROLES' | translate }}</a>
                     </li>
@@ -67,15 +76,6 @@
                     </li>
                     <li ng-class="{active: $state.is('settings.businessrelationshipmanagers_overview') || $state.is('settings.businessrelationshipmanagers_edit') }">
                         <a class="ff-nav-second-level" ui-sref="settings.businessrelationshipmanagers_overview">{{ 'MENU_BUSINESSRELATIONSHIPMANAGERS' | translate }}</a>
-                    </li>
-                    <li ng-class="{active: $state.is('settings.cities_overview') || $state.is('settings.cities_edit') }">
-                        <a class="ff-nav-second-level" ui-sref="settings.cities_overview">{{ 'MENU_CITIES' | translate }}</a>
-                    </li>
-                    <li ng-class="{active: $state.is('settings.counties_overview') || $state.is('settings.counties_edit') }">
-                        <a class="ff-nav-second-level" ui-sref="settings.counties_overview">{{ 'MENU_COUNTIES' | translate }}</a>
-                    </li>
-                    <li ng-class="{active: $state.is('settings.nkds_overview') || $state.is('settings.nkds_edit') }">
-                        <a class="ff-nav-second-level" ui-sref="settings.nkds_overview">{{ 'MENU_NKD' | translate }}</a>
                     </li>
                 </ul>
             </li>

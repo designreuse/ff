@@ -13,32 +13,32 @@
         <!-- application.properties -->
         <file>
             <source>${project.basedir}/src/main/resources/application.properties</source>
-            <outputDirectory>/shared</outputDirectory>
+            <outputDirectory>shared</outputDirectory>
         </file>
         <!-- logback.xml -->
         <file>
             <source>${project.basedir}/src/main/resources/logback.xml</source>
-            <outputDirectory>/shared</outputDirectory>
+            <outputDirectory>shared</outputDirectory>
         </file>
         <!-- fundfinder-admin.war -->
         <file>
             <source>${project.basedir}/target/fundfinder-admin.war</source>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
         </file>
     </files>
 
     <fileSets>
         <fileSet>
             <directory>${project.basedir}/src/main/resources/db</directory>
-            <outputDirectory>/shared/db</outputDirectory>
+            <outputDirectory>shared/db</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.basedir}/docs</directory>
-            <outputDirectory>/docs</outputDirectory>
+            <outputDirectory>docs</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.basedir}/libs</directory>
-            <outputDirectory>/libs</outputDirectory>
+            <outputDirectory>libs</outputDirectory>
         </fileSet>
     </fileSets>
 

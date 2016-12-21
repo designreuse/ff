@@ -9,7 +9,7 @@ angular.module('FundFinder')
 	$httpProvider.interceptors.push(function($location) {  
 		var path = {
 				request: function(config) {
-					if (config.url.indexOf("template/datepicker") != -1 || config.url.indexOf("ui-grid") != -1 || config.url.indexOf("uib") != -1) {
+					if (config.url.indexOf("components") != -1 || config.url.indexOf("template/datepicker") != -1 || config.url.indexOf("ui-grid") != -1 || config.url.indexOf("uib") != -1) {
 						// workaround for problem with loading datepicker templates
 					} else {
 						config.url = constants.contextPath + config.url;
@@ -79,15 +79,15 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/dashboard/scripts/controllers.js',
-	        			        'components/dashboard/scripts/services.js']
+	        			files: [constants.contextPath + '/components/dashboard/scripts/controllers.js',
+	        			        constants.contextPath + '/components/dashboard/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('dashboard.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/dashboard/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/dashboard/views/overview.html",
 	        controller: 'DashboardController',
 	        data: { pageTitle: 'Dashboard' }
 	    })
@@ -104,15 +104,15 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/statistics/scripts/controllers.js',
-	        			        'components/statistics/scripts/services.js']
+	        			files: [constants.contextPath + '/components/statistics/scripts/controllers.js',
+	        			        constants.contextPath + '/components/statistics/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('statistics.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/statistics/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/statistics/views/overview.html",
 	        controller: 'StatisticsController',
 	        data: { pageTitle: 'Statistics' }
 	    })
@@ -129,15 +129,15 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/users/scripts/controllers.js',
-	        			        'components/users/scripts/services.js']
+	        			files: [constants.contextPath + '/components/users/scripts/controllers.js',
+	        			        constants.contextPath + '/components/users/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('users.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/users/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/users/views/overview.html",
 	        controller: 'UsersOverviewController',
 	        params: { 'permission' : 'users' },
 	        data: { pageTitle: 'Users overview' },
@@ -149,7 +149,7 @@ angular.module('FundFinder')
 	    })
 		.state('users.details', {
 	        url: "/details/:id",
-	        templateUrl: "/components/users/views/details.html",
+	        templateUrl: constants.contextPath + "/components/users/views/details.html",
 	        controller: 'UsersDetailsController',
 	        params: { 'id' : null, 'permission' : 'users.read' },
 	        data: { pageTitle: 'User details' },
@@ -160,9 +160,9 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/useremails/scripts/services.js',
-	        			        'components/emails/scripts/services.js',
-	        			        'components/businessrelationshipmanagers/scripts/services.js']
+	        			files: [constants.contextPath + '/components/useremails/scripts/services.js',
+	        			        constants.contextPath + '/components/emails/scripts/services.js',
+	        			        constants.contextPath + '/components/businessrelationshipmanagers/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -180,27 +180,33 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/tenders/scripts/controllers.js',
-	        			        'components/tenders/scripts/services.js']
+	        			files: [constants.contextPath + '/components/tenders/scripts/controllers.js',
+	        			        constants.contextPath + '/components/tenders/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('tenders.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/tenders/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/tenders/views/overview.html",
 	        controller: 'TendersOverviewController',
 	        params: { 'permission' : 'tenders' },
 	        data: { pageTitle: 'Tenders overview' },
 	        resolve: {
 	        	hasPermission: function(grant, $stateParams) {
 	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	},
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/images/scripts/services.js']
+	        		});
 	        	}
 	        }
 	    })
 		.state('tenders.details', {
 	        url: "/details/:id",
-	        templateUrl: "/components/tenders/views/details.html",
+	        templateUrl: constants.contextPath + "/components/tenders/views/details.html",
 	        controller: 'TendersDetailsController',
 	        params: { 'id' : null, 'showEditButton' : false, 'permission' : 'tenders.read' },
 	        data: { pageTitle: 'Tender details' },
@@ -211,18 +217,18 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/impressions/scripts/services.js',
-	        			        'components/users/scripts/services.js',
-	        			        'components/usergroups/scripts/services.js',
-	        			        'components/emails/scripts/services.js',
-	        			        'components/useremails/scripts/services.js']
+	        			files: [constants.contextPath + '/components/impressions/scripts/services.js',
+	        			        constants.contextPath + '/components/users/scripts/services.js',
+	        			        constants.contextPath + '/components/usergroups/scripts/services.js',
+	        			        constants.contextPath + '/components/emails/scripts/services.js',
+	        			        constants.contextPath + '/components/useremails/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('tenders.edit', {
 	        url: "/edit/:id",
-	        templateUrl: "/components/tenders/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/tenders/views/edit.html",
 	        controller: 'TendersEditController',
 	        params: { 'id' : null, 'permission' : 'tenders.update' },
 	        data: { pageTitle: 'Edit tender' },
@@ -233,9 +239,11 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/counties/scripts/services.js',
-	        			        'components/nkds/scripts/services.js',
-	        			        'components/investments/scripts/services.js']
+	        			files: [constants.contextPath + '/components/subdivisions1/scripts/services.js',
+	        			        constants.contextPath + '/components/subdivisions2/scripts/services.js',
+	        			        constants.contextPath + '/components/activities/scripts/services.js',
+	        			        constants.contextPath + '/components/currencies/scripts/services.js',
+	        			        constants.contextPath + '/components/investments/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -253,15 +261,15 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/investments/scripts/controllers.js',
-	        			        'components/investments/scripts/services.js']
+	        			files: [constants.contextPath + '/components/investments/scripts/controllers.js',
+	        			        constants.contextPath + '/components/investments/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('investments.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/investments/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/investments/views/overview.html",
 	        controller: 'InvestmentsOverviewController',
 	        params: { 'permission' : 'investments' },
 	        data: { pageTitle: 'Investments overview' },
@@ -273,7 +281,7 @@ angular.module('FundFinder')
 	    })
 		.state('investments.details', {
 	        url: "/details/:id",
-	        templateUrl: "/components/investments/views/details.html",
+	        templateUrl: constants.contextPath + "/components/investments/views/details.html",
 	        controller: 'InvestmentsDetailsController',
 	        params: { 'id' : null, 'showEditButton' : false, 'permission' : 'investments.read' },
 	        data: { pageTitle: 'Investment details' },
@@ -285,7 +293,7 @@ angular.module('FundFinder')
 	    })
 	    .state('investments.edit', {
 	        url: "/edit/:id",
-	        templateUrl: "/components/investments/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/investments/views/edit.html",
 	        controller: 'InvestmentsEditController',
 	        params: { 'id' : null, 'permission' : 'investments.update' },
 	        data: { pageTitle: 'Edit investment' },
@@ -308,16 +316,16 @@ angular.module('FundFinder')
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/articles/scripts/controllers.js',
-	        			        'components/articles/scripts/services.js',
-	        			        'components/impressions/scripts/services.js']
+	        			files: [constants.contextPath + '/components/articles/scripts/controllers.js',
+	        			        constants.contextPath + '/components/articles/scripts/services.js',
+	        			        constants.contextPath + '/components/impressions/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    .state('articles.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/articles/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/articles/views/overview.html",
 	        controller: 'ArticlesOverviewController',
 	        params: { 'permission' : 'articles' },
 	        data: { pageTitle: 'Articles overview' },
@@ -329,7 +337,7 @@ angular.module('FundFinder')
 	    })
 		.state('articles.details', {
 	        url: "/details/:id",
-	        templateUrl: "/components/articles/views/details.html",
+	        templateUrl: constants.contextPath + "/components/articles/views/details.html",
 	        controller: 'ArticlesDetailsController',
 	        params: { 'id' : null, 'permission' : 'articles.read' },
 	        data: { pageTitle: 'Article details' },
@@ -341,7 +349,7 @@ angular.module('FundFinder')
 	    })
 	    .state('articles.edit', {
 	        url: "/edit/:id",
-	        templateUrl: "/components/articles/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/articles/views/edit.html",
 	        controller: 'ArticlesEditController',
 	        params: { 'id' : null, 'permission' : 'articles.update' },
 	        data: { pageTitle: 'Edit article' },
@@ -365,15 +373,15 @@ angular.module('FundFinder')
 	    .state('settings.items_overview_company', {
 	    	url: "/:entityType/companyitems/overview",
 	    	params: { 'entityType' : null },
-	        templateUrl: "/components/items/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/items/views/overview.html",
 	        controller: 'ItemsOverviewController',
 	        data: { pageTitle: 'Items overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/items/scripts/controllers.js',
-	        			        'components/items/scripts/services.js']
+	        			files: [constants.contextPath + '/components/items/scripts/controllers.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -381,19 +389,20 @@ angular.module('FundFinder')
 	    .state('settings.items_details_company', {
 	    	url: "/:entityType/companyitems/details/:id",
 	    	params: { 'entityType' : null, 'id' : null },
-	        templateUrl: "/components/items/views/details.html",
+	        templateUrl: constants.contextPath + "/components/items/views/details.html",
 	        controller: 'ItemsDetailsController',
 	        data: { pageTitle: 'Item details' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/items/scripts/controllers.js',
-	        			        'components/items/scripts/services.js',
-	        			        'components/cities/scripts/services.js',
-	        			        'components/counties/scripts/services.js',
-	        			        'components/nkds/scripts/services.js',
-	        			        'components/investments/scripts/services.js']
+	        			files: [constants.contextPath + '/components/items/scripts/controllers.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js',
+	        			        constants.contextPath + '/components/subdivisions1/scripts/services.js',
+	        			        constants.contextPath + '/components/subdivisions2/scripts/services.js',
+	        			        constants.contextPath + '/components/activities/scripts/services.js',
+	        			        constants.contextPath + '/components/currencies/scripts/services.js',
+	        			        constants.contextPath + '/components/investments/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -401,15 +410,15 @@ angular.module('FundFinder')
 	    .state('settings.items_edit_company', {
 	    	url: "/:entityType/companyitems/edit/:id",
 	    	params: { 'entityType' : null, 'id' : null },
-	        templateUrl: "/components/items/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/items/views/edit.html",
 	        controller: 'ItemsEditController',
 	        data: { pageTitle: 'Edit item' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/items/scripts/controllers.js',
-	        			        'components/items/scripts/services.js']
+	        			files: [constants.contextPath + '/components/items/scripts/controllers.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -418,15 +427,15 @@ angular.module('FundFinder')
 	    .state('settings.items_overview_tender', {
 	    	url: "/:entityType/tenderitems/overview",
 	    	params: { 'entityType' : null },
-	        templateUrl: "/components/items/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/items/views/overview.html",
 	        controller: 'ItemsOverviewController',
 	        data: { pageTitle: 'Items overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/items/scripts/controllers.js',
-	        			        'components/items/scripts/services.js']
+	        			files: [constants.contextPath + '/components/items/scripts/controllers.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -434,19 +443,20 @@ angular.module('FundFinder')
 	    .state('settings.items_details_tender', {
 	    	url: "/:entityType/tenderitems/details/:id",
 	    	params: { 'entityType' : null, 'id' : null },
-	        templateUrl: "/components/items/views/details.html",
+	        templateUrl: constants.contextPath + "/components/items/views/details.html",
 	        controller: 'ItemsDetailsController',
 	        data: { pageTitle: 'Item details' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/items/scripts/controllers.js',
-	        			        'components/items/scripts/services.js',
-	        			        'components/cities/scripts/services.js',
-	        			        'components/counties/scripts/services.js',
-	        			        'components/nkds/scripts/services.js',
-	        			        'components/investments/scripts/services.js']
+	        			files: [constants.contextPath + '/components/items/scripts/controllers.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js',
+	        			        constants.contextPath + '/components/subdivisions1/scripts/services.js',
+	        			        constants.contextPath + '/components/subdivisions2/scripts/services.js',
+	        			        constants.contextPath + '/components/activities/scripts/services.js',
+	        			        constants.contextPath + '/components/currencies/scripts/services.js',
+	        			        constants.contextPath + '/components/investments/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -454,15 +464,15 @@ angular.module('FundFinder')
 	    .state('settings.items_edit_tender', {
 	    	url: "/:entityType/tenderitems/edit/:id",
 	    	params: { 'entityType' : null, 'id' : null },
-	        templateUrl: "/components/items/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/items/views/edit.html",
 	        controller: 'ItemsEditController',
 	        data: { pageTitle: 'Edit item' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/items/scripts/controllers.js',
-	        			        'components/items/scripts/services.js']
+	        			files: [constants.contextPath + '/components/items/scripts/controllers.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -470,15 +480,15 @@ angular.module('FundFinder')
 	    
 	    .state('settings.algorithmitems_overview', {
 	    	url: "/algorithmitems/overview",
-	        templateUrl: "/components/algorithmitems/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/algorithmitems/views/overview.html",
 	        controller: 'AlgorithmItemsOverviewController',
 	        data: { pageTitle: 'Algorithm items overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/algorithmitems/scripts/controllers.js',
-	        			        'components/algorithmitems/scripts/services.js']
+	        			files: [constants.contextPath + '/components/algorithmitems/scripts/controllers.js',
+	        			        constants.contextPath + '/components/algorithmitems/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -486,113 +496,113 @@ angular.module('FundFinder')
 	    .state('settings.algorithmitems_edit', {
 	    	url: "/algorithmitems/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/algorithmitems/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/algorithmitems/views/edit.html",
 	        controller: 'AlgorithmItemsEditController',
 	        data: { pageTitle: 'Edit algorithm item' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/algorithmitems/scripts/controllers.js',
-	        			        'components/algorithmitems/scripts/services.js',
-	        			        'components/items/scripts/services.js']
+	        			files: [constants.contextPath + '/components/algorithmitems/scripts/controllers.js',
+	        			        constants.contextPath + '/components/algorithmitems/scripts/services.js',
+	        			        constants.contextPath + '/components/items/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    
-	    .state('settings.cities_overview', {
-	    	url: "/cities/overview",
-	        templateUrl: "/components/cities/views/overview.html",
-	        controller: 'CitiesOverviewController',
-	        data: { pageTitle: 'Cities overview' },
+	    .state('settings.activities_overview', {
+	    	url: "/activities/overview",
+	        templateUrl: constants.contextPath + "/components/activities/views/overview.html",
+	        controller: 'ActivitiesOverviewController',
+	        data: { pageTitle: 'Activities overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/cities/scripts/controllers.js',
-	        			        'components/cities/scripts/services.js']
+	        			files: [constants.contextPath + '/components/activities/scripts/controllers.js',
+	        			        constants.contextPath + '/components/activities/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
-	    .state('settings.cities_edit', {
-	    	url: "/cities/edit/:id",
+	    .state('settings.activities_edit', {
+	    	url: "/activities/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/cities/views/edit.html",
-	        controller: 'CitiesEditController',
-	        data: { pageTitle: 'Edit city' },
+	        templateUrl: constants.contextPath + "/components/activities/views/edit.html",
+	        controller: 'ActivitiesEditController',
+	        data: { pageTitle: 'Edit activity' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/cities/scripts/controllers.js',
-	        			        'components/cities/scripts/services.js',
-	        			        'components/counties/scripts/services.js']
+	        			files: [constants.contextPath + '/components/activities/scripts/controllers.js',
+	        			        constants.contextPath + '/components/activities/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    
-	    .state('settings.counties_overview', {
-	    	url: "/counties/overview",
-	        templateUrl: "/components/counties/views/overview.html",
-	        controller: 'CountiesOverviewController',
+	    .state('settings.subdivisions1_overview', {
+	    	url: "/subdivisions1/overview",
+	        templateUrl: constants.contextPath + "/components/subdivisions1/views/overview.html",
+	        controller: 'Subdivisions1OverviewController',
 	        data: { pageTitle: 'Counties overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/counties/scripts/controllers.js',
-	        			        'components/counties/scripts/services.js']
+	        			files: [constants.contextPath + '/components/subdivisions1/scripts/controllers.js',
+	        			        constants.contextPath + '/components/subdivisions1/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
-	    .state('settings.counties_edit', {
-	    	url: "/counties/edit/:id",
+	    .state('settings.subdivisions1_edit', {
+	    	url: "/subdivisions1/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/counties/views/edit.html",
-	        controller: 'CountiesEditController',
+	        templateUrl: constants.contextPath + "/components/subdivisions1/views/edit.html",
+	        controller: 'Subdivisions1EditController',
 	        data: { pageTitle: 'Edit county' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/counties/scripts/controllers.js',
-	        			        'components/counties/scripts/services.js']
+	        			files: [constants.contextPath + '/components/subdivisions1/scripts/controllers.js',
+	        			        constants.contextPath + '/components/subdivisions1/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
 	    
-	    .state('settings.nkds_overview', {
-	    	url: "/nkds/overview",
-	        templateUrl: "/components/nkds/views/overview.html",
-	        controller: 'NkdsOverviewController',
-	        data: { pageTitle: 'NKD overview' },
+	    .state('settings.subdivisions2_overview', {
+	    	url: "/subdivisions2/overview",
+	        templateUrl: constants.contextPath + "/components/subdivisions2/views/overview.html",
+	        controller: 'Subdivisions2OverviewController',
+	        data: { pageTitle: 'Cities overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/nkds/scripts/controllers.js',
-	        			        'components/nkds/scripts/services.js']
+	        			files: [constants.contextPath + '/components/subdivisions2/scripts/controllers.js',
+	        			        constants.contextPath + '/components/subdivisions2/scripts/services.js']
 	        		});
 	        	}
 	        }
 	    })
-	    .state('settings.nkds_edit', {
-	    	url: "/nkds/edit/:id",
+	    .state('settings.subdivisions2_edit', {
+	    	url: "/subdivisions2/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/nkds/views/edit.html",
-	        controller: 'NkdsEditController',
-	        data: { pageTitle: 'Edit NKD' },
+	        templateUrl: constants.contextPath + "/components/subdivisions2/views/edit.html",
+	        controller: 'Subdivisions2EditController',
+	        data: { pageTitle: 'Edit city' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/nkds/scripts/controllers.js',
-	        			        'components/nkds/scripts/services.js']
+	        			files: [constants.contextPath + '/components/subdivisions2/scripts/controllers.js',
+	        			        constants.contextPath + '/components/subdivisions2/scripts/services.js',
+	        			        constants.contextPath + '/components/subdivisions1/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -600,15 +610,15 @@ angular.module('FundFinder')
 	    
 	    .state('settings.roles_overview', {
 	    	url: "/roles/overview",
-	        templateUrl: "/components/roles/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/roles/views/overview.html",
 	        controller: 'RolesOverviewController',
 	        data: { pageTitle: 'Roles overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/roles/scripts/controllers.js',
-	        			        'components/roles/scripts/services.js']
+	        			files: [constants.contextPath + '/components/roles/scripts/controllers.js',
+	        			        constants.contextPath + '/components/roles/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -616,16 +626,16 @@ angular.module('FundFinder')
 	    .state('settings.roles_edit', {
 	    	url: "/roles/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/roles/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/roles/views/edit.html",
 	        controller: 'RolesEditController',
 	        data: { pageTitle: 'Edit role' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/roles/scripts/controllers.js',
-	        			        'components/roles/scripts/services.js',
-	        			        'components/permissions/scripts/services.js']
+	        			files: [constants.contextPath + '/components/roles/scripts/controllers.js',
+	        			        constants.contextPath + '/components/roles/scripts/services.js',
+	        			        constants.contextPath + '/components/permissions/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -633,15 +643,15 @@ angular.module('FundFinder')
 	    
 	    .state('settings.usergroups_overview', {
 	    	url: "/usergroups/overview",
-	        templateUrl: "/components/usergroups/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/usergroups/views/overview.html",
 	        controller: 'UserGroupsOverviewController',
 	        data: { pageTitle: 'User groups overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/usergroups/scripts/controllers.js',
-	        			        'components/usergroups/scripts/services.js']
+	        			files: [constants.contextPath + '/components/usergroups/scripts/controllers.js',
+	        			        constants.contextPath + '/components/usergroups/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -649,16 +659,16 @@ angular.module('FundFinder')
 	    .state('settings.usergroups_edit', {
 	    	url: "/usergroups/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/usergroups/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/usergroups/views/edit.html",
 	        controller: 'UserGroupsEditController',
 	        data: { pageTitle: 'Edit user group' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/usergroups/scripts/controllers.js',
-	        			        'components/usergroups/scripts/services.js',
-	        			        'components/users/scripts/services.js']
+	        			files: [constants.contextPath + '/components/usergroups/scripts/controllers.js',
+	        			        constants.contextPath + '/components/usergroups/scripts/services.js',
+	        			        constants.contextPath + '/components/users/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -666,15 +676,15 @@ angular.module('FundFinder')
 	    
 	    .state('settings.businessrelationshipmanagers_overview', {
 	    	url: "/businessrelationshipmanagers/overview",
-	        templateUrl: "/components/businessrelationshipmanagers/views/overview.html",
+	        templateUrl: constants.contextPath + "/components/businessrelationshipmanagers/views/overview.html",
 	        controller: 'BusinessRelationshipManagerOverviewController',
 	        data: { pageTitle: 'Business relationship managers overview' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/businessrelationshipmanagers/scripts/controllers.js',
-	        			        'components/businessrelationshipmanagers/scripts/services.js']
+	        			files: [constants.contextPath + '/components/businessrelationshipmanagers/scripts/controllers.js',
+	        			        constants.contextPath + '/components/businessrelationshipmanagers/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -682,15 +692,15 @@ angular.module('FundFinder')
 	    .state('settings.businessrelationshipmanagers_edit', {
 	    	url: "/businessrelationshipmanagers/edit/:id",
 	    	params: { 'id' : null },
-	        templateUrl: "/components/businessrelationshipmanagers/views/edit.html",
+	        templateUrl: constants.contextPath + "/components/businessrelationshipmanagers/views/edit.html",
 	        controller: 'BusinessRelationshipManagerEditController',
 	        data: { pageTitle: 'Edit business relationship manager' },
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/businessrelationshipmanagers/scripts/controllers.js',
-	        			        'components/businessrelationshipmanagers/scripts/services.js']
+	        			files: [constants.contextPath + '/components/businessrelationshipmanagers/scripts/controllers.js',
+	        			        constants.contextPath + '/components/businessrelationshipmanagers/scripts/services.js']
 	        		});
 	        	}
 	        }

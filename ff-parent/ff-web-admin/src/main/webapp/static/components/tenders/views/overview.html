@@ -1,3 +1,11 @@
+<style>
+p span {
+    color: #808080;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+
 <div class="row border-bottom">
     <div class="col-lg-12">
         <h1>{{ 'MENU_TENDERS' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
@@ -6,12 +14,20 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
-        <div class="col-lg-12 m-b-xs">
+		<div class="col-lg-4">
+			<button ng-click="changeActiveView(1)" class="btn btn-white">
+				<i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : activeView == 2}" role="button"></i>
+			</button>
+			<button ng-click="changeActiveView(2)" class="btn btn-white">
+				<i class="fa fa-lg fa-th" ng-class="{'ff-text-muted' : activeView == 1}" role="button"></i>
+			</button>
+		</div>
+		<div class="col-lg-8 m-b-xs" ng-if="activeView == 1">
             <button ng-if="hasPermission(['tenders.create'])" ng-click="addEntity()" type="button" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> {{ 'BUTTON_ADD' | translate }}</button>
         </div>
     </div>
 	<div class="row">
-		<div class="col-lg-12">
+		<div ng-if="activeView == 1" class="col-lg-12">
             <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize ui-grid-save-state class="grid m-b-sm">
                 <div class="grid-msg-overlay" ng-hide="!loading">
                     <div class="msg">
@@ -26,6 +42,30 @@
                     </div>
                 </div>
             </div>		  
+		</div>
+		
+		<div ng-if="activeView == 2" class="col-lg-12 p-xxs">
+			<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
+				<div class="masonry-brick ff-masonry-brick" ng-repeat="tender in tenders">
+					<small class="label-default pull-right ff-masonry-brick-date ">{{tender.lastModifiedDate | date : dateFormat}}</small>
+					<h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
+						<a class="ff-a" ui-sref="tenders.details({ id: tender.id })">{{tender.name}}</a>
+					</h5>
+					<a ui-sref="tenders.details({ id: tender.id })">
+						<img class="img-rounded ff-masonry-brick-img" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="100%">
+					</a>
+					<p style="margin-bottom: 0px;" data-ng-bind="tender.text | htmlToPlaintext" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
+					<div class="form-group" ng-repeat="item in tender.items" ng-if="item.valueMapped">
+						<div class="col-sm-12" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+							<label class="ff-masonry-brick-label">{{ item.text }}</label>
+							<div ng-if="item.type == 'CURRENCY'" style="padding-left: 5px;">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.valueCurrency.code }}</span></div>
+							<div ng-if="item.type == 'PERCENTAGE'" style="padding-left: 5px;">{{ item.valueMapped }}<span ng-if="item.valueMapped">%</span></div>
+							<div ng-if="item.type == 'HYPERLINK'" class="ff-masonry-brick-value"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
+							<div ng-if="item.type != 'CURRENCY' && item.type != 'PERCENTAGE' && item.type != 'HYPERLINK'" class="ff-masonry-brick-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
