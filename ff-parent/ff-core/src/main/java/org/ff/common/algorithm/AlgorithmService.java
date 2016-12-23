@@ -18,7 +18,11 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
+import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemType;
+import org.ff.jpa.domain.ItemOption;
+import org.ff.jpa.domain.Subdivision1;
+import org.ff.jpa.domain.Subdivision2;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.jpa.domain.TenderItem;
@@ -26,8 +30,11 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.AlgorithmItemRepository;
 import org.ff.jpa.repository.ItemOptionRepository;
+import org.ff.jpa.repository.Subdivision1Repository;
+import org.ff.jpa.repository.Subdivision2Repository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +59,12 @@ public class AlgorithmService extends BaseService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private Subdivision1Repository subdivision1Repository;
+
+	@Autowired
+	private Subdivision2Repository subdivision2Repository;
 
 	public List<User> findUsers4Tender(Tender tender) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findUsers4Tender");
@@ -256,10 +269,24 @@ public class AlgorithmService extends BaseService {
 				return radioInCheckbox(companyItem, tenderItem);
 			} else if (companyItem.getItem().getType() == ItemType.SELECT && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.MULTISELECT) {
 				return selectInMultiselect(companyItem, tenderItem);
-			} else if (companyItem.getItem().getType() == ItemType.NKD && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.NKDS) {
-				return nkdInNkds(companyItem, tenderItem);
-			} else if (companyItem.getItem().getType() == ItemType.NKDS && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.NKDS) {
-				return nkdsInNkds(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.SELECT && algorithmItem.getOperator() == Operator.EQUAL && tenderItem.getItem().getType() == ItemType.SELECT) {
+				return selectEqualSelect(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.ACTIVITY && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.ACTIVITIES) {
+				return activityInActivities(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.SUBDIVISION1 && algorithmItem.getOperator() == Operator.IN
+					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION1) {
+				return subdivision1InMultiselect(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.SUBDIVISION2 && algorithmItem.getOperator() == Operator.IN
+					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION2) {
+				return subdivision2InMultiselect(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.DATE && algorithmItem.getOperator() == Operator.GREATER_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
+				return dateGreaterOrEqualNumber(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.DATE && algorithmItem.getOperator() == Operator.LESS_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
+				return dateLessOrEqualNumber(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.NUMBER && algorithmItem.getOperator() == Operator.GREATER_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
+				return numberGreaterOrEqualNumber(companyItem, tenderItem);
+			} else if (companyItem.getItem().getType() == ItemType.NUMBER && algorithmItem.getOperator() == Operator.LESS_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
+				return numberLessOrEqualNumber(companyItem, tenderItem);
 			}
 		}
 
@@ -312,9 +339,22 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean nkdInNkds(CompanyItem companyItem, TenderItem tenderItem) {
+	private Boolean selectEqualSelect(CompanyItem companyItem, TenderItem tenderItem) {
+		if (StringUtils.isNotBlank(companyItem.getValue())) {
+			String companyItemValue = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue())).getText();
+			if (StringUtils.isNotBlank(tenderItem.getValue())) {
+				String tenderItemValue = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText();
+				if (companyItemValue.equals(tenderItemValue)) {
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	private Boolean activityInActivities(CompanyItem companyItem, TenderItem tenderItem) {
 		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
-			// companyItemValue is NKD ID (e.g. 457); tenderItemValue is pipe-separated list of NKD IDs (e.g. 457|458|459|460)
+			// companyItemValue is activity ID (e.g. 1); tenderItemValue is pipe-separated list of activity IDs (e.g. 1|2|3|4)
 			for (String str : tenderItem.getValue().split("\\|")) {
 				if (companyItem.getValue().equals(str)) {
 					return Boolean.TRUE;
@@ -324,14 +364,65 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean nkdsInNkds(CompanyItem companyItem, TenderItem tenderItem) {
+	private Boolean subdivision1InMultiselect(CompanyItem companyItem, TenderItem tenderItem) {
 		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
-			for (String str1 : companyItem.getValue().split("\\|")) {
-				for (String str2 : tenderItem.getValue().split("\\|")) {
-					if (str1.equals(str2)) {
-						return Boolean.TRUE;
-					}
+			Subdivision1 subdivision1 = subdivision1Repository.findOne(Integer.parseInt(companyItem.getValue()));
+			for (String str : tenderItem.getValue().split("\\|")) {
+				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(str));
+				if (itemOption.getText().equals(subdivision1.getDevelopmentIndex())) {
+					return Boolean.TRUE;
 				}
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	private Boolean subdivision2InMultiselect(CompanyItem companyItem, TenderItem tenderItem) {
+		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
+			Subdivision2 subdivision2 = subdivision2Repository.findOne(Integer.parseInt(companyItem.getValue()));
+			for (String str : tenderItem.getValue().split("\\|")) {
+				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(str));
+				if (itemOption.getText().equals(subdivision2.getDevelopmentIndex())) {
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	private Boolean dateGreaterOrEqualNumber(CompanyItem companyItem, TenderItem tenderItem) {
+		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
+			LocalDate date = new LocalDate(companyItem.getValue()).plusMonths(Integer.parseInt(tenderItem.getValue()));
+			if (date.isBefore(new LocalDate())) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	private Boolean dateLessOrEqualNumber(CompanyItem companyItem, TenderItem tenderItem) {
+		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
+			LocalDate date = new LocalDate(companyItem.getValue()).plusMonths(Integer.parseInt(tenderItem.getValue()));
+			if (date.isAfter(new LocalDate())) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	private Boolean numberGreaterOrEqualNumber(CompanyItem companyItem, TenderItem tenderItem) {
+		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
+			if (Integer.parseInt(companyItem.getValue()) >= Integer.parseInt(tenderItem.getValue())) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	private Boolean numberLessOrEqualNumber(CompanyItem companyItem, TenderItem tenderItem) {
+		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
+			if (Integer.parseInt(companyItem.getValue()) <= Integer.parseInt(tenderItem.getValue())) {
+				return Boolean.TRUE;
 			}
 		}
 		return Boolean.FALSE;

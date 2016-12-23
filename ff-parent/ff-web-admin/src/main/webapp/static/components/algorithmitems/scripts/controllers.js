@@ -548,14 +548,14 @@ function AlgorithmItemsEditController($rootScope, $scope, $state, $stateParams, 
 			} else if ($scope.entity.companyItem.type == 'SELECT' && $scope.entity.tenderItem.type == 'SELECT') {
 				$scope.operators = [{ 'value': 'EQUAL', 'name': $translate('OPERATOR_EQUAL') }];
 			} else if ($scope.entity.companyItem.type == 'NUMBER' && $scope.entity.tenderItem.type == 'NUMBER') {
-				$scope.operators = [{ 'value': 'GREATER_OR_EQUAL', 'name': $translate('OPERATOR_GREATER_OR_EQUAL') }];
+				$scope.operators = [{ 'value': 'GREATER_OR_EQUAL', 'name': $translate('OPERATOR_GREATER_OR_EQUAL') }, { 'value': 'LESS_OR_EQUAL', 'name': $translate('OPERATOR_LESS_OR_EQUAL') }];
 			} else if ($scope.entity.companyItem.type == 'DATE' && $scope.entity.tenderItem.type == 'NUMBER') {
 				$scope.operators = [{ 'value': 'GREATER_OR_EQUAL', 'name': $translate('OPERATOR_GREATER_OR_EQUAL') }, { 'value': 'LESS_OR_EQUAL', 'name': $translate('OPERATOR_LESS_OR_EQUAL') }];
-			} else if ($scope.entity.companyItem.type == 'SUBDIVISIONS1' && $scope.entity.tenderItem.type == 'MULTISELECT') {
+			} else if ($scope.entity.companyItem.type == 'SUBDIVISION1' && $scope.entity.tenderItem.type == 'MULTISELECT') {
 				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
-			} else if ($scope.entity.companyItem.type == 'SUBDIVISIONS2' && $scope.entity.tenderItem.type == 'MULTISELECT') {
+			} else if ($scope.entity.companyItem.type == 'SUBDIVISION2' && $scope.entity.tenderItem.type == 'MULTISELECT') {
 				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
-			} else if ($scope.entity.companyItem.type == 'ACTIVITIES' && $scope.entity.tenderItem.type == 'ACTIVITIES') {
+			} else if ($scope.entity.companyItem.type == 'ACTIVITY' && $scope.entity.tenderItem.type == 'ACTIVITIES') {
 				$scope.operators = [{ 'value': 'IN', 'name': $translate('OPERATOR_IN') }];
 			} else {
 				$scope.operators = [];

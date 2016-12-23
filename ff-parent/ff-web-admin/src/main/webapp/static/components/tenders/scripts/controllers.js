@@ -713,6 +713,7 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
+					width: 200,
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
@@ -723,6 +724,7 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
+					width: 200,
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
@@ -733,6 +735,7 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
+					width: 200,
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{

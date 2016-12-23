@@ -54,7 +54,7 @@
 	                                
 	                                <!-- CURRENCY -->
 									<div ng-if="entity.type == 'CURRENCY'" class="input-group">
-										<input ng-model="entity.value" type="number" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+										<input ng-model="entity.value" type="number" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" style="border-right: none;" />
 										<span class="input-group-addon" style="border: none; padding: 0px;">
                                             <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="entity.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>										
 										</span>
@@ -99,8 +99,14 @@
                                     <!-- HYPERLINK -->
                                     <input ng-if="entity.type == 'HYPERLINK'" ng-model="entity.value" type="url" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
                                     
+                                    <!-- ACTIVITY -->
+                                    <select ng-if="entity.type == 'ACTIVITY'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+                                    
                                     <!-- ACTIVITIES -->
                                     <select ng-if="entity.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+                                    
+                                    <!-- SUBDIVISION1 -->
+                                    <select ng-if="entity.type == 'SUBDIVISION1'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
                                     
                                     <!-- SUBDIVISION2 -->
                                     <select ng-if="entity.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="entity.mandatory" ng-model="entity.value" name="entity" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
@@ -127,8 +133,10 @@
                                     <div ng-if="entity.type == 'SELECT'" style="padding-left: 10px;">{{ entity.value.text }}</div>
                                     <div ng-if="entity.type == 'MULTISELECT'" style="padding-left: 10px;"><span ng-repeat="option in entity.value">{{ option.text }}<br></span></div>
                                     <div ng-if="entity.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ entity.value }}" target="_blank">{{ entity.value }}</a></div>
+                                    <div ng-if="entity.type == 'ACTIVITY'" style="padding-left: 10px;">{{ entity.value.name }}</div>
                                     <div ng-if="entity.type == 'ACTIVITIES'" style="padding-left: 10px;"><span ng-repeat="activity in entity.value">{{ activity.name }}<br></span></div>
                                     <div ng-if="entity.type == 'SUBDIVISION2'" style="padding-left: 10px;">{{ entity.value.name }}</div>
+                                    <div ng-if="entity.type == 'SUBDIVISION1'" style="padding-left: 10px;">{{ entity.value.name }}</div>
                                     <div ng-if="entity.type == 'SUBDIVISIONS1'" style="padding-left: 10px;"><span ng-repeat="subdivision1 in entity.value">{{ subdivision1.name }}<br></span></div>
                                     <div ng-if="entity.type == 'SUBDIVISIONS2'" style="padding-left: 10px;"><span ng-repeat="subdivision2 in entity.value">{{ subdivision2.name }}<br></span></div>
                                     <div ng-if="entity.type == 'INVESTMENTS_PRIMARY' || entity.type == 'INVESTMENTS_SECONDARY'" style="padding-left: 10px;"><span ng-repeat="investment in entity.value">{{ investment.name }}<br></span></div>

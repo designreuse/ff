@@ -201,7 +201,10 @@ function config($translateProvider) {
 			STATUS_INACTIVE: 'Inactive',
 			STATUS_INCOMPLETE: 'Incomplete',
 			
+			ITEM_TYPE_ACTIVITY: 'Activity',
+			ITEM_TYPE_ACTIVITY_DESCRIPTION: 'Rendered as select component where none or one option can be selected. Options are defined in Settings - Activities.',
 			ITEM_TYPE_ACTIVITIES: 'Activities',
+			ITEM_TYPE_ACTIVITIES_DESCRIPTION: 'Rendered as select component where none, one or many option(s) can be selected. Options are defined in Settings - Activities.',
 			ITEM_TYPE_CHECKBOX: 'Check box',
 			ITEM_TYPE_CHECKBOX_DESCRIPTION: 'Rendered as checkbox(es) where none, one or many option(s) can be selected. Options can be defined below.',
 			ITEM_TYPE_CURRENCY: 'Currency',

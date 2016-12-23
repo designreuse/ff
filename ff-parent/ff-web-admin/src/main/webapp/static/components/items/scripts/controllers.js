@@ -29,11 +29,13 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 		selectOptions4Type.push({ value: 'HYPERLINK', label: $translate('ITEM_TYPE_HYPERLINK') });
 	}
 	if ($scope.entityType == 'company') {
+		selectOptions4Type.push({ value: 'ACTIVITY', label: $translate('ITEM_TYPE_ACTIVITY') });
+		selectOptions4Type.push({ value: 'SUBDIVISION1', label: $translate('ITEM_TYPE_SUBDIVISION1') });
 		selectOptions4Type.push({ value: 'SUBDIVISION2', label: $translate('ITEM_TYPE_SUBDIVISION2') });
 	}
-	selectOptions4Type.push({ value: 'SUBDIVISIONS1', label: $translate('ITEM_TYPE_SUBDIVISIONS1') });
-	selectOptions4Type.push({ value: 'SUBDIVISIONS2', label: $translate('ITEM_TYPE_SUBDIVISIONS2') });
 	if ($scope.entityType == 'tender') {
+		selectOptions4Type.push({ value: 'SUBDIVISIONS1', label: $translate('ITEM_TYPE_SUBDIVISIONS1') });
+		selectOptions4Type.push({ value: 'SUBDIVISIONS2', label: $translate('ITEM_TYPE_SUBDIVISIONS2') });
 		selectOptions4Type.push({ value: 'INVESTMENTS_PRIMARY', label: $translate('ITEM_TYPE_INVESTMENTS_PRIMARY') });
 		selectOptions4Type.push({ value: 'INVESTMENTS_SECONDARY', label: $translate('ITEM_TYPE_INVESTMENTS_SECONDARY') });
 	}
@@ -736,6 +738,10 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 			$scope.typeDescription = $translate('ITEM_TYPE_MULTISELECT_DESCRIPTION');
 		} else if ($scope.entity.type == 'HYPERLINK') {
 			$scope.typeDescription = $translate('ITEM_TYPE_HYPERLINK_DESCRIPTION');
+		} else if ($scope.entity.type == 'ACTIVITY') {
+			$scope.typeDescription = $translate('ITEM_TYPE_ACTIVITY_DESCRIPTION');
+		} else if ($scope.entity.type == 'ACTIVITIES') {
+			$scope.typeDescription = $translate('ITEM_TYPE_ACTIVITIES_DESCRIPTION');
 		} else if ($scope.entity.type == 'SUBDIVISION1') {
 			$scope.typeDescription = $translate('ITEM_TYPE_SUBDIVISION1_DESCRIPTION');
 		} else if ($scope.entity.type == 'SUBDIVISION2') {

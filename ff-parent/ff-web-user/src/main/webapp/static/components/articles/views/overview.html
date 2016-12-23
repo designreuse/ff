@@ -13,7 +13,7 @@ p span {
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-	<div masonry>
+	<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
 		<div class="masonry-brick ff-masonry-brick" ng-repeat="article in articles">
             <small class="label-default pull-right ff-masonry-brick-date ">{{article.lastModifiedDate | date : dateFormat}}</small>
             <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
@@ -22,7 +22,7 @@ p span {
             <a ui-sref="articles.details({ id: article.id })">
                 <img class="img-rounded ff-masonry-brick-img" ng-show="article.image.base64" ng-src="data:image/JPEG;base64,{{article.image.base64}}" width="100%">
             </a>
-            <p data-ng-bind="article.text" class="ff-masonry-brick-text" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(article)"></p>
+            <p style="margin-bottom: 0px;" data-ng-bind="article.text | htmlToPlaintext" class="ff-masonry-brick-text text-justify" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(article)"></p>
         </div>
 	</div>
 </div>

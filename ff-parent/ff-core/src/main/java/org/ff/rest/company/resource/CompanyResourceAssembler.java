@@ -33,7 +33,7 @@ import org.ff.rest.subdivision1.resource.Subdivision1Resource;
 import org.ff.rest.subdivision1.resource.Subdivision1ResourceAssembler;
 import org.ff.rest.subdivision2.resource.Subdivision2Resource;
 import org.ff.rest.subdivision2.resource.Subdivision2ResourceAssembler;
-import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -199,17 +199,11 @@ public class CompanyResourceAssembler {
 					itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
 					itemResource.setValueMapped(itemOption.getText());
 				}
-			} else if (itemResource.getType() == ItemType.ACTIVITIES) {
+			} else if (itemResource.getType() == ItemType.ACTIVITY) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
-					List<ActivityResource> value = new ArrayList<>();
-					List<String> valueMapped = new ArrayList<>();
-					for (String id : companyItem.getValue().split("\\|")) {
-						Activity entity = activityRepository.findOne(Integer.parseInt(id));
-						value.add(activityResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
-					}
-					itemResource.setValue(value);
-					itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+					Activity entity = activityRepository.findOne(Integer.parseInt(companyItem.getValue()));
+					itemResource.setValue(activityResourceAssembler.toResource(entity, true));
+					itemResource.setValueMapped(entity.getName());
 				}
 			} else if (itemResource.getType() == ItemType.SUBDIVISION1) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
@@ -222,30 +216,6 @@ public class CompanyResourceAssembler {
 					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(companyItem.getValue()));
 					itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));
 					itemResource.setValueMapped(entity.getName());
-				}
-			} else if (itemResource.getType() == ItemType.SUBDIVISIONS1) {
-				if (StringUtils.isNotBlank(companyItem.getValue())) {
-					List<Subdivision1Resource> value = new ArrayList<>();
-					List<String> valueMapped = new ArrayList<>();
-					for (String id : companyItem.getValue().split("\\|")) {
-						Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(id));
-						value.add(subdivision1ResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
-					}
-					itemResource.setValue(value);
-					itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
-				}
-			} else if (itemResource.getType() == ItemType.SUBDIVISIONS2) {
-				if (StringUtils.isNotBlank(companyItem.getValue())) {
-					List<Subdivision2Resource> value = new ArrayList<>();
-					List<String> valueMapped = new ArrayList<>();
-					for (String id : companyItem.getValue().split("\\|")) {
-						Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(id));
-						value.add(subdivision2ResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
-					}
-					itemResource.setValue(value);
-					itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
 				}
 			} else {
 				itemResource.setValue(companyItem.getValue());
@@ -269,54 +239,21 @@ public class CompanyResourceAssembler {
 						companyItem.setCurrency(itemResource.getCurrency().getCode());
 					}
 				} else if (itemResource.getType() == ItemType.DATE) {
-					value = new DateTime(itemResource.getValue()).toString();
+					value = ISODateTimeFormat.dateTime().parseLocalDateTime(itemResource.getValue().toString()).toLocalDate().toString();
 				} else if (itemResource.getType() == ItemType.RADIO) {
 					value = itemResource.getValue().toString();
 				} else if (itemResource.getType() == ItemType.SELECT) {
 					ItemOptionResource itemOptionResource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), ItemOptionResource.class);
 					value = itemOptionResource.getId().toString();
-				} else if (itemResource.getType() == ItemType.ACTIVITIES) {
-					if (itemResource.getValue() != null) {
-						List<?> objects = (List<?>) itemResource.getValue();
-						if (!objects.isEmpty()) {
-							List<String> values = new ArrayList<>();
-							for (Object object : objects) {
-								ActivityResource resource = objectMapper.readValue(objectMapper.writeValueAsString(object), ActivityResource.class);
-								values.add(resource.getId().toString());
-							}
-							value = StringUtils.join(values, "|");
-						}
-					}
+				} else if (itemResource.getType() == ItemType.ACTIVITY) {
+					ActivityResource resource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), ActivityResource.class);
+					value = resource.getId().toString();
 				} else if (itemResource.getType() == ItemType.SUBDIVISION1) {
 					Subdivision1Resource resource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), Subdivision1Resource.class);
 					value = resource.getId().toString();
 				} else if (itemResource.getType() == ItemType.SUBDIVISION2) {
 					Subdivision2Resource resource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), Subdivision2Resource.class);
 					value = resource.getId().toString();
-				} else if (itemResource.getType() == ItemType.SUBDIVISIONS1) {
-					if (itemResource.getValue() != null) {
-						List<?> objects = (List<?>) itemResource.getValue();
-						if (!objects.isEmpty()) {
-							List<String> values = new ArrayList<>();
-							for (Object object : objects) {
-								Subdivision1Resource resource = objectMapper.readValue(objectMapper.writeValueAsString(object), Subdivision1Resource.class);
-								values.add(resource.getId().toString());
-							}
-							value = StringUtils.join(values, "|");
-						}
-					}
-				} else if (itemResource.getType() == ItemType.SUBDIVISIONS2) {
-					if (itemResource.getValue() != null) {
-						List<?> objects = (List<?>) itemResource.getValue();
-						if (!objects.isEmpty()) {
-							List<String> values = new ArrayList<>();
-							for (Object object : objects) {
-								Subdivision2Resource resource = objectMapper.readValue(objectMapper.writeValueAsString(object), Subdivision2Resource.class);
-								values.add(resource.getId().toString());
-							}
-							value = StringUtils.join(values, "|");
-						}
-					}
 				}
 			}
 		} catch (Exception e) {

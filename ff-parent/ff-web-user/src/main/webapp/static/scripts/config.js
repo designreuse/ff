@@ -161,7 +161,8 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: ['components/articles/scripts/controllers.js',
-	        			        'components/articles/scripts/services.js']
+	        			        'components/articles/scripts/services.js',
+	        			        'components/images/scripts/services.js']
 	        		});
 	        	}
 	        }

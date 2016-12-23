@@ -65,11 +65,6 @@
                                     <div ng-if="item.type == 'HYPERLINK'" class="ff-value"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
                                     <div ng-if="item.type == 'SUBDIVISIONS1'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
                                     <div ng-if="item.type == 'SUBDIVISIONS2'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    
-                                    <!--  
-                                    <div ng-if="item.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
-                                    <div ng-if="item.type != 'HYPERLINK'" style="padding-left: 10px;" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    -->
                                 </div>
                             </div>
                             

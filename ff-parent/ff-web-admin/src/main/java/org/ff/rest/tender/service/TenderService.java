@@ -156,6 +156,11 @@ public class TenderService extends BaseService {
 					ItemResource itemResource = itemResourceAssembler.toResource(tenderItem.getItem(), true);
 					itemResource.setValue(tenderItem.getValue());
 					itemResource.setValueMapped(tenderItem.getValue());
+
+					if (itemResource.getType() == ItemType.CURRENCY && itemResource.getCurrency() == null) {
+						itemResource.setCurrency(currencyService.findAll().get(0));
+					}
+
 					resource.getItems().add(itemResource);
 				}
 			}

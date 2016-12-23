@@ -93,7 +93,7 @@
                                         
                                         <!-- CURRENCY -->
 	                                    <div ng-if="item.type == 'CURRENCY'" class="input-group">
-	                                        <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
+	                                        <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="border-right: none;" />
 	                                        <span class="input-group-addon" style="border: none; padding: 0px;">
 	                                            <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>                                     
 	                                        </span>

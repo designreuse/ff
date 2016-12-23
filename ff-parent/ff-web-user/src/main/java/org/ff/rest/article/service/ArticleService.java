@@ -2,6 +2,7 @@ package org.ff.rest.article.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.jpa.domain.Article;
 import org.ff.jpa.domain.Article.ArticleStatus;
 import org.ff.jpa.domain.Impression;
@@ -32,7 +33,15 @@ public class ArticleService {
 	@Transactional(readOnly = true)
 	public List<ArticleResource> findAll() {
 		log.debug("Finding articles...");
-		return resourceAssembler.toResources(repository.findByStatusOrderByLastModifiedDateDesc(ArticleStatus.ACTIVE), false);
+
+		List<ArticleResource> resources = resourceAssembler.toResources(repository.findByStatusOrderByLastModifiedDateDesc(ArticleStatus.ACTIVE), false);
+		for (ArticleResource resource : resources) {
+			if (resource.getImage() != null && StringUtils.isNotBlank(resource.getImage().getBase64())) {
+				resource.setImageId(resource.getImage().getId());
+				resource.getImage().setBase64(null);
+			}
+		}
+		return resources;
 	}
 
 	@Transactional

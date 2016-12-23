@@ -55,10 +55,12 @@
                             <option value="SELECT">{{ 'ITEM_TYPE_SELECT' | translate }}</option>
                             <option value="MULTISELECT">{{ 'ITEM_TYPE_MULTISELECT' | translate }}</option>
                             <option value="HYPERLINK">{{ 'ITEM_TYPE_HYPERLINK' | translate }}</option>
+                            <option ng-if="entityType == 'company'" value="ACTIVITY">{{ 'ITEM_TYPE_ACTIVITY' | translate }}</option>
+                            <option ng-if="entityType == 'company'" value="SUBDIVISION1">{{ 'ITEM_TYPE_SUBDIVISION1' | translate }}</option>
                             <option ng-if="entityType == 'company'" value="SUBDIVISION2">{{ 'ITEM_TYPE_SUBDIVISION2' | translate }}</option>
-                            <option value="ACTIVITIES">{{ 'ITEM_TYPE_ACTIVITIES' | translate }}</option>
-                            <option value="SUBDIVISIONS1">{{ 'ITEM_TYPE_SUBDIVISIONS1' | translate }}</option>
-                            <option value="SUBDIVISIONS2">{{ 'ITEM_TYPE_SUBDIVISIONS2' | translate }}</option>
+                            <option ng-if="entityType == 'tender'" value="ACTIVITIES">{{ 'ITEM_TYPE_ACTIVITIES' | translate }}</option>
+                            <option ng-if="entityType == 'tender'" value="SUBDIVISIONS1">{{ 'ITEM_TYPE_SUBDIVISIONS1' | translate }}</option>
+                            <option ng-if="entityType == 'tender'" value="SUBDIVISIONS2">{{ 'ITEM_TYPE_SUBDIVISIONS2' | translate }}</option>
                             <option ng-if="entityType == 'tender'" value="INVESTMENTS_PRIMARY">{{ 'ITEM_TYPE_INVESTMENTS_PRIMARY' | translate }}</option>
                             <option ng-if="entityType == 'tender'" value="INVESTMENTS_SECONDARY">{{ 'ITEM_TYPE_INVESTMENTS_SECONDARY' | translate }}</option>
                         </select>

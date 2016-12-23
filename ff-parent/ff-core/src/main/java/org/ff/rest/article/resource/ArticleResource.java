@@ -27,6 +27,9 @@ public class ArticleResource {
 	@JsonProperty("text")
 	private String text;
 
+	@JsonProperty("imageId")
+	private Integer imageId;
+
 	@JsonProperty("image")
 	private ImageResource image;
 

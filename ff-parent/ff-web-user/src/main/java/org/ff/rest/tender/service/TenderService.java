@@ -9,6 +9,7 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Impression;
 import org.ff.jpa.domain.Impression.EntityType;
+import org.ff.jpa.domain.Item.ItemType;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.domain.User;
@@ -19,6 +20,7 @@ import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
+import org.ff.rest.currency.service.CurrencyService;
 import org.ff.rest.image.resource.ImageResourceAssembler;
 import org.ff.rest.investment.resource.InvestmentResource;
 import org.ff.rest.item.resource.ItemResource;
@@ -64,6 +66,9 @@ public class TenderService {
 	@Autowired
 	private InvestmentRepository investmentRepository;
 
+	@Autowired
+	private CurrencyService currencyService;
+
 	@Transactional(readOnly = true)
 	public List<TenderResource> findAll(UserDetails principal) {
 		List<TenderResource> result = new ArrayList<>();
@@ -88,6 +93,11 @@ public class TenderService {
 					ItemResource itemResource = itemResourceAssembler.toResource(tenderItem.getItem(), true);
 					itemResource.setValue(tenderItem.getValue());
 					itemResource.setValueMapped(tenderItem.getValue());
+
+					if (itemResource.getType() == ItemType.CURRENCY && itemResource.getCurrency() == null) {
+						itemResource.setCurrency(currencyService.findAll().get(0));
+					}
+
 					resource.getItems().add(itemResource);
 				}
 			}

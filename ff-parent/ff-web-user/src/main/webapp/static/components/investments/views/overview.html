@@ -59,7 +59,7 @@
                         
                         <!-- CURRENCY -->
                         <div ng-if="item.type == 'CURRENCY'" class="input-group">
-                            <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" />
+                            <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" style="border-right: none;" />
                             <span class="input-group-addon" style="border: none; padding: 0px;">
                                 <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>
                             </span>
@@ -68,14 +68,14 @@
                         <!-- SELECT -->
                         <select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
                         
-                        <!-- ACTIVITIES -->
-                        <select ng-if="item.type == 'ACTIVITIES'" width="1" chosen multiple max-selected-options="1" class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+                        <!-- ACTIVITY -->
+                        <select ng-if="item.type == 'ACTIVITY'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
                         
-                        <!-- SUBDIVISIONS1 -->
-                        <select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple multiple max-selected-options="1" class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+                        <!-- SUBDIVISION1 -->
+                        <select ng-if="item.type == 'SUBDIVISION1'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
                         
-                        <!-- SUBDIVISIONS2 -->
-                        <select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple multiple max-selected-options="1" class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+                        <!-- SUBDIVISION2 -->
+                        <select ng-if="item.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
                     </div>
                 </div>
             </div>
