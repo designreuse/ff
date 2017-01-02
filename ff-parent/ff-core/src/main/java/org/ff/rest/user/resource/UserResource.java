@@ -40,6 +40,9 @@ public class UserResource {
 	@JsonProperty("businessRelationshipManager")
 	private BusinessRelationshipManagerResource businessRelationshipManager;
 
+	@JsonProperty("businessRelationshipManagerSubstitute")
+	private BusinessRelationshipManagerResource businessRelationshipManagerSubstitute;
+
 	@JsonProperty("lastLoginDate")
 	private Date lastLoginDate;
 

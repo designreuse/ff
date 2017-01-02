@@ -9,7 +9,6 @@ import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
 import org.ff.common.uigrid.PageableResource;
 import org.ff.common.uigrid.UiGridResource;
-import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResource;
 import org.ff.rest.email.resource.SendEmailResource;
 import org.ff.rest.user.resource.UserResource;
 import org.ff.rest.user.service.UserService;
@@ -121,7 +120,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/{id}/brm")
-	public void setBusinessRelationshipManager(Principal principal, @PathVariable Integer id, @RequestBody(required=false) BusinessRelationshipManagerResource resource) {
+	public void setBusinessRelationshipManager(Principal principal, @PathVariable Integer id, @RequestBody UserResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".setBusinessRelationshipManager");
 		try {
 			userService.setBusinessRelationshipManager(id, resource);

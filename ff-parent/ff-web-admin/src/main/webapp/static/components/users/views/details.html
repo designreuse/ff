@@ -183,31 +183,49 @@
                         <div class="panel-body">
                             <form name="form" class="form-horizontal ng-pristine ng-valid m-l-md" novalidate>
 	                            <div class="row">
-		                            <div class="col-sm-6">
+		                            <div class="col-sm-4">
 	                                    <div class="form-group">
 					                        <select chosen class="form-control" width="1" ng-model="entity.businessRelationshipManager" name="businessRelationshipManager" options="businessRelationshipManagers" allow-single-deselect="true" ng-options="(businessRelationshipManager.lastName + ' ' + businessRelationshipManager.firstName) for businessRelationshipManager in businessRelationshipManagers track by businessRelationshipManager.id">
 					                           <option value=""></option>
 					                        </select>
+					                        <small class="ff-postscript">{{ 'LABEL_MAIN' | translate }}</small>
 	                                    </div>
 	                                </div>
+	                                <div class="col-sm-4 m-l-md">
+                                        <div class="form-group">
+                                            <select chosen class="form-control" width="1" ng-model="entity.businessRelationshipManagerSubstitute" name="businessRelationshipManagerSubstitute" options="businessRelationshipManagers" allow-single-deselect="true" ng-options="(businessRelationshipManager.lastName + ' ' + businessRelationshipManager.firstName) for businessRelationshipManager in businessRelationshipManagers track by businessRelationshipManager.id">
+                                               <option value=""></option>
+                                            </select>
+                                            <small class="ff-postscript">{{ 'LABEL_SUBSTITUTE' | translate }}</small>
+                                        </div>
+                                    </div>
 	                                <div class="col-sm-2">
 	                                    <button ng-click="setBusinessRelationshipManager()" class="btn btn-primary"><i class="fa fa-save"></i> {{ 'BUTTON_SAVE' | translate }}</button>
 	                                </div>
                                 </div>
                                 
-                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.email">
-                                    <div class="col-sm-6">
-                                        <i class="fa fa-envelope-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.email }}
+                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.email || entity.businessRelationshipManagerSubstitute.email">
+                                    <div class="col-sm-4">
+                                        <span ng-if="entity.businessRelationshipManager.email"><i class="fa fa-envelope-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.email }}</span>
+                                    </div>
+                                    <div class="col-sm-4 m-l-md">
+                                        <span ng-if="entity.businessRelationshipManagerSubstitute.email"><i class="fa fa-envelope-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManagerSubstitute.email }}</span>
                                     </div>
                                 </div>
-                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.phone">
-                                    <div class="col-sm-6">
-                                        <i class="fa fa-phone m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.phone }}
+                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.phone || entity.businessRelationshipManagerSubstitute.phone">
+                                    <div class="col-sm-4">
+                                        <span ng-if="entity.businessRelationshipManager.phone"><i class="fa fa-phone m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.phone }}</span>
+                                    </div>
+                                    <div class="col-sm-4 m-l-md">
+                                        <span ng-if="entity.businessRelationshipManagerSubstitute.phone"><i class="fa fa-phone m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManagerSubstitute.phone }}</span>
                                     </div>
                                 </div>
-                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.mobile">
-                                    <div class="col-sm-6">
-                                        <i class="fa fa-tablet m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.mobile }}
+                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.mobile || entity.businessRelationshipManagerSubstitute.mobile">
+                                    <div class="col-sm-4">
+                                        <span ng-if="entity.businessRelationshipManager.mobile"><i class="fa fa-tablet m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.mobile }}</span>
+                                    </div>
+                                    <div class="col-sm-4 m-l-md">
+                                        <span ng-if="entity.businessRelationshipManagerSubstitute.mobile"><i class="fa fa-tablet m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManagerSubstitute.mobile }}</span>
                                     </div>
                                 </div>
                             </form>

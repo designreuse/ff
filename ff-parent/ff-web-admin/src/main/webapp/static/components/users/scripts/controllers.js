@@ -721,7 +721,7 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 	};
 	
 	$scope.setBusinessRelationshipManager = function() {
-		UsersService.setBusinessRelationshipManager($scope.entity.id, $scope.entity.businessRelationshipManager)
+		UsersService.setBusinessRelationshipManager($scope.entity.id, $scope.entity)
 			.success(function(data, status) {
 				if (status == 200) {
 					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));

@@ -267,7 +267,8 @@ CREATE TABLE [dbo].[user]
   [registration_code_confirmed] [datetime2](7)  NULL,
   [registration_code_sent] [datetime2](7)  NULL,
   [status] [varchar](32)  NOT NULL,
-  [business_relationship_manager] [int]  NULL
+  [business_relationship_manager] [int]  NULL,
+  [business_relationship_manager_substitute] [int]  NULL
 )
 ALTER TABLE [dbo].[user] ADD CONSTRAINT PK__user__3213E83F6DCCB062 PRIMARY KEY  ([id])
 

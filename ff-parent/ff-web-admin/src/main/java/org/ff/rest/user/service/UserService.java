@@ -28,7 +28,6 @@ import org.ff.jpa.repository.EmailRepository;
 import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.UserSpecification;
-import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResource;
 import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.email.resource.SendEmailResource;
 import org.ff.rest.tender.resource.TenderResourceAssembler;
@@ -146,9 +145,10 @@ public class UserService extends BaseService {
 	}
 
 	@Transactional
-	public void setBusinessRelationshipManager(Integer userId, BusinessRelationshipManagerResource resource) {
+	public void setBusinessRelationshipManager(Integer userId, UserResource resource) {
 		User entity = repository.findOne(userId);
-		entity.setBusinessRelationshipManager((resource != null) ? businessRelationshipManagerRepository.findOne(resource.getId()) : null);;
+		entity.setBusinessRelationshipManager((resource.getBusinessRelationshipManager() != null) ? businessRelationshipManagerRepository.findOne(resource.getBusinessRelationshipManager().getId()) : null);
+		entity.setBusinessRelationshipManagerSubstitute((resource.getBusinessRelationshipManagerSubstitute() != null) ? businessRelationshipManagerRepository.findOne(resource.getBusinessRelationshipManagerSubstitute().getId()) : null);
 		repository.save(entity);
 	}
 

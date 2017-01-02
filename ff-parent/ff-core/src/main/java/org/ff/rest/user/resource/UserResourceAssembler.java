@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
+import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResourceAssembler;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
@@ -27,6 +28,9 @@ public class UserResourceAssembler {
 	@Autowired
 	private BusinessRelationshipManagerResourceAssembler businessRelationshipManagerResourceAssembler;
 
+	@Autowired
+	private BusinessRelationshipManagerRepository businessRelationshipManagerRepository;
+
 	public UserResource toResource(User entity, boolean light) {
 		UserResource resource = new UserResource();
 		resource.setId(entity.getId());
@@ -36,6 +40,7 @@ public class UserResourceAssembler {
 		resource.setEmail(entity.getEmail());
 		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
 		resource.setBusinessRelationshipManager((entity.getBusinessRelationshipManager() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManager()) : null);
+		resource.setBusinessRelationshipManagerSubstitute((entity.getBusinessRelationshipManagerSubstitute() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManagerSubstitute()) : null);
 		resource.setLastLoginDate(entity.getLastLoginDate().toDate());
 		resource.setDemoUser(entity.getDemoUser());
 		resource.setCreationDate(entity.getCreationDate().toDate());
@@ -74,6 +79,8 @@ public class UserResourceAssembler {
 			company.setUser(entity);
 		}
 		entity.setCompany(company);
+		entity.setBusinessRelationshipManager((resource.getBusinessRelationshipManager() != null) ? businessRelationshipManagerRepository.findOne(entity.getBusinessRelationshipManager().getId()) : null);
+		entity.setBusinessRelationshipManagerSubstitute((resource.getBusinessRelationshipManagerSubstitute() != null) ? businessRelationshipManagerRepository.findOne(entity.getBusinessRelationshipManagerSubstitute().getId()) : null);
 		entity.setDemoUser((resource.getDemoUser() != null) ? resource.getDemoUser() : Boolean.FALSE);
 		return entity;
 	}
@@ -89,6 +96,8 @@ public class UserResourceAssembler {
 			company.setUser(entity);
 		}
 		entity.setCompany(company);
+		entity.setBusinessRelationshipManager((resource.getBusinessRelationshipManager() != null) ? businessRelationshipManagerRepository.findOne(entity.getBusinessRelationshipManager().getId()) : null);
+		entity.setBusinessRelationshipManagerSubstitute((resource.getBusinessRelationshipManagerSubstitute() != null) ? businessRelationshipManagerRepository.findOne(entity.getBusinessRelationshipManagerSubstitute().getId()) : null);
 		entity.setDemoUser((resource.getDemoUser() != null) ? resource.getDemoUser() : Boolean.FALSE);
 		return entity;
 	}

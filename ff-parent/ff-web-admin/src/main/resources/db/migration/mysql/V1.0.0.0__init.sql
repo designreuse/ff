@@ -433,6 +433,7 @@ CREATE TABLE `user` (
   `registration_code_sent` datetime DEFAULT NULL,
   `status` varchar(32) NOT NULL,
   `business_relationship_manager` int(11) DEFAULT NULL,
+  `business_relationship_manager_substitute` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_5t6qrhu2fappmelw8hc6bkiky` (`business_relationship_manager`),
   CONSTRAINT `FK_5t6qrhu2fappmelw8hc6bkiky` FOREIGN KEY (`business_relationship_manager`) REFERENCES `business_relationship_manager` (`id`)

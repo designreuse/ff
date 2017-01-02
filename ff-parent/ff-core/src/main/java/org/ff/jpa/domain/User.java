@@ -59,6 +59,10 @@ public class User extends AbstractEntity {
 	@JoinColumn(name = "business_relationship_manager", nullable = true)
 	private BusinessRelationshipManager businessRelationshipManager;
 
+	@ManyToOne
+	@JoinColumn(name = "business_relationship_manager_substitute", nullable = true)
+	private BusinessRelationshipManager businessRelationshipManagerSubstitute;
+
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private Company company;
 
