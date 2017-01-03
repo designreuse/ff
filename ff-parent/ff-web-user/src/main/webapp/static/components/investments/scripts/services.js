@@ -4,9 +4,6 @@ angular.module('FundFinder')
 	this.findAll = function() {
 		return $http.get('/api/v1/investments');
 	};
-	this.save = function(resource) {
-		return $http.post('/api/v1/investments', resource);
-	};
 })
 
 .service('CompanyInvestmentsService', function($http) {

@@ -1,5 +1,6 @@
 package org.ff.rest.investment.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.ff.base.controller.BaseController;
@@ -7,17 +8,12 @@ import org.ff.common.etm.EtmService;
 import org.ff.rest.investment.resource.InvestmentResource;
 import org.ff.rest.investment.service.InvestmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import etm.core.monitor.EtmPoint;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping(value = { "/api/v1/investments", "/e/api/v1/investments" })
 public class InvestmentController extends BaseController {
@@ -29,26 +25,12 @@ public class InvestmentController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<InvestmentResource> findAll(@AuthenticationPrincipal UserDetails principal) {
+	public List<InvestmentResource> findAll(Principal principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
-			return investmentService.findAll(principal);
+			return investmentService.findAll();
 		} finally {
 			etmService.collect(point);
-			log.debug(".findAll finished in {} ms", point.getTransactionTime());
-		}
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public List<InvestmentResource> save(@AuthenticationPrincipal UserDetails principal, @RequestBody List<InvestmentResource> resources) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
-		try {
-			return investmentService.save(principal, resources);
-		} catch (RuntimeException e) {
-			throw processException(e);
-		} finally {
-			etmService.collect(point);
-			log.debug(".save finished in {} ms", point.getTransactionTime());
 		}
 	}
 

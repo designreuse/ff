@@ -18,7 +18,6 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyInvestment;
 import org.ff.jpa.domain.CompanyInvestmentItem;
 import org.ff.jpa.domain.CompanyItem;
-import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemType;
@@ -228,13 +227,6 @@ public class AlgorithmService extends BaseService {
 		if (tenderInvestments.isEmpty()) {
 			// tender is not restricted to any particular investment
 			return Boolean.TRUE;
-		}
-
-		for (Investment investment : company.getInvestments()) {
-			if (tenderInvestments.contains(investment.getId())) {
-				// company has at least one investment required by the tender
-				return Boolean.TRUE;
-			}
 		}
 
 		return Boolean.FALSE;

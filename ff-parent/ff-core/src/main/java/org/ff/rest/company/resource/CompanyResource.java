@@ -3,7 +3,6 @@ package org.ff.rest.company.resource;
 import java.util.Date;
 import java.util.List;
 
-import org.ff.rest.investment.resource.InvestmentResource;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.tender.resource.TenderResource;
 
@@ -28,9 +27,6 @@ public class CompanyResource {
 
 	@JsonProperty("items")
 	private List<ItemResource> items;
-
-	@JsonProperty("investments")
-	private List<InvestmentResource> investments;
 
 	@JsonProperty("tenders")
 	private List<TenderResource> tenders;

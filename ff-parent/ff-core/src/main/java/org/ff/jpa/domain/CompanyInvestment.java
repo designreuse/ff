@@ -24,7 +24,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "company_investment_tmp")
+@Table(name = "company_investment")
 @NoArgsConstructor @Getter @Setter @ToString
 public class CompanyInvestment extends AbstractEntity {
 

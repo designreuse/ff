@@ -47,7 +47,6 @@ p span {
 		<div ng-if="activeView == 2" class="col-lg-12 p-xxs">
 			<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
 				<div class="masonry-brick ff-masonry-brick" ng-repeat="tender in tenders">
-					<small class="label-default pull-right ff-masonry-brick-date ">{{tender.lastModifiedDate | date : dateFormat}}</small>
 					<h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
 						<a class="ff-a" ui-sref="tenders.details({ id: tender.id })">{{tender.name}}</a>
 					</h5>

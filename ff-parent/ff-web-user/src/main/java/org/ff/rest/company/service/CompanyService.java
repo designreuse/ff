@@ -28,7 +28,6 @@ public class CompanyService {
 	public CompanyResource find(UserDetails principal) {
 		CompanyResource resource = resourceAssembler.toResource(
 				userRepository.findByEmail(principal.getUsername()).getCompany(), false);
-		resource.setInvestments(null);
 		return resource;
 	}
 
@@ -36,7 +35,6 @@ public class CompanyService {
 	public CompanyResource save(UserDetails principal, CompanyResource resource) {
 		Company entity = companyRepository.save(resourceAssembler.updateEntity(companyRepository.findOne(resource.getId()), resource));
 		resource = resourceAssembler.toResource(entity, false);
-		resource.setInvestments(null);
 		return resource;
 	}
 

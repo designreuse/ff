@@ -24,7 +24,6 @@ import org.ff.rest.activity.resource.ActivityResource;
 import org.ff.rest.activity.resource.ActivityResourceAssembler;
 import org.ff.rest.currency.resource.CurrencyResource;
 import org.ff.rest.currency.service.CurrencyService;
-import org.ff.rest.investment.resource.InvestmentResourceAssembler;
 import org.ff.rest.item.resource.ItemOptionResource;
 import org.ff.rest.item.resource.ItemOptionResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
@@ -59,9 +58,6 @@ public class CompanyResourceAssembler {
 
 	@Autowired
 	private ItemOptionResourceAssembler itemOptionResourceAssembler;
-
-	@Autowired
-	private InvestmentResourceAssembler investmentResourceAssembler;
 
 	@Autowired
 	private ActivityRepository activityRepository;
@@ -106,9 +102,6 @@ public class CompanyResourceAssembler {
 					itemResource.setCurrency(currencyService.findAll().get(0));
 				}
 			}
-
-			// investments
-			resource.setInvestments((entity.getInvestments() != null) ? investmentResourceAssembler.toResources(entity.getInvestments(), true) : null);
 		}
 
 		resource.setCreationDate(entity.getCreationDate().toDate());

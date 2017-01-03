@@ -30,9 +30,6 @@ public class InvestmentResource {
 	@JsonProperty("image")
 	private ImageResource image;
 
-	@JsonProperty("selected")
-	private Boolean selected;
-
 	@JsonProperty("creationDate")
 	private Date creationDate;
 

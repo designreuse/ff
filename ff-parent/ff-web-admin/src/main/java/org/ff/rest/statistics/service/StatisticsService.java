@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
@@ -20,7 +19,6 @@ import org.ff.jpa.domain.ItemOption;
 import org.ff.jpa.domain.Subdivision1;
 import org.ff.jpa.domain.Subdivision2;
 import org.ff.jpa.repository.CompanyItemRepository;
-import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.InvestmentRepository;
 import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.repository.Subdivision1Repository;
@@ -56,9 +54,6 @@ public class StatisticsService {
 
 	@Autowired
 	private InvestmentRepository investmentRepository;
-
-	@Autowired
-	private CompanyRepository companyRepository;
 
 	/**
 	 * Get companies by counties.
@@ -120,12 +115,6 @@ public class StatisticsService {
 		for (Entry<Investment, AtomicInteger> entry : counters.entrySet()) {
 			result.getLabels().add(StringUtils.abbreviate(entry.getKey().getName(), abbreviateMaxWidth));
 			result.getData().add(entry.getValue());
-		}
-
-		for (Company company : companyRepository.findAll()) {
-			for (Investment investment : company.getInvestments()) {
-				counters.put(investment, new AtomicInteger(counters.get(investment).incrementAndGet()));
-			}
 		}
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
