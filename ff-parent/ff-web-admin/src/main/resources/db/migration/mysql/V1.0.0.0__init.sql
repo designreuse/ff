@@ -121,13 +121,44 @@ CREATE TABLE `company` (
 DROP TABLE IF EXISTS `company_investment`;
 
 CREATE TABLE `company_investment` (
-  `company_id` int(11) NOT NULL,
-  `investment_id` int(11) NOT NULL,
-  PRIMARY KEY (`company_id`,`investment_id`),
-  KEY `FK_f7jai29d852gry6v6npfe0l14` (`investment_id`),
-  KEY `FK_ibu82eokrdn99jrxpulyjf7ca` (`company_id`),
-  CONSTRAINT `FK_f7jai29d852gry6v6npfe0l14` FOREIGN KEY (`investment_id`) REFERENCES `investment` (`id`),
-  CONSTRAINT `FK_ibu82eokrdn99jrxpulyjf7ca` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `description` longtext,
+  `name` varchar(255) NOT NULL,
+  `company` int(11) DEFAULT NULL,
+  `investment` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_1pbdbv65otvg7qpwd0rwjv9r1` (`company`),
+  KEY `FK_89s93yj54d9oo7asa7ulpf3n4` (`investment`),
+  CONSTRAINT `FK_1pbdbv65otvg7qpwd0rwjv9r1` FOREIGN KEY (`company`) REFERENCES `company` (`id`),
+  CONSTRAINT `FK_89s93yj54d9oo7asa7ulpf3n4` FOREIGN KEY (`investment`) REFERENCES `investment` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table company_investment_item
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `company_investment_item`;
+
+CREATE TABLE `company_investment_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `currency` varchar(8) DEFAULT NULL,
+  `value` longtext,
+  `company_investment` int(11) DEFAULT NULL,
+  `item` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_nujdk0ia8ayep1gmdxjf92jdb` (`company_investment`),
+  KEY `FK_129qtsnvh13lgamyif1km6c0j` (`item`),
+  CONSTRAINT `FK_129qtsnvh13lgamyif1km6c0j` FOREIGN KEY (`item`) REFERENCES `item` (`id`),
+  CONSTRAINT `FK_nujdk0ia8ayep1gmdxjf92jdb` FOREIGN KEY (`company_investment`) REFERENCES `company_investment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -436,7 +467,9 @@ CREATE TABLE `user` (
   `business_relationship_manager_substitute` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_5t6qrhu2fappmelw8hc6bkiky` (`business_relationship_manager`),
-  CONSTRAINT `FK_5t6qrhu2fappmelw8hc6bkiky` FOREIGN KEY (`business_relationship_manager`) REFERENCES `business_relationship_manager` (`id`)
+  KEY `FK_5xd0dxshxc5f81dtl5r8cejg4` (`business_relationship_manager_substitute`),
+  CONSTRAINT `FK_5t6qrhu2fappmelw8hc6bkiky` FOREIGN KEY (`business_relationship_manager`) REFERENCES `business_relationship_manager` (`id`),
+  CONSTRAINT `FK_5xd0dxshxc5f81dtl5r8cejg4` FOREIGN KEY (`business_relationship_manager_substitute`) REFERENCES `business_relationship_manager` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
