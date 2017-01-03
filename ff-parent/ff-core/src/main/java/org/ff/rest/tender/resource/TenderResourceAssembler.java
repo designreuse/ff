@@ -43,6 +43,7 @@ import org.ff.rest.subdivision1.resource.Subdivision1Resource;
 import org.ff.rest.subdivision1.resource.Subdivision1ResourceAssembler;
 import org.ff.rest.subdivision2.resource.Subdivision2Resource;
 import org.ff.rest.subdivision2.resource.Subdivision2ResourceAssembler;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -132,7 +133,7 @@ public class TenderResourceAssembler {
 			resource.setCreatedBy(entity.getCreatedBy());
 			resource.setLastModifiedBy(entity.getLastModifiedBy());
 			resource.setText(entity.getText());
-			resource.setImage((entity.getImage() != null) ? imageResourceAssembler.toResource(entity.getImage()) : null);
+			resource.setImage((entity.getImage() != null) ? imageResourceAssembler.toResource(entity.getImage(), false) : null);
 			resource.setItems(itemResourceAssembler.toResources(items, false));
 
 			for (ItemResource itemResource : resource.getItems()) {
@@ -246,6 +247,9 @@ public class TenderResourceAssembler {
 					itemResource.setCurrency(new CurrencyResource(currencyService.findAll().get(0).getCode()));
 				}
 			}
+		} else if (itemResource.getType() == ItemType.DATE) {
+			itemResource.setValue(tenderItem.getValue());
+			itemResource.setValueMapped(tenderItem.getValue());
 		} else if (itemResource.getType() == ItemType.RADIO) {
 			itemResource.setValue((tenderItem.getValue() != null) ? Integer.parseInt(tenderItem.getValue()) : null);
 			itemResource.setValueMapped((tenderItem.getValue() != null) ? itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText() : null);
@@ -340,7 +344,10 @@ public class TenderResourceAssembler {
 
 	@SuppressWarnings("unchecked")
 	private void setEntityValue(Item item, ItemResource itemResource, TenderItem tenderItem) {
-		if (item.getType() == ItemType.CURRENCY) {
+		if (itemResource.getType() == ItemType.DATE) {
+			String v = (itemResource.getValue() != null) ? ISODateTimeFormat.dateTime().parseLocalDateTime(itemResource.getValue().toString()).toLocalDate().toString() : null;
+			tenderItem.setValue(v);
+		} else if (item.getType() == ItemType.CURRENCY) {
 			tenderItem.setValue((itemResource.getValue() != null) ? itemResource.getValue().toString() : null);
 			if (itemResource.getCurrency() != null) {
 				tenderItem.setCurrency(itemResource.getCurrency().getCode());

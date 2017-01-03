@@ -27,9 +27,7 @@ public class InvestmentResourceAssembler {
 		if (!light) {
 			resource.setText(entity.getText());
 		}
-		if (!light && entity.getImage() != null) {
-			resource.setImage(imageResourceAssembler.toResource(entity.getImage()));
-		}
+		resource.setImage(imageResourceAssembler.toResource(entity.getImage(), light));
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());

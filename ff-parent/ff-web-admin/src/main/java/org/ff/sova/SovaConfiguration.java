@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 public class SovaConfiguration {
 
@@ -21,6 +24,7 @@ public class SovaConfiguration {
 
 	@Bean
 	public SovaClient sovaClient(Jaxb2Marshaller marshaller) {
+		log.debug("Creating SOVA client with end-point: {}", baseProperties.getSovaUrl());
 		SovaClient client = new SovaClient();
 		client.setDefaultUri(baseProperties.getSovaUrl());
 		client.setMarshaller(marshaller);

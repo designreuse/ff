@@ -2,6 +2,8 @@ package org.ff.sova;
 
 import java.util.List;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class SovaClient extends WebServiceGatewaySupport {
 	@Autowired
 	private BaseProperties baseProperties;
 
+	@SuppressWarnings("unchecked")
 	public String wsKorisnikAutorizacija(String user) {
 		String result = null;
 
@@ -29,26 +32,28 @@ public class SovaClient extends WebServiceGatewaySupport {
 			request.setArg0(baseProperties.getSovaApplication());
 			request.setArg1(user);
 
-			WSKorisnikAutorizacijaResponse response = (WSKorisnikAutorizacijaResponse) getWebServiceTemplate().marshalSendAndReceive(new ObjectFactory().createWSKorisnikAutorizacija(request));
+			log.debug("Request arguments - arg0: {}, arg1: {}", baseProperties.getSovaApplication(), user);
 
-			if (response != null) {
-				log.info("Response: {}", response);
-				List<WsKorinikAutorizacijaoData> data = response.getReturn();
-				if (data != null) {
-					log.info("Response data: {}", data);
-					for (WsKorinikAutorizacijaoData d : data) {
-						if (StringUtils.isNotBlank(d.getFunkcija())) {
-							result = d.getFunkcija();
-							log.info("Role found: {}", result);
-							break;
-						}
-					}
-				} else {
-					log.warn("Response data: {}", data);
+			Object object = getWebServiceTemplate().marshalSendAndReceive(new ObjectFactory().createWSKorisnikAutorizacija(request));
+			log.debug("Object: {}", object);
+
+			JAXBElement<WSKorisnikAutorizacijaResponse> element = (JAXBElement<WSKorisnikAutorizacijaResponse>) object;
+			log.debug("Element: {}", element);
+
+			WSKorisnikAutorizacijaResponse response = element.getValue();
+			log.debug("Response: {}", response);
+
+			List<WsKorinikAutorizacijaoData> data = response.getReturn();
+			log.info("Data: {}", data);
+
+			for (WsKorinikAutorizacijaoData d : data) {
+				if (StringUtils.isNotBlank(d.getFunkcija())) {
+					result = d.getFunkcija();
+					log.debug("Role found: {}", result);
 				}
-			} else {
-				log.warn("Response: {}", response);
 			}
+
+			log.info("Result: {}", result);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}

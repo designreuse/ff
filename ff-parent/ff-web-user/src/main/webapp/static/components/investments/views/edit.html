@@ -1,0 +1,100 @@
+<style>
+    .panel {
+        margin-bottom: 0px; 
+    }
+    .chosen-container-single {
+        width: 100%;
+    }
+    .chosen-container-single .chosen-single {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi {
+        width: 100%;
+    }
+    .chosen-container-multi .chosen-choices {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi .chosen-choices li.search-field .default {
+        width: 100% !important;
+        color: #b0b0b0 !important;
+    }
+</style>
+
+<div class="row border-bottom">
+	<div class="col-sm-12">
+		<h1 ng-show="entity != null && entity.id == null">{{ 'HEADER_INVESTMENT_ADD' | translate }}</h1>
+		<h1 ng-show="entity != null && entity.id != null">{{ 'HEADER_INVESTMENT_EDIT' | translate }}</h1>
+	</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
+	    <div class="row">
+			<div class="col-lg-6">
+                <div class="row form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_TYPE' | translate }}
+                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.investment.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.investment.$valid }"></i></span>
+                        </label>
+                        <select width="1" chosen class="form-control ff-form-control" ng-required="true" ng-model="entity.investment" name="investment" options="investments" ng-options="investment.name for investment in investments track by investment.id"></select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_NAME' | translate }}
+                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.name.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.name.$valid }"></i></span>
+                        </label>
+                        <input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="255" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_DESCRIPTION' | translate }}</label>
+                        <textarea ng-model="entity.description" rows="12" class="form-control ff-form-control" name="description" style="resize: none;"></textarea>
+                    </div>
+                </div>
+			</div>
+			<div class="col-lg-6">
+                <div class="row form-group" ng-repeat="(parentIndex, item) in entity.items">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ item.item.text }} <sup ng-if="item.item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup> 
+                            <span ng-if="item.item.mandatory" class="pull-right">
+                                <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'item'+parentIndex}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'item'+parentIndex}}.$valid }"></i>
+                            </span>
+                        </label>
+                        
+                        <!-- TEXT_AREA -->
+                        <textarea ng-if="item.item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+parentIndex}}" style="resize: none;"></textarea>
+                        
+                        <!-- CURRENCY -->
+                        <div ng-if="item.item.type == 'CURRENCY'" class="input-group">
+                            <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.item.mandatory" style="border-right: none;" />
+                            <span class="input-group-addon" style="border: none; padding: 0px;">
+                                <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>
+                            </span>
+                        </div>
+                        
+                        <!-- SELECT -->
+                        <select ng-if="item.item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.item.options" ng-options="option.text for option in item.item.options track by option.id"></select>
+                        
+                        <!-- ACTIVITY -->
+                        <select ng-if="item.item.type == 'ACTIVITY'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+                        
+                        <!-- SUBDIVISION1 -->
+                        <select ng-if="item.item.type == 'SUBDIVISION1'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+                        
+                        <!-- SUBDIVISION2 -->
+                        <select ng-if="item.item.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+                    </div>
+                </div>			
+			</div>
+		</div>
+	</form>
+	
+	<div class="row" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white m-r-sm"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="save()" ng-disabled="form.$invalid" class="btn btn-primary"><i class="fa fa-save"></i> {{ 'BUTTON_SAVE' | translate }}</button>
+        </div>
+    </div>
+</div>

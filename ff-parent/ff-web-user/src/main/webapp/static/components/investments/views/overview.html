@@ -1,106 +1,37 @@
 <style>
-    .panel {
-        margin-bottom: 0px; 
-    }
-    .chosen-container-single {
-        width: 100%;
-    }
-    .chosen-container-single .chosen-single {
-        border: 1px solid #e5e6e7;  
-    }
-    .chosen-container-multi {
-        width: 100%;
-    }
-    .chosen-container-multi .chosen-choices {
-        border: 1px solid #e5e6e7;  
-    }
-    .chosen-container-multi .chosen-choices li.search-field .default {
-        width: 100% !important;
-        color: #b0b0b0 !important;
-    }
+p span {
+    color: #808080;
+    font-weight: bold;
+    cursor: pointer;
+}
 </style>
 
 <div class="row border-bottom">
-    <div class="col-lg-12">
+    <div class="col-lg-10">
         <h1>{{ 'MENU_INVESTMENTS' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
     </div>
+    <div class="col-lg-2 m-t-md">
+		<button ng-click="addEntity()" type="button" class="btn btn-primary pull-right">
+			<i class="fa fa-plus"></i> {{ 'BUTTON_ADD' | translate }}
+		</button>
+	</div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <form name="form" class="ng-pristine ng-valid" novalidate>
 		<div class="row">
-			<div class="col-lg-6">
-	            <div ng-repeat="investment in investments" class="col-lg-12">
-		            <div class="ibox collapsed border-bottom ff-ibox">
-		                <div class="ibox-title gray-bg ff-ibox-title">
-		                    <input id="{{investment.id}}" icheck ng-model="investment.selected" type="checkbox"><label for="{{investment.id}}" class="m-l-sm">{{investment.name}}</label>
-		                    <div class="ibox-tools pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></div>
-		                </div>
-		                <div class="ibox-content ff-ibox-content">
-		                    <img ng-show="investment.image.base64" ng-src="data:image/JPEG;base64,{{investment.image.base64}}" width="320" class="m-b-sm">
-		                    <div ng-bind-html="toTrusted(investment.text)"></div>
-		                    <div class="m-t-sm" style="text-align: right;">
-		                        <small>{{ 'LABEL_LAST_MODIFIED' | translate }}: {{ investment.lastModifiedDate | date : dateTimeFormat }}</small>
-		                    </div>
-		                </div>
-		            </div>
+			<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
+		        <div class="masonry-brick ff-masonry-brick" ng-repeat="companyInvestment in companyInvestments">
+		            <i ng-click="deleteEntity(companyInvestment)" class="fa fa-remove pull-right" style="margin-right: 3px; margin-top: 3px; cursor: pointer;" uib-tooltip="{{ 'TOOLTIP_DELETE' | translate }}"></i>
+		            <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
+		                <a class="ff-a" ui-sref="investments.edit({ id: companyInvestment.id })">{{companyInvestment.name}}</a>
+		            </h5>
+		            <a ui-sref="investments.edit({ id: companyInvestment.id })">
+		                <img class="img-rounded ff-masonry-brick-img" ng-show="companyInvestment.investment.image.base64" ng-src="data:image/JPEG;base64,{{companyInvestment.investment.image.base64}}" width="100%">
+		            </a>
+		            <p style="margin-bottom: 0px;" data-ng-bind="companyInvestment.description | htmlToPlaintext" class="ff-masonry-brick-text text-justify" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="editEntity(companyInvestment)"></p>
 		        </div>
-			</div>
-			<div class="col-lg-6">
-                <div class="row" ng-repeat="(parentIndex, item) in company.items" ng-if="item.metaTag && item.metaTag.indexOf('COMPANY_INVESTMENT_') != -1">
-                    <div class="col-lg-12 form-group">
-                        <label class="ff-label">{{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup> <span ng-if="item.mandatory" class="pull-right">
-                                <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'item'+parentIndex}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'item'+parentIndex}}.$valid }"></i>
-                            </span>
-                        </label>
-                        
-                        <!-- TEXT_AREA -->
-                        <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+parentIndex}}" style="resize: none;"></textarea>
-                        
-                        <!-- CURRENCY -->
-                        <div ng-if="item.type == 'CURRENCY'" class="input-group">
-                            <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" style="border-right: none;" />
-                            <span class="input-group-addon" style="border: none; padding: 0px;">
-                                <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>
-                            </span>
-                        </div>
-                        
-                        <!-- SELECT -->
-                        <select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
-                        
-                        <!-- ACTIVITY -->
-                        <select ng-if="item.type == 'ACTIVITY'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
-                        
-                        <!-- SUBDIVISION1 -->
-                        <select ng-if="item.type == 'SUBDIVISION1'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
-                        
-                        <!-- SUBDIVISION2 -->
-                        <select ng-if="item.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
-                    </div>
-                </div>
-            </div>
+		    </div>
 		</div>
 	</form>
-
-    <div class="row">
-        <div class="col-lg-12 m-t-sm">
-            <button ng-click="save()" class="btn btn-primary pull-right"><i class="fa fa-save"></i> {{ 'BUTTON_SAVE' | translate }}</button>
-        </div>
-	</div>
 </div>
-
-<script>
-    setTimeout(function() {
-        $('.collapse-link').click(function() {
-            var ibox = $(this).closest('div.ibox');
-            var button = $(this).find('i');
-            var content = ibox.find('div.ibox-content');
-            content.slideToggle(200);
-            button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-            setTimeout(function() {
-                ibox.resize();
-                ibox.find('[id^=map-]').resize();
-            }, 50);
-        });
-    }, 1000);
-</script>

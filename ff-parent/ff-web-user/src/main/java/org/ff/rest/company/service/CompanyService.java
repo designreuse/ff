@@ -5,6 +5,7 @@ import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
+import org.ff.rest.companyinvestment.resource.CompanyInvestmentResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,10 @@ public class CompanyService {
 				userRepository.findByEmail(principal.getUsername()).getCompany(), false);
 
 		for (ItemResource itemResource : resource.getItems()) {
+			if (itemResource.getMetaTag() != null && CompanyInvestmentResourceAssembler.getCompanyMetaTags().contains(itemResource.getMetaTag())) {
+				continue;
+			}
+
 			if (Boolean.TRUE == itemResource.getMandatory() && itemResource.getValue() == null) {
 				return Boolean.FALSE;
 			}

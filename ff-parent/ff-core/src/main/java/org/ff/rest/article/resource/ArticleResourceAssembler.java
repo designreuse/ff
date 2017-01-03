@@ -28,7 +28,7 @@ public class ArticleResourceAssembler {
 			resource.setText(entity.getText());
 		}
 		if (!light && entity.getImage() != null) {
-			resource.setImage(imageResourceAssembler.toResource(entity.getImage()));
+			resource.setImage(imageResourceAssembler.toResource(entity.getImage(), false));
 		}
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());

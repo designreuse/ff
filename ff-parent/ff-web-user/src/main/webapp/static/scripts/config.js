@@ -139,7 +139,8 @@ angular.module('FundFinder')
 	        			        'components/currencies/scripts/services.js',
 	        			        'components/activities/scripts/services.js',
 	        			        'components/subdivisions1/scripts/services.js',
-	        			        'components/subdivisions2/scripts/services.js']
+	        			        'components/subdivisions2/scripts/services.js',
+	        			        'components/images/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -148,6 +149,12 @@ angular.module('FundFinder')
 	        url: "/overview",
 	        templateUrl: "/components/investments/views/overview.html",
 	        controller: 'InvestmentsController'
+	    })
+	    .state('investments.edit', {
+	        url: "/edit/:id",
+	        templateUrl: "/components/investments/views/edit.html",
+	        controller: 'InvestmentsEditController',
+	        params: { 'id' : null }
 	    })
 	    
 	    // ARTICLES

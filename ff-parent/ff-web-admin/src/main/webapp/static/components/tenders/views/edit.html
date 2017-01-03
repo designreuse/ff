@@ -122,7 +122,7 @@
                                         <!-- DATE -->
                                         <div ng-if="item.type == 'DATE'">
                                             <div class="input-group">
-                                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="false" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" name="{{'item'+$index}}" />
+                                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="false" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+$index}}" />
                                                 <span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate($index)">
                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                 </span>

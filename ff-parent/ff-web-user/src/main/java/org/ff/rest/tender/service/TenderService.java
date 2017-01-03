@@ -143,7 +143,7 @@ public class TenderService {
 			tenderResource.setName(tender.getName());
 			tenderResource.setText(tender.getText());
 			if (tender.getImage() != null) {
-				tenderResource.setImage(imageResourceAssembler.toResource(tender.getImage()));
+				tenderResource.setImage(imageResourceAssembler.toResource(tender.getImage(), false));
 			}
 			tenderResource.setCreationDate(tender.getCreationDate().toDate());
 			tenderResource.setCreatedBy(tender.getCreatedBy());

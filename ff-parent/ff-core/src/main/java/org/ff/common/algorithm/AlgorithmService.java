@@ -15,6 +15,8 @@ import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemStatus;
 import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemType;
 import org.ff.jpa.domain.AlgorithmItem.Operator;
 import org.ff.jpa.domain.Company;
+import org.ff.jpa.domain.CompanyInvestment;
+import org.ff.jpa.domain.CompanyInvestmentItem;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
@@ -29,11 +31,13 @@ import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.AlgorithmItemRepository;
+import org.ff.jpa.repository.CompanyInvestmentRepository;
 import org.ff.jpa.repository.ItemOptionRepository;
 import org.ff.jpa.repository.Subdivision1Repository;
 import org.ff.jpa.repository.Subdivision2Repository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
+import org.ff.rest.companyinvestment.resource.CompanyInvestmentResourceAssembler;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +70,9 @@ public class AlgorithmService extends BaseService {
 	@Autowired
 	private Subdivision2Repository subdivision2Repository;
 
+	@Autowired
+	private CompanyInvestmentRepository companyInvestmentRepository;
+
 	public List<User> findUsers4Tender(Tender tender) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findUsers4Tender");
 
@@ -85,17 +92,23 @@ public class AlgorithmService extends BaseService {
 					continue;
 				}
 
+				Company company = user.getCompany();
+
 				// check if company investments match tender investments
-				if (!processCompany4Investments(user.getCompany(), tenderInvestments)) {
+				if (!processCompany4Investments(company, tenderInvestments)) {
 					continue;
 				}
 
-				Set<CompanyItem> companyItems = user.getCompany().getItems();
+				// company items
+				Set<CompanyItem> companyItems = company.getItems();
+
+				// company investments
+				List<CompanyInvestment> companyInvestments = companyInvestmentRepository.findByCompany(company);
 
 				Map<AlgorithmItem, Boolean> match4AlgorithmItem = new HashMap<>();
 
 				for (AlgorithmItem algorithmItem : algorithmItems) {
-					if (processAlgorithmItem(tender, companyItems, algorithmItem) == Boolean.TRUE) {
+					if (processAlgorithmItem(tender, companyItems, companyInvestments, algorithmItem) == Boolean.TRUE) {
 						match4AlgorithmItem.put(algorithmItem, Boolean.TRUE);
 						log.debug("Algorithm item [{}]: match", algorithmItem.getCode());
 					} else {
@@ -153,12 +166,14 @@ public class AlgorithmService extends BaseService {
 			Set<CompanyItem> companyItems = company.getItems();
 
 			// company investments
-			Set<Investment> companyInvestments = company.getInvestments();
+			List<CompanyInvestment> companyInvestments = companyInvestmentRepository.findByCompany(company);
 
 			// active tenders
 			Iterable<Tender> tenders = tenderRepository.findByStatus(TenderStatus.ACTIVE);
 
 			for (Tender tender : tenders) {
+				log.debug("Processing tender [{}]", tender.getName());
+
 				Map<AlgorithmItem, Boolean> match4AlgorithmItem = new HashMap<>();
 
 				// check if tender investments match company investments
@@ -167,7 +182,7 @@ public class AlgorithmService extends BaseService {
 				}
 
 				for (AlgorithmItem algorithmItem : algorithmItems) {
-					if (processAlgorithmItem(tender, companyItems, algorithmItem) == Boolean.TRUE) {
+					if (processAlgorithmItem(tender, companyItems, companyInvestments, algorithmItem) == Boolean.TRUE) {
 						match4AlgorithmItem.put(algorithmItem, Boolean.TRUE);
 						log.debug("Algorithm item [{}]: match", algorithmItem.getCode());
 					} else {
@@ -225,7 +240,7 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean processTender4Investments(Tender tender, Set<Investment> companyInvestments) {
+	private Boolean processTender4Investments(Tender tender, List<CompanyInvestment> companyInvestments) {
 		List<Integer> tenderInvestments = getTenderInvestments(tender);
 
 		if (tenderInvestments.isEmpty()) {
@@ -233,8 +248,8 @@ public class AlgorithmService extends BaseService {
 			return Boolean.TRUE;
 		}
 
-		for (Investment investment : companyInvestments) {
-			if (tenderInvestments.contains(investment.getId())) {
+		for (CompanyInvestment companyInvestment : companyInvestments) {
+			if (tenderInvestments.contains(companyInvestment.getInvestment().getId())) {
 				// company has at least one investment required by the tender
 				return Boolean.TRUE;
 			}
@@ -260,9 +275,52 @@ public class AlgorithmService extends BaseService {
 		return tenderInvestments;
 	}
 
-	private Boolean processAlgorithmItem(Tender tender, Set<CompanyItem> companyItems, AlgorithmItem algorithmItem) {
+	private Boolean processAlgorithmItem(Tender tender, Set<CompanyItem> companyItems, List<CompanyInvestment> companyInvestments, AlgorithmItem algorithmItem) {
 		CompanyItem companyItem = getCompanyItem4Item(companyItems, algorithmItem.getCompanyItem());
 		TenderItem tenderItem = getTenderItem4Item(tender.getItems(), algorithmItem.getTenderItem());
+
+		if (algorithmItem.getCompanyItem().getMetaTag() != null && CompanyInvestmentResourceAssembler.getCompanyMetaTags().contains(algorithmItem.getCompanyItem().getMetaTag())) {
+			if (algorithmItem.getCompanyItem().getType() == ItemType.SUBDIVISION1 && algorithmItem.getOperator() == Operator.IN
+					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION1) {
+				for (CompanyInvestment companyInvestment : companyInvestments) {
+					for (CompanyInvestmentItem companyInvestmentItem : companyInvestment.getItems()) {
+						if (companyInvestmentItem.getItem().getId().equals(algorithmItem.getCompanyItem().getId())) {
+							if (subdivision1InMultiselect(companyInvestmentItem.getValue(), tenderItem.getValue())) {
+								log.trace("[{}] match for company investment [{}]", algorithmItem.getCode(), companyInvestment.getName());
+								return Boolean.TRUE;
+							}
+						}
+					}
+				}
+			} else if (algorithmItem.getCompanyItem().getType() == ItemType.SUBDIVISION2 && algorithmItem.getOperator() == Operator.IN
+					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION2) {
+				for (CompanyInvestment companyInvestment : companyInvestments) {
+					for (CompanyInvestmentItem companyInvestmentItem : companyInvestment.getItems()) {
+						if (companyInvestmentItem.getItem().getId().equals(algorithmItem.getCompanyItem().getId())) {
+							if (subdivision2InMultiselect(companyInvestmentItem.getValue(), tenderItem.getValue())) {
+								log.trace("[{}] match for company investment [{}]", algorithmItem.getCode(), companyInvestment.getName());
+								return Boolean.TRUE;
+							}
+						}
+					}
+				}
+			} else if (algorithmItem.getCompanyItem().getType() == ItemType.ACTIVITY
+					&& algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.ACTIVITIES) {
+				for (CompanyInvestment companyInvestment : companyInvestments) {
+					log.trace("Processing company investment [{}]", companyInvestment.getName());
+					for (CompanyInvestmentItem companyInvestmentItem : companyInvestment.getItems()) {
+						if (companyInvestmentItem.getItem().getId().equals(algorithmItem.getCompanyItem().getId())) {
+							if (activityInActivities(companyInvestmentItem.getValue(), tenderItem.getValue())) {
+								log.trace("[{}] match for company investment [{}]", algorithmItem.getCode(), companyInvestment.getName());
+								return Boolean.TRUE;
+							}
+						}
+					}
+				}
+			}
+
+			return Boolean.FALSE;
+		}
 
 		if (companyItem != null && tenderItem != null) {
 			if (companyItem.getItem().getType() == ItemType.RADIO && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.CHECKBOX) {
@@ -271,14 +329,6 @@ public class AlgorithmService extends BaseService {
 				return selectInMultiselect(companyItem, tenderItem);
 			} else if (companyItem.getItem().getType() == ItemType.SELECT && algorithmItem.getOperator() == Operator.EQUAL && tenderItem.getItem().getType() == ItemType.SELECT) {
 				return selectEqualSelect(companyItem, tenderItem);
-			} else if (companyItem.getItem().getType() == ItemType.ACTIVITY && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.ACTIVITIES) {
-				return activityInActivities(companyItem, tenderItem);
-			} else if (companyItem.getItem().getType() == ItemType.SUBDIVISION1 && algorithmItem.getOperator() == Operator.IN
-					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION1) {
-				return subdivision1InMultiselect(companyItem, tenderItem);
-			} else if (companyItem.getItem().getType() == ItemType.SUBDIVISION2 && algorithmItem.getOperator() == Operator.IN
-					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION2) {
-				return subdivision2InMultiselect(companyItem, tenderItem);
 			} else if (companyItem.getItem().getType() == ItemType.DATE && algorithmItem.getOperator() == Operator.GREATER_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
 				return dateGreaterOrEqualNumber(companyItem, tenderItem);
 			} else if (companyItem.getItem().getType() == ItemType.DATE && algorithmItem.getOperator() == Operator.LESS_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
@@ -352,11 +402,11 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean activityInActivities(CompanyItem companyItem, TenderItem tenderItem) {
-		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
+	private Boolean activityInActivities(String companyItemValue, String tenderItemValue) {
+		if (StringUtils.isNotBlank(companyItemValue) && StringUtils.isNotBlank(tenderItemValue)) {
 			// companyItemValue is activity ID (e.g. 1); tenderItemValue is pipe-separated list of activity IDs (e.g. 1|2|3|4)
-			for (String str : tenderItem.getValue().split("\\|")) {
-				if (companyItem.getValue().equals(str)) {
+			for (String str : tenderItemValue.split("\\|")) {
+				if (companyItemValue.equals(str)) {
 					return Boolean.TRUE;
 				}
 			}
@@ -364,10 +414,10 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean subdivision1InMultiselect(CompanyItem companyItem, TenderItem tenderItem) {
-		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
-			Subdivision1 subdivision1 = subdivision1Repository.findOne(Integer.parseInt(companyItem.getValue()));
-			for (String str : tenderItem.getValue().split("\\|")) {
+	private Boolean subdivision1InMultiselect(String companyItemValue, String tenderItemValue) {
+		if (StringUtils.isNotBlank(companyItemValue) && StringUtils.isNotBlank(tenderItemValue)) {
+			Subdivision1 subdivision1 = subdivision1Repository.findOne(Integer.parseInt(companyItemValue));
+			for (String str : tenderItemValue.split("\\|")) {
 				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(str));
 				if (itemOption.getText().equals(subdivision1.getDevelopmentIndex())) {
 					return Boolean.TRUE;
@@ -377,10 +427,10 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean subdivision2InMultiselect(CompanyItem companyItem, TenderItem tenderItem) {
-		if (StringUtils.isNotBlank(companyItem.getValue()) && StringUtils.isNotBlank(tenderItem.getValue())) {
-			Subdivision2 subdivision2 = subdivision2Repository.findOne(Integer.parseInt(companyItem.getValue()));
-			for (String str : tenderItem.getValue().split("\\|")) {
+	private Boolean subdivision2InMultiselect(String companyItemValue, String tenderItemValue) {
+		if (StringUtils.isNotBlank(companyItemValue) && StringUtils.isNotBlank(tenderItemValue)) {
+			Subdivision2 subdivision2 = subdivision2Repository.findOne(Integer.parseInt(companyItemValue));
+			for (String str : tenderItemValue.split("\\|")) {
 				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(str));
 				if (itemOption.getText().equals(subdivision2.getDevelopmentIndex())) {
 					return Boolean.TRUE;

@@ -23,7 +23,7 @@ public class ImageService extends BaseService {
 	@Transactional(readOnly = true)
 	public ImageResource find(Integer id) {
 		log.debug("Finding image [{}]...", id);
-		return resourceAssembler.toResource(repository.findOne(id));
+		return resourceAssembler.toResource(repository.findOne(id), false);
 	}
 
 }
