@@ -1,9 +1,10 @@
-package org.ff.rest.companyinvestment.resource;
+package org.ff.rest.project.resource;
 
 import java.util.Date;
 import java.util.List;
 
 import org.ff.rest.company.resource.CompanyResource;
+import org.ff.rest.image.resource.ImageResource;
 import org.ff.rest.investment.resource.InvestmentResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,7 +15,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class CompanyInvestmentResource {
+public class ProjectResource {
 
 	@JsonProperty("id")
 	private Integer id;
@@ -25,14 +26,17 @@ public class CompanyInvestmentResource {
 	@JsonProperty("description")
 	private String description;
 
+	@JsonProperty("image")
+	private ImageResource image;
+
 	@JsonProperty("company")
 	private CompanyResource company;
 
-	@JsonProperty("investment")
-	private InvestmentResource investment;
+	@JsonProperty("investments")
+	private List<InvestmentResource> investments;
 
 	@JsonProperty("items")
-	private List<CompanyInvestmentItemResource> items;
+	private List<ProjectItemResource> items;
 
 	@JsonProperty("creationDate")
 	private Date creationDate;

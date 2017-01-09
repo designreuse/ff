@@ -16,11 +16,11 @@ function config($translateProvider) {
 			HEADER_PERSONAL_DATA: 'Personal data',
 			HEADER_EMAIL: 'Email',
 			HEADER_CHANGE_PASSWORD: 'Change password',
-			HEADER_INVESTMENT_ADD: 'Add investment',
-			HEADER_INVESTMENT_EDIT: 'Edit investment',
+			HEADER_PROJECT_ADD: 'Add project',
+			HEADER_PROJECT_EDIT: 'Edit project',
 			
 			MENU_TENDERS: 'Tenders',
-			MENU_INVESTMENTS: 'Investments',
+			MENU_PROJECTS: 'Projects',
 			MENU_ARTICLES: 'Articles',
 			MENU_COMPANY: 'Company',
 			
@@ -52,7 +52,7 @@ function config($translateProvider) {
 			TOOLTIP_DELETE: 'Delete',
 			
 			DLG_DELETE_HDR: 'Delete',
-			DLG_DELETE_MSG: 'Do you really want to delete investment?',
+			DLG_DELETE_MSG: 'Do you really want to delete project?',
 			
 			INCOMPLETE_PROFILE_HDR: 'Incomplete company profile',
 			INCOMPLETE_PROFILE_MSG: 'Please fill out all mandatory items in your company profile.',
@@ -73,11 +73,11 @@ function config($translateProvider) {
 			HEADER_PERSONAL_DATA: 'Osobni podaci',
 			HEADER_EMAIL: 'Email',
 			HEADER_CHANGE_PASSWORD: 'Promjena zaporka',
-			HEADER_INVESTMENT_ADD: 'Dodaj investiciju',
-			HEADER_INVESTMENT_EDIT: 'Uredi investiciju',
+			HEADER_PROJECT_ADD: 'Dodaj projekt',
+			HEADER_PROJECT_EDIT: 'Uredi projekt',
 			
 			MENU_TENDERS: 'Natječaji',
-			MENU_INVESTMENTS: 'Investicije',
+			MENU_PROJECTS: 'Projekti',
 			MENU_ARTICLES: 'Članci',
 			MENU_COMPANY: 'Kompanija',
 			
@@ -109,7 +109,7 @@ function config($translateProvider) {
 			TOOLTIP_DELETE: 'Obriši',
 			
 			DLG_DELETE_HDR: 'Delete',
-			DLG_DELETE_MSG: 'Do you really want to delete investment?',
+			DLG_DELETE_MSG: 'Do you really want to delete projekt?',
 			
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil kompanije',
 			INCOMPLETE_PROFILE_MSG: 'Please fill out all mandatory items in your company profile.',

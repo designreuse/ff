@@ -1,4 +1,4 @@
-package org.ff.rest.companyinvestment.resource;
+package org.ff.rest.project.resource;
 
 import org.ff.rest.currency.resource.CurrencyResource;
 import org.ff.rest.item.resource.ItemResource;
@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class CompanyInvestmentItemResource {
+public class ProjectItemResource {
 
 	@JsonProperty("id")
 	private Integer id;

@@ -123,18 +123,18 @@ angular.module('FundFinder')
 	        controller: 'CompanyEditController'
 	    })
 	    
-		// INVESTMENTS
-		.state('investments', {
+		// PROJECTS
+		.state('projects', {
 	        abstract: true,
-	        url: "/investments",
+	        url: "/projects",
 	        templateUrl: "/views/common/content.html",
 	        onEnter: getPrincipal,
 	        resolve: {
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
-	        			files: ['components/investments/scripts/controllers.js',
-	        			        'components/investments/scripts/services.js',
+	        			files: ['components/projects/scripts/controllers.js',
+	        			        'components/projects/scripts/services.js',
 	        			        'components/company/scripts/services.js',
 	        			        'components/currencies/scripts/services.js',
 	        			        'components/activities/scripts/services.js',
@@ -145,15 +145,15 @@ angular.module('FundFinder')
 	        	}
 	        }
 	    })
-	    .state('investments.overview', {
+	    .state('projects.overview', {
 	        url: "/overview",
-	        templateUrl: "/components/investments/views/overview.html",
-	        controller: 'InvestmentsController'
+	        templateUrl: "/components/projects/views/overview.html",
+	        controller: 'ProjectsController'
 	    })
-	    .state('investments.edit', {
+	    .state('projects.edit', {
 	        url: "/edit/:id",
-	        templateUrl: "/components/investments/views/edit.html",
-	        controller: 'InvestmentsEditController',
+	        templateUrl: "/components/projects/views/edit.html",
+	        controller: 'ProjectsEditController',
 	        params: { 'id' : null }
 	    })
 	    

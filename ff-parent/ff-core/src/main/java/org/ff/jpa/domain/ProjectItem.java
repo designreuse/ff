@@ -19,9 +19,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "company_investment_item")
+@Table(name = "project_item")
 @NoArgsConstructor @Getter @Setter @ToString
-public class CompanyInvestmentItem extends AbstractEntity {
+public class ProjectItem extends AbstractEntity {
 
 	@Id
 	@Column(name = "id")
@@ -29,8 +29,8 @@ public class CompanyInvestmentItem extends AbstractEntity {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "company_investment")
-	private CompanyInvestment companyInvestment;
+	@JoinColumn(name = "project")
+	private Project project;
 
 	@ManyToOne
 	@JoinColumn(name = "item", nullable = true)

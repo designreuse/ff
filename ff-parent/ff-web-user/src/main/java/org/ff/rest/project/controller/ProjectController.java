@@ -1,4 +1,4 @@
-package org.ff.rest.companyinvestment.controller;
+package org.ff.rest.project.controller;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
-import org.ff.rest.companyinvestment.resource.CompanyInvestmentResource;
-import org.ff.rest.companyinvestment.service.CompanyInvestmentService;
+import org.ff.rest.project.resource.ProjectResource;
+import org.ff.rest.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,41 +20,41 @@ import org.springframework.web.bind.annotation.RestController;
 import etm.core.monitor.EtmPoint;
 
 @RestController
-@RequestMapping(value = { "/api/v1/companyinvestments" })
-public class CompanyInvestmentController extends BaseController {
+@RequestMapping(value = { "/api/v1/projects" })
+public class ProjectController extends BaseController {
 
 	@Autowired
-	private CompanyInvestmentService companyInvestmentService;
+	private ProjectService projectService;
 
 	@Autowired
 	private EtmService etmService;
 
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<CompanyInvestmentResource> findAll(@AuthenticationPrincipal UserDetails principal) {
+	public List<ProjectResource> findAll(@AuthenticationPrincipal UserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
-			return companyInvestmentService.findAll(principal);
+			return projectService.findAll(principal);
 		} finally {
 			etmService.collect(point);
 		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public CompanyInvestmentResource find(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id, HttpServletRequest request) {
+	public ProjectResource find(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
-			return companyInvestmentService.find(principal, id);
+			return projectService.find(principal, id);
 		} finally {
 			etmService.collect(point);
 		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public CompanyInvestmentResource save(@AuthenticationPrincipal UserDetails principal, @RequestBody CompanyInvestmentResource resource) {
+	public ProjectResource save(@AuthenticationPrincipal UserDetails principal, @RequestBody ProjectResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
-			return companyInvestmentService.save(principal, resource);
+			return projectService.save(principal, resource);
 		} catch (RuntimeException e) {
 			throw processException(e);
 		} finally {
@@ -66,7 +66,7 @@ public class CompanyInvestmentController extends BaseController {
 	public void delete(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
-			companyInvestmentService.delete(principal, id);
+			projectService.delete(principal, id);
 		} finally {
 			etmService.collect(point);
 		}

@@ -8,11 +8,11 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
-import org.ff.jpa.repository.CompanyInvestmentRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResourceAssembler;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
-import org.ff.rest.companyinvestment.resource.CompanyInvestmentResourceAssembler;
+import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
@@ -28,10 +28,10 @@ public class UserResourceAssembler {
 	private CompanyRepository companyRepository;
 
 	@Autowired
-	private CompanyInvestmentResourceAssembler companyInvestmentResourceAssembler;
+	private ProjectResourceAssembler companyInvestmentResourceAssembler;
 
 	@Autowired
-	private CompanyInvestmentRepository companyInvestmentRepository;
+	private ProjectRepository companyInvestmentRepository;
 
 	@Autowired
 	private BusinessRelationshipManagerResourceAssembler businessRelationshipManagerResourceAssembler;

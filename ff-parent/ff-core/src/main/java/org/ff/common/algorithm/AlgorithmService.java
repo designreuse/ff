@@ -15,13 +15,14 @@ import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemStatus;
 import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemType;
 import org.ff.jpa.domain.AlgorithmItem.Operator;
 import org.ff.jpa.domain.Company;
-import org.ff.jpa.domain.CompanyInvestment;
-import org.ff.jpa.domain.CompanyInvestmentItem;
 import org.ff.jpa.domain.CompanyItem;
+import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemType;
 import org.ff.jpa.domain.ItemOption;
+import org.ff.jpa.domain.Project;
+import org.ff.jpa.domain.ProjectItem;
 import org.ff.jpa.domain.Subdivision1;
 import org.ff.jpa.domain.Subdivision2;
 import org.ff.jpa.domain.Tender;
@@ -30,13 +31,13 @@ import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.AlgorithmItemRepository;
-import org.ff.jpa.repository.CompanyInvestmentRepository;
 import org.ff.jpa.repository.ItemOptionRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.Subdivision1Repository;
 import org.ff.jpa.repository.Subdivision2Repository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
-import org.ff.rest.companyinvestment.resource.CompanyInvestmentResourceAssembler;
+import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class AlgorithmService extends BaseService {
 	private Subdivision2Repository subdivision2Repository;
 
 	@Autowired
-	private CompanyInvestmentRepository companyInvestmentRepository;
+	private ProjectRepository companyInvestmentRepository;
 
 	public List<User> findUsers4Tender(Tender tender) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findUsers4Tender");
@@ -97,7 +98,7 @@ public class AlgorithmService extends BaseService {
 				Set<CompanyItem> companyItems = company.getItems();
 
 				// company investments
-				List<CompanyInvestment> companyInvestments = companyInvestmentRepository.findByCompany(company);
+				List<Project> companyInvestments = companyInvestmentRepository.findByCompany(company);
 
 				// check if company investments match tender investments
 				if (!processCompany4Investments(companyInvestments, tenderInvestments)) {
@@ -165,7 +166,7 @@ public class AlgorithmService extends BaseService {
 			Set<CompanyItem> companyItems = company.getItems();
 
 			// company investments
-			List<CompanyInvestment> companyInvestments = companyInvestmentRepository.findByCompany(company);
+			List<Project> companyInvestments = companyInvestmentRepository.findByCompany(company);
 
 			// active tenders
 			Iterable<Tender> tenders = tenderRepository.findByStatus(TenderStatus.ACTIVE);
@@ -223,23 +224,25 @@ public class AlgorithmService extends BaseService {
 		}
 	}
 
-	private Boolean processCompany4Investments(List<CompanyInvestment> companyInvestments, List<Integer> tenderInvestments) {
+	private Boolean processCompany4Investments(List<Project> companyInvestments, List<Integer> tenderInvestments) {
 		if (tenderInvestments.isEmpty()) {
 			// tender is not restricted to any particular investment
 			return Boolean.TRUE;
 		}
 
-		for (CompanyInvestment companyInvestment : companyInvestments) {
-			if (tenderInvestments.contains(companyInvestment.getInvestment().getId())) {
-				// company has at least one investment required by the tender
-				return Boolean.TRUE;
+		for (Project companyInvestment : companyInvestments) {
+			for (Investment investment : companyInvestment.getInvestments()) {
+				if (tenderInvestments.contains(investment.getId())) {
+					// company has at least one investment required by the tender
+					return Boolean.TRUE;
+				}
 			}
 		}
 
 		return Boolean.FALSE;
 	}
 
-	private Boolean processTender4Investments(Tender tender, List<CompanyInvestment> companyInvestments) {
+	private Boolean processTender4Investments(Tender tender, List<Project> companyInvestments) {
 		List<Integer> tenderInvestments = getTenderInvestments(tender);
 
 		if (tenderInvestments.isEmpty()) {
@@ -247,10 +250,12 @@ public class AlgorithmService extends BaseService {
 			return Boolean.TRUE;
 		}
 
-		for (CompanyInvestment companyInvestment : companyInvestments) {
-			if (tenderInvestments.contains(companyInvestment.getInvestment().getId())) {
-				// company has at least one investment required by the tender
-				return Boolean.TRUE;
+		for (Project companyInvestment : companyInvestments) {
+			for (Investment investment : companyInvestment.getInvestments()) {
+				if (tenderInvestments.contains(investment.getId())) {
+					// company has at least one investment required by the tender
+					return Boolean.TRUE;
+				}
 			}
 		}
 
@@ -274,15 +279,15 @@ public class AlgorithmService extends BaseService {
 		return tenderInvestments;
 	}
 
-	private Boolean processAlgorithmItem(Tender tender, Set<CompanyItem> companyItems, List<CompanyInvestment> companyInvestments, AlgorithmItem algorithmItem) {
+	private Boolean processAlgorithmItem(Tender tender, Set<CompanyItem> companyItems, List<Project> companyInvestments, AlgorithmItem algorithmItem) {
 		CompanyItem companyItem = getCompanyItem4Item(companyItems, algorithmItem.getCompanyItem());
 		TenderItem tenderItem = getTenderItem4Item(tender.getItems(), algorithmItem.getTenderItem());
 
-		if (algorithmItem.getCompanyItem().getMetaTag() != null && CompanyInvestmentResourceAssembler.getCompanyMetaTags().contains(algorithmItem.getCompanyItem().getMetaTag())) {
+		if (algorithmItem.getCompanyItem().getMetaTag() != null && ProjectResourceAssembler.getCompanyMetaTags().contains(algorithmItem.getCompanyItem().getMetaTag())) {
 			if (algorithmItem.getCompanyItem().getType() == ItemType.SUBDIVISION1 && algorithmItem.getOperator() == Operator.IN
 					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION1) {
-				for (CompanyInvestment companyInvestment : companyInvestments) {
-					for (CompanyInvestmentItem companyInvestmentItem : companyInvestment.getItems()) {
+				for (Project companyInvestment : companyInvestments) {
+					for (ProjectItem companyInvestmentItem : companyInvestment.getItems()) {
 						if (companyInvestmentItem.getItem().getId().equals(algorithmItem.getCompanyItem().getId())) {
 							if (subdivision1InMultiselect(companyInvestmentItem.getValue(), tenderItem.getValue())) {
 								log.trace("[{}] match for company investment [{}]", algorithmItem.getCode(), companyInvestment.getName());
@@ -293,8 +298,8 @@ public class AlgorithmService extends BaseService {
 				}
 			} else if (algorithmItem.getCompanyItem().getType() == ItemType.SUBDIVISION2 && algorithmItem.getOperator() == Operator.IN
 					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION2) {
-				for (CompanyInvestment companyInvestment : companyInvestments) {
-					for (CompanyInvestmentItem companyInvestmentItem : companyInvestment.getItems()) {
+				for (Project companyInvestment : companyInvestments) {
+					for (ProjectItem companyInvestmentItem : companyInvestment.getItems()) {
 						if (companyInvestmentItem.getItem().getId().equals(algorithmItem.getCompanyItem().getId())) {
 							if (subdivision2InMultiselect(companyInvestmentItem.getValue(), tenderItem.getValue())) {
 								log.trace("[{}] match for company investment [{}]", algorithmItem.getCode(), companyInvestment.getName());
@@ -305,9 +310,9 @@ public class AlgorithmService extends BaseService {
 				}
 			} else if (algorithmItem.getCompanyItem().getType() == ItemType.ACTIVITY
 					&& algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.ACTIVITIES) {
-				for (CompanyInvestment companyInvestment : companyInvestments) {
+				for (Project companyInvestment : companyInvestments) {
 					log.trace("Processing company investment [{}]", companyInvestment.getName());
-					for (CompanyInvestmentItem companyInvestmentItem : companyInvestment.getItems()) {
+					for (ProjectItem companyInvestmentItem : companyInvestment.getItems()) {
 						if (companyInvestmentItem.getItem().getId().equals(algorithmItem.getCompanyItem().getId())) {
 							if (activityInActivities(companyInvestmentItem.getValue(), tenderItem.getValue())) {
 								log.trace("[{}] match for company investment [{}]", algorithmItem.getCode(), companyInvestment.getName());

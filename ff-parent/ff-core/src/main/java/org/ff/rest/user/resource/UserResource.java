@@ -6,7 +6,7 @@ import java.util.List;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResource;
 import org.ff.rest.company.resource.CompanyResource;
-import org.ff.rest.companyinvestment.resource.CompanyInvestmentResource;
+import org.ff.rest.project.resource.ProjectResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -40,7 +40,7 @@ public class UserResource {
 	private CompanyResource company;
 
 	@JsonProperty("investments")
-	private List<CompanyInvestmentResource> investments;
+	private List<ProjectResource> investments;
 
 	@JsonProperty("businessRelationshipManager")
 	private BusinessRelationshipManagerResource businessRelationshipManager;

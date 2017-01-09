@@ -26,7 +26,8 @@ public class ImageController extends BaseController {
 	public ImageResource find(@PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
-			return imageService.find(id);
+			ImageResource resource = imageService.find(id);
+			return resource;
 		} finally {
 			etmService.collect(point);
 		}
