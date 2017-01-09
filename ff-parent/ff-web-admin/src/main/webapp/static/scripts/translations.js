@@ -85,6 +85,7 @@ function config($translateProvider) {
 			LABEL_COMPANY_NAME: 'Name',
 			LABEL_CONDITIONAL_ITEM: 'Conditional item',
 			LABEL_CREATION_DATE: 'Registered',
+			LABEL_DESCRIPTION: 'Description',
 			LABEL_DEVELOPMENT_INDEX: 'Development index',
 			LABEL_DISPLAY: 'DISPLAY',
 			LABEL_DISPLAY_POSTSCRIPT: 'Indicates how item looks like when displayed to user',

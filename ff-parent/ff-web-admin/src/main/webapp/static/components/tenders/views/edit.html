@@ -71,7 +71,7 @@
                                 <div class="form-group">
                                     <div class="col-sm-12">
                                         <div class="p-xs pull-right">
-                                            <input ng-change="mandatoryItemsOnlyChanged()" ng-model="mandatoryItemsOnly" type="checkbox" icheck class="form-control" /> <span class="m-l-xs">{{ 'LABEL_MANDATORY_ITEMS_ONLY' | translate }}</span>
+                                            <input ng-change="mandatoryItemsOnlyChanged()" ng-model="mandatoryItemsOnly" type="checkbox" /><span class="m-l-xs">{{ 'LABEL_MANDATORY_ITEMS_ONLY' | translate }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,14 +108,14 @@
                                         <!-- RADIO -->
                                         <div ng-if="item.type == 'RADIO'" class="m-t-xxs">
                                             <div class="m-l-sm m-t-xs" ng-repeat="option in item.options">
-                                                <input ng-model="item.value" type="radio" ng-value="{{option.id}}" icheck class="form-control" name="{{'item'+$index}}" ng-required="item.mandatory" /> <span>{{ option.text }}</span><br>
+                                                <input ng-model="item.value" type="radio" ng-value="{{option.id}}" name="{{'item'+$index}}" ng-required="item.mandatory" /> <span>{{ option.text }}</span><br>
                                             </div>
                                         </div>
                                         
                                         <!-- CHECKBOX -->
                                         <div ng-if="item.type == 'CHECKBOX'" class="m-t-xxs">
                                             <div class="m-l-sm m-t-xs" ng-repeat="option in item.options">
-                                                <input ng-model="item.value[option.id]" type="checkbox" icheck class="form-control" /> <span>{{ option.text }}</span><br>
+                                                <input ng-model="item.value[option.id]" type="checkbox" /> <span>{{ option.text }}</span><br>
                                             </div>
                                         </div>
                                         

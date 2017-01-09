@@ -8,9 +8,11 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
+import org.ff.jpa.repository.CompanyInvestmentRepository;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResourceAssembler;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
+import org.ff.rest.companyinvestment.resource.CompanyInvestmentResourceAssembler;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
@@ -26,6 +28,12 @@ public class UserResourceAssembler {
 	private CompanyRepository companyRepository;
 
 	@Autowired
+	private CompanyInvestmentResourceAssembler companyInvestmentResourceAssembler;
+
+	@Autowired
+	private CompanyInvestmentRepository companyInvestmentRepository;
+
+	@Autowired
 	private BusinessRelationshipManagerResourceAssembler businessRelationshipManagerResourceAssembler;
 
 	@Autowired
@@ -39,6 +47,7 @@ public class UserResourceAssembler {
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
 		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
+		resource.setInvestments(companyInvestmentResourceAssembler.toResources(companyInvestmentRepository.findByCompany(entity.getCompany()), true));
 		resource.setBusinessRelationshipManager((entity.getBusinessRelationshipManager() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManager()) : null);
 		resource.setBusinessRelationshipManagerSubstitute((entity.getBusinessRelationshipManagerSubstitute() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManagerSubstitute()) : null);
 		resource.setLastLoginDate(entity.getLastLoginDate().toDate());

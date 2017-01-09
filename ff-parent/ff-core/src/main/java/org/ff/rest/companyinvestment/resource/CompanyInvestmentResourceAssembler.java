@@ -47,8 +47,10 @@ public class CompanyInvestmentResourceAssembler {
 
 	public List<CompanyInvestmentResource> toResources(Iterable<CompanyInvestment> entities, boolean light) {
 		List<CompanyInvestmentResource> resources = new ArrayList<>();
-		for (CompanyInvestment entity : entities) {
-			resources.add(toResource(entity, light));
+		if (entities != null) {
+			for (CompanyInvestment entity : entities) {
+				resources.add(toResource(entity, light));
+			}
 		}
 		return resources;
 	}

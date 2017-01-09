@@ -1,10 +1,12 @@
 package org.ff.rest.user.resource;
 
 import java.util.Date;
+import java.util.List;
 
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResource;
 import org.ff.rest.company.resource.CompanyResource;
+import org.ff.rest.companyinvestment.resource.CompanyInvestmentResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -36,6 +38,9 @@ public class UserResource {
 
 	@JsonProperty("company")
 	private CompanyResource company;
+
+	@JsonProperty("investments")
+	private List<CompanyInvestmentResource> investments;
 
 	@JsonProperty("businessRelationshipManager")
 	private BusinessRelationshipManagerResource businessRelationshipManager;

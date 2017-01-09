@@ -93,16 +93,16 @@ public class AlgorithmService extends BaseService {
 
 				Company company = user.getCompany();
 
-				// check if company investments match tender investments
-				if (!processCompany4Investments(company, tenderInvestments)) {
-					continue;
-				}
-
 				// company items
 				Set<CompanyItem> companyItems = company.getItems();
 
 				// company investments
 				List<CompanyInvestment> companyInvestments = companyInvestmentRepository.findByCompany(company);
+
+				// check if company investments match tender investments
+				if (!processCompany4Investments(companyInvestments, tenderInvestments)) {
+					continue;
+				}
 
 				Map<AlgorithmItem, Boolean> match4AlgorithmItem = new HashMap<>();
 
@@ -223,10 +223,17 @@ public class AlgorithmService extends BaseService {
 		}
 	}
 
-	private Boolean processCompany4Investments(Company company, List<Integer> tenderInvestments) {
+	private Boolean processCompany4Investments(List<CompanyInvestment> companyInvestments, List<Integer> tenderInvestments) {
 		if (tenderInvestments.isEmpty()) {
 			// tender is not restricted to any particular investment
 			return Boolean.TRUE;
+		}
+
+		for (CompanyInvestment companyInvestment : companyInvestments) {
+			if (tenderInvestments.contains(companyInvestment.getInvestment().getId())) {
+				// company has at least one investment required by the tender
+				return Boolean.TRUE;
+			}
 		}
 
 		return Boolean.FALSE;

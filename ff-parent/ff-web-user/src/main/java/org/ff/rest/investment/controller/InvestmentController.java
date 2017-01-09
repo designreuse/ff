@@ -1,6 +1,5 @@
 package org.ff.rest.investment.controller;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.ff.base.controller.BaseController;
@@ -25,7 +24,7 @@ public class InvestmentController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<InvestmentResource> findAll(Principal principal) {
+	public List<InvestmentResource> findAll() {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
 			return investmentService.findAll();

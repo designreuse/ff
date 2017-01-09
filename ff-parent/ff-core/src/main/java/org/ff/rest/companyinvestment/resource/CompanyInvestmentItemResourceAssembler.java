@@ -1,6 +1,8 @@
 package org.ff.rest.companyinvestment.resource;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -96,6 +98,14 @@ public class CompanyInvestmentItemResourceAssembler {
 		for (CompanyInvestmentItem entity : entities) {
 			resources.add(toResource(entity, light));
 		}
+
+		Collections.sort(resources, new Comparator<CompanyInvestmentItemResource>() {
+			@Override
+			public int compare(CompanyInvestmentItemResource o1, CompanyInvestmentItemResource o2) {
+				return o1.getItem().getPosition().compareTo(o2.getItem().getPosition());
+			}
+		});
+
 		return resources;
 	}
 

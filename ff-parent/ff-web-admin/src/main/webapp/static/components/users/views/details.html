@@ -106,19 +106,39 @@
                         <uib-tab-heading>{{ 'TAB_INVESTMENTS' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-6 m-t-sm">
-                                    <label ng-repeat="investment in entity.company.investments" class="ff-label">{{ investment.name }}<i uib-tooltip="{{ 'ACTION_TOOLTIP_DETAILS' | translate }}" ui-sref="investments.details({ id: investment.id })" class="fa fa-lg fa-arrow-circle-right pull-right" style="padding-top: 3px; cursor: pointer;"></i></label>                                
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group" ng-repeat="item in entity.company.items" ng-if="item.metaTag && item.metaTag.indexOf('COMPANY_INVESTMENT_') != -1">
-                                        <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
-                                            <label class="ff-label">{{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>
-                                            <div ng-if="item.type == 'HYPERLINK'" style="padding-left: 10px;"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
-                                            <div ng-if="item.type != 'HYPERLINK' && item.type != 'CURRENCY'" style="padding-left: 10px;" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                            <div ng-if="item.type != 'HYPERLINK' && item.type == 'CURRENCY'" style="padding-left: 10px;">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
+                                <div class="col-lg-12 m-t-sm" ng-repeat="investment in entity.investments">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+									   <h4 style="margin-top: 0px; margin-bottom: 0px; color: #676a6c;">{{ investment.name }}</h4>
+									</div>
+									<div class="panel-body" style="padding: 10px;">
+                                        <div class="col-lg-6" style="padding-left: 5px; padding-right: 10px;">
+                                            <div class="form-group">
+                                                <div class="col-sm-12 m-b-sm" style="padding-left: 0px; padding-right: 0px;">
+                                                    <label class="ff-label">{{ 'LABEL_TYPE' | translate }}</label>
+                                                    <div style="padding-left: 10px;">{{ investment.investment.name }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12 m-b-sm" style="padding-left: 0px; padding-right: 0px;">
+                                                    <label class="ff-label">{{ 'LABEL_DESCRIPTION' | translate }}</label>
+                                                    <p style="padding-left: 10px; padding-right: 10px; margin-bottom: 0px;" data-ng-bind="investment.description | htmlToPlaintext" class="text-justify"></p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div class="col-lg-6" style="padding-left: 10px; padding-right: 5px;">
+											<div class="form-group" ng-repeat="(parentIndex, item) in investment.items">
+                                                <div class="col-sm-12 m-b-sm" style="padding-left: 0px; padding-right: 0px;">
+                                                    <label class="ff-label">{{ item.item.text }}</label>
+                                                    <div ng-if="item.item.type == 'CURRENCY'" style="padding-left: 10px;">{{ item.value | currency : "" }} <span ng-if="item.value">{{ item.currency.code }}</span></div>
+                                                    <div ng-if="item.item.type == 'SELECT'" style="padding-left: 10px;">{{ item.value.text }}</div>
+                                                    <div ng-if="item.item.type == 'ACTIVITY' || item.item.type == 'SUBDIVISION1' || item.item.type == 'SUBDIVISION2'" style="padding-left: 10px;">{{ item.value.name }}</div>
+                                                </div>
+											</div>
+										</div>
+									</div>
+								</div>
+								</div>
                             </div>
                         </div>
                     </uib-tab>

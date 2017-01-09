@@ -16,7 +16,7 @@
                         <label class="ff-label">{{ 'LABEL_CODE' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.code.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.code.$valid }"></i></span>
                         </label>
-                        <input ng-model="entity.code" type="text" icheck class="form-control ff-form-control" name="code" ng-required="true" maxlength="8" />
+                        <input ng-model="entity.code" type="text" class="form-control ff-form-control" name="code" ng-required="true" maxlength="8" />
                         <small class="ff-postscript">{{ 'POSTSCRIPT_CODE' | translate }}</small>
                     </div>
                 </div>
@@ -96,8 +96,8 @@
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_MANDATORY' | translate }}</label>
                         <div class="m-t-xs">
-	                        <span class="m-l-sm"><input ng-model="entity.mandatory" type="radio" ng-value="true" icheck class="form-control" name="mandatory" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
-	                        <span class="m-l-sm"><input ng-model="entity.mandatory" type="radio" ng-value="false" icheck class="form-control" name="mandatory" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
+	                        <span class="m-l-sm"><input ng-model="entity.mandatory" type="radio" ng-value="true" name="mandatory" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
+	                        <span class="m-l-sm"><input ng-model="entity.mandatory" type="radio" ng-value="false" name="mandatory" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
                         </div>
                     </div>
                 </div>
@@ -105,8 +105,8 @@
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_SUMMARY_ITEM' | translate }}</label>
                         <div class="m-t-xs">
-                            <span class="m-l-sm"><input ng-model="entity.summaryItem" type="radio" ng-value="true" icheck class="form-control" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
-                            <span class="m-l-sm"><input ng-model="entity.summaryItem" type="radio" ng-value="false" icheck class="form-control" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
+                            <span class="m-l-sm"><input ng-model="entity.summaryItem" type="radio" ng-value="true" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
+                            <span class="m-l-sm"><input ng-model="entity.summaryItem" type="radio" ng-value="false" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
                         </div>
                     </div>
                 </div>
@@ -114,8 +114,8 @@
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_WIDGET_ITEM' | translate }}</label>
                         <div class="m-t-xs">
-                            <span class="m-l-sm"><input ng-model="entity.widgetItem" type="radio" ng-value="true" icheck class="form-control" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
-                            <span class="m-l-sm"><input ng-model="entity.widgetItem" type="radio" ng-value="false" icheck class="form-control" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
+                            <span class="m-l-sm"><input ng-model="entity.widgetItem" type="radio" ng-value="true" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
+                            <span class="m-l-sm"><input ng-model="entity.widgetItem" type="radio" ng-value="false" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
                         </div>
                     </div>
                 </div>
