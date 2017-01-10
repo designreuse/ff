@@ -101,7 +101,7 @@ public class ProjectResourceAssembler {
 		return entity;
 	}
 
-	public static List<ItemMetaTag> getCompanyMetaTags() {
+	public static List<ItemMetaTag> getCompanyInvestmentMetaTags() {
 		List<ItemMetaTag> companyMetaTags = new ArrayList<>();
 		companyMetaTags.add(ItemMetaTag.COMPANY_INVESTMENT_ACTIVITY);
 		companyMetaTags.add(ItemMetaTag.COMPANY_INVESTMENT_AMOUNT);

@@ -19,6 +19,8 @@ public class BaseProperties {
 
 	private String currencies;
 
+	private String locale;
+
 	private String colatorLocale;
 
 	private String url;

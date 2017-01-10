@@ -59,7 +59,7 @@ public class ProjectService {
 			resource.setCompany(companyResourceAssembler.toResource(company, true));
 			resource.setItems(new ArrayList<ProjectItemResource>());
 			for (Item item : itemRepository.findByEntityType(ItemEntityType.COMPANY)) {
-				if (item.getMetaTag() != null && ProjectResourceAssembler.getCompanyMetaTags().contains(item.getMetaTag())) {
+				if (item.getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(item.getMetaTag())) {
 					ProjectItemResource projectItemResource = new ProjectItemResource();
 					projectItemResource.setItem(itemResourceAssembler.toResource(item, false));
 					if (item.getMetaTag() == ItemMetaTag.COMPANY_INVESTMENT_AMOUNT) {

@@ -131,6 +131,7 @@ public class ProjectItemResourceAssembler {
 		try {
 			if (itemResource.getItem().getType() == ItemType.NUMBER) {
 				itemResource.setValue((projectItem.getValue() != null) ? Integer.parseInt(projectItem.getValue()) : null);
+				itemResource.setValueMapped((projectItem.getValue() != null) ? projectItem.getValue() : null);
 			} else if (itemResource.getItem().getType() == ItemType.CURRENCY) {
 				itemResource.setValue((projectItem.getValue() != null) ? Integer.parseInt(projectItem.getValue()) : null);
 				if (itemResource.getItem().getType() == ItemType.CURRENCY) {
@@ -140,6 +141,7 @@ public class ProjectItemResourceAssembler {
 						itemResource.setCurrency(new CurrencyResource(currencyService.findAll().get(0).getCode()));
 					}
 				}
+				itemResource.setValueMapped((projectItem.getValue() != null) ? String.format("%,.2f", Double.parseDouble(projectItem.getValue())) + " " + itemResource.getCurrency().getCode() : null);
 			} else if (itemResource.getItem().getType() == ItemType.DATE) {
 				itemResource.setValue(projectItem.getValue());
 			} else if (itemResource.getItem().getType() == ItemType.RADIO) {
@@ -148,21 +150,25 @@ public class ProjectItemResourceAssembler {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(projectItem.getValue()));
 					itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
+					itemResource.setValueMapped(itemOption.getText());
 				}
 			} else if (itemResource.getItem().getType() == ItemType.ACTIVITY) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					Activity entity = activityRepository.findOne(Integer.parseInt(projectItem.getValue()));
 					itemResource.setValue(activityResourceAssembler.toResource(entity, true));
+					itemResource.setValueMapped(entity.getName());
 				}
 			} else if (itemResource.getItem().getType() == ItemType.SUBDIVISION1) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(projectItem.getValue()));
 					itemResource.setValue(subdivision1ResourceAssembler.toResource(entity, true));
+					itemResource.setValueMapped(entity.getName());
 				}
 			} else if (itemResource.getItem().getType() == ItemType.SUBDIVISION2) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(projectItem.getValue()));
 					itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));
+					itemResource.setValueMapped(entity.getName());
 				}
 			} else {
 				itemResource.setValue(projectItem.getValue());

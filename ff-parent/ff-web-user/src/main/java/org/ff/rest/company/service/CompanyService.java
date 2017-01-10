@@ -44,7 +44,7 @@ public class CompanyService {
 				userRepository.findByEmail(principal.getUsername()).getCompany(), false);
 
 		for (ItemResource itemResource : resource.getItems()) {
-			if (itemResource.getMetaTag() != null && ProjectResourceAssembler.getCompanyMetaTags().contains(itemResource.getMetaTag())) {
+			if (itemResource.getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(itemResource.getMetaTag())) {
 				continue;
 			}
 

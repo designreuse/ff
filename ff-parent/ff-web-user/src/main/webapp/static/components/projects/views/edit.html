@@ -33,7 +33,7 @@
 			<div class="col-lg-6">
                 <div class="row form-group">
                     <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_TYPE' | translate }}
+                        <label class="ff-label">{{ 'LABEL_INVESTMENT' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.investments.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.investments.$valid }"></i></span>
                         </label>
                         <select width="1" chosen multiple class="form-control ff-form-control" ng-required="true" ng-model="entity.investments" name="investments" options="investments" ng-options="investment.name for investment in investments track by investment.id"></select>

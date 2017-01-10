@@ -8,8 +8,8 @@ import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
-import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.CompanyRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResourceAssembler;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.project.resource.ProjectResourceAssembler;
@@ -28,10 +28,10 @@ public class UserResourceAssembler {
 	private CompanyRepository companyRepository;
 
 	@Autowired
-	private ProjectResourceAssembler companyInvestmentResourceAssembler;
+	private ProjectResourceAssembler projectResourceAssembler;
 
 	@Autowired
-	private ProjectRepository companyInvestmentRepository;
+	private ProjectRepository projectRepository;
 
 	@Autowired
 	private BusinessRelationshipManagerResourceAssembler businessRelationshipManagerResourceAssembler;
@@ -47,7 +47,7 @@ public class UserResourceAssembler {
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
 		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
-		resource.setInvestments(companyInvestmentResourceAssembler.toResources(companyInvestmentRepository.findByCompany(entity.getCompany()), true));
+		resource.setProjects(projectResourceAssembler.toResources(projectRepository.findByCompany(entity.getCompany()), true));
 		resource.setBusinessRelationshipManager((entity.getBusinessRelationshipManager() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManager()) : null);
 		resource.setBusinessRelationshipManagerSubstitute((entity.getBusinessRelationshipManagerSubstitute() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManagerSubstitute()) : null);
 		resource.setLastLoginDate(entity.getLastLoginDate().toDate());

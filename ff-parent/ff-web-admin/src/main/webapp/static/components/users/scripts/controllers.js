@@ -437,7 +437,7 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 // ========================================================================
 //	DETAILS CONTROLLER
 // ========================================================================
-function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, UsersService, UserEmailsService, EmailsService, BusinessRelationshipManagerService) {
+function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, uiGridConstants, constants, UsersService, UserEmailsService, EmailsService, BusinessRelationshipManagerService) {
 	var $translate = $filter('translate');
 	
 	// ========================================================================================================================
@@ -733,6 +733,12 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 				toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 			});	
 	};
+	
+	$scope.exportPdf = function() {
+		var downloadLink = angular.element('<a target="_blank"></a>');
+        downloadLink.attr('href', constants.contextPath + "/api/v1/users/" + $stateParams.id + "/export/pdf");
+        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
+	}
 	
 	// initial load
 	$scope.getEntity();

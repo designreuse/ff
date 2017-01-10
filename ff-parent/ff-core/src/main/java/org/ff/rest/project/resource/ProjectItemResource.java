@@ -25,4 +25,7 @@ public class ProjectItemResource {
 	@JsonProperty("currency")
 	private CurrencyResource currency;
 
+	@JsonProperty("valueMapped")
+	private String valueMapped;
+
 }

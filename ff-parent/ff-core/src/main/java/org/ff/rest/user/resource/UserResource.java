@@ -39,8 +39,8 @@ public class UserResource {
 	@JsonProperty("company")
 	private CompanyResource company;
 
-	@JsonProperty("investments")
-	private List<ProjectResource> investments;
+	@JsonProperty("projects")
+	private List<ProjectResource> projects;
 
 	@JsonProperty("businessRelationshipManager")
 	private BusinessRelationshipManagerResource businessRelationshipManager;
