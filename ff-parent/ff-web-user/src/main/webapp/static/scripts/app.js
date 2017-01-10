@@ -1,5 +1,6 @@
 (function () {
     angular.module('FundFinder', [
+        'angular-ladda',				// http://remotty.github.io/angular-ladda/
         'angular-loading-bar',			// https://github.com/chieffancypants/angular-loading-bar
         'angularModalService',			// https://github.com/dwmkerr/angular-modal-service
         'chart.js',

@@ -27,4 +27,14 @@ public class BaseProperties {
 
 	private String sovaApplication;
 
+	private String contactTopics;
+
+	private String contactTypes;
+
+	private String contactChannels;
+
+	private String contactEmailTo;
+
+	private String contactEmailSubject;
+
 }

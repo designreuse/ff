@@ -185,6 +185,28 @@ angular.module('FundFinder')
 	        controller: 'ArticlesDetailsController',
 	        params: { 'id' : null }
 	    })
+	    
+	    // CONTACT
+		.state('contact', {
+	        abstract: true,
+	        url: "/contact",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/contact/scripts/controllers.js',
+	        			        'components/contact/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('contact.submit', {
+	        url: "/submit",
+	        templateUrl: "/components/contact/views/overview.html",
+	        controller: 'ContactController'
+	    })
 })
 	
 .run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, ModalService, CommonService) {

@@ -23,23 +23,27 @@ function config($translateProvider) {
 			MENU_PROJECTS: 'Projects',
 			MENU_ARTICLES: 'Articles',
 			MENU_COMPANY: 'Company',
+			MENU_CONTACT: 'Contact us',
 			
 			BUTTON_SAVE: 'Save',
 			BUTTON_BACK: 'Back',
 			BUTTON_ADD: 'Add',
 			BUTTON_YES: 'Yes',
 			BUTTON_NO: 'No',
+			BUTTON_SEND: 'Send',
 			
 			ACTION_LOAD_FAILURE_MESSAGE: 'Loading data failed',
 			ACTION_SAVE_FAILURE_MESSAGE: 'Saving data failed',
 			ACTION_SAVE_SUCCESS_MESSAGE: 'Saving data successful',
 			ACTION_DELETE_FAILURE_MESSAGE: 'Deleting record failed',
 			ACTION_DELETE_SUCCESS_MESSAGE: 'Record successfully deleted',
+			ACTION_SEND_FAILURE_MESSAGE: 'Sending contact message failed',
+			ACTION_SEND_SUCCESS_MESSAGE: 'Contact message successfully sent',
 			
 			LABEL_LAST_MODIFIED: 'Last modified',
 			LABEL_READ_MORE: 'Read more',
-			LABEL_COMPANY_NAME: 'Name',
-			LABEL_COMPANY_CODE: 'Identification code',
+			LABEL_COMPANY_NAME: 'Company name',
+			LABEL_COMPANY_CODE: 'Company identification code',
 			LABEL_FIRST_NAME: 'First name',
 			LABEL_LAST_NAME: 'Last name',
 			LABEL_EMAIL: 'Email',
@@ -48,6 +52,14 @@ function config($translateProvider) {
 			LABEL_NAME: 'Name',
 			LABEL_DESCRIPTION: 'Description',
 			LABEL_TYPE: 'Type',
+			LABEL_CONTACT_TOPIC: 'Topic',
+			LABEL_CONTACT_TYPE: 'Type',
+			LABEL_CONTACT_CHANNEL: 'Communication channel',
+			LABEL_CONTACT_DATA: 'Contact data',
+			LABEL_CONTACT_PERSON: 'First and last name',
+			LABEL_CONTACT_EMAIL: 'E-mail',
+			LABEL_CONTACT_PHONE: 'Phone',
+			LABEL_CONTACT_TEXT: 'Text',
 			
 			TOOLTIP_DELETE: 'Delete',
 			
@@ -80,23 +92,27 @@ function config($translateProvider) {
 			MENU_PROJECTS: 'Projekti',
 			MENU_ARTICLES: 'Članci',
 			MENU_COMPANY: 'Kompanija',
+			MENU_CONTACT: 'Kontaktirajte nas',
 			
 			BUTTON_SAVE: 'Spremi',
 			BUTTON_BACK: 'Nazad',
 			BUTTON_ADD: 'Dodaj',
 			BUTTON_YES: 'Yes',
 			BUTTON_NO: 'No',
+			BUTTON_SEND: 'Send',
 			
 			ACTION_LOAD_FAILURE_MESSAGE: 'Loading data failed',
 			ACTION_SAVE_FAILURE_MESSAGE: 'Saving data failed',
 			ACTION_SAVE_SUCCESS_MESSAGE: 'Saving data successful',
 			ACTION_DELETE_FAILURE_MESSAGE: 'Deleting record failed',
 			ACTION_DELETE_SUCCESS_MESSAGE: 'Record successfully deleted',
+			ACTION_SEND_FAILURE_MESSAGE: 'Sending contact message failed',
+			ACTION_SEND_SUCCESS_MESSAGE: 'Contact message successfully sent',
 			
 			LABEL_LAST_MODIFIED: 'Last modified',
 			LABEL_READ_MORE: 'Pročitajte više',
-			LABEL_COMPANY_NAME: 'Name',
-			LABEL_COMPANY_CODE: 'Identification code',
+			LABEL_COMPANY_NAME: 'Naziv tvrtke',
+			LABEL_COMPANY_CODE: 'OIB tvrtke',
 			LABEL_FIRST_NAME: 'Ime',
 			LABEL_LAST_NAME: 'Prezime',
 			LABEL_EMAIL: 'Email',
@@ -105,6 +121,14 @@ function config($translateProvider) {
 			LABEL_NAME: 'Naziv',
 			LABEL_DESCRIPTION: 'Opis',
 			LABEL_TYPE: 'Tip',
+			LABEL_CONTACT_TOPIC: 'Tema',
+			LABEL_CONTACT_TYPE: 'Vrsta upita',
+			LABEL_CONTACT_CHANNEL: 'Želim da me kontaktirate',
+			LABEL_CONTACT_DATA: 'Vaši podaci za kontakt',
+			LABEL_CONTACT_PERSON: 'Ime i prezime',
+			LABEL_CONTACT_EMAIL: 'E-mail',
+			LABEL_CONTACT_PHONE: 'Telefon',
+			LABEL_CONTACT_TEXT: 'Tekst',
 			
 			TOOLTIP_DELETE: 'Obriši',
 			
@@ -115,7 +139,7 @@ function config($translateProvider) {
 			INCOMPLETE_PROFILE_MSG: 'Please fill out all mandatory items in your company profile.',
 		});
 	
-	$translateProvider.preferredLanguage("en");
+	$translateProvider.preferredLanguage("hr");
 };
 
 angular.module('FundFinder').config(config);
