@@ -184,31 +184,46 @@ public class CompanyResourceAssembler {
 				itemResource.setValue(companyItem.getValue());
 				itemResource.setValueMapped(companyItem.getValue());
 			} else if (itemResource.getType() == ItemType.RADIO) {
-				itemResource.setValue(Integer.parseInt(companyItem.getValue()));
-				itemResource.setValueMapped(itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue())).getText());
+				if (companyItem.getValue() != null) {
+					try {
+						ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue()));
+						if (itemOption != null) {
+							itemResource.setValue(Integer.parseInt(companyItem.getValue()));
+							itemResource.setValueMapped(itemOption.getText());
+						}
+					} catch (NumberFormatException e) {
+						log.warn(e.getMessage(), e);
+					}
+				}
 			} else if (itemResource.getType() == ItemType.SELECT) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
 					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue()));
-					itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
-					itemResource.setValueMapped(itemOption.getText());
+					itemResource.setValue((itemOption != null) ? itemOptionResourceAssembler.toResource(itemOption, true) : null);
+					itemResource.setValueMapped((itemOption != null) ? itemOption.getText() : null);
 				}
 			} else if (itemResource.getType() == ItemType.ACTIVITY) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
 					Activity entity = activityRepository.findOne(Integer.parseInt(companyItem.getValue()));
-					itemResource.setValue(activityResourceAssembler.toResource(entity, true));
-					itemResource.setValueMapped(entity.getName());
+					if (entity != null) {
+						itemResource.setValue(activityResourceAssembler.toResource(entity, true));
+						itemResource.setValueMapped(entity.getName());
+					}
 				}
 			} else if (itemResource.getType() == ItemType.SUBDIVISION1) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
 					Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(companyItem.getValue()));
-					itemResource.setValue(subdivision1ResourceAssembler.toResource(entity, true));
-					itemResource.setValueMapped(entity.getName());
+					if (entity != null) {
+						itemResource.setValue(subdivision1ResourceAssembler.toResource(entity, true));
+						itemResource.setValueMapped(entity.getName());
+					}
 				}
 			} else if (itemResource.getType() == ItemType.SUBDIVISION2) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
 					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(companyItem.getValue()));
-					itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));
-					itemResource.setValueMapped(entity.getName());
+					if (entity != null) {
+						itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));
+						itemResource.setValueMapped(entity.getName());
+					}
 				}
 			} else {
 				itemResource.setValue(companyItem.getValue());

@@ -129,25 +129,29 @@ public class TenderResourceAssembler {
 			}
 		}
 
+		// go through all items to find out if some value is invalid (e.g. item option with that ID no longer exists)
+		resource.setItems(itemResourceAssembler.toResources(items, false));
+		for (ItemResource itemResource : resource.getItems()) {
+			for (TenderItem tenderItem : tenderItems) {
+				if (itemResource.getId().equals(tenderItem.getItem().getId())) {
+					setResourceValue(resource, itemResource, tenderItem);
+					break;
+				}
+			}
+
+			if (itemResource.getType() == ItemType.CURRENCY && itemResource.getCurrency() == null) {
+				itemResource.setCurrency(currencyService.findAll().get(0));
+			}
+		}
+
 		if (!light) {
 			resource.setCreatedBy(entity.getCreatedBy());
 			resource.setLastModifiedBy(entity.getLastModifiedBy());
 			resource.setText(entity.getText());
 			resource.setImage((entity.getImage() != null) ? imageResourceAssembler.toResource(entity.getImage(), false) : null);
-			resource.setItems(itemResourceAssembler.toResources(items, false));
-
-			for (ItemResource itemResource : resource.getItems()) {
-				for (TenderItem tenderItem : tenderItems) {
-					if (itemResource.getId().equals(tenderItem.getItem().getId())) {
-						setResourceValue(itemResource, tenderItem);
-						break;
-					}
-				}
-
-				if (itemResource.getType() == ItemType.CURRENCY && itemResource.getCurrency() == null) {
-					itemResource.setCurrency(currencyService.findAll().get(0));
-				}
-			}
+		} else {
+			// nullify items is light resource is requested
+			resource.setItems(null);
 		}
 
 		return resource;
@@ -236,7 +240,7 @@ public class TenderResourceAssembler {
 		return entity;
 	}
 
-	private void setResourceValue(ItemResource itemResource, TenderItem tenderItem) {
+	private void setResourceValue(TenderResource resource, ItemResource itemResource, TenderItem tenderItem) {
 		if (itemResource.getType() == ItemType.NUMBER || itemResource.getType() == ItemType.CURRENCY || itemResource.getType() == ItemType.PERCENTAGE) {
 			itemResource.setValue((tenderItem.getValue() != null) ? Integer.parseInt(tenderItem.getValue()) : null);
 			itemResource.setValueMapped(tenderItem.getValue());
@@ -251,8 +255,17 @@ public class TenderResourceAssembler {
 			itemResource.setValue(tenderItem.getValue());
 			itemResource.setValueMapped(tenderItem.getValue());
 		} else if (itemResource.getType() == ItemType.RADIO) {
-			itemResource.setValue((tenderItem.getValue() != null) ? Integer.parseInt(tenderItem.getValue()) : null);
-			itemResource.setValueMapped((tenderItem.getValue() != null) ? itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue())).getText() : null);
+			if (tenderItem.getValue() != null) {
+				try {
+					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
+					if (itemOption != null) {
+						itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
+						itemResource.setValueMapped(itemOption.getText());
+					}
+				} catch (NumberFormatException e) {
+					log.warn(e.getMessage(), e);
+				}
+			}
 		} else if (itemResource.getType() == ItemType.CHECKBOX) {
 			if (StringUtils.isNotBlank(tenderItem.getValue())) {
 				Map<String, Boolean> map = new LinkedHashMap<>();
@@ -273,8 +286,12 @@ public class TenderResourceAssembler {
 		} else if (itemResource.getType() == ItemType.SELECT) {
 			if (StringUtils.isNotBlank(tenderItem.getValue())) {
 				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
-				itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
-				itemResource.setValueMapped(itemOption.getText());
+				if (itemOption != null) {
+					itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
+					itemResource.setValueMapped(itemOption.getText());
+				} else {
+					resource.setIncomplete(Boolean.TRUE);
+				}
 			}
 		} else if (itemResource.getType() == ItemType.MULTISELECT) {
 			if (StringUtils.isNotBlank(tenderItem.getValue())) {
@@ -282,8 +299,12 @@ public class TenderResourceAssembler {
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
 					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
-					value.add(itemOptionResourceAssembler.toResource(itemOption, true));
-					valueMapped.add(itemOption.getText());
+					if (itemOption != null) {
+						value.add(itemOptionResourceAssembler.toResource(itemOption, true));
+						valueMapped.add(itemOption.getText());
+					} else {
+						resource.setIncomplete(Boolean.TRUE);
+					}
 				}
 				itemResource.setValue(value);
 				itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
@@ -294,8 +315,12 @@ public class TenderResourceAssembler {
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
 					Activity entity = activityRepository.findOne(Integer.parseInt(id));
-					value.add(activityResourceAssembler.toResource(entity, true));
-					valueMapped.add(entity.getName());
+					if (entity != null) {
+						value.add(activityResourceAssembler.toResource(entity, true));
+						valueMapped.add(entity.getName());
+					} else {
+						resource.setIncomplete(Boolean.TRUE);
+					}
 				}
 				itemResource.setValue(value);
 				itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
@@ -306,8 +331,12 @@ public class TenderResourceAssembler {
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
 					Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(id));
-					value.add(subdivision1ResourceAssembler.toResource(entity, true));
-					valueMapped.add(entity.getName());
+					if (entity != null) {
+						value.add(subdivision1ResourceAssembler.toResource(entity, true));
+						valueMapped.add(entity.getName());
+					} else {
+						resource.setIncomplete(Boolean.TRUE);
+					}
 				}
 				itemResource.setValue(value);
 				itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
@@ -318,8 +347,12 @@ public class TenderResourceAssembler {
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
 					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(id));
-					value.add(subdivision2ResourceAssembler.toResource(entity, true));
-					valueMapped.add(entity.getName());
+					if (entity != null) {
+						value.add(subdivision2ResourceAssembler.toResource(entity, true));
+						valueMapped.add(entity.getName());
+					} else {
+						resource.setIncomplete(Boolean.TRUE);
+					}
 				}
 				itemResource.setValue(value);
 				itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
@@ -330,8 +363,12 @@ public class TenderResourceAssembler {
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
 					Investment entity = investmentRepository.findOne(Integer.parseInt(id));
-					value.add(investmentResourceAssembler.toResource(entity, true));
-					valueMapped.add(entity.getName());
+					if (entity != null) {
+						value.add(investmentResourceAssembler.toResource(entity, true));
+						valueMapped.add(entity.getName());
+					} else {
+						resource.setIncomplete(Boolean.TRUE);
+					}
 				}
 				itemResource.setValue(value);
 				itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
