@@ -115,54 +115,6 @@ CREATE TABLE `company` (
 
 
 
-# Dump of table company_investment
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `company_investment`;
-
-CREATE TABLE `company_investment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_by` varchar(128) DEFAULT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified_by` varchar(128) DEFAULT NULL,
-  `last_modified_date` datetime NOT NULL,
-  `description` longtext,
-  `name` varchar(255) NOT NULL,
-  `company` int(11) DEFAULT NULL,
-  `investment` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_1pbdbv65otvg7qpwd0rwjv9r1` (`company`),
-  KEY `FK_89s93yj54d9oo7asa7ulpf3n4` (`investment`),
-  CONSTRAINT `FK_1pbdbv65otvg7qpwd0rwjv9r1` FOREIGN KEY (`company`) REFERENCES `company` (`id`),
-  CONSTRAINT `FK_89s93yj54d9oo7asa7ulpf3n4` FOREIGN KEY (`investment`) REFERENCES `investment` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table company_investment_item
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `company_investment_item`;
-
-CREATE TABLE `company_investment_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_by` varchar(128) DEFAULT NULL,
-  `creation_date` datetime NOT NULL,
-  `last_modified_by` varchar(128) DEFAULT NULL,
-  `last_modified_date` datetime NOT NULL,
-  `currency` varchar(8) DEFAULT NULL,
-  `value` longtext,
-  `company_investment` int(11) DEFAULT NULL,
-  `item` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_nujdk0ia8ayep1gmdxjf92jdb` (`company_investment`),
-  KEY `FK_129qtsnvh13lgamyif1km6c0j` (`item`),
-  CONSTRAINT `FK_129qtsnvh13lgamyif1km6c0j` FOREIGN KEY (`item`) REFERENCES `item` (`id`),
-  CONSTRAINT `FK_nujdk0ia8ayep1gmdxjf92jdb` FOREIGN KEY (`company_investment`) REFERENCES `company_investment` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table company_item
 # ------------------------------------------------------------
 
@@ -183,6 +135,31 @@ CREATE TABLE `company_item` (
   KEY `FK_sejipjuelub5j2wd0ee898n41` (`item`),
   CONSTRAINT `FK_iffgmimr917ylxr63thetmbfq` FOREIGN KEY (`company`) REFERENCES `company` (`id`),
   CONSTRAINT `FK_sejipjuelub5j2wd0ee898n41` FOREIGN KEY (`item`) REFERENCES `item` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table contact
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `contact`;
+
+CREATE TABLE `contact` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `channel` longtext,
+  `company_code` varchar(255) DEFAULT NULL,
+  `company_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `text` longtext,
+  `topic` longtext,
+  `type` longtext,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -319,6 +296,68 @@ CREATE TABLE `permission` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table project
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `project`;
+
+CREATE TABLE `project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `description` longtext,
+  `name` varchar(255) NOT NULL,
+  `company` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_i7cnlnqeieu2xsv9jh1od0t5n` (`company`),
+  CONSTRAINT `FK_i7cnlnqeieu2xsv9jh1od0t5n` FOREIGN KEY (`company`) REFERENCES `company` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table project_investment
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `project_investment`;
+
+CREATE TABLE `project_investment` (
+  `project_id` int(11) NOT NULL,
+  `investment_id` int(11) NOT NULL,
+  PRIMARY KEY (`project_id`,`investment_id`),
+  KEY `FK_smxuuri2yegx8sc1xmk3afnd9` (`investment_id`),
+  KEY `FK_qo5mmmxe5femovus3eyoksypy` (`project_id`),
+  CONSTRAINT `FK_qo5mmmxe5femovus3eyoksypy` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`),
+  CONSTRAINT `FK_smxuuri2yegx8sc1xmk3afnd9` FOREIGN KEY (`investment_id`) REFERENCES `investment` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table project_item
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `project_item`;
+
+CREATE TABLE `project_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `currency` varchar(8) DEFAULT NULL,
+  `value` longtext,
+  `item` int(11) DEFAULT NULL,
+  `project` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_9wbtdxj19qmteif3v01hryu2c` (`item`),
+  KEY `FK_foxoj24uhesknmmf77krud5sj` (`project`),
+  CONSTRAINT `FK_9wbtdxj19qmteif3v01hryu2c` FOREIGN KEY (`item`) REFERENCES `item` (`id`),
+  CONSTRAINT `FK_foxoj24uhesknmmf77krud5sj` FOREIGN KEY (`project`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -462,6 +501,7 @@ CREATE TABLE `user` (
   `registration_code` varchar(255) DEFAULT NULL,
   `registration_code_confirmed` datetime DEFAULT NULL,
   `registration_code_sent` datetime DEFAULT NULL,
+  `registration_type` varchar(32) DEFAULT NULL,
   `status` varchar(32) NOT NULL,
   `business_relationship_manager` int(11) DEFAULT NULL,
   `business_relationship_manager_substitute` int(11) DEFAULT NULL,

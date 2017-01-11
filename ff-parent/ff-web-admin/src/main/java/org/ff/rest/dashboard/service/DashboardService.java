@@ -44,8 +44,12 @@ public class DashboardService {
 		double usersRegisteredInternalPercentage = (new Double(usersRegisteredInternal) / new Double(usersRegistered)) * 100;
 		double usersRegisteredExternalPercentage = (new Double(usersRegisteredExternal) / new Double(usersRegistered)) * 100;
 
-		resource.setUsersRegisteredInternalPercentage(new BigDecimal(usersRegisteredInternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
-		resource.setUsersRegisteredExternalPercentage(new BigDecimal(usersRegisteredExternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+		if (usersRegisteredInternalPercentage > 0) {
+			resource.setUsersRegisteredInternalPercentage(new BigDecimal(usersRegisteredInternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+		}
+		if (usersRegisteredExternalPercentage > 0) {
+			resource.setUsersRegisteredExternalPercentage(new BigDecimal(usersRegisteredExternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+		}
 
 		return resource;
 	}
