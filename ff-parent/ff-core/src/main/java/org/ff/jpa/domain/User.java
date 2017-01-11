@@ -30,6 +30,8 @@ public class User extends AbstractEntity {
 
 	public enum UserStatus { ACTIVE, INACTIVE, WAITING_CONFIRMATION };
 
+	public enum UserRegistrationType { INTERNAL, EXTERNAL };
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -83,5 +85,9 @@ public class User extends AbstractEntity {
 
 	@Column(name = "demo_user", nullable = true)
 	private Boolean demoUser;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "registrationType", nullable = true, length = 32)
+	private UserRegistrationType registrationType;
 
 }

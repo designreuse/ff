@@ -43,6 +43,7 @@ public class UserResourceAssembler {
 		UserResource resource = new UserResource();
 		resource.setId(entity.getId());
 		resource.setStatus(entity.getStatus());
+		resource.setRegistrationType(entity.getRegistrationType());
 		resource.setFirstName(entity.getFirstName());
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
@@ -73,6 +74,7 @@ public class UserResourceAssembler {
 	public User createEntity(UserResource resource) {
 		User entity = new User();
 		entity.setStatus((resource.getStatus() != null) ? resource.getStatus() : User.UserStatus.INACTIVE);
+		entity.setRegistrationType(resource.getRegistrationType());
 		if (entity.getStatus() == UserStatus.WAITING_CONFIRMATION) {
 			long now = System.currentTimeMillis();
 			entity.setRegistrationCode(now + "-" + UUID.randomUUID().toString());
@@ -96,6 +98,7 @@ public class UserResourceAssembler {
 
 	public User updateEntity(User entity, UserResource resource) {
 		entity.setStatus(resource.getStatus());
+		entity.setRegistrationType(resource.getRegistrationType());
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());

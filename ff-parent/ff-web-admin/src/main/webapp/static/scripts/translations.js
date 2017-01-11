@@ -115,6 +115,7 @@ function config($translateProvider) {
 			LABEL_POSITION: 'Position',
 			LABEL_READ_MORE: 'Read more',
 			LABEL_REGISTERED_USERS: 'Registered users',
+			LABEL_REGISTRATION_TYPE: 'Registration type',
 			LABEL_SECTOR: 'Sector',
 			LABEL_SECTOR_NAME: 'Sector name',
 			LABEL_SEND_EMAIL_SUBJECT: 'Subject',
@@ -158,6 +159,7 @@ function config($translateProvider) {
 			COLUMN_OPERATOR: 'Operator',
 			COLUMN_PHONE: 'Phone',
 			COLUMN_POSITION: 'Position',
+			COLUMN_REGISTRATION_TYPE: 'Registration type',
 			COLUMN_REVENUE: 'Revenue',
 			COLUMN_SECTOR: 'Sector',
 			COLUMN_SECTOR: 'Sector',
@@ -205,6 +207,9 @@ function config($translateProvider) {
 			STATUS_ACTIVE: 'Active',
 			STATUS_INACTIVE: 'Inactive',
 			STATUS_INCOMPLETE: 'Incomplete',
+			
+			REGISTRATION_TYPE_INTERNAL: 'Registration form',
+			REGISTRATION_TYPE_EXTERNAL: 'e-ZaBa',
 			
 			ITEM_TYPE_ACTIVITY: 'Activity',
 			ITEM_TYPE_ACTIVITY_DESCRIPTION: 'Rendered as select component where none or one option can be selected. Options are defined in Settings - Activities.',
@@ -329,6 +334,18 @@ function config($translateProvider) {
 			DUALLIST_INFO_ALL: 'Showing all {0}',
 			DUALLIST_INFO_EMPTY: 'Empty list',
 			DUALLIST_INFO_FILTERED: '<span class="label label-warning">Filtered</span> {0} from {1}',
+			
+			DASHBOARD_USERS: 'Users',
+			DASHBOARD_TENDERS: 'Tenders',
+			DASHBOARD_VISITS: 'Visits',
+			DASHBOARD_TOTAL: 'Total',
+			DASHBOARD_UNIQUE: 'Unique',
+			DASHBOARD_ACTIVE: 'Active',
+			DASHBOARD_INACTIVE: 'Inactive',
+			DASHBOARD_CHART_DIMENSION: 'Dimension',
+			DASHBOARD_CHART_PERIOD: 'Period',
+			DASHBOARD_REGISTRATION_TYPE_INTERNAL: 'Registered via Fund Finder',
+			DASHBOARD_REGISTRATION_TYPE_EXTERNAL: 'Registered via e-Zaba',
 		});
 	
 	$translateProvider.preferredLanguage("en");

@@ -7,58 +7,83 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-3">
 			<div class="ibox float-e-margins">
-				<div class="ibox-title">
-					<h5>Users</h5>
-					<div class="pull-right">
-						<div class="btn-group">
-							<label ng-change="periodChanged()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'today'">Today</label> 
-							<label ng-change="periodChanged()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'weekly'">Weekly</label> 
-							<label ng-change="periodChanged()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'monthly'">Monthly</label>
-						</div>
-					</div>
+				<div class="ibox-title ff-ibox-title">
+					<span class="label label-success pull-right">{{ 'DASHBOARD_TOTAL' | translate }}</span>
+					<h5>{{ 'DASHBOARD_USERS' | translate }}</h5>
 				</div>
-				<div class="ibox-content">
-					<div class="row">
-						<div class="col-lg-9">
-							<div class="flot-chart">
-								<div flot class="flot-chart-content" dataset="flotData" options="flotOptions"></div>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<ul class="stat-list">
-								<li>
-									<h2 class="no-margins">146</h2> <small>{{ 'LABEL_REGISTERED_USERS' | translate }}</small> <small ng-if="period == 'today'">{{ 'PERIOD_TODAY' | translate | lowercase }}</small> <small ng-if="period == 'weekly'">{{ 'PERIOD_LAST_7_DAYS' | translate | lowercase }}</small> <small ng-if="period == 'monthly'">{{ 'PERIOD_LAST_6_MONTHS' | translate | lowercase }}</small>
-									<div class="stat-percent">
-										48% <i class="fa fa-level-up text-navy"></i>
-									</div>
-									<div class="progress progress-mini">
-										<div style="width: 48%;" class="progress-bar progress-bar-success"></div>
-									</div>
-								</li>
-								<li>
-									<h2 class="no-margins ">4,422</h2> <small>{{ 'LABEL_VISITS' | translate }}</small> <small ng-if="period == 'today'">{{ 'PERIOD_TODAY' | translate | lowercase }}</small> <small ng-if="period == 'weekly'">{{ 'PERIOD_LAST_7_DAYS' | translate | lowercase }}</small> <small ng-if="period == 'monthly'">{{ 'PERIOD_LAST_6_MONTHS' | translate | lowercase }}</small>
-									<div class="stat-percent">
-										60% <i class="fa fa-level-down text-danger"></i>
-									</div>
-									<div class="progress progress-mini">
-										<div style="width: 60%;" class="progress-bar progress-bar-navy-light"></div>
-									</div>
-								</li>
-								<li>
-									<h2 class="no-margins ">2,180</h2> <small>{{ 'LABEL_UNIQUE_VISITS' | translate }}</small> <small ng-if="period == 'today'">{{ 'PERIOD_TODAY' | translate | lowercase }}</small> <small ng-if="period == 'weekly'">{{ 'PERIOD_LAST_7_DAYS' | translate | lowercase }}</small> <small ng-if="period == 'monthly'">{{ 'PERIOD_LAST_6_MONTHS' | translate | lowercase }}</small>
-									<div class="stat-percent">
-										22% <i class="fa fa-level-up text-navy"></i>
-									</div>
-									<div class="progress progress-mini">
-										<div style="width: 22%;" class="progress-bar"></div>
-									</div>
-								</li>
-						</div>
+				<div class="ibox-content ff-ibox-content">
+					<h1 class="no-margins">{{ data.usersRegistered}}</h1>
+					<div class="stat-percent" style="text-align: right;">
+						<small><br>{{ data.usersRegisteredExternalPercentage }}<br>{{ data.usersRegisteredInternalPercentage }}</small>
 					</div>
+					<small><br>{{ 'DASHBOARD_REGISTRATION_TYPE_EXTERNAL' | translate }}<br>{{ 'DASHBOARD_REGISTRATION_TYPE_INTERNAL' | translate }}</small>
 				</div>
 			</div>
 		</div>
+		<div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title ff-ibox-title">
+                    <span class="label label-warning pull-right">{{ 'DASHBOARD_TOTAL' | translate }}</span>
+                    <h5>{{ 'DASHBOARD_VISITS' | translate }}</h5>
+                </div>
+                <div class="ibox-content ff-ibox-content">
+                    <h1 class="no-margins">{{ data.usersRegistered}}</h1>
+                    <div class="stat-percent" style="text-align: right;">
+                        <small><br>{{ data.usersRegisteredExternalPercentage }}<br>{{ data.usersRegisteredInternalPercentage }}</small>
+                    </div>
+                    <small><br>{{ 'DASHBOARD_TOTAL' | translate }}<br>{{ 'DASHBOARD_UNIQUE' | translate }}</small>
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title ff-ibox-title">
+                    <span class="label label-primary pull-right">{{ 'DASHBOARD_TOTAL' | translate }}</span>
+                    <h5>{{ 'DASHBOARD_TENDERS' | translate }}</h5>
+                </div>
+                <div class="ibox-content ff-ibox-content">
+                    <h1 class="no-margins">{{ data.usersRegistered}}</h1>
+                    <div class="stat-percent" style="text-align: right;">
+                        <small><br>{{ data.usersRegisteredExternalPercentage }}<br>{{ data.usersRegisteredInternalPercentage }}</small>
+                    </div>
+                    <small><br>{{ 'DASHBOARD_ACTIVE' | translate }}<br>{{ 'DASHBOARD_INACTIVE' | translate }}</small>
+                </div>
+            </div>
+        </div>
 	</div>
+	<div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title ff-ibox-title">
+                    <h5>Trends</h5>
+                    <div class="pull-right">
+                        <span class="m-r-xs">{{ 'DASHBOARD_CHART_PERIOD' | translate }}:</span>
+                        <div class="btn-group">
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'daily'">Last 7 days</label> 
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'monthly'">Last 6 months</label> 
+                        </div>
+                    </div>
+                    <div class="pull-right m-r-xl">
+                        <span class="m-r-xs">{{ 'DASHBOARD_CHART_DIMENSION' | translate }}:</span>
+                        <div class="btn-group">
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="type" uib-btn-radio="'users'">{{ 'DASHBOARD_USERS' | translate }}</label> 
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="type" uib-btn-radio="'visits'">{{ 'DASHBOARD_VISITS' | translate }}</label>
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="type" uib-btn-radio="'tenders'">{{ 'DASHBOARD_TENDERS' | translate }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content ff-ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="flot-chart">
+                                <div flot class="flot-chart-content" dataset="flotData" options="flotOptions"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

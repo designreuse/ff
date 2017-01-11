@@ -21,6 +21,7 @@ import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
@@ -204,6 +205,9 @@ public class UserService extends BaseService {
 		Page<User> page = null;
 
 		List<Specification<User>> specifications = new ArrayList<>();
+
+		specifications.add(new UserSpecification(new SearchCriteria("demoUser", SearchOperation.EQUALITY, Boolean.FALSE)));
+
 		if (resource.getFilter() != null && !resource.getFilter().isEmpty()) {
 			for (UiGridFilterResource uiGridFilterResource : resource.getFilter()) {
 				UserSpecification specification = createSpecification(uiGridFilterResource);
@@ -236,6 +240,12 @@ public class UserService extends BaseService {
 		} else if (resource.getName().equalsIgnoreCase("status")) {
 			if (EnumUtils.isValidEnum(UserStatus.class, resource.getTerm().toUpperCase())) {
 				return new UserSpecification(new SearchCriteria(resource.getName(), SearchOperation.EQUALITY, UserStatus.valueOf(resource.getTerm().toUpperCase())));
+			} else {
+				return null;
+			}
+		} else if (resource.getName().equalsIgnoreCase("registrationType")) {
+			if (EnumUtils.isValidEnum(UserRegistrationType.class, resource.getTerm().toUpperCase())) {
+				return new UserSpecification(new SearchCriteria(resource.getName(), SearchOperation.EQUALITY, UserRegistrationType.valueOf(resource.getTerm().toUpperCase())));
 			} else {
 				return null;
 			}

@@ -378,6 +378,15 @@
     padding: 0 5px;
 }
 
+.ff-ibox-title {
+	border-left: 1px solid #e7eaec; 
+	border-right: 1px solid #e7eaec;
+}
+
+.ff-ibox-content {
+    border: 1px solid #e7eaec;
+}
+
 /* ************************************************************ */
 /*  global                                                      */
 /* ************************************************************ */

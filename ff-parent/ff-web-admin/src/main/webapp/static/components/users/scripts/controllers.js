@@ -117,6 +117,26 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
+					displayName: $translate('COLUMN_REGISTRATION_TYPE'),
+					field: 'registrationType',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					filter: {
+						type: uiGridConstants.filter.SELECT,
+						disableCancelFilterButton: true,
+						selectOptions: [
+							{ value: 'INTERNAL', label: $translate('REGISTRATION_TYPE_INTERNAL') },
+							{ value: 'EXTERNAL', label: $translate('REGISTRATION_TYPE_EXTERNAL') }]
+					},
+					enableHiding: false,
+					width: 125,
+					cellTemplate:
+						'<div ng-show="row.entity.registrationType == \'INTERNAL\'" class="ui-grid-cell-contents"><span>{{\'REGISTRATION_TYPE_INTERNAL\' | translate}}</span></div>' + 
+						'<div ng-show="row.entity.registrationType == \'EXTERNAL\'" class="ui-grid-cell-contents"><span>{{\'REGISTRATION_TYPE_EXTERNAL\' | translate}}</span></div>'
+				},
+				{
 					displayName: $translate('COLUMN_STATUS'),
 					field: 'status',
 					type: 'string',

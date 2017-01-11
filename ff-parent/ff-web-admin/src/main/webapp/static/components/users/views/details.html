@@ -67,6 +67,12 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_REGISTRATION_TYPE' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ ('REGISTRATION_TYPE_' + entity.registrationType) | translate }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
                                     <label class="ff-label">{{ 'LABEL_CREATION_DATE' | translate }}</label>
                                     <div style="padding-left: 10px;">{{ entity.creationDate | date:dateTimeFormat }}</div>
                                 </div>

@@ -3,6 +3,7 @@ package org.ff.rest.user.resource;
 import java.util.Date;
 import java.util.List;
 
+import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.rest.businessrelationshipmanager.resource.BusinessRelationshipManagerResource;
 import org.ff.rest.company.resource.CompanyResource;
@@ -23,6 +24,9 @@ public class UserResource {
 
 	@JsonProperty("status")
 	private UserStatus status;
+
+	@JsonProperty("registrationType")
+	private UserRegistrationType registrationType;
 
 	@JsonProperty("firstName")
 	private String firstName;

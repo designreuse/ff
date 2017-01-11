@@ -12,6 +12,7 @@ import org.ff.base.properties.BaseProperties;
 import org.ff.base.service.BaseService;
 import org.ff.common.mailsender.MailSenderService;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.user.resource.UserResource;
@@ -116,6 +117,7 @@ public class UserService extends BaseService {
 			if (user.getRegistrationCodeConfirmedDate() == null) {
 				user.setStatus(UserStatus.ACTIVE);
 				user.setRegistrationCodeConfirmedDate(new DateTime());
+				user.setRegistrationType(UserRegistrationType.INTERNAL);
 				repository.save(user);
 
 				try {
