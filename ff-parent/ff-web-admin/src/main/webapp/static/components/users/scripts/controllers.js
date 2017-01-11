@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, UsersService) {
+function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, constants, UsersService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -24,6 +24,10 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 		}
 		if ($rootScope.hasPermission(['users.delete'])) {
 			width = width + 26;
+			cnt++;
+		}
+		if ($rootScope.hasPermission(['users.export'])) {
+			width = width + 30;
 			cnt++;
 		}
 
@@ -203,7 +207,8 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					width: calculateWidth(),
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
-							'<button ng-if="grid.appScope.hasPermission([\'users.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +	
+							'<button ng-if="grid.appScope.hasPermission([\'users.export\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'users.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'users.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
 							'<button ng-if="grid.appScope.hasPermission([\'users.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'users.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
@@ -307,6 +312,12 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 		$scope.sortArray = sortArray;
 		$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 	};
+	
+	$scope.exportEntity = function(entity) {
+		var downloadLink = angular.element('<a target="_blank"></a>');
+        downloadLink.attr('href', constants.contextPath + "/api/v1/users/" + entity.id + "/export/pdf");
+        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
+	}
 	
 	$scope.showEntity = function (entity) {
 		$state.go('users.details', { 'id' : entity.id });

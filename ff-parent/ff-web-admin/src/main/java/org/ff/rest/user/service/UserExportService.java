@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
+import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.investment.resource.InvestmentResource;
@@ -125,6 +126,11 @@ public class UserExportService {
 		horizontalList.add(
 				cmp.text(messageSource.getMessage("report.lbl.email", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
 				cmp.text((user.getEmail() != null) ? user.getEmail() : "").setStyle(valueStyle))
+		.newRow(verticalGap);
+
+		horizontalList.add(
+				cmp.text(messageSource.getMessage("report.lbl.registrationType", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
+				cmp.text((user.getRegistrationType() == UserRegistrationType.INTERNAL) ? messageSource.getMessage("report.lbl.registrationTypeInternal", null, locale) : messageSource.getMessage("report.lbl.registrationTypeExternal", null, locale)).setStyle(valueStyle))
 		.newRow(verticalGap);
 
 		horizontalList.add(

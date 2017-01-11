@@ -281,6 +281,7 @@ function config($translateProvider) {
 			ACTION_TOOLTIP_ACTIVATE: 'Activate',
 			ACTION_TOOLTIP_DEACTIVATE: 'Deactivate',
 			ACTION_TOOLTIP_EDIT: 'Edit',
+			ACTION_TOOLTIP_EXPORT: 'Export',
 			ACTION_TOOLTIP_DELETE: 'Delete',
 			ACTION_TOOLTIP_DETAILS: 'Details',
 			ACTION_TOOLTIP_EXPAND: 'Expand',
