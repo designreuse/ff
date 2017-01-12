@@ -2,6 +2,7 @@ package org.ff.common.mailsender;
 
 import javax.mail.internet.MimeMessage;
 
+import org.ff.base.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,6 +18,9 @@ public class MailSenderService {
 	@Autowired
 	private JavaMailSender mailSender;
 
+	@Autowired
+	private BaseProperties baseProperties;
+
 	public void send(final String to, final String subject, final String text) {
 		log.debug("Sending e-mail with subject [{}] to [{}]", subject, to);
 
@@ -24,6 +28,7 @@ public class MailSenderService {
 			@Override
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+				message.setFrom(baseProperties.getMailSender());
 				message.setTo(to);
 				message.setSubject(subject);
 				message.setText(text, true);
@@ -40,6 +45,7 @@ public class MailSenderService {
 			@Override
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+				message.setFrom(baseProperties.getMailSender());
 				message.setTo(to);
 				message.setSubject(subject);
 				message.setText(text, true);
