@@ -605,6 +605,10 @@ VALUES
     (4002, 'articles.read'),
     (4003, 'articles.update'),
     (4004, 'articles.delete'),
+    (5000, 'contacts'),
+    (5001, 'contacts.read'),
+    (5002, 'contacts.delete'),
+    (5003, 'contacts.export'),
     (8000, 'statistics'),
     (9000, 'settings');
     
@@ -644,6 +648,10 @@ VALUES
     (1, 4002),
     (1, 4003),
     (1, 4004),
+    (1, 5000),
+    (1, 5001),
+    (1, 5002),
+    (1, 5003),
     (1, 8000),
     (1, 9000);
        

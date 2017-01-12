@@ -359,6 +359,49 @@ angular.module('FundFinder')
 	        	}
 	        }
 	    })
+	    
+	    // ==========================================
+		// 	CONTACTS
+	    // ==========================================
+		.state('contacts', {
+	        abstract: true,
+	        url: "/contacts",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/contacts/scripts/controllers.js',
+	        			        constants.contextPath + '/components/contacts/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('contacts.overview', {
+	        url: "/overview",
+	        templateUrl: constants.contextPath + "/components/contacts/views/overview.html",
+	        controller: 'ContactsOverviewController',
+	        params: { 'permission' : 'contacts' },
+	        data: { pageTitle: 'Contacts overview' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
+	    })
+		.state('contacts.details', {
+	        url: "/details/:id",
+	        templateUrl: constants.contextPath + "/components/contacts/views/details.html",
+	        controller: 'ContactsDetailsController',
+	        params: { 'id' : null, 'permission' : 'contacts.read' },
+	        data: { pageTitle: 'Contact details' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
+	    })
 	
 	    // ==========================================
 	    // 	SETTINGS
