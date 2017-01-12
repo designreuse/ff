@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, constants, ContactsService) {
+function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, uiGridExporterConstants, constants, ContactsService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -48,6 +48,23 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 			enableHorizontalScrollbar: uiGridConstants.scrollbars.NEVER,
 			enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
 			enableGridMenu: true,
+			exporterMenuCsv: false,
+			exporterMenuPdf: false,
+			exporterOlderExcelCompatibility: true,
+			exporterCsvFilename: 'contacts.csv',
+			exporterPdfMaxGridWidth: $rootScope.exporterPdfMaxGridWidth,
+			exporterPdfDefaultStyle: $rootScope.exporterPdfDefaultStyle,
+			exporterPdfTableStyle: $rootScope.exporterPdfTableStyle,
+		    exporterPdfTableHeaderStyle: $rootScope.exporterPdfTableHeaderStyle,
+		    exporterPdfHeader: $rootScope.exporterPdfHeader($translate('MENU_CONTACTS')),
+		    exporterPdfFooter: $rootScope.exporterPdfFooter,
+		    exporterPdfCustomFormatter: $rootScope.exporterPdfCustomFormatter,
+		    exporterFieldCallback: function (grid, row, col, value) {
+		    	if (col.name === 'creationDate') {
+		    		return (value) ? ($filter('date')(value, $rootScope.dateTimeFormat)) : '';
+		    	}
+		    	return value;
+		    },
 			columnDefs: [
 				{
 					displayName: $translate('COLUMN_ID'),
@@ -179,6 +196,7 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 					enableFiltering: false,
 					enableHiding: false,
 					width: calculateWidth(),
+					exporterSuppressExport: true,
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
 							'<button ng-if="grid.appScope.hasPermission([\'contacts.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
@@ -241,6 +259,45 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 				};
 			}
 		};
+	
+	$scope.exportAll = function(format) {
+		$('#ExportingModal').modal('show');
+		var uiGridResource = { "pagination" : { "page" : 0, "size" : 100000 }, "sort" : $scope.sortArray, "filter" : $scope.filterArray };
+
+		ContactsService.getPage(uiGridResource)
+			.success(function(data, status, headers, config) {
+				if (status == 200) {
+					$scope.gridOptions.data = data.data;
+					$scope.gridOptions.totalItems = data.total;
+					
+					$timeout(function() {
+						if (format == 'CSV') {
+							$scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE);
+						} else if (format == 'PDF') {
+							$scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE);
+						}
+						
+						$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+						$('#ExportingModal').modal('hide');
+					}, 5000);
+				} else {
+					$log.error(data);
+					$('#ExportingModal').modal('hide');
+				}
+			})
+			.error(function(data, status, headers, config) {
+				$log.error(data);
+				$('#ExportingModal').modal('hide');
+			});
+	};
+	
+	$scope.exportSelected = function(format) {
+		if (format == 'CSV') {
+			$scope.gridApi.exporter.csvExport(uiGridExporterConstants.SELECTED, uiGridExporterConstants.SELECTED);
+		} else if (format == 'PDF') {
+			$scope.gridApi.exporter.pdfExport(uiGridExporterConstants.SELECTED, uiGridExporterConstants.SELECTED);
+		}
+	};
 	
 	$scope.getPage = function(page, size) {
 		// save current state

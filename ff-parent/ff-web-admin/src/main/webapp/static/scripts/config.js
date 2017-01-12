@@ -771,6 +771,23 @@ angular.module('FundFinder')
 	$rootScope.heightCorrectionFactor = 90;
 	$rootScope.heightCorrectionFactorRevisions = 60;
 	
+	// ui-grid export
+	$rootScope.exporterPdfMaxGridWidth = 680; 
+	$rootScope.exporterPdfDefaultStyle = { fontSize: 7 };
+	$rootScope.exporterPdfTableStyle = { margin: [0, 0, 0, 0], alignment: 'right' };
+	$rootScope.exporterPdfTableHeaderStyle = { fontSize: 8, bold: true, italics: false, color: 'black', fillColor: '#f0f0f0' };
+	$rootScope.exporterPdfHeader = function (headerText) {
+    	return { text: headerText, style: 'headerStyle' };
+    };
+	$rootScope.exporterPdfFooter = function (currentPage, pageCount) {
+    	return { text: currentPage.toString() + '/' + pageCount.toString(), style: 'footerStyle' };
+    };
+    $rootScope.exporterPdfCustomFormatter = function (docDefinition) {
+    	docDefinition.styles.headerStyle = { fontSize: 10, bold: false, margin: [ 50, 20, 0, 10 ] };
+    	docDefinition.styles.footerStyle = { fontSize: 7, bold: false, margin: [ 50, 10, 0, 10 ] };
+        return docDefinition;
+    };
+	
 	// toastr default settings
 	toastr.options.preventDuplicates = true;
 	toastr.options.closeButton = true;
