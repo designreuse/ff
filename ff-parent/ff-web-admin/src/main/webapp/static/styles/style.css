@@ -121,6 +121,14 @@
     border: 1px solid #d4d4d4;
 }
 
+.ui-grid-menu-button {
+    height: 24px;
+}
+
+.ui-grid-menu-mid {
+    min-height: 164px !important;
+}
+
 /* ************************************************************ */
 /*  ui-grid message overlay                                     */
 /* ************************************************************ */
