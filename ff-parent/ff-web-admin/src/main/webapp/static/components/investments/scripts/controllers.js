@@ -299,7 +299,6 @@ function InvestmentsOverviewController($rootScope, $scope, $state, $log, $timeou
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -307,7 +306,6 @@ function InvestmentsOverviewController($rootScope, $scope, $state, $log, $timeou
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	InvestmentsService.deleteEntity(entity.id)

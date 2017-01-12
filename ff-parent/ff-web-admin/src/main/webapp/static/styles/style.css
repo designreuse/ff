@@ -247,7 +247,7 @@
 }
 
 .ff-valid {
-    color: green;
+    color: green !important;
 }
 
 .ff-form-control {

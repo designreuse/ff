@@ -1,0 +1,148 @@
+@font-face {
+	font-family: unicredit-regular;
+	src: url(font/unicredit-regular-webfont.ttf);
+}
+
+@font-face {
+	font-family: unicredit-light;
+	src: url(font/unicredit-light-webfont.ttf);
+}
+
+@font-face {
+	font-family: unicredit-bold;
+	src: url(font/unicredit-bold-webfont.ttf);
+}
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+	background-color: #ffffff;
+	color: #333;
+	font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: unicredit-bold;
+}
+
+/* =============================== */
+/* ====== T O P N A V B A R ====== */
+/* =============================== */   
+.ff-logo {
+	background: url(logo.svg) no-repeat center center;
+	background-size: 100%;
+	width: 220px;
+	height: 41px;
+	margin-top: 6px;
+	margin-left: 4px;
+}
+
+.nav.navbar-right {
+	font-family: unicredit-regular;
+	text-transform: uppercase;
+}
+
+.nav.navbar-right>li>label {
+	color: #333;
+	padding: 12px 20px;
+	margin-bottom: none;
+	font-size: 16px;
+}
+
+.nav>li>a {
+	color: #fff;
+	font-size: 16px;
+	font-family: unicredit-regular;
+	text-transform: uppercase;
+	padding: 20px 20px 20px 25px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar-fixed-top, .navbar-static-top {
+	background-color: #fff;
+}
+
+.top-navigation.fixed-nav #wrapper, .fixed-nav #wrapper.top-navigation{
+    margin-top: 0px !important;
+}
+
+.top-navigation .wrapper.wrapper-content {
+    padding: 20px 10px 40px !important;
+}
+
+.top-navigation .nav>li>a {
+	color: #333;
+}
+
+.top-navigation .nav>li a:hover, .top-navigation .nav>li a:focus {
+	color: #00afd0;
+}
+
+.top-navigation .nav>li.active>a {
+	color: #00afd0;
+}
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+	border: none;
+}
+
+.top-navigation .navbar-nav .open .dropdown-menu>li>a {
+	font-size: 12px;
+	font-family: unicredit-bold;
+	text-transform: uppercase;
+}
+
+.navbar-nav>li>.dropdown-menu {
+	margin-top: 1px;
+}
+
+.top-navigation .navbar-nav .dropdown-menu>.active>a {
+	color: #00afd0;
+}
+
+/* =========================== */
+/* ====== G E N E R A L ====== */
+/* =========================== */
+.btn-white {
+    font-family: unicredit-regular !important;
+}
+
+.btn-primary {
+    background-color: #00afd0 !important;
+    border-color: #00afd0 !important;
+    font-family: unicredit-regular !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #00afd0 !important;
+    border-color: #00afd0 !important;
+    opacity: 0.9 !important;
+}
+
+.fa {
+    color: #666;
+}
+
+.fa:hover {
+    color: #333;
+}
+
+.ui-grid-header-cell-label {
+    color: #555;
+}
+
+.badge {
+    font-family: unicredit-regular !important;
+    font-size: 12px;
+}
+
+.ff-postscript {
+	font-family: unicredit-regular !important;
+    font-size: 12px;	
+}
+
+.grid-msg-overlay {
+    font-family: unicredit-regular !important;
+}

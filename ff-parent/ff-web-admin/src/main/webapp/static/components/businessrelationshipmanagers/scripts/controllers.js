@@ -256,7 +256,6 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -264,7 +263,6 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	BusinessRelationshipManagerService.deleteEntity(entity.id)

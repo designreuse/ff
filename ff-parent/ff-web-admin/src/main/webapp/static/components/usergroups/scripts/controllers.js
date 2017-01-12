@@ -266,7 +266,6 @@ function UserGroupsOverviewController($rootScope, $scope, $state, $log, $timeout
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -274,7 +273,6 @@ function UserGroupsOverviewController($rootScope, $scope, $state, $log, $timeout
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	UserGroupsService.deleteEntity(entity.id)

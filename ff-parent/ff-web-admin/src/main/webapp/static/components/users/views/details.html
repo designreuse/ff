@@ -35,7 +35,7 @@
         <h1>{{ 'HEADER_USER_DETAILS' | translate }}</h1>
     </div>
     <div class="col-lg-2">
-        <button ng-click="exportPdf()" class="btn btn-primary m-t-md pull-right"><i class="fa fa-export"></i> {{ 'BUTTON_EXPORT_PDF' | translate }}</button>
+        <button ng-click="exportPdf()" class="btn btn-primary m-t-md pull-right">{{ 'BUTTON_EXPORT_PDF' | translate }}</button>
     </div>
 </div>
 
@@ -181,7 +181,7 @@
                                     </span>
                                     <textarea ng-model="email.text" rows="5" class="form-control ff-form-control" name="emailText" style="resize: none;" ng-required="true"></textarea>
                                 </div>
-                                <button ladda="sendingEmail" data-style="zoom-in" ng-disabled="!email.subject || email.subject.length == 0 || !email.text || email.text.length == 0" ng-click="sendEmail()" class="btn btn-primary pull-right m-t-sm"><i class="fa fa-send"></i> {{ 'BUTTON_SEND' | translate }}</button>
+                                <button ladda="sendingEmail" data-style="zoom-in" ng-disabled="!email.subject || email.subject.length == 0 || !email.text || email.text.length == 0" ng-click="sendEmail()" class="btn btn-primary pull-right m-t-sm">{{ 'BUTTON_SEND' | translate }}</button>
                                 <button ng-click="resetEmail()" class="btn btn-white pull-right m-t-sm m-r-sm">{{ 'BUTTON_RESET' | translate }}</button>
                             </div>
                             
@@ -229,7 +229,7 @@
                                         </div>
                                     </div>
 	                                <div class="col-sm-2">
-	                                    <button ng-click="setBusinessRelationshipManager()" class="btn btn-primary"><i class="fa fa-save"></i> {{ 'BUTTON_SAVE' | translate }}</button>
+	                                    <button ng-click="setBusinessRelationshipManager()" class="btn btn-primary">{{ 'BUTTON_SAVE' | translate }}</button>
 	                                </div>
                                 </div>
                                 
@@ -267,7 +267,7 @@
 	
 	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
         <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
-            <button ng-click="back()" class="btn btn-white"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="back()" class="btn btn-white">{{ 'BUTTON_BACK' | translate }}</button>
         </div>
     </div>
 </div>

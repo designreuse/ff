@@ -418,7 +418,6 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -426,7 +425,6 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	UsersService.deleteEntity(entity.id)

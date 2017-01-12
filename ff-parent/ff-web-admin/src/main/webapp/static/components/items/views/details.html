@@ -33,7 +33,13 @@
             <div class="tabs-container">
                 <uib-tabset>
                     <uib-tab> 
-                        <uib-tab-heading><i class="fa fa-file-text-o"></i> {{ 'TAB_PREVIEW' | translate }}</uib-tab-heading>
+                        <uib-tab-heading>{{ 'TAB_ITEM_INFO' | translate }}</uib-tab-heading>
+                        <div class="panel-body">
+                            
+                        </div>
+                    </uib-tab>
+                    <uib-tab> 
+                        <uib-tab-heading>{{ 'TAB_PREVIEW' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
                                 <div class="col-lg-6" style="padding-left: 0px; padding-right: 10px;">
@@ -151,8 +157,8 @@
 	
 	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
         <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
-            <button ng-click="back()" class="btn btn-white m-r-sm"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
-            <button ng-click="editEntity()" class="btn btn-primary"><i class="fa fa-edit"></i> {{ 'BUTTON_EDIT' | translate }}</button>
+            <button ng-click="back()" class="btn btn-white m-r-sm">{{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-click="editEntity()" class="btn btn-primary">{{ 'BUTTON_EDIT' | translate }}</button>
         </div>
     </div>
 </div>

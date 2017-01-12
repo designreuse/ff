@@ -303,7 +303,6 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -311,7 +310,6 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	TendersService.deleteEntity(entity.id)

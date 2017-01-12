@@ -21,10 +21,7 @@
 	<div class="row m-b-xs">
         <div class="col-lg-12">
             <div class="btn-group pull-right m-l-sm" ng-if="hasPermission(['users.export'])">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-download"></i> {{ 'BUTTON_EXPORT' | translate }}
-                    <span class="caret"></span>
-                </button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'BUTTON_EXPORT' | translate }} <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a ng-click="exportAll('CSV')">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'BUTTON_AS_CSV' | translate }}</a></li>
                     <li><a ng-click="exportSelected('CSV')">{{ 'BUTTON_EXPORT_SELECTED' | translate }} {{ 'BUTTON_AS_CSV' | translate }}</a></li>

@@ -410,7 +410,6 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -418,7 +417,6 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	ItemsService.deleteEntity(entity.id)

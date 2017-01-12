@@ -90,7 +90,7 @@
 										<div class="widget style1 navy-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
 											<div class="row vertical-align">
 												<div class="col-xs-3">
-													<i class="fa fa-bullseye fa-2x"></i>
+													<i class="fa fa-bullseye fa-2x" style="color: white;"></i>
 												</div>
 												<div class="col-xs-9 text-left">
 													<label style="font-size: 16px">{{impressionStatistics.total}}</label>
@@ -103,7 +103,7 @@
 										<div class="widget style1 yellow-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
 											<div class="row vertical-align">
 												<div class="col-xs-3">
-													<i class="fa fa-user fa-2x"></i>
+													<i class="fa fa-user fa-2x" style="color: white;"></i>
 												</div>
 												<div class="col-xs-9 text-left">
 													<label style="font-size: 16px">{{impressionStatistics.unique}}</label>
@@ -149,7 +149,7 @@
                                     </span>
                                     <input ng-model="email.subject" type="text" class="form-control ff-form-control" name="emailSubject" ng-required="true" maxlength="512" />
                                 </div>
-                                <button ladda="sendingEmail" data-style="zoom-in" ng-disabled="!email.userGroups || email.userGroups.length == 0 || !email.subject || email.subject.length == 0" ng-click="sendEmail()" class="btn btn-primary pull-right m-t-sm"><i class="fa fa-send"></i> {{ 'BUTTON_SEND' | translate }}</button>
+                                <button ladda="sendingEmail" data-style="zoom-in" ng-disabled="!email.userGroups || email.userGroups.length == 0 || !email.subject || email.subject.length == 0" ng-click="sendEmail()" class="btn btn-primary pull-right m-t-sm">{{ 'BUTTON_SEND' | translate }}</button>
                                 <button ng-click="resetEmail()" class="btn btn-white pull-right m-t-sm m-r-sm">{{ 'BUTTON_RESET' | translate }}</button>
                             </div>
                             
@@ -182,8 +182,8 @@
 	
 	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
         <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
-            <button ng-click="back()" class="btn btn-white"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
-            <button ng-if="hasPermission(['tenders.update']) && showEditButton" ng-click="editEntity()" class="btn btn-primary m-l-sm"><i class="fa fa-edit"></i> {{ 'BUTTON_EDIT' | translate }}</button>
+            <button ng-click="back()" class="btn btn-white">{{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-if="hasPermission(['tenders.update']) && showEditButton" ng-click="editEntity()" class="btn btn-primary m-l-sm">{{ 'BUTTON_EDIT' | translate }}</button>
         </div>
     </div>
 </div>

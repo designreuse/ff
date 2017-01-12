@@ -225,7 +225,6 @@ function Subdivisions1OverviewController($rootScope, $scope, $state, $log, $time
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -233,7 +232,6 @@ function Subdivisions1OverviewController($rootScope, $scope, $state, $log, $time
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	Subdivisions1Service.deleteEntity(entity.id)

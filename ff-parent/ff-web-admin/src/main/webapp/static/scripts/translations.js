@@ -66,6 +66,7 @@ function config($translateProvider) {
 			TAB_COMPANY_DATA: 'Company data',
 			TAB_CUSTOM_ITEMS: 'Custom items',
 			TAB_EMAIL: 'E-mails',
+			TAB_ITEM_INFO: 'Info',
 			TAB_PROJECTS: 'Projects',
 			TAB_MATCHING_TENDERS: 'Matching tenders',
 			TAB_MATCHING_USERS: 'Matching users',

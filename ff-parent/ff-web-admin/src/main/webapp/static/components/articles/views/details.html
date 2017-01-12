@@ -37,7 +37,7 @@
 										<div class="widget style1 navy-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
 											<div class="row vertical-align">
 												<div class="col-xs-3">
-													<i class="fa fa-bullseye fa-2x"></i>
+													<i class="fa fa-bullseye fa-2x" style="color: white;"></i>
 												</div>
 												<div class="col-xs-9 text-left">
 													<label style="font-size: 16px">{{impressionStatistics.total}}</label>
@@ -50,7 +50,7 @@
 										<div class="widget style1 yellow-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
 											<div class="row vertical-align">
 												<div class="col-xs-3">
-													<i class="fa fa-user fa-2x"></i>
+													<i class="fa fa-user fa-2x" style="color: white;"></i>
 												</div>
 												<div class="col-xs-9 text-left">
 													<label style="font-size: 16px">{{impressionStatistics.unique}}</label>
@@ -75,8 +75,8 @@
 	
 	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
         <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
-            <button ng-click="back()" class="btn btn-white"><i class="fa fa-angle-double-left"></i> {{ 'BUTTON_BACK' | translate }}</button>
-            <button ng-if="hasPermission(['articles.update'])" ng-click="editEntity()" class="btn btn-primary m-l-sm"><i class="fa fa-edit"></i> {{ 'BUTTON_EDIT' | translate }}</button>
+            <button ng-click="back()" class="btn btn-white">{{ 'BUTTON_BACK' | translate }}</button>
+            <button ng-if="hasPermission(['articles.update'])" ng-click="editEntity()" class="btn btn-primary m-l-sm">{{ 'BUTTON_EDIT' | translate }}</button>
         </div>
     </div>
 </div>

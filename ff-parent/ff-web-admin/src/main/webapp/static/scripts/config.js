@@ -758,7 +758,7 @@ angular.module('FundFinder')
 	$rootScope.$stateParams = $stateParams;
 	
 	$rootScope.version = "v1.0.0";
-	$rootScope.helpEnabled = true; // indicates if help feature is enabled or not
+	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	
 	$rootScope.dateFormat = "yyyy-MM-dd";
 	$rootScope.dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
