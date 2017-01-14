@@ -6,6 +6,7 @@ import java.util.List;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.rest.image.resource.ImageResource;
 import org.ff.rest.item.resource.ItemResource;
+import org.ff.rest.project.resource.ProjectResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -40,6 +41,9 @@ public class TenderResource {
 
 	@JsonProperty("items")
 	private List<ItemResource> items;
+
+	@JsonProperty("projects")
+	private List<ProjectResource> projects;
 
 	@JsonProperty("creationDate")
 	private Date creationDate;

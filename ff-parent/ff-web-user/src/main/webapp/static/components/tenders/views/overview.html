@@ -31,6 +31,14 @@ p span {
                     <div ng-if="item.type != 'CURRENCY' && item.type != 'PERCENTAGE' && item.type != 'HYPERLINK'" class="ff-masonry-brick-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+                    <label class="ff-masonry-brick-label">{{ 'HEADER_PROJECTS_4_TENDER' | translate }}</label>
+                    <div style="padding-left: 5px;">
+                        <span class="m-b-xs" style="display: block;" ng-repeat="project in tender.projects">{{ project.name }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

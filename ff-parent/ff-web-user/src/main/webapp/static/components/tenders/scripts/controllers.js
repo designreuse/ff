@@ -104,6 +104,10 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 			});
 	};
 	
+	$scope.showProject = function(id) {
+		$state.go('projects.edit', { 'id' : id });
+	}
+	
 	// initial load
 	$scope.find($stateParams.id);
 };

@@ -248,11 +248,10 @@
 }
 
 .ff-a {
-    color: #676a6c;
+    color: #333;
 }
 
 .ff-a:hover {
-    color: #000000;
     text-decoration: underline;
 }
 
@@ -282,26 +281,13 @@
     font-size: 11px;
 }
 
-.ff-ibox {
-    margin-bottom: 5px;
-}
-
 .ff-ibox-title {
-    border-top-width: 1px;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    min-height: 42px;
+    border-left: 1px solid #e7eaec; 
+    border-right: 1px solid #e7eaec;
 }
 
 .ff-ibox-content {
-    border-style: solid;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 0px;
-}
-
-.ff-ibox-content-padding-bottom {
-    padding-bottom: 1px;
+    border: 1px solid #e7eaec;
 }
 
 .ff-masonry-brick {

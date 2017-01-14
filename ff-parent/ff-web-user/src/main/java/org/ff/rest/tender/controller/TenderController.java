@@ -53,10 +53,10 @@ public class TenderController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public TenderResource find(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id) {
+	public TenderResource find(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
-			return tenderService.find(id);
+			return tenderService.find(principal, id);
 		} finally {
 			etmService.collect(point);
 			log.debug(".find finished in {} ms", point.getTransactionTime());

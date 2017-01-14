@@ -39,6 +39,7 @@ import org.ff.rest.item.resource.ItemOptionResource;
 import org.ff.rest.item.resource.ItemOptionResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.item.resource.ItemResourceAssembler;
+import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.ff.rest.subdivision1.resource.Subdivision1Resource;
 import org.ff.rest.subdivision1.resource.Subdivision1ResourceAssembler;
 import org.ff.rest.subdivision2.resource.Subdivision2Resource;
@@ -103,6 +104,9 @@ public class TenderResourceAssembler {
 	@Autowired
 	private CurrencyService currencyService;
 
+	@Autowired
+	private ProjectResourceAssembler projectResourceAssembler;
+
 	public TenderResource toResource(Tender entity, boolean light) {
 		TenderResource resource = new TenderResource();
 		resource.setId(entity.getId());
@@ -128,6 +132,8 @@ public class TenderResourceAssembler {
 				}
 			}
 		}
+
+		resource.setProjects(projectResourceAssembler.toResources(entity.getProjects(), true));
 
 		// go through all items to find out if some value is invalid (e.g. item option with that ID no longer exists)
 		resource.setItems(itemResourceAssembler.toResources(items, false));

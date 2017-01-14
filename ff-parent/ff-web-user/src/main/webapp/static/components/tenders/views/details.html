@@ -6,7 +6,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-8">
 			<img class="m-b-md" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="320">
 			<div ng-bind-html="toTrusted(tender.text)" />
 			
@@ -28,12 +28,24 @@
                     <div style="padding-left: 10px;" ng-if="item.type == 'SUBDIVISIONS2'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
                 </div>
             </div>
-
+		</div>
+		
+		<div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title ff-ibox-title">
+                    <h4>{{ 'HEADER_PROJECTS_4_TENDER' | translate }}</h4>
+                </div>
+                <div class="ibox-content ff-ibox-content">
+                    <ul>
+                        <li ng-repeat="project in tender.projects"><h5><a class="ff-a" ng-click="showProject(project.id)">{{ project.name }}</a></h5></li>
+                    </ul>
+                </div>
+            </div>
 		</div>
 	</div>
 	
 	<div class="row m-t-md">
-		<div class="col-lg-12">
+		<div class="col-lg-8">
 			<div style="text-align: right;">
 				<small>{{ 'LABEL_LAST_MODIFIED' | translate }}: {{ tender.lastModifiedDate | date : dateTimeFormat }}</small>
 			</div>

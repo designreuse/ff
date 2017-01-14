@@ -1,5 +1,6 @@
 package org.ff.jpa.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.ff.jpa.AbstractEntity;
 import org.hibernate.annotations.Nationalized;
@@ -57,5 +59,8 @@ public class Tender extends AbstractEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "tender", orphanRemoval = true)
 	@OrderBy("id")
 	private Set<TenderItem> items;
+
+	@Transient
+	private Set<Project> projects = new HashSet<>();
 
 }

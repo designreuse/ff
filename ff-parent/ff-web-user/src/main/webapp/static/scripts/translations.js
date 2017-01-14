@@ -18,6 +18,7 @@ function config($translateProvider) {
 			HEADER_CHANGE_PASSWORD: 'Change password',
 			HEADER_PROJECT_ADD: 'Add project',
 			HEADER_PROJECT_EDIT: 'Edit project',
+			HEADER_PROJECTS_4_TENDER: 'Projects that are match for this tender',
 			
 			MENU_TENDERS: 'Tenders',
 			MENU_PROJECTS: 'Projects',
@@ -87,6 +88,7 @@ function config($translateProvider) {
 			HEADER_CHANGE_PASSWORD: 'Promjena zaporka',
 			HEADER_PROJECT_ADD: 'Dodaj projekt',
 			HEADER_PROJECT_EDIT: 'Uredi projekt',
+			HEADER_PROJECTS_4_TENDER: 'Projekti za koje je ovaj natječaj prikladan',
 			
 			MENU_TENDERS: 'Natječaji',
 			MENU_PROJECTS: 'Projekti',

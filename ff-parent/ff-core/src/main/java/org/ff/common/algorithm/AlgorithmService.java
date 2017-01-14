@@ -242,7 +242,7 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	private Boolean processTender4Investments(Tender tender, List<Project> companyInvestments) {
+	public Boolean processTender4Investments(Tender tender, List<Project> projects) {
 		List<Integer> tenderInvestments = getTenderInvestments(tender);
 
 		if (tenderInvestments.isEmpty()) {
@@ -250,16 +250,15 @@ public class AlgorithmService extends BaseService {
 			return Boolean.TRUE;
 		}
 
-		for (Project companyInvestment : companyInvestments) {
-			for (Investment investment : companyInvestment.getInvestments()) {
+		for (Project project : projects) {
+			for (Investment investment : project.getInvestments()) {
 				if (tenderInvestments.contains(investment.getId())) {
-					// company has at least one investment required by the tender
-					return Boolean.TRUE;
+					tender.getProjects().add(project);
 				}
 			}
 		}
 
-		return Boolean.FALSE;
+		return (tender.getProjects().isEmpty()) ? Boolean.FALSE : Boolean.TRUE;
 	}
 
 	private List<Integer> getTenderInvestments(Tender tender) {

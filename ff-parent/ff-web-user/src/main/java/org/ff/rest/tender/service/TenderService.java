@@ -1,6 +1,9 @@
 package org.ff.rest.tender.service;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,11 +13,13 @@ import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Impression;
 import org.ff.jpa.domain.Impression.EntityType;
 import org.ff.jpa.domain.Item.ItemType;
+import org.ff.jpa.domain.Project;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.TenderItem;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.ImpressionRepository;
 import org.ff.jpa.repository.ItemRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
@@ -23,6 +28,8 @@ import org.ff.rest.currency.service.CurrencyService;
 import org.ff.rest.image.resource.ImageResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.item.resource.ItemResourceAssembler;
+import org.ff.rest.project.resource.ProjectResource;
+import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.ff.rest.tender.resource.DemoResource;
 import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.tender.resource.TenderResourceAssembler;
@@ -33,6 +40,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TenderService {
+
+	@Autowired
+	private Collator collator;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -62,7 +72,13 @@ public class TenderService {
 	private CompanyResourceAssembler companyResourceAssembler;
 
 	@Autowired
+	private ProjectResourceAssembler projectResourceAssembler;
+
+	@Autowired
 	private CurrencyService currencyService;
+
+	@Autowired
+	private ProjectRepository companyInvestmentRepository;
 
 	@Transactional(readOnly = true)
 	public List<TenderResource> findAll(UserDetails principal) {
@@ -81,6 +97,15 @@ public class TenderService {
 			resource.setCreatedBy(tender.getCreatedBy());
 			resource.setLastModifiedDate(tender.getLastModifiedDate().toDate());
 			resource.setLastModifiedBy(tender.getLastModifiedBy());
+
+			resource.setProjects(projectResourceAssembler.toResources(tender.getProjects(), true));
+
+			Collections.sort(resource.getProjects(), new Comparator<ProjectResource>() {
+				@Override
+				public int compare(ProjectResource o1, ProjectResource o2) {
+					return collator.compare(o1.getName(), o2.getName());
+				}
+			});
 
 			resource.setItems(new ArrayList<ItemResource>());
 			for (TenderItem tenderItem : tender.getItems()) {
@@ -157,18 +182,30 @@ public class TenderService {
 	}
 
 	@Transactional
-	public TenderResource find(Integer id) {
+	public TenderResource find(UserDetails principal, Integer id) {
 		Tender entity = tenderRepository.findOne(id);
 		if (entity == null) {
 			throw new RuntimeException(String.format("Tender [%s] not found", id));
 		}
+
+		User user = userRepository.findByEmail(principal.getUsername());
+		List<Project> projects = companyInvestmentRepository.findByCompany(user.getCompany());
+		algorithmService.processTender4Investments(entity, projects);
 
 		Impression impression = new Impression();
 		impression.setEntityType(EntityType.TENDER);
 		impression.setEntityId(entity.getId());
 		impressionRepository.save(impression);
 
-		return tenderResourceAssembler.toResource(entity, false);
+		TenderResource resource = tenderResourceAssembler.toResource(entity, false);
+		Collections.sort(resource.getProjects(), new Comparator<ProjectResource>() {
+			@Override
+			public int compare(ProjectResource o1, ProjectResource o2) {
+				return collator.compare(o1.getName(), o2.getName());
+			}
+		});
+
+		return resource;
 	}
 
 }
