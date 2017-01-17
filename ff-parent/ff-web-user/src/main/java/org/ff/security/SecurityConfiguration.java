@@ -27,27 +27,35 @@ public class SecurityConfiguration {
 	@Order(1)
 	public static class ApiConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-		@Autowired
-		private AppUserDetailsService userDetailsService;
-
-		@Autowired
-		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-			auth.userDetailsService(userDetailsService).passwordEncoder(new ShaPasswordEncoder());
-		}
-
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			log.info("Configuring API security...");
 			http.csrf().disable();
-			http.antMatcher("/e/api/**").authorizeRequests().anyRequest().authenticated();
-			http.httpBasic();
+			http.antMatcher("/e/api/**").authorizeRequests().anyRequest().permitAll();
 			http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		}
 
 	}
 
+	//	@Configuration
+	//	@Order(2)
+	//	public static class FilterConfigurationAdapter extends WebSecurityConfigurerAdapter {
+	//
+	//		@Autowired
+	//		private SecurityFilter filter;
+	//
+	//		@Override
+	//		protected void configure(HttpSecurity http) throws Exception {
+	//			log.info("Configuring FILTER security...");
+	//			http.csrf().disable();
+	//			http.authorizeRequests().anyRequest().fullyAuthenticated();
+	//			http.addFilterAfter(filter, BasicAuthenticationFilter.class);
+	//		}
+	//
+	//	}
+
 	@Configuration
-	@Order(2)
+	@Order(3)
 	public static class WebConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
 		@Autowired

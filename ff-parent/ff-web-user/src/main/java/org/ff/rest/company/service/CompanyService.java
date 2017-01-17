@@ -40,16 +40,18 @@ public class CompanyService {
 
 	@Transactional(readOnly = true)
 	public Boolean validate(UserDetails principal) {
-		CompanyResource resource = resourceAssembler.toResource(
-				userRepository.findByEmail(principal.getUsername()).getCompany(), false);
+		if (principal != null) {
+			CompanyResource resource = resourceAssembler.toResource(
+					userRepository.findByEmail(principal.getUsername()).getCompany(), false);
 
-		for (ItemResource itemResource : resource.getItems()) {
-			if (itemResource.getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(itemResource.getMetaTag())) {
-				continue;
-			}
+			for (ItemResource itemResource : resource.getItems()) {
+				if (itemResource.getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(itemResource.getMetaTag())) {
+					continue;
+				}
 
-			if (Boolean.TRUE == itemResource.getMandatory() && itemResource.getValue() == null) {
-				return Boolean.FALSE;
+				if (Boolean.TRUE == itemResource.getMandatory() && itemResource.getValue() == null) {
+					return Boolean.FALSE;
+				}
 			}
 		}
 

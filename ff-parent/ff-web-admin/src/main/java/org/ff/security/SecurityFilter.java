@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.common.security.AppUser.AppUserRole;
-import org.ff.sova.SovaClient;
+import org.ff.zaba.sova.SovaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

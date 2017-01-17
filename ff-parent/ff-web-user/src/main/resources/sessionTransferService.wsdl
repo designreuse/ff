@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="sessionTransferService"
+	targetNamespace="http://pfm.assecosee.hr/sessionTransferService/1.0"
+	xmlns:tns="http://pfm.assecosee.hr/sessionTransferService/1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	<!-- Includaj tipove poruka, definirani u zasebnoj schemi -->
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://pfm.assecosee.hr/sessionTransferService/1.0">
+			<xsd:include schemaLocation="/schema/sessionTransferService.xsd" />
+			<!--
+				<xsd:import schemaLocation="../schema/sessionTransferService.xsd" namespace="http://pfm.assecosee.hr/sessionTransferService/1.0" 
+			-->
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- PORUKE za createAuthId -->
+	<wsdl:message name="CreateAuthIdRequest">
+		<wsdl:part name="CreateAuthIdRequest" element="tns:CreateAuthIdRequest" />
+	</wsdl:message>
+
+	<wsdl:message name="CreateAuthIdResponse">
+		<wsdl:part name="CreateAuthIdResponse" element="tns:CreateAuthIdResponse" />
+	</wsdl:message>
+
+	<!-- PORUKE za checkAuthId -->
+	<wsdl:message name="CheckAuthIdRequest">
+		<wsdl:part name="CheckAuthIdRequest" element="tns:CheckAuthIdRequest" />
+	</wsdl:message>
+
+	<wsdl:message name="CheckAuthIdResponse">
+		<wsdl:part name="CheckAuthIdResponse" element="tns:CheckAuthIdResponse" />
+	</wsdl:message>
+
+
+	<!-- PORT i operacije -->
+	<wsdl:portType name="SessionTransferServicePortType">
+		<!-- createAuthId -->
+		<wsdl:operation name="createAuthId">
+			<wsdl:input name="CreateAuthIdRequest" message="tns:CreateAuthIdRequest" />
+			<wsdl:output name="CreateAuthIdResponse" message="tns:CreateAuthIdResponse" />
+		</wsdl:operation>
+		<!-- checkAuthId -->
+		<wsdl:operation name="checkAuthId">
+			<wsdl:input name="CheckAuthIdRequest" message="tns:CheckAuthIdRequest" />
+			<wsdl:output name="CheckAuthIdResponse" message="tns:CheckAuthIdResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="SessionTransferServiceBinding" type="tns:SessionTransferServicePortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<!-- createAuthId -->
+		<wsdl:operation name="createAuthId">
+			<soap:operation style="document"
+				soapAction="http://pfm.assecosee.hr/sessionTransferService/createAuthId" />
+			<wsdl:input name="CreateAuthIdRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="CreateAuthIdResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- checkAuthId -->
+		<wsdl:operation name="checkAuthId">
+			<soap:operation style="document"
+				soapAction="http://pfm.assecosee.hr/sessionTransferService/checkAuthId" />
+			<wsdl:input name="CheckAuthIdRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="CheckAuthIdResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="SessionTransferService">
+		<wsdl:port name="SessionTransferServicePort" binding="tns:SessionTransferServiceBinding">
+			<soap:address location="/service/sessionTransferService" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

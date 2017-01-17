@@ -1,7 +1,8 @@
-package org.ff.sova;
+package org.ff.zaba.sova;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,20 +22,27 @@ public class SovaClient extends WebServiceGatewaySupport {
 	@Autowired
 	private BaseProperties baseProperties;
 
+	private ObjectFactory objectFactory;
+
+	@PostConstruct
+	public void init() {
+		objectFactory = new ObjectFactory();
+	}
+
 	@SuppressWarnings("unchecked")
 	public String wsKorisnikAutorizacija(String user) {
 		String result = null;
 
 		try {
-			log.info("Invoking SOVA method [wsKorisnikAutorizacija] for user [{}]...", user);
+			log.info("Invoking SOVA SERVICE method [wsKorisnikAutorizacija] for user [{}]...", user);
 
 			WSKorisnikAutorizacija request = new WSKorisnikAutorizacija();
-			request.setArg0(baseProperties.getSovaApplication());
+			request.setArg0(baseProperties.getZabaSovaApplication());
 			request.setArg1(user);
 
-			log.debug("Request arguments - arg0: {}, arg1: {}", baseProperties.getSovaApplication(), user);
+			log.debug("Request arguments - arg0: {}, arg1: {}", baseProperties.getZabaSovaApplication(), user);
 
-			Object object = getWebServiceTemplate().marshalSendAndReceive(new ObjectFactory().createWSKorisnikAutorizacija(request));
+			Object object = getWebServiceTemplate().marshalSendAndReceive(objectFactory.createWSKorisnikAutorizacija(request));
 			log.debug("Object: {}", object);
 
 			JAXBElement<WSKorisnikAutorizacijaResponse> element = (JAXBElement<WSKorisnikAutorizacijaResponse>) object;

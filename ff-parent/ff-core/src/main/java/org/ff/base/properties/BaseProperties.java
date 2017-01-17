@@ -27,10 +27,6 @@ public class BaseProperties {
 
 	private String mailSender;
 
-	private String sovaUrl;
-
-	private String sovaApplication;
-
 	private String contactTopics;
 
 	private String contactTypes;
@@ -40,5 +36,15 @@ public class BaseProperties {
 	private String contactEmailTo;
 
 	private String contactEmailSubject;
+
+	private String zabaSovaUrl;
+
+	private String zabaSovaApplication;
+
+	private String zabaSessionUrl;
+
+	private String zabaSessionApplication;
+
+	private String zabaApiUrl;
 
 }

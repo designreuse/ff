@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://pfm.assecosee.hr/sessionTransferService/1.0"
+	xmlns:tns="http://pfm.assecosee.hr/sessionTransferService/1.0"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	elementFormDefault="qualified">
+	
+	<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+	<import namespace="http://schemas.xmlsoap.org/wsdl/" />
+	
+	<element name="CreateAuthIdRequest" type="tns:CreateAuthIdRequestType"></element>
+	<element name="CreateAuthIdResponse" type="tns:CreateAuthIdResponseType"></element>
+
+	<element name="CheckAuthIdRequest" type="tns:CheckAuthIdRequestType"></element>
+	<element name="CheckAuthIdResponse" type="tns:CheckAuthIdResponseType"></element>
+
+
+	<!-- ServiceError - salje ga su umjesto exceptiona -->
+	<complexType name="ServiceErrorType">
+        <sequence>
+          <element name="code" nillable="true" type="string"/>
+          <element name="description" nillable="true" type="string"/>
+          <element name="reference" nillable="true" type="string"/>
+          <element name="severity" nillable="true" type="string"/>
+        </sequence>
+    </complexType>
+    
+	<complexType name='ArrayOfServiceErrorType'>
+		<sequence>
+			<element name='items' maxOccurs='unbounded' nillable='true' 
+					type="tns:ServiceErrorType"/> 
+		</sequence>
+	</complexType>
+
+	<!-- ResponseBase - bazna klasa za sve povratne tipove -->
+	<complexType name="ResponseBaseType">
+		<sequence>
+			<element name="status" nillable="true" type="int"></element>
+			<element name="errors" nillable="true" type="tns:ArrayOfServiceErrorType"/>
+		</sequence>
+	</complexType>
+
+
+	<!-- Poruka za CreateAuthIdRequest -->	
+	<complexType name="CreateAuthIdRequestType">
+		<sequence>
+                        <element name="auth_id_type" type="string"></element>
+			<element name="user_id" type="string"></element>
+                        <element name="user_id2" type="string"></element>
+			<element name="token_sn" type="string"></element>
+			<element name="token_app" type="string"></element>
+			<element name="src_app" type="string"></element>
+			<element name="dest_app" type="string"></element>
+			<element name="params" type="string"></element>					
+		</sequence>
+	</complexType>
+
+	<!-- Poruka CreateAuthIdResponse -->
+	<complexType name="CreateAuthIdResponseType">
+		<complexContent>
+			<extension base="tns:ResponseBaseType">
+				<sequence>
+					<element name="auth_id" type="string"></element>		
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	
+	<!-- Poruka za CheckAuthIdRequest -->	
+	<complexType name="CheckAuthIdRequestType">
+		<sequence>
+			<element name="auth_id" type="string"></element>
+			<element name="dest_app" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<!-- Poruka CheckAuthIdResponse -->
+	<complexType name="CheckAuthIdResponseType">
+		<complexContent>
+			<extension base="tns:ResponseBaseType">
+				<sequence>
+                                        <element name="auth_id_type" type="string"></element>
+					<element name="user_id" type="string"></element>
+                                        <element name="user_id2" type="string"></element>
+					<element name="token_sn" type="string"></element>
+					<element name="token_app" type="string"></element>
+					<element name="src_app" type="string"></element>
+					<element name="dest_app" type="string"></element>					
+					<element name="params" type="string"></element>		
+				</sequence>
+			</extension>
+		</complexContent>	
+	</complexType>
+
+</schema>

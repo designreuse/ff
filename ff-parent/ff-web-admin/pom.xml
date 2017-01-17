@@ -178,13 +178,6 @@
 				</executions>
 			</plugin>
 			
-			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
-				<version>0.13.1</version> <executions> <execution> <goals> <goal>generate</goal> 
-				</goals> <configuration> <schemaLanguage>WSDL</schemaLanguage> <schemaDirectory>src/main/resources</schemaDirectory> 
-				<schemaIncludes> <include>sova.xsd</include> </schemaIncludes> <generateDirectory>src/main/java</generateDirectory> 
-				<generatePackage>hr.zaba.sova</generatePackage> </configuration> </execution> 
-				</executions> </plugin> -->
-            
             <!-- CLOUD FOUNDRY -->  
             <!--  
             <plugin>
@@ -222,6 +215,30 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            -->
+            
+            <!--  
+            <plugin> 
+                <groupId>org.jvnet.jaxb2.maven2</groupId> 
+                <artifactId>maven-jaxb2-plugin</artifactId> 
+                <version>0.13.1</version> 
+                <executions> 
+                    <execution> 
+                        <goals> 
+                            <goal>generate</goal> 
+                        </goals> 
+                        <configuration> 
+                            <schemaLanguage>WSDL</schemaLanguage> 
+                            <schemaDirectory>src/main/resources</schemaDirectory> 
+                            <schemaIncludes> 
+                                <include>sova.xsd</include> 
+                            </schemaIncludes> 
+                            <generateDirectory>src/main/java</generateDirectory> 
+                            <generatePackage>hr.zaba.sova</generatePackage> 
+                        </configuration> 
+                    </execution> 
+                </executions> 
             </plugin>
             -->
             

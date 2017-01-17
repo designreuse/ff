@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value = { "/api/v1/company", "/e/api/v1/company" })
+@RequestMapping(value = { "/api/v1/company" })
 public class CompanyController extends BaseController {
 
 	@Autowired
