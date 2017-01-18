@@ -125,16 +125,16 @@ public class UserService extends BaseService {
 		}
 
 		if (resource.getCompany().getTenders() != null) {
-		for (TenderResource tenderResource : resource.getCompany().getTenders()) {
-			if (tenderResource.getProjects() != null) {
-				Collections.sort(tenderResource.getProjects(), new Comparator<ProjectResource>() {
-					@Override
-					public int compare(ProjectResource o1, ProjectResource o2) {
-						return collator.compare(o1.getName(), o2.getName());
-					}
-				});
+			for (TenderResource tenderResource : resource.getCompany().getTenders()) {
+				if (tenderResource.getProjects() != null) {
+					Collections.sort(tenderResource.getProjects(), new Comparator<ProjectResource>() {
+						@Override
+						public int compare(ProjectResource o1, ProjectResource o2) {
+							return collator.compare(o1.getName(), o2.getName());
+						}
+					});
+				}
 			}
-		}
 		}
 
 		for (ProjectResource projectResource : resource.getProjects()) {
@@ -146,11 +146,13 @@ public class UserService extends BaseService {
 
 	private List<String> getTenders4Project(ProjectResource project, List<TenderResource> tenders) {
 		List<String> result = new ArrayList<>();
-		for (TenderResource tenderResource : tenders) {
-			for (ProjectResource projectResource : tenderResource.getProjects()) {
-				if (projectResource.getId().equals(project.getId())) {
-					if (!result.contains(tenderResource)) {
-						result.add(tenderResource.getName());
+		if (tenders != null) {
+			for (TenderResource tenderResource : tenders) {
+				for (ProjectResource projectResource : tenderResource.getProjects()) {
+					if (projectResource.getId().equals(project.getId())) {
+						if (!result.contains(tenderResource)) {
+							result.add(tenderResource.getName());
+						}
 					}
 				}
 			}
