@@ -37,25 +37,8 @@ public class SecurityConfiguration {
 
 	}
 
-	//	@Configuration
-	//	@Order(2)
-	//	public static class FilterConfigurationAdapter extends WebSecurityConfigurerAdapter {
-	//
-	//		@Autowired
-	//		private SecurityFilter filter;
-	//
-	//		@Override
-	//		protected void configure(HttpSecurity http) throws Exception {
-	//			log.info("Configuring FILTER security...");
-	//			http.csrf().disable();
-	//			http.authorizeRequests().anyRequest().fullyAuthenticated();
-	//			http.addFilterAfter(filter, BasicAuthenticationFilter.class);
-	//		}
-	//
-	//	}
-
 	@Configuration
-	@Order(3)
+	@Order(2)
 	public static class WebConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
 		@Autowired

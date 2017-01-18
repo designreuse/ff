@@ -10,7 +10,10 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 // ================================================================================
 //	CONFIG
 // ================================================================================
-.config(function($httpProvider, $translateProvider, constants) {  
+.config(function($httpProvider, $translateProvider, $locationProvider, constants) {  
+	
+	$locationProvider.html5Mode({ enabled: true, requireBase: false });
+	
 	// configure interceptors
 	$httpProvider.interceptors.push(function($location) {  
 		var path = {
@@ -40,6 +43,8 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			LBL_LAST_NAME: 'Last name',
 			LBL_EMAIL: 'Email',
 			LBL_COMPANY_NAME: 'Company name',
+			LBL_LOADING: 'LOADING FUND FINDER',
+			LBL_UNAUTHORIZE: 'UNAUTHORIZE ACCESS DETECTED',
 			
 			BTN_LOGIN: 'Login',
 			BTN_REGISTER: 'Register',
@@ -64,7 +69,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 // ================================================================================
 //	CONTROLLER
 // ================================================================================
-.controller('Controller', function($rootScope, $scope, $http, $window, $filter, $timeout, $log) {
+.controller('Controller', function($rootScope, $scope, $http, $location, $window, $filter, $timeout, $log) {
 	var $translate = $filter('translate');
 	
 	if ($window.location.hash.indexOf('logoutSuccess') != -1) {
@@ -149,7 +154,18 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			});
 	};
 	
+	$scope.showWelcome = function() {
+		$scope.welcomeVisible = true;
+		$scope.loginVisible = false;
+		$scope.resetPasswordVisible = false;
+		$scope.registrationVisible = false;
+		
+		$scope.username = undefined;
+		$scope.password = undefined;
+	};
+	
 	$scope.showLogin = function() {
+		$scope.welcomeVisible = false;
 		$scope.loginVisible = true;
 		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = false;
@@ -159,6 +175,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	$scope.showResetPassword = function() {
+		$scope.welcomeVisible = false;
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = true;
 		$scope.registrationVisible = false;
@@ -167,6 +184,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	$scope.showRegistration = function() {
+		$scope.welcomeVisible = false;
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = true;
@@ -179,5 +197,23 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	// initial
-	$scope.showLogin();
+	$scope.unauthorize = false;
+	var authId = $location.search().authId;
+	if (authId) {
+		$scope.showWelcome();
+		
+		// external flow authorization
+		$http.get("/e/api/v1/session/authorize?authId=" + authId)
+			.success(function(data, status, headers, config) {
+				$scope.unauthorize = false;
+				$scope.username = data.email;
+				$scope.password = data.email;
+				$scope.login();
+			})
+			.error(function(data, status, headers, config) {
+				$scope.unauthorize = true;
+			});
+	} else {
+		$scope.showLogin();		
+	}
 });

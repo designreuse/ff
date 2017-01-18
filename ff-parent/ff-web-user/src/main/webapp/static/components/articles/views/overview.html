@@ -22,7 +22,7 @@ p span {
             <a ui-sref="articles.details({ id: article.id })">
                 <img class="img-rounded ff-masonry-brick-img" ng-show="article.image.base64" ng-src="data:image/JPEG;base64,{{article.image.base64}}" width="100%">
             </a>
-            <p style="margin-bottom: 0px;" data-ng-bind="article.text | htmlToPlaintext" class="ff-masonry-brick-text text-justify" data-ellipsis data-ellipsis-append="{{ 'LABEL_READ_MORE' | translate | lowercase }}" data-ellipsis-append-click="showDetails(article)"></p>
+            <p style="margin-bottom: 0px;" data-ng-bind="article.text | htmlToPlaintext" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
         </div>
 	</div>
 </div>

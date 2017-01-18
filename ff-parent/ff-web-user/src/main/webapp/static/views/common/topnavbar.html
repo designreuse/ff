@@ -14,7 +14,7 @@
             <li ng-class="{active: $state.includes('company')}">
                 <a ui-sref="company.edit">
                     <span class="nav-label">{{ 'MENU_COMPANY' | translate }}</span>
-                    <i ng-if="!principal.demoUser && profileIncomplete" class="fa fa-lg fa-exclamation-circle pull-right" uib-popover="{{ 'INCOMPLETE_PROFILE_MSG' | translate }}" popover-title="{{ 'INCOMPLETE_PROFILE_HDR' | translate }}" popover-trigger="mouseenter" popover-append-to-body="true"></i>
+                    <i ng-if="!principal.demoUser && profileIncomplete" class="fa fa-exclamation-circle pull-right" uib-popover="{{ 'INCOMPLETE_PROFILE_MSG' | translate }}" popover-title="{{ 'INCOMPLETE_PROFILE_HDR' | translate }}" popover-placement="bottom" popover-trigger="mouseenter" popover-append-to-body="true"></i>
                 </a>
             </li>
             <li ng-class="{active: $state.includes('projects')}">
