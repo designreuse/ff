@@ -124,6 +124,7 @@ public class UserService extends BaseService {
 			resource.getCompany().setTenders(tenderResourceAssembler.toResources(tenders, true));
 		}
 
+		if (resource.getCompany().getTenders() != null) {
 		for (TenderResource tenderResource : resource.getCompany().getTenders()) {
 			if (tenderResource.getProjects() != null) {
 				Collections.sort(tenderResource.getProjects(), new Comparator<ProjectResource>() {
@@ -133,6 +134,7 @@ public class UserService extends BaseService {
 					}
 				});
 			}
+		}
 		}
 
 		for (ProjectResource projectResource : resource.getProjects()) {
