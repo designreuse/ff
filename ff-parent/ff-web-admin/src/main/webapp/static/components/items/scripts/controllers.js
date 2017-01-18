@@ -21,8 +21,8 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 		selectOptions4Type.push({ value: 'PERCENTAGE', label: $translate('ITEM_TYPE_PERCENTAGE') });
 	}
 	selectOptions4Type.push({ value: 'DATE', label: $translate('ITEM_TYPE_DATE') });
-	selectOptions4Type.push({ value: 'RADIO', label: $translate('ITEM_TYPE_RADIO') });
-	selectOptions4Type.push({ value: 'CHECKBOX', label: $translate('ITEM_TYPE_CHECKBOX') });
+//	selectOptions4Type.push({ value: 'RADIO', label: $translate('ITEM_TYPE_RADIO') });
+//	selectOptions4Type.push({ value: 'CHECKBOX', label: $translate('ITEM_TYPE_CHECKBOX') });
 	selectOptions4Type.push({ value: 'SELECT', label: $translate('ITEM_TYPE_SELECT') });
 	selectOptions4Type.push({ value: 'MULTISELECT', label: $translate('ITEM_TYPE_MULTISELECT') });
 	if ($scope.entityType == 'tender') {

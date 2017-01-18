@@ -38,6 +38,9 @@ public class ProjectResource {
 	@JsonProperty("items")
 	private List<ProjectItemResource> items;
 
+	@JsonProperty("matchingTenders")
+	private List<String> matchingTenders;
+
 	@JsonProperty("creationDate")
 	private Date creationDate;
 

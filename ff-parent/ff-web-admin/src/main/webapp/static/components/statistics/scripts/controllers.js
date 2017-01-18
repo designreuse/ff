@@ -8,25 +8,47 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	var limitToThreshold = 30;
 	
+	$scope.options = {
+		scales: {
+		    xAxes: [{
+		    	display: true,
+		    	type: "category",
+		    	scaleLabel: {
+		    		display: false
+		    	}, 
+		    	gridLines: {
+		    		display: true
+		    	}
+		    }],
+		    yAxes: [{
+		    	display: true
+		    }]
+		},
+		tooltips: {
+			enabled: true,
+			titleFontSize: 10
+		}
+	};
+	
 	$scope.companiesByCountiesView = 'CHART_VIEW';
-	$scope.companiesByInvestmentsView = 'CHART_VIEW';
 	$scope.companiesByRevenuesView = 'CHART_VIEW';
-	$scope.companiesBySectorsView = 'CHART_VIEW';
+	$scope.investmentsByCountiesView = 'CHART_VIEW';
+	$scope.investmentsByActivitiesView = 'CHART_VIEW';
 	
 	$scope.changeCompaniesByCountiesView = function(view) {
 		$scope.companiesByCountiesView = view;	
-	};
-	
-	$scope.changeCompaniesByInvestmentsView = function(view) {
-		$scope.companiesByInvestmentsView = view;	
 	};
 	
 	$scope.changeCompaniesByRevenuesView = function(view) {
 		$scope.companiesByRevenuesView = view;	
 	};
 	
-	$scope.changeCompaniesBySectorsView = function(view) {
-		$scope.companiesBySectorsView = view;	
+	$scope.changeInvestmentsByCountiesView = function(view) {
+		$scope.investmentsByCountiesView = view;	
+	};
+	
+	$scope.changeInvestmentsByActivitiesView = function(view) {
+		$scope.investmentsByActivitiesView = view;	
 	};
 	
 	$scope.getCompaniesByCounties = function() {
@@ -43,38 +65,24 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				var dataArray = new Array();
 				dataArray.push(data.data);
 				$scope.dataCompaniesByCounties = dataArray;
-			})
-			.error(function(data, status) {
-				if (status == 404) {
-					toastr.warning($translate('ERR_MSG_001'));
-				} else if (status == 409) {
-					toastr.warning($translate('ERR_MSG_002'));
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-				}
-			});	
-	};
-	
-	$scope.getCompaniesByInvestments = function() {
-		StatisticsService.getCompaniesByInvestments()
-			.success(function(data, status) {
-				$scope.typeCompaniesByInvestments = data.type;
 				
-				$scope.labelsCompaniesByInvestments4TableView = data.labels;
-				$scope.labelsCompaniesByInvestments4ChartView = new Array();
-				$.each(data.labels, function(index, value) {
-					$scope.labelsCompaniesByInvestments4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
+				var total = 0;
+				$.each(dataArray[0], function(index, value) {
+					total = total + parseInt(value);
 				});
 				
-				var dataArray = new Array();
-				dataArray.push(data.data);
-				$scope.dataCompaniesByInvestments = dataArray;
+				$scope.percentageCompaniesByCounties4TableView = new Array();
+				$.each(dataArray[0], function(index, value) {
+					$scope.percentageCompaniesByCounties4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+				});
+				
+				$scope.totalCompaniesByCounties4TableView = total;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
-					toastr.warning($translate('ERR_MSG_001'));
+					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_LOCATION" }));
 				} else if (status == 409) {
-					toastr.warning($translate('ERR_MSG_002'));
+					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_LOCATION" }));
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -95,41 +103,126 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				var dataArray = new Array();
 				dataArray.push(data.data);
 				$scope.dataCompaniesByRevenues = dataArray;
+				
+				var total = 0;
+				$.each(dataArray[0], function(index, value) {
+					total = total + parseInt(value);
+				});
+				
+				$scope.percentageCompaniesByRevenues4TableView = new Array();
+				$.each(dataArray[0], function(index, value) {
+					$scope.percentageCompaniesByRevenues4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+				});
+				
+				$scope.totalCompaniesByRevenues4TableView = total;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
-					toastr.warning($translate('ERR_MSG_001'));
+					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_REVENUE" }));
 				} else if (status == 409) {
-					toastr.warning($translate('ERR_MSG_002'));
+					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_REVENUE" }));
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
 	};
 	
-	$scope.getCompaniesBySectors = function() {
-		StatisticsService.getCompaniesBySectors()
+	$scope.getInvestmentsByCounties = function() {
+		StatisticsService.getInvestmentsByCounties()
 			.success(function(data, status) {
-				$scope.typeCompaniesBySectors = data.type;
+				$scope.typeInvestmentsByCounties = data.type;
 				
-				$scope.labelsCompaniesBySectors4TableView = data.labels;
-				$scope.labelsCompaniesBySectors4ChartView = new Array();
+				$scope.labelsInvestmentsByCounties4TableView = data.labels;
+				$scope.labelsInvestmentsByCounties4ChartView = new Array();
 				$.each(data.labels, function(index, value) {
-					$scope.labelsCompaniesBySectors4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
+					$scope.labelsInvestmentsByCounties4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
 				});
 				
 				var dataArray = new Array();
 				dataArray.push(data.data);
-				$scope.dataCompaniesBySectors = dataArray;
+				$scope.dataInvestmentsByCounties = dataArray;
+				
+				var total = 0;
+				$.each(dataArray[0], function(index, value) {
+					total = total + parseInt(value);
+				});
+				
+				$scope.percentageInvestmentsByCounties4TableView = new Array();
+				$.each(dataArray[0], function(index, value) {
+					$scope.percentageInvestmentsByCounties4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+				});
+				
+				$scope.totalInvestmentsByCounties4TableView = total;
+				
+				// investment amount by counties
+				$scope.investmentAmountByCounties = data.data2;
+				$scope.investmentAmountByCountiesTotal = 0;
+				$.each($scope.investmentAmountByCounties, function(index, value) {
+					console.log(value);
+					$scope.investmentAmountByCountiesTotal = $scope.investmentAmountByCountiesTotal + parseFloat(value);
+				});
+				
+				// currency
+				$scope.currency = data.currency; 
 			})
 			.error(function(data, status) {
 				if (status == 404) {
-					toastr.warning($translate('ERR_MSG_001'));
+					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_INVESTMENT_SUBDIVISION1" }));
 				} else if (status == 409) {
-					toastr.warning($translate('ERR_MSG_002'));
+					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_INVESTMENT_SUBDIVISION1" }));
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
 	};
+	
+	$scope.getInvestmentsByActivities = function() {
+		StatisticsService.getInvestmentsByActivities()
+			.success(function(data, status) {
+				$scope.typeInvestmentsByActivities = data.type;
+				
+				$scope.labelsInvestmentsByActivities4TableView = data.labels;
+				$scope.labelsInvestmentsByActivities4ChartView = new Array();
+				$.each(data.labels, function(index, value) {
+					$scope.labelsInvestmentsByActivities4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
+				});
+				
+				var dataArray = new Array();
+				dataArray.push(data.data);
+				$scope.dataInvestmentsByActivities = dataArray;
+				
+				var total = 0;
+				$.each(dataArray[0], function(index, value) {
+					total = total + parseInt(value);
+				});
+				
+				$scope.percentageInvestmentsByActivities4TableView = new Array();
+				$.each(dataArray[0], function(index, value) {
+					$scope.percentageInvestmentsByActivities4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+				});
+				
+				$scope.totalInvestmentsByActivities4TableView = total;
+				
+				// investment amount by activities
+				$scope.investmentAmountByActivities = data.data2;
+				$scope.investmentAmountByActivitiesTotal = 0;
+				$.each($scope.investmentAmountByActivities, function(index, value) {
+					console.log(value);
+					$scope.investmentAmountByActivitiesTotal = $scope.investmentAmountByActivitiesTotal + parseFloat(value);
+				});
+				
+				// currency
+				$scope.currency = data.currency; 
+			})
+			.error(function(data, status) {
+				if (status == 404) {
+					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_INVESTMENT_ACTIVITY" }));
+				} else if (status == 409) {
+					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_INVESTMENT_ACTIVITY" }));
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			});	
+	};
+	
 };

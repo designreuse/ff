@@ -11,18 +11,22 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ff.jpa.domain.Activity;
 import org.ff.jpa.domain.CompanyItem;
-import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.ItemOption;
+import org.ff.jpa.domain.Project;
+import org.ff.jpa.domain.ProjectItem;
 import org.ff.jpa.domain.Subdivision1;
 import org.ff.jpa.domain.Subdivision2;
+import org.ff.jpa.repository.ActivityRepository;
 import org.ff.jpa.repository.CompanyItemRepository;
-import org.ff.jpa.repository.InvestmentRepository;
 import org.ff.jpa.repository.ItemRepository;
+import org.ff.jpa.repository.ProjectItemRepository;
 import org.ff.jpa.repository.Subdivision1Repository;
 import org.ff.jpa.repository.Subdivision2Repository;
+import org.ff.rest.currency.service.CurrencyService;
 import org.ff.rest.statistics.resource.StatisticsResource;
 import org.ff.rest.statistics.resource.StatisticsResource.StatisticsType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +57,13 @@ public class StatisticsService {
 	private Subdivision2Repository subdivision2Repository;
 
 	@Autowired
-	private InvestmentRepository investmentRepository;
+	private ProjectItemRepository projectItemRepository;
+
+	@Autowired
+	private ActivityRepository activityRepository;
+
+	@Autowired
+	private CurrencyService currencyService;
 
 	/**
 	 * Get companies by counties.
@@ -101,26 +111,6 @@ public class StatisticsService {
 	}
 
 	/**
-	 * Get companies by investments.
-	 * @return
-	 */
-	public ResponseEntity<?> getCompaniesByInvestments() {
-		StatisticsResource result = new StatisticsResource();
-
-		Map<Investment, AtomicInteger> counters = new LinkedHashMap<>();
-		for (Investment investment : investmentRepository.findAll()) {
-			counters.put(investment, new AtomicInteger(0));
-		}
-
-		for (Entry<Investment, AtomicInteger> entry : counters.entrySet()) {
-			result.getLabels().add(StringUtils.abbreviate(entry.getKey().getName(), abbreviateMaxWidth));
-			result.getData().add(entry.getValue());
-		}
-
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
-
-	/**
 	 * Get companies by revenues.
 	 * @return
 	 */
@@ -139,7 +129,7 @@ public class StatisticsService {
 		Map<Integer, ItemOption> itemOptions = new LinkedHashMap<>();
 		Map<Integer, AtomicInteger> counters = new LinkedHashMap<>();
 		for (ItemOption itemOption : items.get(0).getOptions()) {
-			itemOptions.put(itemOption.getId(),itemOption);
+			itemOptions.put(itemOption.getId(), itemOption);
 			counters.put(itemOption.getId(), new AtomicInteger(0));
 		}
 
@@ -157,15 +147,106 @@ public class StatisticsService {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	/**
-	 * Get companies by sectors.
-	 * @return
-	 */
-	public ResponseEntity<?> getCompaniesBySectors() {
+	public ResponseEntity<?> getInvestmentsByCounties() {
 		StatisticsResource result = new StatisticsResource();
-		result.setType(StatisticsType.COMPANIES_BY_SECTORS);
+		result.setType(StatisticsType.INVESTMENTS_BY_COUNTIES);
 		result.setTimestamp(new Date());
+		result.setCurrency(currencyService.findAll().get(0).getCode());
+
+		List<Subdivision1> lstSubdivision1 = Lists.newArrayList(subdivision1Repository.findAll());
+		Collections.sort(lstSubdivision1, new Comparator<Subdivision1>() {
+			@Override
+			public int compare(Subdivision1 o1, Subdivision1 o2) {
+				return collator.compare(o1.getName(), o2.getName());
+			}
+		});
+
+		Map<Subdivision1, AtomicInteger> counters = new LinkedHashMap<>();
+		Map<Subdivision1, Double> amounts = new LinkedHashMap<>();
+		for (Subdivision1 subdivision1 : lstSubdivision1) {
+			counters.put(subdivision1, new AtomicInteger(0));
+			amounts.put(subdivision1, new Double(0));
+		}
+
+		List<Item> items = itemRepository.findByMetaTag(ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION1);
+		if (items.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else if (items.size() > 1) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+
+		for (ProjectItem projectItem : projectItemRepository.findByItem(items.get(0))) {
+			if (projectItem.getValue() != null) {
+				Subdivision1 subdivision1 = subdivision1Repository.findOne(Integer.parseInt(projectItem.getValue()));
+				counters.put(subdivision1, new AtomicInteger(counters.get(subdivision1).incrementAndGet()));
+				amounts.put(subdivision1, amounts.get(subdivision1).doubleValue() + getAmount(projectItem.getProject()).doubleValue());
+			}
+		}
+
+		for (Entry<Subdivision1, AtomicInteger> entry : counters.entrySet()) {
+			result.getLabels().add(StringUtils.abbreviate(entry.getKey().getName(), abbreviateMaxWidth));
+			result.getData().add(entry.getValue());
+			result.getData2().add(amounts.get(entry.getKey()));
+		}
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+
+	public ResponseEntity<?> getInvestmentsByActivities() {
+		StatisticsResource result = new StatisticsResource();
+		result.setType(StatisticsType.INVESTMENTS_BY_ACTIVITIES);
+		result.setTimestamp(new Date());
+		result.setCurrency(currencyService.findAll().get(0).getCode());
+
+		List<Activity> activities = Lists.newArrayList(activityRepository.findAll());
+		Collections.sort(activities, new Comparator<Activity>() {
+			@Override
+			public int compare(Activity o1, Activity o2) {
+				return collator.compare(o1.getName(), o2.getName());
+			}
+		});
+
+		Map<Activity, AtomicInteger> counters = new LinkedHashMap<>();
+		Map<Activity, Double> amounts = new LinkedHashMap<>();
+		for (Activity activity : activities) {
+			counters.put(activity, new AtomicInteger(0));
+			amounts.put(activity, new Double(0));
+		}
+
+		List<Item> items = itemRepository.findByMetaTag(ItemMetaTag.COMPANY_INVESTMENT_ACTIVITY);
+		if (items.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else if (items.size() > 1) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+
+		for (ProjectItem projectItem : projectItemRepository.findByItem(items.get(0))) {
+			if (projectItem.getValue() != null) {
+				Activity activity = activityRepository.findOne(Integer.parseInt(projectItem.getValue()));
+				counters.put(activity, new AtomicInteger(counters.get(activity).incrementAndGet()));
+				amounts.put(activity, amounts.get(activity).doubleValue() + getAmount(projectItem.getProject()).doubleValue());
+			}
+		}
+
+		for (Entry<Activity, AtomicInteger> entry : counters.entrySet()) {
+			result.getLabels().add(StringUtils.abbreviate(entry.getKey().getName(), abbreviateMaxWidth));
+			result.getData().add(entry.getValue());
+			result.getData2().add(amounts.get(entry.getKey()));
+		}
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	private Double getAmount(Project project) {
+		Double result = new Double(0);
+		for (ProjectItem projectItem : project.getItems()) {
+			if (projectItem.getItem().getMetaTag() == ItemMetaTag.COMPANY_INVESTMENT_AMOUNT) {
+				if (projectItem.getValue() != null) {
+					result = result.doubleValue() + Double.parseDouble(projectItem.getValue());
+				}
+			}
+		}
+		return result;
+	}
+
 }

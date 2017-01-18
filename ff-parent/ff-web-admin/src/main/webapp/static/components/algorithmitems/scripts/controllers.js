@@ -61,7 +61,7 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 						disableCancelFilterButton: true,
 						selectOptions: [
 						    { value: 'MANDATORY', label: $translate('ALGORITHM_ITEM_TYPE_MANDATORY') },
-						    { value: 'OPTIONAL', label: $translate('ALGORITHM_ITEM_TYPE_OPTIONAL') },
+//						    { value: 'OPTIONAL', label: $translate('ALGORITHM_ITEM_TYPE_OPTIONAL') },
 						    { value: 'CONDITIONAL', label: $translate('ALGORITHM_ITEM_TYPE_CONDITIONAL') }
 						]
 					},

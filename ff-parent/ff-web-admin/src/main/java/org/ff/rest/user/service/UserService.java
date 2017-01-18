@@ -31,6 +31,8 @@ import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.UserSpecification;
 import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.email.resource.SendEmailResource;
+import org.ff.rest.project.resource.ProjectResource;
+import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.tender.resource.TenderResourceAssembler;
 import org.ff.rest.user.resource.UserResource;
 import org.ff.rest.user.resource.UserResourceAssembler;
@@ -122,7 +124,44 @@ public class UserService extends BaseService {
 			resource.getCompany().setTenders(tenderResourceAssembler.toResources(tenders, true));
 		}
 
+		for (TenderResource tenderResource : resource.getCompany().getTenders()) {
+			if (tenderResource.getProjects() != null) {
+				Collections.sort(tenderResource.getProjects(), new Comparator<ProjectResource>() {
+					@Override
+					public int compare(ProjectResource o1, ProjectResource o2) {
+						return collator.compare(o1.getName(), o2.getName());
+					}
+				});
+			}
+		}
+
+		for (ProjectResource projectResource : resource.getProjects()) {
+			projectResource.setMatchingTenders(getTenders4Project(projectResource, resource.getCompany().getTenders()));
+		}
+
 		return resource;
+	}
+
+	private List<String> getTenders4Project(ProjectResource project, List<TenderResource> tenders) {
+		List<String> result = new ArrayList<>();
+		for (TenderResource tenderResource : tenders) {
+			for (ProjectResource projectResource : tenderResource.getProjects()) {
+				if (projectResource.getId().equals(project.getId())) {
+					if (!result.contains(tenderResource)) {
+						result.add(tenderResource.getName());
+					}
+				}
+			}
+		}
+
+		Collections.sort(result, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return collator.compare(o1, o2);
+			}
+		});
+
+		return result;
 	}
 
 	@Transactional

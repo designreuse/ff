@@ -4,7 +4,7 @@
         'angular-ladda',						// http://remotty.github.io/angular-ladda/
         'angular-loading-bar',					// https://github.com/chieffancypants/angular-loading-bar
         'angularModalService',					// https://github.com/dwmkerr/angular-modal-service
-        'chart.js',
+        'chart.js',								// https://jtblin.github.io/angular-chart.js/
         'datePicker',							// https://github.com/g00fy-/angular-datepicker
         'daterangepicker',						// https://github.com/fragaria/angular-daterangepicker
         'dibari.angular-ellipsis',				// https://github.com/dibari/angular-ellipsis

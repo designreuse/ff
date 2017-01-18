@@ -34,17 +34,6 @@ public class StatisticsController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/companiesByInvestments")
-	public ResponseEntity<?> getCompaniesByInvestments() {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getCompaniesByInvestments");
-		try {
-			return statisticsService.getCompaniesByInvestments();
-		} finally {
-			etmService.collect(point);
-			log.debug("getCompaniesByInvestments() finished in {} ms", point.getTransactionTime());
-		}
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value="/companiesByRevenues")
 	public ResponseEntity<?> getCompaniesByRevenues() {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getCompaniesByRevenues");
@@ -56,14 +45,25 @@ public class StatisticsController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/companiesBySectors")
-	public ResponseEntity<?> getCompaniesBySectors() {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getCompaniesBySectors");
+	@RequestMapping(method = RequestMethod.GET, value="/investmentsByCounties")
+	public ResponseEntity<?> getInvestmentsByCounties() {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getInvestmentsByCounties");
 		try {
-			return statisticsService.getCompaniesBySectors();
+			return statisticsService.getInvestmentsByCounties();
 		} finally {
 			etmService.collect(point);
-			log.debug("getCompaniesBySectors() finished in {} ms", point.getTransactionTime());
+			log.debug("getInvestmentsByCounties() finished in {} ms", point.getTransactionTime());
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value="/investmentsByActivities")
+	public ResponseEntity<?> getInvestmentsByActivities() {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getInvestmentsByActivities");
+		try {
+			return statisticsService.getInvestmentsByActivities();
+		} finally {
+			etmService.collect(point);
+			log.debug("getInvestmentsByActivities() finished in {} ms", point.getTransactionTime());
 		}
 	}
 

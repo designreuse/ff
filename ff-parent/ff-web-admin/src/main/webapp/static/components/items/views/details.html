@@ -35,7 +35,66 @@
                     <uib-tab> 
                         <uib-tab-heading>{{ 'TAB_ITEM_INFO' | translate }}</uib-tab-heading>
                         <div class="panel-body">
-                            
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_CODE' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.code }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_POSITION' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.position }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_TEXT' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.text }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_TYPE' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ ('ITEM_TYPE_' + entity.type) | translate }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="entity.options && entity.options.length > 0">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_OPTIONS' | translate }}</label>
+                                    <div ng-repeat="option in entity.options" style="padding-left: 10px;">{{ option.text }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_MANDATORY' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ ('BOOLEAN_' + entity.mandatory | uppercase) | translate }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_SUMMARY_ITEM' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ ('BOOLEAN_' + entity.summaryItem | uppercase) | translate }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_WIDGET_ITEM' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ ('BOOLEAN_' + entity.widgetItem | uppercase) | translate }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="entity.metaTag">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_METATAG' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.metaTag }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="entity.help">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_HELP' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.help }}</div>
+                                </div>
+                            </div>
                         </div>
                     </uib-tab>
                     <uib-tab> 
