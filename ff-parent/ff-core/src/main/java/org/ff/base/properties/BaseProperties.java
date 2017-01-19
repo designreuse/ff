@@ -45,6 +45,6 @@ public class BaseProperties {
 
 	private String zabaSessionApplication;
 
-	private String zabaApiUrl;
+	private String zabaApiGetByCompanyNumber;
 
 }

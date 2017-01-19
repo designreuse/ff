@@ -82,7 +82,7 @@ public class SessionController {
 
 				// get company data from external source (e.g. from ZaBa) via ReST API
 				log.debug("Getting company data from external source...");
-				ResponseEntity<CompanyDataResource> responseEntity = restTemplate.exchange(baseProperties.getZabaApiUrl(),
+				ResponseEntity<CompanyDataResource> responseEntity = restTemplate.exchange(baseProperties.getZabaApiGetByCompanyNumber(),
 						HttpMethod.GET, new HttpEntity<>(getHttpHeaders()), CompanyDataResource.class, getUriVariables(companyNumber, branchOfficeNumber));
 
 				CompanyDataResource companyData = responseEntity.getBody();

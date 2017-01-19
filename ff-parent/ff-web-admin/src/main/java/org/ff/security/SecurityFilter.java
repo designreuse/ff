@@ -53,7 +53,7 @@ public class SecurityFilter implements Filter {
 			} else {
 				for (String profile : environment.getActiveProfiles()) {
 					// if development profile is active, use dummy authentication
-					if (profile.startsWith("dev")) {
+					if (profile.startsWith("dev") || profile.startsWith("cloud")) {
 						log.trace("Authenticating unknown user (dev env)...");
 						authentication = new UsernamePasswordAuthenticationToken(
 								"Administrator", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name()));
