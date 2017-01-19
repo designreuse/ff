@@ -49,7 +49,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- Using Hibernate 4.2.20.Final due to restrictions on WebSphere 8.5.5 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -61,7 +61,7 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.2.20.Final</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
@@ -102,7 +102,12 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -117,7 +122,7 @@
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
 		</dependency>
-		
+
 	</dependencies>
 
 </project>

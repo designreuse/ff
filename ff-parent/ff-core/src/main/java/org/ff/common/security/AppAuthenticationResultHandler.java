@@ -9,7 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ff.jpa.domain.Impression;
+import org.ff.jpa.domain.Impression.EntityType;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.repository.ImpressionRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +41,21 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ImpressionRepository impressionRepository;
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		User user = userRepository.findByEmail(authentication.getName());
 		if (user != null) {
 			user.setLastLoginDate(new DateTime());
 			userRepository.save(user);
+
+			// record user visit (login)
+			Impression impression = new Impression();
+			impression.setEntityType(EntityType.USER);
+			impression.setEntityId(user.getId());
+			impressionRepository.save(impression);
 		}
 
 		Map<String, String> data = new HashMap<>();

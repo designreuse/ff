@@ -47,4 +47,6 @@ public class BaseProperties {
 
 	private String zabaApiGetByCompanyNumber;
 
+	private String mappingLegalTypeNumber;
+
 }

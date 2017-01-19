@@ -1,12 +1,12 @@
 package org.ff.rest.settings.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ff.common.password.PasswordService;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.settings.resource.SettingsResource;
 import org.ff.rest.user.resource.UserResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +43,7 @@ public class SettingsService {
 		user.setLastName(resource.getUser().getLastName());
 
 		if (StringUtils.isNotBlank(resource.getUser().getPassword())) {
-			user.setPassword(new MessageDigestPasswordEncoder("SHA-1").encodePassword(resource.getUser().getPassword(), null));
+			user.setPassword(PasswordService.encodePassword(resource.getUser().getPassword()));
 		}
 
 		userRepository.save(user);

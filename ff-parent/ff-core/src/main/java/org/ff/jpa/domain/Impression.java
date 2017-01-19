@@ -21,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor @Getter @Setter @ToString
 public class Impression extends AbstractEntity {
 
-	public enum EntityType { ARTICLE, TENDER };
+	public enum EntityType { ARTICLE, TENDER, USER };
 
 	@Id
 	@Column(name = "id")

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -47,5 +48,26 @@ public class Company extends AbstractEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
 	@OrderBy("id")
 	private Set<CompanyItem> items;
+
+	@Nationalized
+	@Column(name = "registration_number", nullable = true, length = 255)
+	private String registrationNumber;
+
+	@Nationalized
+	@Column(name = "company_number", nullable = true, length = 255)
+	private String companyNumber;
+
+	@Nationalized
+	@Column(name = "branch_office_number", nullable = true, length = 255)
+	private String branchOfficeNumber;
+
+	@Nationalized
+	@Column(name = "primary_business", nullable = true, length = 255)
+	private String primaryBusiness;
+
+	@Lob
+	@Nationalized
+	@Column(name = "other_business", nullable = true)
+	private String otherBusiness;
 
 }

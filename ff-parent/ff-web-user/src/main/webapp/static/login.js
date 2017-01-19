@@ -203,11 +203,11 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.showWelcome();
 		
 		// external flow authorization
-		$http.get("/e/api/v1/session/authorize?authId=" + authId)
+		$http.get("/e/api/v1/externalflow/authorize?authId=" + authId)
 			.success(function(data, status, headers, config) {
 				$scope.unauthorize = false;
 				$scope.username = data.email;
-				$scope.password = data.email;
+				$scope.password = data.password;
 				$scope.login();
 			})
 			.error(function(data, status, headers, config) {

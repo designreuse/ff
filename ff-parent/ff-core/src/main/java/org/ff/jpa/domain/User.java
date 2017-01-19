@@ -38,23 +38,23 @@ public class User extends AbstractEntity {
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false, length = 32)
+	@Column(name = "status", nullable = true, length = 32)
 	private UserStatus status;
 
 	@Nationalized
-	@Column(name = "first_name", nullable = false, length = 128)
+	@Column(name = "first_name", nullable = true, length = 128)
 	private String firstName;
 
 	@Nationalized
-	@Column(name = "last_name", nullable = false, length = 128)
+	@Column(name = "last_name", nullable = true, length = 128)
 	private String lastName;
 
 	@Nationalized
-	@Column(name = "email", nullable = false, length = 255)
+	@Column(name = "email", nullable = true, length = 255)
 	private String email;
 
 	@Nationalized
-	@Column(name = "password", nullable = false, length = 128)
+	@Column(name = "password", nullable = true, length = 128)
 	private String password;
 
 	@ManyToOne

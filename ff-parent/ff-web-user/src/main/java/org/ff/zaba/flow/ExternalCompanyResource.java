@@ -1,4 +1,4 @@
-package org.ff.zaba.session;
+package org.ff.zaba.flow;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class CompanyDataResource {
+public class ExternalCompanyResource {
 
 	@JsonProperty("subjectName")
 	private String subjectName;

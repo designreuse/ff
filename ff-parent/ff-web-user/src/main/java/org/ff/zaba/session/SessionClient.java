@@ -63,6 +63,9 @@ public class SessionClient extends WebServiceGatewaySupport {
 
 			// TODO: remove following code block
 			{
+				data.put("user_id", "12345678901"); // OIB zastupnika
+				data.put("user_id2", "49355429927"); // OIB pravne osobe
+
 				CheckAuthIdResponseType response = new CheckAuthIdResponseType();
 				StringBuilder sb = new StringBuilder();
 				sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -71,6 +74,9 @@ public class SessionClient extends WebServiceGatewaySupport {
 				sb.append("<comment>ezaba-ff transfer</comment>");
 				sb.append("<entry key=\"matbr\">00242861-000</entry>");
 				sb.append("<entry key=\"suglasnost\">0</entry>");
+				sb.append("<entry key=\"ime\">John</entry>");
+				sb.append("<entry key=\"prezime\">Doe</entry>");
+				sb.append("<entry key=\"email\">john.doe@gmail.com</entry>");
 				sb.append("</properties>");
 				response.setParams(sb.toString());
 

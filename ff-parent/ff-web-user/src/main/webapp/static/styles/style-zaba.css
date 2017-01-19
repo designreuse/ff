@@ -16,51 +16,51 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 body {
-	background-color: #ffffff;
-	color: #333;
-	font-family: 'Open Sans', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: unicredit-bold;
+    font-family: unicredit-bold;
 }
 
 /* =============================== */
 /* ====== T O P N A V B A R ====== */
 /* =============================== */   
 .ff-logo {
-	background: url(logo.svg) no-repeat center center;
-	background-size: 100%;
-	width: 220px;
-	height: 41px;
-	margin-top: 6px;
-	margin-left: 6px;
-	opacity: 0.0;
+    background: url(logo.svg) no-repeat center center;
+    background-size: 100%;
+    width: 220px;
+    height: 41px;
+    margin-top: 6px;
+    margin-left: 6px;
+    opacity: 0.0;
 }
 
 .nav.navbar-right {
-	font-family: unicredit-regular;
-	text-transform: uppercase;
+    font-family: unicredit-regular;
+    text-transform: uppercase;
 }
 
 .nav.navbar-right>li>label {
-	color: #333;
-	padding: 12px 20px;
-	margin-bottom: none;
-	font-size: 16px;
+    color: #333;
+    padding: 12px 20px;
+    margin-bottom: none;
+    font-size: 16px;
 }
 
 .nav>li>a {
-	color: #fff;
-	font-size: 16px;
-	font-family: unicredit-regular;
-	text-transform: uppercase;
-	padding: 20px 20px 20px 25px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 16px;
+    font-family: unicredit-regular;
+    text-transform: uppercase;
+    padding: 20px 20px 20px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .navbar-fixed-top, .navbar-static-top {
-	background-color: #fff;
+    background-color: #fff;
 }
 
 .top-navigation.fixed-nav #wrapper, .fixed-nav #wrapper.top-navigation{
@@ -72,33 +72,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .top-navigation .nav>li>a {
-	color: #333;
+    color: #333;
 }
 
 .top-navigation .nav>li a:hover, .top-navigation .nav>li a:focus {
-	color: #00afd0;
+    color: #00afd0;
 }
 
 .top-navigation .nav>li.active>a {
-	color: #00afd0;
+    color: #00afd0;
 }
 
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-	border: none;
+    border: none;
 }
 
 .top-navigation .navbar-nav .open .dropdown-menu>li>a {
-	font-size: 12px;
-	font-family: unicredit-bold;
-	text-transform: uppercase;
+    font-size: 12px;
+    font-family: unicredit-bold;
+    text-transform: uppercase;
 }
 
 .navbar-nav>li>.dropdown-menu {
-	margin-top: 1px;
+    margin-top: 1px;
 }
 
 .top-navigation .navbar-nav .dropdown-menu>.active>a {
-	color: #00afd0;
+    color: #00afd0;
 }
 
 /* =========================== */
@@ -140,8 +140,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .ff-postscript {
-	font-family: unicredit-regular !important;
-    font-size: 12px;	
+    font-family: unicredit-regular !important;
+    font-size: 12px;    
 }
 
 .grid-msg-overlay {
@@ -149,19 +149,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .glyphicon {
-	color: #707070 !important;
+    color: #707070 !important;
     font-weight: normal !important;
 }
-/* 
-.form-horizontal .ff-label{
-	background: transparent;
-	font-family: unicredit-bold;
-	font-size: 14px;
-	padding-left: 0;
+
+.contact-form .ff-label{
+    background: transparent;
+    font-family: unicredit-bold;
+    font-size: 14px;
+    padding-left: 0;
 }
 
-.form-horizontal input[type=email], input[type=search], input[type=text], input[type=tel], input[type=number], input[type=password]{
-	display: block;
+.contact-form  input[type=email], .contact-form input[type=search], .contact-form input[type=text], .contact-form input[type=tel], .contact-form input[type=number], .contact-forminput[type=password]{
+    display: block;
     width: 100%;
     z-index: 1;
     border-radius: 4px;
@@ -177,16 +177,16 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: none;
 }
 
-.form-control:focus, .single-line:focus{
-	border-color: #00afd0 !important;
+.contact-form .form-control:focus, .single-line:focus{
+    border-color: #00afd0 !important;
 }
 
-.form-horizontal input[type=email]:focus, input[type=search]:focus, input[type=text]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=password]:focus{
-	outline: 0;
-    border-color: #00afd0;
+.contact-form input[type=email]:focus, .contact-form input[type=search]:focus, .contact-form input[type=text]:focus, .contact-form input[type=tel]:focus, .contact-form input[type=number]:focus, .contact-form input[type=password]:focus{
+    outline: 0;
+    border-color: #00afd0 !important;
 }
 
-.form-horizontal textarea {
+.contact-form textarea {
     font-size: 16px;
     font-weight: 400;
     -moz-appearance: textfield;
@@ -201,8 +201,8 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-font-smoothing: initial;
 }
 
-.form-horizontal .chosen-single{
-	display: block;
+.contact-form .chosen-single{
+    display: block;
     width: 100%;
     font-family: Open Sans,sans-serif;
     font-weight: 400;
@@ -220,6 +220,6 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 4px;
 }
 
-.chosen-container-single .chosen-single div b{
-	background-position: 0px 14px;
-} */
+.contact-form .chosen-container-single .chosen-single div b{
+    background-position: 0px 14px;
+}

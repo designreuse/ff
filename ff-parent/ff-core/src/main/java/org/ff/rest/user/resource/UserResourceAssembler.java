@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.ff.common.password.PasswordService;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
@@ -15,7 +16,6 @@ import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -83,7 +83,7 @@ public class UserResourceAssembler {
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
-		entity.setPassword(new MessageDigestPasswordEncoder("SHA-1").encodePassword(resource.getPassword(), null));
+		entity.setPassword(PasswordService.encodePassword(resource.getPassword()));
 		Company company = null;
 		if (resource.getCompany() != null) {
 			company = companyResourceAssembler.createEntity(resource.getCompany());

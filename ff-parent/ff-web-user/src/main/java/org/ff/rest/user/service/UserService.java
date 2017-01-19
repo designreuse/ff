@@ -7,10 +7,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.base.service.BaseService;
 import org.ff.common.mailsender.MailSenderService;
+import org.ff.common.password.PasswordService;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -51,6 +50,9 @@ public class UserService extends BaseService {
 
 	@Autowired
 	private BaseProperties baseProperties;
+
+	@Autowired
+	private PasswordService passwordService;
 
 	@Transactional
 	public ResponseEntity<?> register(UserResource resource, Locale locale) {
@@ -88,8 +90,8 @@ public class UserService extends BaseService {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		String password = RandomStringUtils.randomAlphanumeric(8);
-		user.setPassword(new MessageDigestPasswordEncoder("SHA-1").encodePassword(password, null));
+		String password = passwordService.generate();
+		user.setPassword(PasswordService.encodePassword(password));
 		user = repository.save(user);
 
 		log.debug("Sending reset password email to [{}]...", user.getEmail());
