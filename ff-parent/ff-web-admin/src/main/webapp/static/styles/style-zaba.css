@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 	height: 41px;
 	margin-top: 6px;
 	margin-left: 6px;
-	opacity: 0.0;
+	opacity: 1.0;
 }
 
 .nav.navbar-right {

@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.ff</groupId>
 		<artifactId>ff-parent</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 
 	<properties>

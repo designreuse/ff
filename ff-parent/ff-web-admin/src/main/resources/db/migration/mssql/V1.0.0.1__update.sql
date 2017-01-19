@@ -586,28 +586,34 @@ INSERT INTO [dbo].[subdivision2] (id, created_by, creation_date, last_modified_b
 SET IDENTITY_INSERT [dbo].[subdivision2] OFF
 
 INSERT INTO [dbo].[permission] (id, name) VALUES 
-(1000,'users'),
-(1001,'users.create'),
-(1002,'users.read'),
-(1003,'users.update'),
-(1004,'users.delete'),
-(2000,'tenders'),
-(2001,'tenders.create'),
-(2002,'tenders.read'),
-(2003,'tenders.update'),
-(2004,'tenders.delete'),
-(3000,'investments'),
-(3001,'investments.create'),
-(3002,'investments.read'),
-(3003,'investments.update'),
-(3004,'investments.delete'),
-(4000,'articles'),
-(4001,'articles.create'),
-(4002,'articles.read'),
-(4003,'articles.update'),
-(4004,'articles.delete'),
-(8000,'statistics'),
-(9000,'settings');
+(1000, 'users'),
+(1001, 'users.create'),
+(1002, 'users.read'),
+(1003, 'users.update'),
+(1004, 'users.delete'),
+(1005, 'users.export'),
+(2000, 'tenders'),
+(2001, 'tenders.create'),
+(2002, 'tenders.read'),
+(2003, 'tenders.update'),
+(2004, 'tenders.delete'),
+(2005, 'tenders.export'),
+(3000, 'investments'),
+(3001, 'investments.create'),
+(3002, 'investments.read'),
+(3003, 'investments.update'),
+(3004, 'investments.delete'),
+(4000, 'articles'),
+(4001, 'articles.create'),
+(4002, 'articles.read'),
+(4003, 'articles.update'),
+(4004, 'articles.delete'),
+(5000, 'contacts'),
+(5001, 'contacts.read'),
+(5002, 'contacts.delete'),
+(5003, 'contacts.export'),
+(8000, 'statistics'),
+(9000, 'settings');
 
 SET IDENTITY_INSERT [dbo].[role] ON
 INSERT INTO [dbo].[role] (id, created_by, creation_date, last_modified_by, last_modified_date, name) VALUES 
@@ -616,32 +622,38 @@ INSERT INTO [dbo].[role] (id, created_by, creation_date, last_modified_by, last_
 SET IDENTITY_INSERT [dbo].[role] OFF
 
 INSERT INTO [dbo].[role_permission] (role_id, permission_id) VALUES 
-(1,1000),
-(1,1001),
-(1,1002),
-(1,1003),
-(1,1004),
-(1,2000),
-(1,2001),
-(1,2002),
-(1,2003),
-(1,2004),
-(1,3000),
-(1,3001),
-(1,3002),
-(1,3003),
-(1,3004),
-(1,4000),
-(1,4001),
-(1,4002),
-(1,4003),
-(1,4004),
-(1,8000),
-(1,9000);
+(1, 1000),
+(1, 1001),
+(1, 1002),
+(1, 1003),
+(1, 1004),
+(1, 1005),
+(1, 2000),
+(1, 2001),
+(1, 2002),
+(1, 2003),
+(1, 2004),
+(1, 2005),
+(1, 3000),
+(1, 3001),
+(1, 3002),
+(1, 3003),
+(1, 3004),
+(1, 4000),
+(1, 4001),
+(1, 4002),
+(1, 4003),
+(1, 4004),
+(1, 5000),
+(1, 5001),
+(1, 5002),
+(1, 5003),
+(1, 8000),
+(1, 9000);
 
 SET IDENTITY_INSERT [dbo].[user] ON
 INSERT INTO [dbo].[user] (id, created_by, creation_date, last_modified_by, last_modified_date, demo_user, email, first_name, last_login, last_name, password, registration_code, registration_code_confirmed, registration_code_sent, status, business_relationship_manager) VALUES 
-(1, NULL, '2016-11-22 12:58:18', NULL, '2016-11-22 12:58:18', 1, 'demo', 'Demo', NULL, 'User', '89e495e7941cf9e40e6980d14a16bf023ccd4c91', NULL, NULL, NULL, 'ACTIVE', NULL);
+(1, NULL, '2016-11-22 12:58:18', NULL, '2016-11-22 12:58:18', 1, 'demo', 'Demo', NULL, 'User', 'demo', NULL, NULL, NULL, 'ACTIVE', NULL);
 
 SET IDENTITY_INSERT [dbo].[user] OFF
 
