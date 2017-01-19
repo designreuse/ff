@@ -57,7 +57,7 @@
 				                </div>
 				                <div class="form-group">
 				                    <div class="col-sm-12">
-				                        <label class="ff-label">{{ 'LABEL_IMAGE' | translate }}</label>
+				                        <label class="ff-label">{{ 'LABEL_IMAGE' | translate }} <small class="pull-right">400x300px</small></label>
 				                        <img ng-show="entity.image.base64" ng-src="data:image/JPEG;base64,{{entity.image.base64}}" width="320">
 				                        <a ng-show="!entity.image.base64" href="#" class="btn btn-white" ngf-select ngf-change="selectImage($files)">{{ 'BUTTON_SELECT' | translate }}</a>
 				                        <a ng-show="entity.image.base64" uib-tooltip="{{ 'ACTION_TOOLTIP_DELETE' | translate }}" class="btn btn-sm btn-white" ng-click="deleteImage($files)" style="vertical-align: top;" ><i class="fa fa-remove"></i></a>

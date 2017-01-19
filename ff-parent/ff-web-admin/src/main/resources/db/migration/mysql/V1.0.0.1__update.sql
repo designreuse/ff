@@ -614,7 +614,7 @@ VALUES
     
 INSERT INTO `user` (`id`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `demo_user`, `email`, `first_name`, `last_login`, `last_name`, `password`, `registration_code`, `registration_code_confirmed`, `registration_code_sent`, `status`, `business_relationship_manager`)
 VALUES
-    (1, NULL, '2016-11-22 12:58:18', NULL, '2016-11-22 12:58:18', 1, 'demo', 'Demo', NULL, 'User', '89e495e7941cf9e40e6980d14a16bf023ccd4c91', NULL, NULL, NULL, 'ACTIVE', NULL);
+    (1, NULL, '2016-11-22 12:58:18', NULL, '2016-11-22 12:58:18', 1, 'demo', 'Demo', NULL, 'User', 'demo', NULL, NULL, NULL, 'ACTIVE', NULL);
 
 INSERT INTO `company` (`id`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `code`, `name`, `user`)
 VALUES
