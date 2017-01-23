@@ -34,6 +34,7 @@ public class Item extends AbstractEntity {
 	public enum ItemMetaTag {
 		TENDER_START_DATE,
 		TENDER_END_DATE,
+		TENDER_AVAILABLE_FUNDING,
 		TENDER_SECTOR,
 		TENDER_ACTIVITIES,
 		TENDER_INVESTMENTS_PRIMARY,

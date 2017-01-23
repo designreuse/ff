@@ -60,7 +60,7 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 
 		Map<String, String> data = new HashMap<>();
 		data.put(MESSAGE, "Login success");
-		data.put(URL, contextPath + "/#/tenders/overview");
+		data.put(URL, contextPath + "/#/dashboard/overview");
 		objectMapper.writeValue(response.getOutputStream(), data);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());

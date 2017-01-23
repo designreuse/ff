@@ -16,6 +16,8 @@ public interface TenderItemRepository extends CrudRepository<TenderItem, Integer
 
 	List<TenderItem> findByTender(Tender tender);
 
+	List<TenderItem> findByItem(Item item);
+
 	TenderItem findByTenderAndItem(Tender tender, Item item);
 
 }

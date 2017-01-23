@@ -207,6 +207,28 @@ angular.module('FundFinder')
 	        templateUrl: "/components/contact/views/overview.html",
 	        controller: 'ContactController'
 	    })
+	    
+	    // DASHBOARD
+		.state('dashboard', {
+	        abstract: true,
+	        url: "/dashboard",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: ['components/dashboard/scripts/controllers.js',
+	        			        'components/dashboard/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('dashboard.overview', {
+	        url: "/overview",
+	        templateUrl: "/components/dashboard/views/overview.html",
+	        controller: 'DashboardController'
+	    })
 })
 	
 .run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, ModalService, CommonService) {

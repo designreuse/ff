@@ -125,6 +125,10 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	$scope.register = function() {
+		if ($scope.processingRegister) {
+			// if register is already is process, ignore it
+			return;
+		}
 		$scope.processingRegister = true;
 		$http.post("/api/v1/users/register", $scope.user)
 			.success(function(data, status, headers, config) {

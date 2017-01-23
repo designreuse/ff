@@ -70,7 +70,6 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
-					icon: 'fa fa-times',
 				    cssClass: 'btn-white',
 				    action: function(dialog) {
 				        dialog.close();
@@ -78,7 +77,6 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
 				},
             	{
             		label: $translate('BUTTON_YES'),
-	            	icon: 'fa fa-check',
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
 	                	ProjectsService.delete(entity.id)

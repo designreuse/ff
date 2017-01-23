@@ -246,7 +246,7 @@ public class TenderResourceAssembler {
 		return entity;
 	}
 
-	private void setResourceValue(TenderResource resource, ItemResource itemResource, TenderItem tenderItem) {
+	public void setResourceValue(TenderResource resource, ItemResource itemResource, TenderItem tenderItem) {
 		if (itemResource.getType() == ItemType.NUMBER || itemResource.getType() == ItemType.CURRENCY || itemResource.getType() == ItemType.PERCENTAGE) {
 			itemResource.setValue((tenderItem.getValue() != null) ? Integer.parseInt(tenderItem.getValue()) : null);
 			itemResource.setValueMapped(tenderItem.getValue());
