@@ -49,4 +49,24 @@ public class BaseProperties {
 
 	private String mappingLegalTypeNumber;
 
+	private Integer mappingZipCode;
+
+	private Integer mappingFoundingDate;
+
+	private String mappingBankruptcyProcedure;
+
+	private String mappingBlocked5Days;
+
+	private String mappingBlocked20Days;
+
+	private Integer mappingLastYearIncome;
+
+	private Integer mappingNumberOfEmployees;
+
+	private String mappingProfitBeforeTax;
+
+	private String mappingProfitOrLoss;
+
+	private String mappingCapitalTotalLiabilities;
+
 }

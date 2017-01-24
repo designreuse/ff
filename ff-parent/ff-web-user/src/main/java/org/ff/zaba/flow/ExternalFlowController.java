@@ -43,13 +43,13 @@ public class ExternalFlowController {
 			resource.setFoundingDate(new Date());
 			resource.setPrimaryBusiness("primaryBusiness");
 			resource.setOtherBusiness(new ArrayList<String>());
-			resource.setAnyBankruptcyProcedure("anyBankruptcyProcedure");
-			resource.setIsBlockedFor5Days(Boolean.FALSE);
-			resource.setIsBlockedFor20Days(Boolean.TRUE);
+			resource.setAnyBankruptcyProcedure("L");
+			resource.setIsBlockedFor5Days(Boolean.TRUE);
+			resource.setIsBlockedFor20Days(Boolean.FALSE);
 			resource.setLastYearIncome("11685632.00");
 			resource.setIsProfitBeforeTax("625913.00");
-			resource.setProfitOrLoss("472055.00");
-			resource.setNumberOfEmployeesAnnual("numberOfEmployeesAnnual");
+			resource.setProfitOrLoss("-472055.00");
+			resource.setNumberOfEmployeesAnnual("99");
 			resource.setCapital("4642015.00");
 			resource.setTotalLiabilities("11476427.00");
 
