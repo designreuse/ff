@@ -39,23 +39,37 @@ public class CompanyService {
 	}
 
 	@Transactional(readOnly = true)
-	public Boolean validate(UserDetails principal) {
+	public Double validate(UserDetails principal) {
 		if (principal != null) {
-			CompanyResource resource = resourceAssembler.toResource(
-					userRepository.findByEmail(principal.getUsername()).getCompany(), false);
+			CompanyResource resource = resourceAssembler.toResource(userRepository.findByEmail(principal.getUsername()).getCompany(), false);
+
+			double cntMandatoryItems = 0;
+			double cntEnteredItems = 0;
 
 			for (ItemResource itemResource : resource.getItems()) {
 				if (itemResource.getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(itemResource.getMetaTag())) {
 					continue;
 				}
 
-				if (Boolean.TRUE == itemResource.getMandatory() && itemResource.getValue() == null) {
-					return Boolean.FALSE;
+				if (Boolean.TRUE == itemResource.getMandatory()) {
+					cntMandatoryItems++;
+					if (itemResource.getValue() != null) {
+						cntEnteredItems++;
+					}
 				}
 			}
+
+			if (cntMandatoryItems == 0) {
+				return 100d;
+			} else if (cntMandatoryItems > 0 && cntEnteredItems == 0) {
+				return 0d;
+			} else {
+				return (cntEnteredItems / cntMandatoryItems) * 100;
+			}
+
 		}
 
-		return Boolean.TRUE;
+		return null;
 	}
 
 }

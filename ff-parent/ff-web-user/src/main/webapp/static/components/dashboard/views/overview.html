@@ -23,21 +23,71 @@
                             
                             <i class="fa fa-star-o m-l-md m-r-xs" aria-hidden="true"></i>
                             <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_AVAILABLE_FUNDING'">{{ item.value | currency : "" }} {{ item.currency.code }}
+                            
+                            <i ng-click="showTender(tender)" class="fa fa-search-plus fa-lg pull-right" style="cursor: pointer;" aria-hidden="true"></i>
                         </div> 
                     </div>
                 </div>
             </div>
         </div>
 	    <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title ff-ibox-title">
-                    <span class="label label-success pull-right">{{ 'HEADER_DASHBOARD_TENDERS_CHART_BADGE' | translate }}</span>
-                    <h3 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_TENDERS_CHART' | translate }}</h3>   
+	       <div class="row">
+	           <div class="col-lg-4">
+	               <div class="ibox float-e-margins">
+		                <div class="ibox-title ff-ibox-title">
+		                    <span class="label label-primary pull-right">{{ 'HEADER_DASHBOARD_TENDERS_CNT_BADGE' | translate }}</span>
+		                    <h3 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_TENDERS_CNT' | translate }}</h3>
+		                </div>
+		                <div class="ibox-content ff-ibox-content">
+                            <!-- <div class="stat-percent" style="text-align: right;">
+                                <i ng-click="showTenders()" class="fa fa-arrow-circle-right fa-2x" style="cursor: pointer; margin-top: 7px;" aria-hidden="true"></i>
+                            </div> -->
+		                    <h1 style="color: #333;" class="no-margins">{{ cntTenders }}</h1>
+		                </div>
+		            </div>
+	           </div>
+	           <div class="col-lg-4">
+                   <div class="ibox float-e-margins">
+                        <div class="ibox-title ff-ibox-title">
+                            <span class="label label-warning pull-right">{{ 'HEADER_DASHBOARD_PROJECTS_CNT_BADGE' | translate }}</span>
+                            <h3 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_PROJECTS_CNT' | translate }}</h3>
+                        </div>
+                        <div class="ibox-content ff-ibox-content">
+                            <div class="stat-percent" style="text-align: right;">
+                                <i ng-click="showProjects()" class="fa fa-arrow-circle-right fa-2x" style="cursor: pointer; margin-top: 7px;" aria-hidden="true"></i>
+                            </div>
+                            <h1 style="color: #333;" class="no-margins">{{ cntProjects }}</h1>
+                        </div>
+                    </div>
+               </div>
+               <div class="col-lg-4">
+                   <div class="ibox float-e-margins">
+                        <div class="ibox-title ff-ibox-title">
+                            <span class="label label-danger pull-right">{{ 'HEADER_DASHBOARD_PROFILE_CNT_BADGE' | translate }}</span>
+                            <h3 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_PROFILE_CNT' | translate }}</h3>
+                        </div>
+                        <div class="ibox-content ff-ibox-content">
+                            <div class="stat-percent" style="text-align: right;">
+                                <i ng-click="showCompany()" class="fa fa-arrow-circle-right fa-2x" style="cursor: pointer; margin-top: 7px;" aria-hidden="true"></i>
+                            </div>
+                            <h1 style="color: #333;" class="no-margins">{{ profileCompleteness | number : 0 }}%</h1>
+                        </div>
+                    </div>
+               </div>
+	       </div>
+            <div class="row">
+                <div class="col-lg-12">
+		            <div class="ibox float-e-margins">
+		                <div class="ibox-title ff-ibox-title">
+		                    <span class="label label-info pull-right">{{ 'HEADER_DASHBOARD_TENDERS_CHART_BADGE' | translate }}</span>
+		                    <h3 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_TENDERS_CHART' | translate }}</h3>   
+		                </div>
+		                <div class="ibox-content ff-ibox-content">
+		                    <canvas class="chart chart-bar" chart-data="chartData" chart-labels="chartLabels" chart-options="chartOptions"></canvas>                    
+		                </div>
+		            </div>                
                 </div>
-                <div class="ibox-content ff-ibox-content">
-                    <canvas class="chart chart-bar" chart-data="chartData" chart-labels="chartLabels" chart-options="chartOptions"></canvas>                    
-                </div>
-            </div>	       
+            </div>
 	    </div>
     </div>
     <div class="row">

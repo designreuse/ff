@@ -327,7 +327,9 @@ angular.module('FundFinder')
 	$rootScope.validateProfile = function() {
 		CommonService.validateProfile()
 			.success(function(data, status) {
-				$rootScope.profileIncomplete = !data;
+				var profileCompleteness = parseFloat(data);
+				$rootScope.profileCompleteness = profileCompleteness;
+				$rootScope.profileIncomplete = (profileCompleteness == 100) ? false : true;
 			})
 			.error(function(data, status) {
 				$log.error(data);

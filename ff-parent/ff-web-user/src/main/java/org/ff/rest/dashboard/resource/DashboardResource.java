@@ -24,4 +24,10 @@ public class DashboardResource {
 	@JsonProperty("tenders")
 	private List<TenderResource> tenders = new LinkedList<>();
 
+	@JsonProperty("cntTenders")
+	private Integer cntTenders;
+
+	@JsonProperty("cntProjects")
+	private Integer cntProjects;
+
 }

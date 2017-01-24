@@ -87,7 +87,11 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	var $lowercase = $filter('lowercase');
 	
 	$scope.back = function() {
-		$state.go('tenders.overview');
+		if ($rootScope.previousState) {
+			$state.go($rootScope.previousState, $rootScope.previousStateParams);
+		} else {
+			window.history.back();
+		}
 	};
 	
 	$scope.find = function(id) {

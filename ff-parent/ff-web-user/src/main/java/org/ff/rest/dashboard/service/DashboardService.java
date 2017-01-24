@@ -15,7 +15,9 @@ import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.jpa.domain.TenderItem;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.TenderRepository;
+import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.dashboard.resource.DashboardResource;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.item.resource.ItemResourceAssembler;
@@ -23,6 +25,7 @@ import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.tender.resource.TenderResourceAssembler;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,6 +43,12 @@ public class DashboardService {
 	@Autowired
 	private TenderResourceAssembler tenderResourceAssembler;
 
+	@Autowired
+	private ProjectRepository projectRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
 	private SimpleDateFormat monthFormat;
 
 	@PostConstruct
@@ -47,7 +56,7 @@ public class DashboardService {
 		monthFormat = new SimpleDateFormat(baseProperties.getMonthFormat());
 	}
 
-	public DashboardResource getData() {
+	public DashboardResource getData(UserDetails principal) {
 		DashboardResource resource = new DashboardResource();
 
 		DateTime date = new DateTime();
@@ -59,11 +68,14 @@ public class DashboardService {
 			date = date.minusMonths(1);
 		}
 
+		AtomicInteger cntTenders = new AtomicInteger(0);
 		for (Tender tender : tenderRepository.findAll()) {
 			if (tender.getStatus() == TenderStatus.INACTIVE) {
 				// skip inactive tenders
 				continue;
 			}
+
+			cntTenders.incrementAndGet();
 
 			String s = monthFormat.format(tender.getCreationDate().toDate());
 			if (map.containsKey(s)) {
@@ -75,8 +87,8 @@ public class DashboardService {
 				}
 
 				TenderResource tenderResource = new TenderResource();
+				tenderResource.setId(tender.getId());
 				tenderResource.setName(tender.getName());
-				tenderResource.setText(tender.getText());
 				tenderResource.setCreationDate(tender.getCreationDate().toDate());
 				tenderResource.setItems(new ArrayList<ItemResource>());
 				resource.getTenders().add(tenderResource);
@@ -96,6 +108,10 @@ public class DashboardService {
 			resource.getChartLabels().add(entry.getKey());
 			resource.getChartData().add(entry.getValue());
 		}
+
+		resource.setCntTenders(cntTenders.intValue());
+
+		resource.setCntProjects(projectRepository.countByCompany(userRepository.findByEmail(principal.getUsername()).getCompany()));
 
 		return resource;
 	}

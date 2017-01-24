@@ -20,15 +20,21 @@ function config($translateProvider) {
 			HEADER_PROJECT_EDIT: 'Uredi projekt',
 			HEADER_PROJECTS_4_TENDER: 'Projekti za koje je ovaj natječaj prikladan',
 			
-			HEADER_DASHBOARD_TENDERS: 'Natječaji',
+			HEADER_DASHBOARD_TENDERS: 'Najnoviji natječaji',
 			HEADER_DASHBOARD_TENDERS_BADGE: 'Objavljeni u zadnjih 30 dana',
 			HEADER_DASHBOARD_TENDERS_CHART: 'Broj objavljenih natječaja',
 			HEADER_DASHBOARD_TENDERS_CHART_BADGE: 'Zadnjih 12 mjeseci',
+			HEADER_DASHBOARD_TENDERS_CNT: 'Natječaji',
+			HEADER_DASHBOARD_TENDERS_CNT_BADGE: 'Ukupno',
+			HEADER_DASHBOARD_PROJECTS_CNT: 'Vaši projekti',
+			HEADER_DASHBOARD_PROJECTS_CNT_BADGE: 'Ukupno',
+			HEADER_DASHBOARD_PROFILE_CNT: 'Profil',
+			HEADER_DASHBOARD_PROFILE_CNT_BADGE: 'Popunjenost',
 			
-			MENU_TENDERS: 'Natječaji',
-			MENU_PROJECTS: 'Projekti',
+			MENU_TENDERS: 'Moji natječaji',
+			MENU_PROJECTS: 'Moji projekti',
 			MENU_ARTICLES: 'Članci',
-			MENU_COMPANY: 'Kompanija',
+			MENU_COMPANY: 'Profil tvrtke',
 			MENU_CONTACT: 'Kontaktirajte nas',
 			MENU_DASHBOARD: 'Dashboard',
 			
@@ -73,8 +79,8 @@ function config($translateProvider) {
 			DLG_DELETE_HDR: 'Delete',
 			DLG_DELETE_MSG: 'Do you really want to delete projekt?',
 			
-			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil kompanije',
-			INCOMPLETE_PROFILE_MSG: 'Please fill out all mandatory items in your company profile.',
+			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil tvrtke',
+			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu vaše tvrtke.',
 		});
 	
 	$translateProvider.preferredLanguage("hr");

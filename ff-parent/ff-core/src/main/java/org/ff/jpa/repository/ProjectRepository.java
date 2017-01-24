@@ -11,4 +11,6 @@ public interface ProjectRepository extends CrudRepository<Project, Integer>, Jpa
 
 	List<Project> findByCompany(Company company);
 
+	Integer countByCompany(Company company);
+
 }

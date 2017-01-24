@@ -51,7 +51,7 @@ public class CompanyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/validate")
-	public Boolean validate(@AuthenticationPrincipal UserDetails principal) {
+	public Double validate(@AuthenticationPrincipal UserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".validate");
 		try {
 			return companyService.validate(principal);

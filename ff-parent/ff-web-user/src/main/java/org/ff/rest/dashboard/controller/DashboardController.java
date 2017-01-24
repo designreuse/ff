@@ -5,6 +5,8 @@ import org.ff.common.etm.EtmService;
 import org.ff.rest.dashboard.resource.DashboardResource;
 import org.ff.rest.dashboard.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +24,10 @@ public class DashboardController extends BaseController {
 	private EtmService etmService;
 
 	@GetMapping
-	public DashboardResource getData() {
+	public DashboardResource getData(@AuthenticationPrincipal UserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getData");
 		try {
-			return dashboardService.getData();
+			return dashboardService.getData(principal);
 		} finally {
 			etmService.collect(point);
 		}
