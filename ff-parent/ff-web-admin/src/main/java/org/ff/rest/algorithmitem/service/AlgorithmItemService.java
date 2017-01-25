@@ -190,4 +190,27 @@ public class AlgorithmItemService extends BaseService {
 		}
 	}
 
+	@Transactional(readOnly = true)
+	public List<AlgorithmItemResource> exportAlgorithmItems() {
+		return resourceAssembler.toResources(repository.findAll(), false);
+	}
+
+	@Transactional
+	public Integer importAlgorithmItems(List<AlgorithmItemResource> resources) {
+		int cntImported = 0;
+
+		for (AlgorithmItemResource resource : resources) {
+			log.debug("Importing {}", resources);
+
+			AlgorithmItem entity = resourceAssembler.createEntity(resource);
+			repository.save(entity);
+
+			log.debug("Algorithm item [id: {}] successfully imported", entity.getId());
+
+			cntImported++;
+		}
+
+		return cntImported;
+	}
+
 }

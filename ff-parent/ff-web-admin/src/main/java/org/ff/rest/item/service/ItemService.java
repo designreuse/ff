@@ -4,6 +4,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,6 +20,7 @@ import org.ff.jpa.domain.Item.ItemEntityType;
 import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Item.ItemType;
+import org.ff.jpa.domain.ItemOption;
 import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.specification.ItemSpecification;
 import org.ff.rest.item.resource.ItemOptionResource;
@@ -221,6 +223,56 @@ public class ItemService extends BaseService {
 			}
 		}
 		return result;
+	}
+
+	@Transactional(readOnly = true)
+	public List<ItemResource> exportItems(ItemEntityType entityType) {
+		return resourceAssembler.toResources(repository.findByEntityType(entityType), false);
+	}
+
+	@Transactional
+	public Integer importItems(List<ItemResource> itemResources) {
+		int cntImported = 0;
+		for (ItemResource itemResource : itemResources) {
+			log.debug("Importing {}", itemResource);
+
+			Item item = repository.findByCodeAndEntityType(itemResource.getCode(), itemResource.getEntityType());
+
+			if (item != null) {
+				log.debug("Skipping import of item [code: {}] as it already exists", itemResource.getCode());
+				continue;
+			}
+
+			item = new Item();
+			item.setCode(itemResource.getCode());
+			item.setEntityType(itemResource.getEntityType());
+			item.setStatus((itemResource.getStatus() != null) ? itemResource.getStatus() : ItemStatus.INACTIVE);
+			item.setType(itemResource.getType());
+			item.setMetaTag(itemResource.getMetaTag());
+			item.setSummaryItem((itemResource.getSummaryItem() != null) ? itemResource.getSummaryItem() : Boolean.FALSE);
+			item.setWidgetItem((itemResource.getWidgetItem() != null) ? itemResource.getWidgetItem() : Boolean.FALSE);
+			item.setMandatory((itemResource.getMandatory() != null) ? itemResource.getMandatory() : Boolean.FALSE);
+			item.setPosition(itemResource.getPosition());
+			item.setText(itemResource.getText());
+			item.setHelp(itemResource.getHelp());
+
+			if (itemResource.getOptions() != null) {
+				item.setOptions(new HashSet<ItemOption>());
+				for (ItemOptionResource itemOptionResource : itemResource.getOptions()) {
+					ItemOption itemOption = new ItemOption();
+					itemOption.setItem(item);
+					itemOption.setPosition(itemOptionResource.getPosition());
+					itemOption.setText(itemOptionResource.getText());
+					item.getOptions().add(itemOption);
+				}
+			}
+
+			repository.save(item);
+
+			log.debug("Item [id: {}, code: {}] successfully imported", item.getId(), item.getCode());
+			cntImported++;
+		}
+		return cntImported;
 	}
 
 }

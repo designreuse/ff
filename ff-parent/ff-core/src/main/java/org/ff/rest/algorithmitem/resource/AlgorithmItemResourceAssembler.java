@@ -38,7 +38,7 @@ public class AlgorithmItemResourceAssembler {
 		return resource;
 	}
 
-	public List<AlgorithmItemResource> toResources(List<AlgorithmItem> entities, boolean light) {
+	public List<AlgorithmItemResource> toResources(Iterable<AlgorithmItem> entities, boolean light) {
 		List<AlgorithmItemResource> resources = new ArrayList<>();
 		for (AlgorithmItem entity : entities) {
 			resources.add(toResource(entity, light));
@@ -50,7 +50,7 @@ public class AlgorithmItemResourceAssembler {
 		AlgorithmItem entity = new AlgorithmItem();
 		entity.setCode(resource.getCode());
 		entity.setType(resource.getType());
-		entity.setStatus(AlgorithmItemStatus.INACTIVE);
+		entity.setStatus((resource.getStatus() != null) ? resource.getStatus() : AlgorithmItemStatus.INACTIVE);
 		entity.setCompanyItem(itemRepository.findOne(resource.getCompanyItem().getId()));
 		entity.setTenderItem(itemRepository.findOne(resource.getTenderItem().getId()));
 		entity.setOperator(Operator.valueOf(resource.getOperator().getValue()));

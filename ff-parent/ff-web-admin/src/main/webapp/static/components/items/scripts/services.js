@@ -25,4 +25,7 @@ angular.module('FundFinder')
 	this.getMetaTags = function(entityType) {
 		return $http.get('/api/v1/items/' + entityType + '/metatags');
 	};
+	this.exportData = function(entityType) {
+		return $http.get('/api/v1/items/export/' + entityType);
+	};
 });

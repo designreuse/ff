@@ -26,6 +26,9 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ActivityService extends BaseService {
 
@@ -136,6 +139,29 @@ public class ActivityService extends BaseService {
 		} else {
 			return new ActivitySpecification(new SearchCriteria(resource.getName(), SearchOperation.CONTAINS, resource.getTerm()));
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<ActivityResource> exportActivities() {
+		return resourceAssembler.toResources(repository.findAll(), false);
+	}
+
+	@Transactional
+	public Integer importActivities(List<ActivityResource> resources) {
+		int cntImported = 0;
+
+		for (ActivityResource resource : resources) {
+			log.debug("Importing {}", resources);
+
+			Activity entity = resourceAssembler.createEntity(resource);
+			repository.save(entity);
+
+			log.debug("Activity [id: {}] successfully imported", entity.getId());
+
+			cntImported++;
+		}
+
+		return cntImported;
 	}
 
 }

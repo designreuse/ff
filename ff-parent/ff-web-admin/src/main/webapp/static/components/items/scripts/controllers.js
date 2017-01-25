@@ -6,7 +6,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, ItemsService) {
+function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, Upload, ItemsService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -371,6 +371,33 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 	$scope.editEntity = function (entity) {
 		$state.go('settings.items_edit_' + $stateParams.entityType, { 'entityType' : $stateParams.entityType, 'id' : entity.id });
 	}
+	
+	$scope.importData = function(files) {
+		if (files && files.length) {
+			Upload.upload({
+		        url: '/api/v1/items/import',
+		        method: 'POST',
+		        file: files[0]
+		    }).success(function (data, status, headers, config) {
+		    	toastr.success($translate('ACTION_IMPORT_SUCCESS_MESSAGE'));
+		    	$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+		    }).error(function(data, status, headers, config) {
+		    	toastr.error($translate('ACTION_IMPORT_FAILURE_MESSAGE'));
+		    });
+		}
+	};
+	
+	$scope.exportData = function() {
+		ItemsService.exportData($stateParams.entityType)
+			.success(function(data, status) {
+				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
+				saveAs(blob, "ff_" + $lowercase($stateParams.entityType)  + "_items.json");
+				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_EXPORT_FAILURE_MESSAGE'));
+			});
+	};
 	
 	$scope.activateEntity = function(entity) {
 		ItemsService.activateEntity(entity.id)

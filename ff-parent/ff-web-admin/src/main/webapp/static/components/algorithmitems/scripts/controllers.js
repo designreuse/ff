@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, AlgorithmItemsService) {
+function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, Upload, AlgorithmItemsService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -306,6 +306,33 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 		$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 	};
 	
+	$scope.importData = function(files) {
+		if (files && files.length) {
+			Upload.upload({
+		        url: '/api/v1/algorithmitems/import',
+		        method: 'POST',
+		        file: files[0]
+		    }).success(function (data, status, headers, config) {
+		    	toastr.success($translate('ACTION_IMPORT_SUCCESS_MESSAGE'));
+		    	$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+		    }).error(function(data, status, headers, config) {
+		    	toastr.error($translate('ACTION_IMPORT_FAILURE_MESSAGE'));
+		    });
+		}
+	};
+	
+	$scope.exportData = function() {
+		AlgorithmItemsService.exportData()
+			.success(function(data, status) {
+				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
+				saveAs(blob, "ff_algorithm_items.json");
+				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_EXPORT_FAILURE_MESSAGE'));
+			});
+	};
+	
 	$scope.addEntity = function (entity) {
 		$state.go('settings.algorithmitems_edit', { 'id' : 0 });
 	}
@@ -519,9 +546,11 @@ function AlgorithmItemsEditController($rootScope, $scope, $state, $stateParams, 
 	$scope.saveEntity = function() {
 		AlgorithmItemsService.saveEntity($scope.entity)
 			.success(function(data, status, headers, config) {
+				console.log(data);
 				if (status == 200) {
 					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
-					$state.go('settings.algorithmitems.edit', { 'id' : data.id });
+					$scope.getEntity(data.id);
+					$state.go('settings.algorithmitems_edit', { 'id' : data.id });
 				} else {
 					if (data.exception.indexOf("ValidationFailedException") != -1) {
 						toastr.warning(data.message, $translate('VALIDATION_FAILED_HEADER'));
@@ -531,7 +560,11 @@ function AlgorithmItemsEditController($rootScope, $scope, $state, $stateParams, 
 				}
 			})
 			.error(function(data, status, headers, config) {
-				toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+				if (data.exception.indexOf("ValidationFailedException") != -1) {
+					toastr.warning(data.message, $translate('VALIDATION_FAILED_HEADER'));
+				} else {
+					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+				}
 			});		
 	};
 	

@@ -18,14 +18,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.LocaleResolver;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import etm.core.monitor.EtmPoint;
 
 @RestController
 @RequestMapping(value = { "/api/v1/items" })
 public class ItemController extends BaseController {
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Autowired
 	private LocaleResolver localeResolver;
@@ -119,6 +126,22 @@ public class ItemController extends BaseController {
 			return itemService.getMetatags(ItemEntityType.valueOf(entityType));
 		} finally {
 			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value="/export/{entityType}")
+	public List<ItemResource> exportItems(@PathVariable String entityType) {
+		return itemService.exportItems(ItemEntityType.valueOf(entityType.toUpperCase()));
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method = RequestMethod.POST, value = "/import")
+	public Integer importItems(@RequestParam MultipartFile file) {
+		try {
+			Object obj = objectMapper.readValue(file.getInputStream(), objectMapper.getTypeFactory().constructCollectionType(List.class, ItemResource.class));
+			return itemService.importItems((List<ItemResource>) obj);
+		} catch (Exception e) {
+			throw new RuntimeException("Parsing of imported file failed!", e);
 		}
 	}
 

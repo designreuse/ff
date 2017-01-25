@@ -205,6 +205,7 @@ function config($translateProvider) {
 			BUTTON_EXPORT: 'Export',
 			BUTTON_EXPORT_ALL: 'Export all',
 			BUTTON_EXPORT_SELECTED: 'Export selected',
+			BUTTON_IMPORT: 'Import',
 			BUTTON_AS_CSV: 'to CSV',
 			BUTTON_AS_PDF: 'to PDF',
 			
@@ -324,6 +325,10 @@ function config($translateProvider) {
 			ACTION_SEND_EMAIL_SUCCESS_MESSAGE: 'Sending email successful',
 			ACTION_SEND_EMAIL_FAILURE_MESSAGE: 'Sending email failed',
 			ACTION_SEND_EMAIL_HTTP_STATUS_202_MESSAGE: 'Sending email aborted as no eligible recipient found',
+			ACTION_IMPORT_FAILURE_MESSAGE: 'Importing data failed',
+			ACTION_IMPORT_SUCCESS_MESSAGE: 'Importing data successful',
+			ACTION_EXPORT_FAILURE_MESSAGE: 'Exporting data failed',
+			ACTION_EXPORT_SUCCESS_MESSAGE: 'Exporting data successful',
 			
 			DIALOG_DELETE_HEADER: 'Delete {{entity}}',
 			DIALOG_DELETE_MESSAGE: 'Do you really want to delete {{entity}}?',

@@ -16,4 +16,7 @@ angular.module('FundFinder')
 	this.getPage = function(resource) {
 		return $http.post('/api/v1/activities/page', resource);
 	};
+	this.exportData = function() {
+		return $http.get('/api/v1/activities/export');
+	};
 });

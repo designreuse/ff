@@ -7,7 +7,16 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
         <div class="col-lg-12 m-b-xs">
-            <button ng-click="addEntity()" type="button" class="btn btn-primary pull-right">{{ 'BUTTON_ADD' | translate }}</button>
+            <div class="btn-group pull-right">
+                <button ng-click="addEntity()" type="button" class="btn btn-primary">{{ 'BUTTON_ADD' | translate }}</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a ng-click="exportData()">{{ 'BUTTON_EXPORT' | translate }}</a></li>
+                    <li><a href="#" ngf-select ngf-change="importData($files)">{{ 'BUTTON_IMPORT' | translate }}</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 	<div class="row">

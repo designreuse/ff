@@ -15,8 +15,8 @@ public class ItemOptionResource {
 	@JsonProperty("id")
 	private Integer id;
 
-	@JsonProperty("ordinal")
-	private Integer ordinal;
+	@JsonProperty("position")
+	private Integer position;
 
 	@JsonProperty("text")
 	private String text;
