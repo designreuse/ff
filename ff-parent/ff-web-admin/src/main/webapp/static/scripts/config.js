@@ -898,61 +898,61 @@ angular.module('FundFinder')
 	// =======================================
 	// 	SSE handling
 	// =======================================
-	$rootScope.connected = false;
-	$rootScope.connect = function() {
-		$log.info("Registering event listener for SSE");
-		
-		var source = new EventSource(constants.contextPath + '/api/v1/sse/emitter');
-		
-		source.addEventListener('open', function(e) {
-			$rootScope.connected = true;
-			$log.info("SSE connection opened");
-        });
-		
-		source.addEventListener('message', function (e) {
-			var message = JSON.parse(e.data);
-			if (message.type == 'COUNTERS_UPDATE') {
-				$timeout(function () {
-					$rootScope.$apply(function() {
-						$rootScope.cntUsers = message.counters.cntUsers;
-						$rootScope.cntTenders = message.counters.cntTenders;
-						$rootScope.cntInvestments = message.counters.cntInvestments;
-						$rootScope.cntArticles = message.counters.cntArticles;
-					});
-				}, 100);
-			}
-        }, false);
-		
-		source.addEventListener('error', function (e) {
-            if (e.readyState == EventSource.CLOSED) {
-            	$log.error("SSE connection error");
-            	$rootScope.connected = false;
-                connect();
-            }
-        }, false);
-	};
-
-	$rootScope.connect();
+//	$rootScope.connected = false;
+//	$rootScope.connect = function() {
+//		$log.info("Registering event listener for SSE");
+//		
+//		var source = new EventSource(constants.contextPath + '/api/v1/sse/emitter');
+//		
+//		source.addEventListener('open', function(e) {
+//			$rootScope.connected = true;
+//			$log.info("SSE connection opened");
+//        });
+//		
+//		source.addEventListener('message', function (e) {
+//			var message = JSON.parse(e.data);
+//			if (message.type == 'COUNTERS_UPDATE') {
+//				$timeout(function () {
+//					$rootScope.$apply(function() {
+//						$rootScope.cntUsers = message.counters.cntUsers;
+//						$rootScope.cntTenders = message.counters.cntTenders;
+//						$rootScope.cntInvestments = message.counters.cntInvestments;
+//						$rootScope.cntArticles = message.counters.cntArticles;
+//					});
+//				}, 100);
+//			}
+//        }, false);
+//		
+//		source.addEventListener('error', function (e) {
+//            if (e.readyState == EventSource.CLOSED) {
+//            	$log.error("SSE connection error");
+//            	$rootScope.connected = false;
+//                connect();
+//            }
+//        }, false);
+//	};
+//
+//	$rootScope.connect();
 	
 	// =======================================
 	// 	initial load of counters
 	// =======================================
-	$rootScope.cntUsers = 0;
-	$rootScope.cntTenders = 0;
-	$rootScope.cntInvestments = 0;
-	$rootScope.cntArticles = 0;
-	
-	CountersService.findAll()
-		.success(function(data, status, headers, config) {
-			$timeout(function () {
-				$rootScope.$apply(function() {
-					$rootScope.cntUsers = data.cntUsers;
-					$rootScope.cntTenders = data.cntTenders;
-					$rootScope.cntInvestments = data.cntInvestments;
-					$rootScope.cntArticles = data.cntArticles;
-				});
-			}, 100);
-		});
+//	$rootScope.cntUsers = 0;
+//	$rootScope.cntTenders = 0;
+//	$rootScope.cntInvestments = 0;
+//	$rootScope.cntArticles = 0;
+//	
+//	CountersService.findAll()
+//		.success(function(data, status, headers, config) {
+//			$timeout(function () {
+//				$rootScope.$apply(function() {
+//					$rootScope.cntUsers = data.cntUsers;
+//					$rootScope.cntTenders = data.cntTenders;
+//					$rootScope.cntInvestments = data.cntInvestments;
+//					$rootScope.cntArticles = data.cntArticles;
+//				});
+//			}, 100);
+//		});
 	
 	// =======================================
 	// 	permissions
