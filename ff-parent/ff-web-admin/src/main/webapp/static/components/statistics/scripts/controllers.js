@@ -21,7 +21,11 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		    	}
 		    }],
 		    yAxes: [{
-		    	display: true
+		    	display: true,
+		    	ticks: {
+					fontSize: 10,
+					stepSize: 1
+				}
 		    }]
 		},
 		tooltips: {
@@ -32,6 +36,7 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.companiesByCountiesView = 'CHART_VIEW';
 	$scope.companiesByRevenuesView = 'CHART_VIEW';
+	$scope.companiesBySizeView = 'CHART_VIEW';
 	$scope.investmentsByCountiesView = 'CHART_VIEW';
 	$scope.investmentsByActivitiesView = 'CHART_VIEW';
 	
@@ -41,6 +46,10 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.changeCompaniesByRevenuesView = function(view) {
 		$scope.companiesByRevenuesView = view;	
+	};
+	
+	$scope.changeCompaniesBySizeView = function(view) {
+		$scope.companiesBySizeView = view;	
 	};
 	
 	$scope.changeInvestmentsByCountiesView = function(view) {
@@ -115,6 +124,44 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				});
 				
 				$scope.totalCompaniesByRevenues4TableView = total;
+			})
+			.error(function(data, status) {
+				if (status == 404) {
+					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_REVENUE" }));
+				} else if (status == 409) {
+					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_REVENUE" }));
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			});	
+	};
+	
+	$scope.getCompaniesBySize = function() {
+		StatisticsService.getCompaniesBySize()
+			.success(function(data, status) {
+				$scope.typeCompaniesBySize = data.type;
+				
+				$scope.labelsCompaniesBySize4TableView = data.labels;
+				$scope.labelsCompaniesBySize4ChartView = new Array();
+				$.each(data.labels, function(index, value) {
+					$scope.labelsCompaniesBySize4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
+				});
+				
+				var dataArray = new Array();
+				dataArray.push(data.data);
+				$scope.dataCompaniesBySize = dataArray;
+				
+				var total = 0;
+				$.each(dataArray[0], function(index, value) {
+					total = total + parseInt(value);
+				});
+				
+				$scope.percentageCompaniesBySize4TableView = new Array();
+				$.each(dataArray[0], function(index, value) {
+					$scope.percentageCompaniesBySize4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+				});
+				
+				$scope.totalCompaniesBySize4TableView = total;
 			})
 			.error(function(data, status) {
 				if (status == 404) {

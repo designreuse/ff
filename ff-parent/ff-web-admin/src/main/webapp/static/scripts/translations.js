@@ -76,6 +76,7 @@ function config($translateProvider) {
 			
 			TAB_STATS_COMPANIES_BY_COUNTIES: 'Companies by counties',
 			TAB_STATS_COMPANIES_BY_REVENUES: 'Companies by revenues',
+			TAB_STATS_COMPANIES_BY_SIZE: 'Companies by size',
 			TAB_STATS_INVESTMENTS_BY_COUNTIES: 'Investments by counties',
 			TAB_STATS_INVESTMENTS_BY_ACTIVITIES: 'Investments by activities',
 			

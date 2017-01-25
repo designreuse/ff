@@ -14,7 +14,7 @@ import lombok.Data;
 @JsonInclude(Include.NON_NULL)
 public class StatisticsResource {
 
-	public enum StatisticsType { COMPANIES_BY_COUNTIES, COMPANIES_BY_REVENUES, INVESTMENTS_BY_COUNTIES, INVESTMENTS_BY_ACTIVITIES };
+	public enum StatisticsType { COMPANIES_BY_COUNTIES, COMPANIES_BY_REVENUES, COMPANIES_BY_SIZE, INVESTMENTS_BY_COUNTIES, INVESTMENTS_BY_ACTIVITIES };
 
 	@JsonProperty("type")
 	private StatisticsType type;

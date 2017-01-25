@@ -147,6 +147,43 @@ public class StatisticsService {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	/**
+	 * Get companies by size.
+	 * @return
+	 */
+	public ResponseEntity<?> getCompaniesBySize() {
+		StatisticsResource result = new StatisticsResource();
+		result.setType(StatisticsType.COMPANIES_BY_SIZE);
+		result.setTimestamp(new Date());
+
+		List<Item> items = itemRepository.findByMetaTag(ItemMetaTag.COMPANY_SIZE);
+		if (items.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else if (items.size() > 1) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+
+		Map<Integer, ItemOption> itemOptions = new LinkedHashMap<>();
+		Map<Integer, AtomicInteger> counters = new LinkedHashMap<>();
+		for (ItemOption itemOption : items.get(0).getOptions()) {
+			itemOptions.put(itemOption.getId(), itemOption);
+			counters.put(itemOption.getId(), new AtomicInteger(0));
+		}
+
+		for (CompanyItem companyItem : companyItemRepository.findByItem(items.get(0))) {
+			if (companyItem.getValue() != null) {
+				counters.put(Integer.parseInt(companyItem.getValue()), new AtomicInteger(counters.get(Integer.parseInt(companyItem.getValue())).incrementAndGet()));
+			}
+		}
+
+		for (Entry<Integer, AtomicInteger> entry : counters.entrySet()) {
+			result.getLabels().add(StringUtils.abbreviate(itemOptions.get(entry.getKey()).getText(), abbreviateMaxWidth));
+			result.getData().add(entry.getValue());
+		}
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	public ResponseEntity<?> getInvestmentsByCounties() {
 		StatisticsResource result = new StatisticsResource();
 		result.setType(StatisticsType.INVESTMENTS_BY_COUNTIES);

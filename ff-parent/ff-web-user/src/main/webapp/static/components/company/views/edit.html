@@ -72,7 +72,12 @@
 						<select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
 						
 						<!-- SUBDIVISIONS2 -->
-						<select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select> <select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
+						<select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select> 
+						
+						<!-- SELECT -->
+						<select ng-if="item.type == 'SELECT'" allow-single-deselect="true" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.options" ng-options="option.text for option in item.options track by option.id">
+						  <option value=""></option>
+						</select>
                         
                         <!-- MULTISELECT -->
                         <select ng-if="item.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>

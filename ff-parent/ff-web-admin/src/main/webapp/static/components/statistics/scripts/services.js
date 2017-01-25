@@ -7,6 +7,9 @@ angular.module('FundFinder')
 	this.getCompaniesByRevenues = function() {
 		return $http.get('/api/v1/statistics/companiesByRevenues');
 	};
+	this.getCompaniesBySize = function() {
+		return $http.get('/api/v1/statistics/companiesBySize');
+	};
 	this.getInvestmentsByCounties = function() {
 		return $http.get('/api/v1/statistics/investmentsByCounties');
 	};

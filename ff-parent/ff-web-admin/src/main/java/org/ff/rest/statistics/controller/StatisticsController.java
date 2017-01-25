@@ -45,6 +45,17 @@ public class StatisticsController extends BaseController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value="/companiesBySize")
+	public ResponseEntity<?> getCompaniesBySize() {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getCompaniesBySize");
+		try {
+			return statisticsService.getCompaniesBySize();
+		} finally {
+			etmService.collect(point);
+			log.debug("getCompaniesBySize() finished in {} ms", point.getTransactionTime());
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value="/investmentsByCounties")
 	public ResponseEntity<?> getInvestmentsByCounties() {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".getInvestmentsByCounties");
