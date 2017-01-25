@@ -19,6 +19,7 @@ public class ItemOptionResourceAssembler {
 	public ItemOptionResource toResource(ItemOption entity, boolean light) {
 		ItemOptionResource resource = new ItemOptionResource();
 		resource.setId(entity.getId());
+		resource.setPosition(entity.getPosition());
 		resource.setText(entity.getText());
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
