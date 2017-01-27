@@ -16,6 +16,7 @@ import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemStatus;
 import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemType;
 import org.ff.jpa.domain.AlgorithmItem.Operator;
 import org.ff.jpa.repository.AlgorithmItemRepository;
+import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.specification.AlgorithmItemSpecification;
 import org.ff.rest.algorithmitem.resource.AlgorithmItemResource;
 import org.ff.rest.algorithmitem.resource.AlgorithmItemResourceAssembler;
@@ -41,6 +42,9 @@ public class AlgorithmItemService extends BaseService {
 
 	@Autowired
 	private AlgorithmItemResourceAssembler resourceAssembler;
+
+	@Autowired
+	private ItemRepository itemRepository;
 
 	@Transactional(readOnly = true)
 	public List<AlgorithmItemResource> findAll() {
@@ -202,7 +206,14 @@ public class AlgorithmItemService extends BaseService {
 		for (AlgorithmItemResource resource : resources) {
 			log.debug("Importing {}", resources);
 
-			AlgorithmItem entity = resourceAssembler.createEntity(resource);
+			AlgorithmItem entity = new AlgorithmItem();
+			entity.setCode(resource.getCode());
+			entity.setType(resource.getType());
+			entity.setStatus(resource.getStatus());
+			entity.setCompanyItem(itemRepository.findByCodeAndEntityType(resource.getCompanyItem().getCode(), resource.getCompanyItem().getEntityType()));
+			entity.setTenderItem(itemRepository.findByCodeAndEntityType(resource.getTenderItem().getCode(), resource.getTenderItem().getEntityType()));
+			entity.setOperator(Operator.valueOf(resource.getOperator().getValue()));
+			entity.setConditionalItemCode((resource.getType() == AlgorithmItemType.CONDITIONAL) ? resource.getConditionalItemCode() : null);
 			repository.save(entity);
 
 			log.debug("Algorithm item [id: {}] successfully imported", entity.getId());

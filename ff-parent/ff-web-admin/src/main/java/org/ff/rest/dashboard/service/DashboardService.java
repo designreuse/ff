@@ -64,11 +64,16 @@ public class DashboardService {
 		resource.setUsersRegisteredExternal(userRepository.count(UserRegistrationType.EXTERNAL));
 		resource.setUsersRegistered(resource.getUsersRegisteredInternal() + resource.getUsersRegisteredExternal());
 
-		double usersRegisteredInternalPercentage = (new Double(resource.getUsersRegisteredInternal()) / new Double(resource.getUsersRegistered())) * 100;
-		double usersRegisteredExternalPercentage = (new Double(resource.getUsersRegisteredExternal()) / new Double(resource.getUsersRegistered())) * 100;
+		if (resource.getUsersRegistered() == 0) {
+			resource.setUsersRegisteredInternalPercentage("0%");
+			resource.setUsersRegisteredExternalPercentage("0%");
+		} else {
+			double usersRegisteredInternalPercentage = (new Double(resource.getUsersRegisteredInternal()) / new Double(resource.getUsersRegistered())) * 100;
+			double usersRegisteredExternalPercentage = (new Double(resource.getUsersRegisteredExternal()) / new Double(resource.getUsersRegistered())) * 100;
 
-		resource.setUsersRegisteredInternalPercentage(new BigDecimal(usersRegisteredInternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
-		resource.setUsersRegisteredExternalPercentage(new BigDecimal(usersRegisteredExternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+			resource.setUsersRegisteredInternalPercentage(new BigDecimal(usersRegisteredInternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+			resource.setUsersRegisteredExternalPercentage(new BigDecimal(usersRegisteredExternalPercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+		}
 
 		// visits
 		resource.setVisitsTotal(impressionRepository.count(EntityType.USER));
@@ -84,11 +89,16 @@ public class DashboardService {
 		resource.setTendersInactive(tenderRepository.count(TenderStatus.INACTIVE));
 		resource.setTenders(resource.getTendersActive() + resource.getTendersInactive());
 
-		double tendersActivePercentage = (new Double(resource.getTendersActive()) / new Double(resource.getTenders())) * 100;
-		double tendersInactivePercentage = (new Double(resource.getTendersInactive()) / new Double(resource.getTenders())) * 100;
+		if (resource.getTenders() == 0) {
+			resource.setTendersActivePercentage("0%");
+			resource.setTendersInactivePercentage("0%");
+		} else {
+			double tendersActivePercentage = (new Double(resource.getTendersActive()) / new Double(resource.getTenders())) * 100;
+			double tendersInactivePercentage = (new Double(resource.getTendersInactive()) / new Double(resource.getTenders())) * 100;
 
-		resource.setTendersActivePercentage(new BigDecimal(tendersActivePercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
-		resource.setTendersInactivePercentage(new BigDecimal(tendersInactivePercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+			resource.setTendersActivePercentage(new BigDecimal(tendersActivePercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+			resource.setTendersInactivePercentage(new BigDecimal(tendersInactivePercentage).setScale(2, RoundingMode.HALF_UP).toString() + "%");
+		}
 
 		// projects
 		resource.setProjects(projectRepository.count());
@@ -96,8 +106,12 @@ public class DashboardService {
 		List<Item> items = itemRepository.findByMetaTag(ItemMetaTag.COMPANY_INVESTMENT_AMOUNT);
 		if (items.isEmpty()) {
 			log.warn("Item with metatag COMPANY_INVESTMENT_AMOUNT not found");
+			resource.setProjectsValueTotal(0d);
+			resource.setProjectsValueAvg(0d);
 		} else if (items.size() > 1) {
 			log.warn("Multiple items with metatag COMPANY_INVESTMENT_AMOUNT found");
+			resource.setProjectsValueTotal(0d);
+			resource.setProjectsValueAvg(0d);
 		} else {
 			double total = 0d;
 			for (ProjectItem projectItem : projectItemRepository.findByItem(items.get(0))) {

@@ -85,7 +85,11 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				
 				$scope.percentageCompaniesByCounties4TableView = new Array();
 				$.each(dataArray[0], function(index, value) {
-					$scope.percentageCompaniesByCounties4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					if (total == 0) {
+						$scope.percentageCompaniesByCounties4TableView.push(0);
+					} else {
+						$scope.percentageCompaniesByCounties4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					}
 				});
 				
 				$scope.totalCompaniesByCounties4TableView = total;
@@ -123,7 +127,11 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				
 				$scope.percentageCompaniesByRevenues4TableView = new Array();
 				$.each(dataArray[0], function(index, value) {
-					$scope.percentageCompaniesByRevenues4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					if (total == 0) {
+						$scope.percentageCompaniesByRevenues4TableView.push(0);
+					} else {
+						$scope.percentageCompaniesByRevenues4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					}
 				});
 				
 				$scope.totalCompaniesByRevenues4TableView = total;
@@ -161,16 +169,20 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				
 				$scope.percentageCompaniesBySize4TableView = new Array();
 				$.each(dataArray[0], function(index, value) {
-					$scope.percentageCompaniesBySize4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					if (total == 0) {
+						$scope.percentageCompaniesBySize4TableView.push(0);
+					} else {
+						$scope.percentageCompaniesBySize4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					}
 				});
 				
 				$scope.totalCompaniesBySize4TableView = total;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
-					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_REVENUE" }));
+					toastr.warning($translate('ERR_MSG_001', { metatag: "COMPANY_SIZE" }));
 				} else if (status == 409) {
-					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_REVENUE" }));
+					toastr.warning($translate('ERR_MSG_002', { metatag: "COMPANY_SIZE" }));
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
