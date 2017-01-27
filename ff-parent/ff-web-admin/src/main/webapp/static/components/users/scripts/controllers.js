@@ -169,13 +169,15 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 						disableCancelFilterButton: true,
 						selectOptions: [
 							{ value: 'ACTIVE', label: $translate('STATUS_ACTIVE') },
-							{ value: 'INACTIVE', label: $translate('STATUS_INACTIVE') }]
+							{ value: 'INACTIVE', label: $translate('STATUS_INACTIVE') },
+							{ value: 'WAITING_CONFIRMATION', label: $translate('STATUS_WAITING_CONFIRMATION') }]
 					},
 					enableHiding: false,
-					width: 100,
+					width: 125,
 					cellTemplate:
-						'<div ng-show="row.entity.status == \'ACTIVE\'" class="ui-grid-cell-contents"><span class="badge badge-primary">{{\'STATUS_ACTIVE\' | translate}}</span></div>' + 
-						'<div ng-show="row.entity.status == \'INACTIVE\'" class="ui-grid-cell-contents"><span class="badge badge-danger">{{\'STATUS_INACTIVE\' | translate}}</span></div>'
+						'<div ng-show="row.entity.status == \'ACTIVE\'" class="ui-grid-cell-contents"><span class="badge badge-primary">{{\'STATUS_ACTIVE\' | translate}}</span></div>' +
+						'<div ng-show="row.entity.status == \'INACTIVE\'" class="ui-grid-cell-contents"><span class="badge badge-danger">{{\'STATUS_INACTIVE\' | translate}}</span></div>' +
+						'<div ng-show="row.entity.status == \'WAITING_CONFIRMATION\'" class="ui-grid-cell-contents"><span class="badge badge-warning">{{\'STATUS_WAITING_CONFIRMATION\' | translate}}</span></div>'
 				},
 				{
 					displayName: $translate('COLUMN_CREATION_DATE'),
@@ -224,11 +226,11 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					width: calculateWidth(),
 					exporterSuppressExport: true,
 					cellTemplate:
-						'<div style="padding-top: 1px">' +
-							'<button ng-if="grid.appScope.hasPermission([\'users.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
-							'<button ng-if="grid.appScope.hasPermission([\'users.export\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
-							'<button ng-if="grid.appScope.hasPermission([\'users.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
-							'<button ng-if="grid.appScope.hasPermission([\'users.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
+						'<div style="padding-top: 1px; text-align: right;">' +
+							'<button ng-if="grid.appScope.hasPermission([\'users.read\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'users.export\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'users.update\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
+							'<button ng-if="grid.appScope.hasPermission([\'users.update\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'users.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
 						'</div>'
 				}

@@ -12,6 +12,7 @@
         </style>
     </head>
     <body>
+        <h1>Fund Finder Admin</h1>
         <div>
             ${data}
         </div>

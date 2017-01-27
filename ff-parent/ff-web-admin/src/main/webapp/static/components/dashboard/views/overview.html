@@ -16,7 +16,9 @@
 				<div class="ibox-content ff-ibox-content">
 					<h1 class="no-margins">{{ data.usersRegistered}}</h1>
 					<div class="stat-percent" style="text-align: right;">
-						<small><br>{{ data.usersRegisteredExternalPercentage }}<br>{{ data.usersRegisteredInternalPercentage }}</small>
+						<small>
+                            <br>{{ data.usersRegisteredExternal }}<span style="width: 50px; display: inline-block;">{{ data.usersRegisteredExternalPercentage }}</span><br>{{ data.usersRegisteredInternal }}<span style="width: 50px; display: inline-block;">{{ data.usersRegisteredInternalPercentage }}</span>
+						</small>
 					</div>
 					<small><br>{{ 'DASHBOARD_REGISTRATION_TYPE_EXTERNAL' | translate }}<br>{{ 'DASHBOARD_REGISTRATION_TYPE_INTERNAL' | translate }}</small>
 				</div>
@@ -29,11 +31,13 @@
                     <h5>{{ 'DASHBOARD_VISITS' | translate }}</h5>
                 </div>
                 <div class="ibox-content ff-ibox-content">
-                    <h1 class="no-margins">{{ data.usersRegistered}}</h1>
+                    <h1 class="no-margins">{{ data.visitsTotal}}</h1>
                     <div class="stat-percent" style="text-align: right;">
-                        <small><br>{{ data.usersRegisteredExternalPercentage }}<br>{{ data.usersRegisteredInternalPercentage }}</small>
+                        <small>
+                            <br>{{ data.visitsUnique }}<span style="width: 50px; display: inline-block;">{{ data.visitsUniquePercentage }}</span><br>&nbsp;
+                        </small>
                     </div>
-                    <small><br>{{ 'DASHBOARD_TOTAL' | translate }}<br>{{ 'DASHBOARD_UNIQUE' | translate }}</small>
+                    <small><br>{{ 'DASHBOARD_UNIQUE' | translate }}<br>&nbsp;</small>
                 </div>
             </div>
         </div>
@@ -44,11 +48,30 @@
                     <h5>{{ 'DASHBOARD_TENDERS' | translate }}</h5>
                 </div>
                 <div class="ibox-content ff-ibox-content">
-                    <h1 class="no-margins">{{ data.usersRegistered}}</h1>
+                    <h1 class="no-margins">{{ data.tenders}}</h1>
                     <div class="stat-percent" style="text-align: right;">
-                        <small><br>{{ data.usersRegisteredExternalPercentage }}<br>{{ data.usersRegisteredInternalPercentage }}</small>
+                        <small>
+                            <br>{{ data.tendersActive }}<span style="width: 50px; display: inline-block;">{{ data.tendersActivePercentage }}</span><br>{{ data.tendersInactive }}<span style="width: 50px; display: inline-block;">{{ data.tendersInactivePercentage }}</span>
+                        </small>
                     </div>
                     <small><br>{{ 'DASHBOARD_ACTIVE' | translate }}<br>{{ 'DASHBOARD_INACTIVE' | translate }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title ff-ibox-title">
+                    <span class="label label-danger pull-right">{{ 'DASHBOARD_TOTAL' | translate }}</span>
+                    <h5>{{ 'DASHBOARD_PROJECTS' | translate }}</h5>
+                </div>
+                <div class="ibox-content ff-ibox-content">
+                    <h1 class="no-margins">{{ data.projects}}</h1>
+                    <div class="stat-percent" style="text-align: right;">
+                        <small>
+                            <br>{{ data.projectsValueTotal | currency : "" }} {{ data.currency }}<br>{{ data.projectsValueAvg | currency : "" }} {{ data.currency }}
+                        </small>
+                    </div>
+                    <small><br>{{ 'DASHBOARD_TOTAL_VALUE' | translate }}<br>{{ 'DASHBOARD_AVERAGE_VALUE' | translate }}</small>
                 </div>
             </div>
         </div>

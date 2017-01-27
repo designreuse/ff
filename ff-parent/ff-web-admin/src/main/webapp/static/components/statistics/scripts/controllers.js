@@ -13,11 +13,14 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		    xAxes: [{
 		    	display: true,
 		    	type: "category",
+		    	barThickness: 30,
+		    	categoryPercentage: 0.3,
 		    	scaleLabel: {
 		    		display: false
 		    	}, 
 		    	gridLines: {
-		    		display: true
+		    		display: true,
+		    		tickMarkLength: 5
 		    	}
 		    }],
 		    yAxes: [{
@@ -196,7 +199,11 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				
 				$scope.percentageInvestmentsByCounties4TableView = new Array();
 				$.each(dataArray[0], function(index, value) {
-					$scope.percentageInvestmentsByCounties4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					if (total == 0) {
+						$scope.percentageInvestmentsByCounties4TableView.push(0);
+					} else {
+						$scope.percentageInvestmentsByCounties4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					}
 				});
 				
 				$scope.totalInvestmentsByCounties4TableView = total;
@@ -205,7 +212,6 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				$scope.investmentAmountByCounties = data.data2;
 				$scope.investmentAmountByCountiesTotal = 0;
 				$.each($scope.investmentAmountByCounties, function(index, value) {
-					console.log(value);
 					$scope.investmentAmountByCountiesTotal = $scope.investmentAmountByCountiesTotal + parseFloat(value);
 				});
 				
@@ -245,7 +251,11 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				
 				$scope.percentageInvestmentsByActivities4TableView = new Array();
 				$.each(dataArray[0], function(index, value) {
-					$scope.percentageInvestmentsByActivities4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					if (total == 0) {
+						$scope.percentageInvestmentsByActivities4TableView.push(0);
+					} else {
+						$scope.percentageInvestmentsByActivities4TableView.push(parseFloat((value * 100) / total).toFixed(0));
+					}
 				});
 				
 				$scope.totalInvestmentsByActivities4TableView = total;
@@ -254,7 +264,6 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				$scope.investmentAmountByActivities = data.data2;
 				$scope.investmentAmountByActivitiesTotal = 0;
 				$.each($scope.investmentAmountByActivities, function(index, value) {
-					console.log(value);
 					$scope.investmentAmountByActivitiesTotal = $scope.investmentAmountByActivitiesTotal + parseFloat(value);
 				});
 				

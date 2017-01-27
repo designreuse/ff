@@ -284,6 +284,7 @@
 .ff-ibox-title {
     border-left: 1px solid #e7eaec; 
     border-right: 1px solid #e7eaec;
+    background: #fcfcfc;
 }
 
 .ff-ibox-content {

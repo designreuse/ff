@@ -63,6 +63,7 @@ public class UserService extends BaseService {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 
+		resource.setRegistrationType(UserRegistrationType.INTERNAL);
 		user = repository.save(resourceAssembler.createEntity(resource));
 
 		log.debug("Sending confirmation email to [{}]...", user.getEmail());

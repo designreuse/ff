@@ -24,4 +24,24 @@ public interface ImpressionRepository extends CrudRepository<Impression, Integer
 			@Param("start") DateTime start,
 			@Param("end") DateTime end);
 
+	@Query("select count(*) from Impression i where i.entityType = :entityType and (i.creationDate between :start and :end)")
+	Long count(
+			@Param("entityType") EntityType entityType,
+			@Param("start") DateTime start,
+			@Param("end") DateTime end);
+
+	@Query("select count(distinct created_by) from Impression i where i.entityType = :entityType and (i.creationDate between :start and :end)")
+	Long countDistinct(
+			@Param("entityType") EntityType entityType,
+			@Param("start") DateTime start,
+			@Param("end") DateTime end);
+
+	@Query("select count(*) from Impression i where i.entityType = :entityType")
+	Long count(
+			@Param("entityType") EntityType entityType);
+
+	@Query("select count(distinct created_by) from Impression i where i.entityType = :entityType")
+	Long countDistinct(
+			@Param("entityType") EntityType entityType);
+
 }

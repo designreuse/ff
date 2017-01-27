@@ -177,9 +177,9 @@ function config($translateProvider) {
 			COLUMN_REGISTRATION_TYPE: 'Registration type',
 			COLUMN_REVENUE: 'Revenue',
 			COLUMN_SECTOR: 'Sector',
-			COLUMN_SECTOR: 'Sector',
 			COLUMN_SECTOR_NAME: 'Sector name',
 			COLUMN_SEND_DATE: 'Send date',
+			COLUMN_SIZE: 'Size',
 			COLUMN_SUMMARY_ITEM: 'Summary item',
 			COLUMN_STATUS: 'Status',
 			COLUMN_SUBDIVISION1: 'County',
@@ -228,6 +228,7 @@ function config($translateProvider) {
 			STATUS_ACTIVE: 'Active',
 			STATUS_INACTIVE: 'Inactive',
 			STATUS_INCOMPLETE: 'Incomplete',
+			STATUS_WAITING_CONFIRMATION: 'Waiting confirmation',
 			
 			REGISTRATION_TYPE_INTERNAL: 'Registration form',
 			REGISTRATION_TYPE_EXTERNAL: 'e-ZaBa',
@@ -365,6 +366,7 @@ function config($translateProvider) {
 			DASHBOARD_USERS: 'Users',
 			DASHBOARD_TENDERS: 'Tenders',
 			DASHBOARD_VISITS: 'Visits',
+			DASHBOARD_PROJECTS: 'Projects',
 			DASHBOARD_TOTAL: 'Total',
 			DASHBOARD_UNIQUE: 'Unique',
 			DASHBOARD_ACTIVE: 'Active',
@@ -373,6 +375,8 @@ function config($translateProvider) {
 			DASHBOARD_CHART_PERIOD: 'Period',
 			DASHBOARD_REGISTRATION_TYPE_INTERNAL: 'Registered via Fund Finder',
 			DASHBOARD_REGISTRATION_TYPE_EXTERNAL: 'Registered via e-Zaba',
+			DASHBOARD_TOTAL_VALUE: 'Total investments value',
+			DASHBOARD_AVERAGE_VALUE: 'Average investment value',
 		});
 	
 	$translateProvider.preferredLanguage("en");
