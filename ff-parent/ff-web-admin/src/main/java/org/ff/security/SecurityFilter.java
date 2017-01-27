@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.common.security.AppUser.AppUserRole;
+import org.ff.jpa.domain.Role;
+import org.ff.jpa.repository.RoleRepository;
 import org.ff.zaba.sova.SovaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -36,25 +38,40 @@ public class SecurityFilter implements Filter {
 	@Autowired
 	private SovaClient sovaClient;
 
+	@Autowired
+	private RoleRepository roleRepository;
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context.getAuthentication() != null && context.getAuthentication().isAuthenticated()) {
-			log.trace("User [{}] already authenticated", context.getAuthentication().getName());
+			log.trace("User [{}] already authorized", context.getAuthentication().getName());
 		} else {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 			Authentication authentication = null;
 			if (httpRequest.getUserPrincipal() != null) {
 				// when in security realm (e.g. WebSphere)
-				log.trace("Authenticating user [{}]...", httpRequest.getUserPrincipal().getName());
-				authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
-						null, getGrantedAuthority(sovaClient.wsKorisnikAutorizacija(httpRequest.getUserPrincipal().getName())));
+				log.debug("Authorizing user [{}]...", httpRequest.getUserPrincipal().getName());
+
+				String roleExt = sovaClient.wsKorisnikAutorizacija(httpRequest.getUserPrincipal().getName());
+				if (StringUtils.isNotBlank(roleExt)) {
+					Role role = roleRepository.findByName(roleExt);
+					if (role != null) {
+						log.debug("Role [{}] recognized; autorization OK", role.getName());
+						authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
+								null, getGrantedAuthority(role.getName()));
+					} else {
+						log.warn("Role [{}] not recognized; autorization NOK", roleExt);
+					}
+				} else {
+					log.warn("Role not found for user [{}]; autorization NOK", httpRequest.getUserPrincipal().getName());
+				}
 			} else {
 				for (String profile : environment.getActiveProfiles()) {
 					// if development profile is active, use dummy authentication
 					if (profile.startsWith("dev") || profile.startsWith("cloud")) {
-						log.trace("Authenticating unknown user (dev env)...");
+						log.trace("Authorizing unknown user (dev/cloud env)...");
 						authentication = new UsernamePasswordAuthenticationToken(
 								"Administrator", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name()));
 						break;
@@ -62,7 +79,9 @@ public class SecurityFilter implements Filter {
 				}
 			}
 
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			if (authentication != null) {
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
 		}
 		filterChain.doFilter(request, response);
 	}
