@@ -102,6 +102,7 @@ function config($translateProvider) {
 			LABEL_FIRST_NAME: 'First name',
 			LABEL_PROJECTS_4_TENDER: 'Projects that are a match for this tender',
 			LABEL_HELP: 'Help',
+			LABEL_ID: 'ID',
 			LABEL_IMAGE: 'Image',
 			LABEL_INVESTMENT: 'Investment',
 			LABEL_LAST_LOGIN_DATE: 'Last login',
