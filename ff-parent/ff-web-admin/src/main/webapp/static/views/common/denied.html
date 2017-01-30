@@ -7,7 +7,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
-           {{ 'ACCESS_DENIED_MESSAGE' | translate }}
+           {{ 'ACCESS_DENIED_MESSAGE' | translate }} <span ng-show="principal.role.indexOf('ERROR_') != -1">({{ principal.role }})</span>
 		</div>
 	</div>
 </div>

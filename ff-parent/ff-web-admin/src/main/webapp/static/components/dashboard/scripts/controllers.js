@@ -8,6 +8,12 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
+	if ($rootScope.principal.role.indexOf("ERROR_") != -1) {
+		$state.go('security.denied');
+	} else {
+		$rootScope.userAuthorized = true;		
+	}
+	
 	var dailyOptions = {
 		grid: { hoverable: true, clickable: true, tickColor: "#d5d5d5", borderWidth: 0, color: '#d5d5d5' },
         tooltip: true,

@@ -63,9 +63,13 @@ public class SecurityFilter implements Filter {
 								null, getGrantedAuthority(role.getName()));
 					} else {
 						log.warn("Role [{}] not recognized; autorization NOK", roleExt);
+						authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
+								null, AuthorityUtils.createAuthorityList(AppUserRole.ERROR_ROLE_NOT_RECOGNIZED.name()));
 					}
 				} else {
 					log.warn("Role not found for user [{}]; autorization NOK", httpRequest.getUserPrincipal().getName());
+					authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
+							null, AuthorityUtils.createAuthorityList(AppUserRole.ERROR_ROLE_NOT_FOUND.name()));
 				}
 			} else {
 				for (String profile : environment.getActiveProfiles()) {

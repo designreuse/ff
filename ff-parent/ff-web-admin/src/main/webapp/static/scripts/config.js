@@ -995,4 +995,6 @@ angular.module('FundFinder')
 		return $rootScope.hasPermission([permission]);
 	});
 	
+	// indicates if user is authorized to access Fund Finder
+	$rootScope.userAuthorized = false;
 });

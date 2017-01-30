@@ -5,7 +5,7 @@
             <div class="ff-logo"></div>
         </div>
         
-        <ul class="nav navbar-nav" style="margin-left: 40px;">
+        <ul ng-show="userAuthorized" class="nav navbar-nav" style="margin-left: 40px;">
             <li ng-class="{active: $state.includes('dashboard')}">
                 <a ui-sref="dashboard.overview"><span class="nav-label">{{ 'MENU_DASHBOARD' | translate }}</span></a>
             </li>
@@ -61,7 +61,7 @@
             </li>
         </ul>
         
-        <ul class="nav navbar-top-links navbar-right">
+        <ul ng-show="userAuthorized" class="nav navbar-top-links navbar-right">
             <li class="m-l-sm">
                 <label><i class="fa fa-user m-r-xs"></i> {{ principal.username }} [{{ principal.role | translate }}]</label>
             </li>
