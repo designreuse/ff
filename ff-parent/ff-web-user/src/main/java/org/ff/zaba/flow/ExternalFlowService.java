@@ -2,8 +2,10 @@ package org.ff.zaba.flow;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -37,6 +39,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -73,6 +76,9 @@ public class ExternalFlowService {
 	@Autowired
 	private Subdivision2Repository subdivision2Repository;
 
+	@Autowired
+	private LogClientHttpRequestInterceptor interceptor;
+
 	private RestTemplate restTemplate;
 
 	private DateFormat dateFormat;
@@ -80,6 +86,9 @@ public class ExternalFlowService {
 	@PostConstruct
 	public void init() {
 		restTemplate = new RestTemplate();
+		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+		interceptors.add(interceptor);
+		restTemplate.setInterceptors(interceptors);
 		dateFormat = new SimpleDateFormat(baseProperties.getDateFormat());
 	}
 
