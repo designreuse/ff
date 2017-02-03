@@ -50,4 +50,15 @@ public class SettingsController extends BaseController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/deactivate")
+	public SettingsResource deactivate(@AuthenticationPrincipal UserDetails principal) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".deactivate");
+		try {
+			return settingsService.deactivate(principal);
+		} finally {
+			etmService.collect(point);
+			log.debug(".deactivate finished in {} ms", point.getTransactionTime());
+		}
+	}
+
 }

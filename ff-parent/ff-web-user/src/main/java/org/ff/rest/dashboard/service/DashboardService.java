@@ -2,9 +2,9 @@ package org.ff.rest.dashboard.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
@@ -59,13 +59,13 @@ public class DashboardService {
 	public DashboardResource getData(UserDetails principal) {
 		DashboardResource resource = new DashboardResource();
 
-		DateTime date = new DateTime();
-		DateTime date2 = date.minusDays(30);
+		DateTime date12MonthsAgo = new DateTime().minusMonths(12);
+		DateTime date30DaysAgo = new DateTime().minusDays(30);
 
-		Map<String, AtomicInteger> map = new TreeMap<>();
+		Map<String, AtomicInteger> map = new LinkedHashMap<>();
 		for (int i = 0; i<12; i++) {
-			map.put(monthFormat.format(date.toDate()), new AtomicInteger(0));
-			date = date.minusMonths(1);
+			map.put(monthFormat.format(date12MonthsAgo.toDate()), new AtomicInteger(0));
+			date12MonthsAgo = date12MonthsAgo.plusMonths(1);
 		}
 
 		AtomicInteger cntTenders = new AtomicInteger(0);
@@ -81,7 +81,7 @@ public class DashboardService {
 			if (map.containsKey(s)) {
 				map.get(s).incrementAndGet();
 
-				if (tender.getCreationDate().isBefore(date2)) {
+				if (tender.getCreationDate().isBefore(date30DaysAgo)) {
 					// skip tenders that are older then 30 days
 					continue;
 				}

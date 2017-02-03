@@ -3,6 +3,7 @@ package org.ff.rest.settings.service;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.common.password.PasswordService;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.settings.resource.SettingsResource;
 import org.ff.rest.user.resource.UserResourceAssembler;
@@ -48,6 +49,19 @@ public class SettingsService {
 
 		userRepository.save(user);
 
+		resource.setUser(userResourceAssembler.toResource(user, true));
+
+		return resource;
+	}
+
+	@Transactional
+	public SettingsResource deactivate(UserDetails principal) {
+		User user = userRepository.findByEmail(principal.getUsername());
+
+		user.setStatus(UserStatus.INACTIVE);
+		userRepository.save(user);
+
+		SettingsResource resource = new SettingsResource();
 		resource.setUser(userResourceAssembler.toResource(user, true));
 
 		return resource;

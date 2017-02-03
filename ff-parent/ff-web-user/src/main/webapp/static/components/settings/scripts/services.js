@@ -7,4 +7,7 @@ angular.module('FundFinder')
 	this.save = function(resource) {
 		return $http.post('/api/v1/settings', resource);
 	};
+	this.deactivate = function() {
+		return $http.get('/api/v1/settings/deactivate');
+	};
 });

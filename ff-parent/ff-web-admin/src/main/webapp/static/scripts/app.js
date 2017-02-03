@@ -11,6 +11,7 @@
         'frapontillo.bootstrap-duallistbox',	// http://frapontillo.github.io/angular-bootstrap-duallistbox/
         'localytics.directives',				// http://leocaseiro.github.io/angular-chosen/
         'ngFileUpload',							// https://github.com/danialfarid/ng-file-upload
+        'ng-currency',							// https://github.com/aguirrel/ng-currency
         'ngStorage',
         'oc.lazyLoad',							// https://oclazyload.readme.io/
         'pascalprecht.translate',				// https://angular-translate.github.io/

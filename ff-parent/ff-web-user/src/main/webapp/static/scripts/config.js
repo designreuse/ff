@@ -231,15 +231,20 @@ angular.module('FundFinder')
 	    })
 })
 	
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, ModalService, CommonService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, $locale, ModalService, CommonService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
 	$rootScope.version = "v1.0.5";
 	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	
-	$rootScope.dateFormat = "yyyy-MM-dd";
-	$rootScope.dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+	$locale.NUMBER_FORMATS.DECIMAL_SEP= ',';
+	$locale.NUMBER_FORMATS.GROUP_SEP= '.';
+	
+	$rootScope.dateFormat = "dd.MM.yyyy";
+	$rootScope.dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
+	$rootScope.dateFormatDB = "yyyy-MM-dd";
+	$rootScope.dateTimeFormatDB = "yyyy-MM-dd HH:mm:ss";
 	
 	$rootScope.rowHeight = 30;
 	$rootScope.paginationPageSize = 10;
