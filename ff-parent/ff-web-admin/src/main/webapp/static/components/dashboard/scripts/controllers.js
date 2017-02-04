@@ -11,7 +11,7 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 	var dailyOptions = {
 		grid: { hoverable: true, clickable: true, tickColor: "#d5d5d5", borderWidth: 0, color: '#d5d5d5' },
         tooltip: true,
-        xaxis: { mode: "time", tickSize: [1, "day"], timeformat: "%Y-%m-%d" },
+        xaxis: { mode: "time", tickSize: [1, "day"], timeformat: "%d.%m.%Y" },
         yaxes: [{ position: "left" }, { position: "right" }],
         legend: { show: true, noColumns: 1, labelBoxBorderColor: "#d5d5d5", position: "nw" }	
 	};
@@ -19,7 +19,7 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 	var monthlyOptions = {
 		grid: { hoverable: true, clickable: true, tickColor: "#d5d5d5", borderWidth: 0, color: '#d5d5d5' },
         tooltip: true,
-        xaxis: { mode: "time", tickSize: [1, "month"], timeformat: "%Y-%m" },
+        xaxis: { mode: "time", tickSize: [1, "month"], timeformat: "%m.%Y" },
         yaxes: [{ position: "left" }, { position: "right" }],
         legend: { show: true, noColumns: 1, labelBoxBorderColor: "#d5d5d5", position: "nw" }	
 	};
