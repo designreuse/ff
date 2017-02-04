@@ -315,6 +315,9 @@ public class TenderService extends BaseService {
 						}
 
 						to.add(user.getEmail());
+						if (StringUtils.isNotBlank(user.getEmail2())) {
+							to.add(user.getEmail2());
+						}
 
 						BusinessRelationshipManager brm = user.getBusinessRelationshipManager();
 						if (brm != null && StringUtils.isNotBlank(brm.getEmail())) {

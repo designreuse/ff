@@ -1,7 +1,12 @@
 package org.ff.rest.currency.service;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.PostConstruct;
 
 import org.ff.base.properties.BaseProperties;
 import org.ff.base.service.BaseService;
@@ -16,6 +21,13 @@ public class CurrencyService extends BaseService {
 	@Autowired
 	private BaseProperties baseProperties;
 
+	private DecimalFormat format;
+
+	@PostConstruct
+	public void init() {
+		format = new DecimalFormat("###,###.00", new DecimalFormatSymbols(new Locale(baseProperties.getLocale())));
+	}
+
 	@Transactional(readOnly = true)
 	public List<CurrencyResource> findAll() {
 		List<CurrencyResource> result = new ArrayList<>();
@@ -23,6 +35,10 @@ public class CurrencyService extends BaseService {
 			result.add(new CurrencyResource(currencyCode));
 		}
 		return result;
+	}
+
+	public String format(Object value, String currencyCode) {
+		return (value != null) ? (format.format(Double.parseDouble(value.toString())) + " " + currencyCode) : null;
 	}
 
 }

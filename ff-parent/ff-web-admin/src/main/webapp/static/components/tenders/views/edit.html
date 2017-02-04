@@ -93,7 +93,7 @@
                                         
                                         <!-- CURRENCY -->
 	                                    <div ng-if="item.type == 'CURRENCY'" class="input-group">
-	                                        <input ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="border-right: none;" />
+	                                        <input ng-model="item.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="border-right: none;" />
 	                                        <span class="input-group-addon" style="border: none; padding: 0px;">
 	                                            <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>                                     
 	                                        </span>
@@ -122,7 +122,7 @@
                                         <!-- DATE -->
                                         <div ng-if="item.type == 'DATE'">
                                             <div class="input-group">
-                                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="false" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+$index}}" />
+                                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="true" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+$index}}" />
                                                 <span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate($index)">
                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                 </span>

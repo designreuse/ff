@@ -129,6 +129,11 @@ public class UserExportService {
 		.newRow(verticalGap);
 
 		horizontalList.add(
+				cmp.text(messageSource.getMessage("report.lbl.email2", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
+				cmp.text((user.getEmail2() != null) ? user.getEmail2() : "").setStyle(valueStyle))
+		.newRow(verticalGap);
+
+		horizontalList.add(
 				cmp.text(messageSource.getMessage("report.lbl.registrationType", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
 				cmp.text((user.getRegistrationType() == UserRegistrationType.INTERNAL) ? messageSource.getMessage("report.lbl.registrationTypeInternal", null, locale) : messageSource.getMessage("report.lbl.registrationTypeExternal", null, locale)).setStyle(valueStyle))
 		.newRow(verticalGap);

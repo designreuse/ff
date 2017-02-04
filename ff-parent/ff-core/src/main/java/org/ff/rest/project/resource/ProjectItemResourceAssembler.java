@@ -133,7 +133,7 @@ public class ProjectItemResourceAssembler {
 				itemResource.setValue((projectItem.getValue() != null) ? Integer.parseInt(projectItem.getValue()) : null);
 				itemResource.setValueMapped((projectItem.getValue() != null) ? projectItem.getValue() : null);
 			} else if (itemResource.getItem().getType() == ItemType.CURRENCY) {
-				itemResource.setValue((projectItem.getValue() != null) ? Integer.parseInt(projectItem.getValue()) : null);
+				itemResource.setValue((projectItem.getValue() != null) ? Double.parseDouble(projectItem.getValue()) : null);
 				if (itemResource.getItem().getType() == ItemType.CURRENCY) {
 					if (StringUtils.isNotBlank(projectItem.getCurrency())) {
 						itemResource.setCurrency(new CurrencyResource(projectItem.getCurrency()));
@@ -141,7 +141,7 @@ public class ProjectItemResourceAssembler {
 						itemResource.setCurrency(new CurrencyResource(currencyService.findAll().get(0).getCode()));
 					}
 				}
-				itemResource.setValueMapped((projectItem.getValue() != null) ? String.format("%,.2f", Double.parseDouble(projectItem.getValue())) + " " + itemResource.getCurrency().getCode() : null);
+				itemResource.setValueMapped(currencyService.format(projectItem.getValue(), itemResource.getCurrency().getCode()));
 			} else if (itemResource.getItem().getType() == ItemType.DATE) {
 				itemResource.setValue(projectItem.getValue());
 			} else if (itemResource.getItem().getType() == ItemType.RADIO) {

@@ -16,7 +16,7 @@
                    
                     <div style="padding-left: 10px;" ng-if="item.type == 'TEXT' || item.type == 'TEXT_AREA'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
                     <div style="padding-left: 10px;" ng-if="item.type == 'NUMBER'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                    <div style="padding-left: 10px;" ng-if="item.type == 'CURRENCY'" class="ff-value">{{ item.valueMapped | customCurrency : "" : "," : "." : 2 : false }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
+                    <div style="padding-left: 10px;" ng-if="item.type == 'CURRENCY'" class="ff-value">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
                     <div style="padding-left: 10px;" ng-if="item.type == 'PERCENTAGE'" class="ff-value">{{ item.valueMapped }}<span ng-if="item.valueMapped">%</span></div>
                     <div style="padding-left: 10px;" ng-if="item.type == 'RADIO'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
                     <div style="padding-left: 10px;" ng-if="item.type == 'CHECKBOX'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>

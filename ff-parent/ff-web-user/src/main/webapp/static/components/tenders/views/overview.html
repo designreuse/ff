@@ -25,7 +25,7 @@ p span {
             <div class="form-group" ng-repeat="item in tender.items" ng-if="item.valueMapped">
                 <div class="col-sm-12" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
                     <label class="ff-masonry-brick-label">{{ item.text }}</label>
-                    <div ng-if="item.type == 'CURRENCY'" style="padding-left: 5px;">{{ item.valueMapped | customCurrency : "" : "," : "." : 2 : false }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
+                    <div ng-if="item.type == 'CURRENCY'" style="padding-left: 5px;">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
                     <div ng-if="item.type == 'PERCENTAGE'" style="padding-left: 5px;">{{ item.valueMapped }}<span ng-if="item.valueMapped">%</span></div>
                     <div ng-if="item.type == 'HYPERLINK'" class="ff-masonry-brick-value"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
                     <div ng-if="item.type == 'DATE'" style="padding-left: 5px;">{{ item.valueMapped | date:dateFormat }}</div>

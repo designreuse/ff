@@ -47,6 +47,7 @@ public class UserResourceAssembler {
 		resource.setFirstName(entity.getFirstName());
 		resource.setLastName(entity.getLastName());
 		resource.setEmail(entity.getEmail());
+		resource.setEmail2(entity.getEmail2());
 		resource.setCompany((entity.getCompany() != null) ? companyResourceAssembler.toResource(entity.getCompany(), light) : null);
 		resource.setProjects(projectResourceAssembler.toResources(projectRepository.findByCompany(entity.getCompany()), true));
 		resource.setBusinessRelationshipManager((entity.getBusinessRelationshipManager() != null) ? businessRelationshipManagerResourceAssembler.toResource(entity.getBusinessRelationshipManager()) : null);
@@ -83,6 +84,7 @@ public class UserResourceAssembler {
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
+		entity.setEmail2(resource.getEmail2());
 		entity.setPassword(PasswordService.encodePassword(resource.getPassword()));
 		Company company = null;
 		if (resource.getCompany() != null) {
@@ -102,6 +104,7 @@ public class UserResourceAssembler {
 		entity.setFirstName(resource.getFirstName());
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
+		entity.setEmail2(resource.getEmail2());
 		Company company = null;
 		if (resource.getCompany() != null) {
 			company = companyResourceAssembler.updateEntity(companyRepository.findOne(resource.getCompany().getId()), resource.getCompany());

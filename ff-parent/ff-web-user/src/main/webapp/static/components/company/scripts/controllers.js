@@ -78,7 +78,6 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 			CompanyService.find()
 				.success(function(data, status) {
 					if (status == 200) {
-						console.log(data);
 						if (data.items) { 
 							$.each(data.items, function(index, item) {
 								if (item.type == 'DATE') {

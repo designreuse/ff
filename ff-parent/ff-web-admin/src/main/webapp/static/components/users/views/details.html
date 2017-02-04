@@ -67,6 +67,12 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+                                    <label class="ff-label">{{ 'LABEL_EMAIL2' | translate }}</label>
+                                    <div style="padding-left: 10px;">{{ entity.email2 }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
                                     <label class="ff-label">{{ 'LABEL_REGISTRATION_TYPE' | translate }}</label>
                                     <div style="padding-left: 10px;">{{ ('REGISTRATION_TYPE_' + entity.registrationType) | translate }}</div>
                                 </div>
@@ -100,7 +106,6 @@
                                     <div style="padding-left: 10px;">{{ entity.company.code }}</div>
                                 </div>
                             </div>
-                            
                             <div class="form-group" ng-repeat="item in entity.company.items" ng-if="!item.metaTag || item.metaTag.indexOf('COMPANY_INVESTMENT_') == -1">
                                 <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
                                     <label class="ff-label">{{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>

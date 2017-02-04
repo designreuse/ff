@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ff.base.service.BaseService;
 import org.ff.common.algorithm.AlgorithmService;
 import org.ff.common.mailsender.MailSenderService;
@@ -319,7 +320,11 @@ public class UserService extends BaseService {
 			userEmail.setUser(user);
 			userEmailRepository.save(userEmail);
 
-			mailSender.send(user.getEmail(), resource.getSubject(), text);
+			if (StringUtils.isNotBlank(user.getEmail2())) {
+				mailSender.send(new String[] { user.getEmail(),  user.getEmail2() }, resource.getSubject(), text);
+			} else {
+				mailSender.send(user.getEmail(), resource.getSubject(), text);
+			}
 
 			if (user.getBusinessRelationshipManager() != null) {
 				sendEmail2BusinessRelationshipManager(user.getBusinessRelationshipManager().getEmail(), user.getEmail(), resource.getSubject(), text);

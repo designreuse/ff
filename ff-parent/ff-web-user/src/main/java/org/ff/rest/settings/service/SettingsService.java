@@ -42,6 +42,7 @@ public class SettingsService {
 
 		user.setFirstName(resource.getUser().getFirstName());
 		user.setLastName(resource.getUser().getLastName());
+		user.setEmail2(resource.getUser().getEmail2());
 
 		if (StringUtils.isNotBlank(resource.getUser().getPassword())) {
 			user.setPassword(PasswordService.encodePassword(resource.getUser().getPassword()));

@@ -918,7 +918,7 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 						$.each(data.items, function(index, item) {
 							if (item.type == 'DATE') {
 								if (item.value) {
-									item.value = moment.utc(item.value, $rootScope.dateFormat.toUpperCase()).toDate();
+									item.value = moment.utc(item.value, $rootScope.dateFormatDB.toUpperCase()).toDate();
 								}
 								$scope.dictPopupDate[index] = { opened: false };
 							}

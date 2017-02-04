@@ -1,0 +1,1 @@
+ALTER TABLE [dbo].[user] ADD email2 [nvarchar](255) NULL

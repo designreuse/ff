@@ -54,6 +54,10 @@ public class User extends AbstractEntity {
 	private String email;
 
 	@Nationalized
+	@Column(name = "email2", nullable = true, length = 255)
+	private String email2;
+
+	@Nationalized
 	@Column(name = "password", nullable = true, length = 128)
 	private String password;
 

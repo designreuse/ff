@@ -751,7 +751,7 @@ angular.module('FundFinder')
 	    
 })
 
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $templateCache, $filter, ModalService, grant, constants, CountersService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $locale, $templateCache, $filter, ModalService, grant, constants, CountersService) {
 	var $translate = $filter('translate');
 	
 	$rootScope.$state = $state;
@@ -805,6 +805,8 @@ angular.module('FundFinder')
 	    $rootScope.previousStateParams = fromParams;
 	    $rootScope.currentState = to.name;
 	    $rootScope.currentStateParams = toParams;
+	    
+	    $rootScope.isUserAuthorized();
 	});
 	
 	$rootScope.getRandom = function () {
@@ -1002,4 +1004,12 @@ angular.module('FundFinder')
 	
 	// indicates if user is authorized to access Fund Finder
 	$rootScope.userAuthorized = false;
+	
+	$rootScope.isUserAuthorized = function(permissions) {
+		if ($rootScope.principal.role.indexOf("ERROR_") != -1) {
+			$state.go('security.denied');
+		} else {
+			$rootScope.userAuthorized = true;		
+		}	
+	};
 });

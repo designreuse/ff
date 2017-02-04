@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD COLUMN `email2` varchar(255) DEFAULT NULL;

@@ -37,6 +37,9 @@ public class UserResource {
 	@JsonProperty("email")
 	private String email;
 
+	@JsonProperty("email2")
+	private String email2;
+
 	@JsonProperty("password")
 	private String password;
 

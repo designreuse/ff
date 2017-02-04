@@ -63,6 +63,7 @@ function config($translateProvider) {
 			LABEL_FIRST_NAME: 'Ime',
 			LABEL_LAST_NAME: 'Prezime',
 			LABEL_EMAIL: 'Email',
+			LABEL_EMAIL2: 'Email (sekundarni)',
 			LABEL_NEW_PASSWORD: 'Nova zaporka',
 			LABEL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
 			LABEL_NAME: 'Naziv',

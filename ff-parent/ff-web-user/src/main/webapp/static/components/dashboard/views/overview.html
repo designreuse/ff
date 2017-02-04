@@ -22,7 +22,7 @@
                             <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_END_DATE'">{{ item.value | date:dateFormat }}
                             
                             <i class="fa fa-star-o m-l-md m-r-xs" aria-hidden="true"></i>
-                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_AVAILABLE_FUNDING'">{{ item.value | customCurrency : "" : "," : "." : 2 : false }} {{ item.currency.code }}
+                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_AVAILABLE_FUNDING'">{{ item.value | currency : "" }} {{ item.currency.code }}
                             
                             <i ng-click="showTender(tender)" class="fa fa-search-plus fa-lg pull-right" style="cursor: pointer;" aria-hidden="true"></i>
                         </div> 

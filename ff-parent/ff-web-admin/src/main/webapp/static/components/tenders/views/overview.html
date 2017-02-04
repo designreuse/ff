@@ -60,7 +60,8 @@ p span {
 							<div ng-if="item.type == 'CURRENCY'" style="padding-left: 5px;">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
 							<div ng-if="item.type == 'PERCENTAGE'" style="padding-left: 5px;">{{ item.valueMapped }}<span ng-if="item.valueMapped">%</span></div>
 							<div ng-if="item.type == 'HYPERLINK'" class="ff-masonry-brick-value"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
-							<div ng-if="item.type != 'CURRENCY' && item.type != 'PERCENTAGE' && item.type != 'HYPERLINK'" class="ff-masonry-brick-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
+							<div ng-if="item.type == 'DATE'" style="padding-left: 5px;">{{ item.valueMapped | date:dateFormat }}</div>
+							<div ng-if="item.type != 'CURRENCY' && item.type != 'PERCENTAGE' && item.type != 'HYPERLINK' && item.type != 'DATE'" class="ff-masonry-brick-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
 						</div>
 					</div>
 				</div>
