@@ -18,6 +18,7 @@ public class BusinessRelationshipManagerResourceAssembler {
 		resource.setPhone(entity.getPhone());
 		resource.setMobile(entity.getMobile());
 		resource.setEmail(entity.getEmail());
+		resource.setOrgUnit(entity.getOrgUnit());
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());
@@ -40,6 +41,7 @@ public class BusinessRelationshipManagerResourceAssembler {
 		entity.setPhone(resource.getPhone());
 		entity.setMobile(resource.getMobile());
 		entity.setEmail(resource.getEmail());
+		entity.setOrgUnit(resource.getOrgUnit());
 		return entity;
 	}
 
@@ -49,6 +51,7 @@ public class BusinessRelationshipManagerResourceAssembler {
 		entity.setPhone(resource.getPhone());
 		entity.setMobile(resource.getMobile());
 		entity.setEmail(resource.getEmail());
+		entity.setOrgUnit(resource.getOrgUnit());
 		return entity;
 	}
 

@@ -45,4 +45,8 @@ public class BusinessRelationshipManager extends AbstractEntity {
 	@Column(name = "email", nullable = true, length = 255)
 	private String email;
 
+	@Nationalized
+	@Column(name = "org_unit", nullable = true, length = 255)
+	private String orgUnit;
+
 }

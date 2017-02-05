@@ -58,6 +58,16 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
+					displayName: $translate('COLUMN_ORG_UNIT'),
+					field: 'orgUnit',
+					type: 'string',
+					cellTooltip: false, 
+					enableSorting: true,
+					enableFiltering: true,
+					enableHiding: true,
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
+				},
+				{
 					displayName: $translate('COLUMN_EMAIL'),
 					field: 'email',
 					type: 'string',

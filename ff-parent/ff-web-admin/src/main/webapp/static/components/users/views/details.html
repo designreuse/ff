@@ -250,6 +250,15 @@
 	                                </div>
                                 </div>
                                 
+                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.orgUnit || entity.businessRelationshipManagerSubstitute.orgUnit">
+                                    <div class="col-sm-4">
+                                        <span ng-if="entity.businessRelationshipManager.orgUnit"><i class="fa fa-star-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.orgUnit }}</span>
+                                    </div>
+                                    <div class="col-sm-4 m-l-md">
+                                        <span ng-if="entity.businessRelationshipManagerSubstitute.orgUnit"><i class="fa fa-star-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManagerSubstitute.orgUnit }}</span>
+                                    </div>
+                                </div>
+                                
                                 <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.email || entity.businessRelationshipManagerSubstitute.email">
                                     <div class="col-sm-4">
                                         <span ng-if="entity.businessRelationshipManager.email"><i class="fa fa-envelope-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.email }}</span>

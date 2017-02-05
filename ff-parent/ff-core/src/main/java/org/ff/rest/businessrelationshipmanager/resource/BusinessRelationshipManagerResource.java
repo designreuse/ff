@@ -30,6 +30,9 @@ public class BusinessRelationshipManagerResource {
 	@JsonProperty("email")
 	private String email;
 
+	@JsonProperty("orgUnit")
+	private String orgUnit;
+
 	@JsonProperty("creationDate")
 	private Date creationDate;
 
