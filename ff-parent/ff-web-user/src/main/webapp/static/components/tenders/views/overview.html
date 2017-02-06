@@ -14,6 +14,9 @@ p span {
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
+        <div ng-if="tenders.length == 0">
+            <h4>{{ 'LABEL_NO_MATCHING_TENDERS' | translate }}</h4>
+        </div>
         <div class="masonry-brick ff-masonry-brick" ng-repeat="tender in tenders">
             <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
                 <a class="ff-a" ui-sref="tenders.details({ id: tender.id })">{{tender.name}}</a>

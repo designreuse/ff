@@ -44,7 +44,7 @@
                         <label class="ff-label">{{ 'LABEL_INVESTMENT' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.investments.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.investments.$valid }"></i></span>
                         </label>
-                        <select width="1" chosen multiple class="form-control ff-form-control" ng-required="true" ng-model="entity.investments" name="investments" options="investments" ng-options="investment.name for investment in investments track by investment.id"></select>
+                        <select width="1" chosen multiple data-placeholder-text-multiple="'{{ 'CHOSEN_MULTIPLE_PLACEHOLDER' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER' | translate }}'" class="form-control ff-form-control" ng-required="true" ng-model="entity.investments" name="investments" options="investments" ng-options="investment.name for investment in investments track by investment.id"></select>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -75,16 +75,16 @@
                         </div>
                         
                         <!-- SELECT -->
-                        <select ng-if="item.item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.item.options" ng-options="option.text for option in item.item.options track by option.id"></select>
+                        <select ng-if="item.item.type == 'SELECT'" width="1" chosen data-placeholder-text-single="'{{ 'CHOSEN_SINGLE_PLACEHOLDER' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER' | translate }}'" class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="item.item.options" ng-options="option.text for option in item.item.options track by option.id"></select>
                         
                         <!-- ACTIVITY -->
-                        <select ng-if="item.item.type == 'ACTIVITY'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+                        <select ng-if="item.item.type == 'ACTIVITY'" width="1" chosen data-placeholder-text-single="'{{ 'CHOSEN_SINGLE_PLACEHOLDER' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER' | translate }}'" class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
                         
                         <!-- SUBDIVISION1 -->
-                        <select ng-if="item.item.type == 'SUBDIVISION1'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+                        <select ng-if="item.item.type == 'SUBDIVISION1'" ng-change="loadSubdivisions2(item)" width="1" chosen data-placeholder-text-single="'{{ 'CHOSEN_SINGLE_PLACEHOLDER' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER' | translate }}'" class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
                         
                         <!-- SUBDIVISION2 -->
-                        <select ng-if="item.item.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+                        <select ng-if="item.item.type == 'SUBDIVISION2'" width="1" chosen data-placeholder-text-single="'{{ 'CHOSEN_SINGLE_PLACEHOLDER' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER' | translate }}'" class="form-control ff-form-control" ng-required="item.item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
                     </div>
                 </div>			
 			</div>

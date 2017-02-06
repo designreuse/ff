@@ -175,11 +175,33 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 			});
 	};
 	
+	$scope.getSubdivisions24Subdivision1 = function(subdivision1Id) {
+		Subdivisions2Service.getEntities4Subdivision1(subdivision1Id)
+			.success(function(data, status) {
+				if (status == 200) {
+					$scope.subdivisions2 = data;
+				} else {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+			});
+	};
+	
 	$scope.getEntity = function(id) {
 		ProjectsService.find(id)
 			.success(function(data, status) {
 				if (status == 200) {
 					$scope.entity = data;
+					if ($scope.entity && $scope.entity.items) {
+						$.each($scope.entity.items, function(index, value) {
+							if (value.item.type == 'SUBDIVISION1') {
+								$scope.loadSubdivisions2(value);
+								return;
+							}
+						});						
+					}
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
@@ -207,6 +229,10 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 				});	
 		}
+	};
+	
+	$scope.loadSubdivisions2 = function(item) {
+		$scope.getSubdivisions24Subdivision1(item.value.id);
 	};
 	
 	$scope.back = function() {

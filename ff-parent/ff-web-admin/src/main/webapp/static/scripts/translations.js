@@ -13,7 +13,7 @@ function config($translateProvider) {
 			MENU_BUSINESSRELATIONSHIPMANAGERS: 'Business relationship managers',
 			MENU_COMPANY_ITEMS: 'Company items',
 			MENU_CONTACTS: 'Contacts',
-			MENU_DASHBOARD: 'Dashboard',
+			MENU_DASHBOARD: 'Naslovnica',
 			MENU_INVESTMENTS: 'Investments',
 			MENU_ROLES: 'Roles',
 			MENU_SETTINGS: 'Settings',

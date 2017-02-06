@@ -14,8 +14,8 @@ function config($translateProvider) {
 			
 			HEADER_MAIN: 'Fund Finder',
 			HEADER_PERSONAL_DATA: 'Osobni podaci',
-			HEADER_EMAIL: 'Email',
-			HEADER_CHANGE_PASSWORD: 'Promjena zaporka',
+			HEADER_EMAIL: 'E-mail',
+			HEADER_CHANGE_PASSWORD: 'Promjena zaporke',
 			HEADER_PROJECT_ADD: 'Dodaj projekt',
 			HEADER_PROJECT_EDIT: 'Uredi projekt',
 			HEADER_PROJECTS_4_TENDER: 'Projekti za koje je ovaj natječaj prikladan',
@@ -36,27 +36,27 @@ function config($translateProvider) {
 			MENU_ARTICLES: 'Članci',
 			MENU_COMPANY: 'Profil tvrtke',
 			MENU_CONTACT: 'Kontaktirajte nas',
-			MENU_DASHBOARD: 'Dashboard',
+			MENU_DASHBOARD: 'Naslovnica',
 			
 			BUTTON_SAVE: 'Spremi',
 			BUTTON_BACK: 'Nazad',
 			BUTTON_ADD: 'Dodaj',
-			BUTTON_YES: 'Yes',
-			BUTTON_NO: 'No',
+			BUTTON_YES: 'Da',
+			BUTTON_NO: 'Ne',
 			BUTTON_SEND: 'Send',
 			BUTTON_DISABLE: 'Deaktiviraj',
 			BUTTON_ENABLE: 'Aktiviraj',
 			
-			ACTION_LOAD_FAILURE_MESSAGE: 'Loading data failed',
-			ACTION_SAVE_FAILURE_MESSAGE: 'Saving data failed',
-			ACTION_SAVE_SUCCESS_MESSAGE: 'Saving data successful',
-			ACTION_DELETE_FAILURE_MESSAGE: 'Deleting record failed',
-			ACTION_DELETE_SUCCESS_MESSAGE: 'Record successfully deleted',
-			ACTION_SEND_FAILURE_MESSAGE: 'Sending contact message failed',
-			ACTION_SEND_SUCCESS_MESSAGE: 'Contact message successfully sent',
-			ACTION_DEACTIVATE_FAILURE_MESSAGE: 'Deactivating profile failed',
+			ACTION_LOAD_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom učitavanja podataka',
+			ACTION_SAVE_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom spremanja podataka',
+			ACTION_SAVE_SUCCESS_MESSAGE: 'Podaci uspješno spremljeni',
+			ACTION_DELETE_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom brisanja zapisa',
+			ACTION_DELETE_SUCCESS_MESSAGE: 'Zapis uspješno obrisan',
+			ACTION_SEND_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom slanja poruke',
+			ACTION_SEND_SUCCESS_MESSAGE: 'Poruka uspješno poslana',
+			ACTION_DEACTIVATE_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom deaktivacije profila',
 			
-			LABEL_LAST_MODIFIED: 'Last modified',
+			LABEL_LAST_MODIFIED: 'Zadnja promjena',
 			LABEL_READ_MORE: 'Pročitajte više',
 			LABEL_COMPANY_NAME: 'Naziv tvrtke',
 			LABEL_COMPANY_CODE: 'OIB tvrtke',
@@ -77,17 +77,22 @@ function config($translateProvider) {
 			LABEL_CONTACT_EMAIL: 'E-mail',
 			LABEL_CONTACT_PHONE: 'Telefon',
 			LABEL_CONTACT_TEXT: 'Tekst',
+			LABEL_NO_MATCHING_TENDERS: 'Nije pronađen niti jedan natječaj koji odgovara vašem profilu',
 			
 			TOOLTIP_DELETE: 'Obriši',
 			
-			DLG_DELETE_HDR: 'Delete',
-			DLG_DELETE_MSG: 'Do you really want to delete projekt?',
+			DLG_DELETE_HDR: 'Obriši projekt',
+			DLG_DELETE_MSG: 'Da li doista želite obrisati projekt?',
 			
 			DLG_DEACTIVATE_HDR: 'Deaktivacija profila',
 			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila biti ćete automatski odjavljeni te više nećete moći pristupiti Fund Finder aplikaciji. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Da li stvarno želite deaktivirati vaš profil?',
 			
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil tvrtke',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu vaše tvrtke.',
+			
+			CHOSEN_SINGLE_PLACEHOLDER: 'Molimo odaberite...',
+			CHOSEN_MULTIPLE_PLACEHOLDER: 'Molimo odaberite...',
+			CHOSEN_NO_RESULT_PLACEHOLDER: 'No results match',
 		});
 	
 	$translateProvider.preferredLanguage("hr");

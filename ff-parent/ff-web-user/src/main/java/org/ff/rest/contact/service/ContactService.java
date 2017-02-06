@@ -13,10 +13,7 @@ import org.ff.base.properties.BaseProperties;
 import org.ff.common.mailsender.MailSenderService;
 import org.ff.common.resource.KeyValueResource;
 import org.ff.jpa.domain.Contact;
-import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.ContactRepository;
-import org.ff.jpa.repository.UserRepository;
-import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.contact.resource.ContactResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,12 +37,6 @@ public class ContactService {
 
 	@Autowired
 	private ContactRepository contactRepository;
-
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private CompanyResourceAssembler companyResourceAssembler;
 
 	private Map<Integer, String> contactTopics;
 	private Map<Integer, String> contactTypes;
@@ -103,14 +94,7 @@ public class ContactService {
 	}
 
 	public ContactResource get(UserDetails principal) {
-		User user = userRepository.findByEmail(principal.getUsername());
-
-		ContactResource resource = new ContactResource();
-		resource.setCompany(companyResourceAssembler.toResource(user.getCompany(), true));
-		resource.setName(user.getFirstName() + " " + user.getLastName());
-		resource.setEmail(user.getEmail());
-
-		return resource;
+		return new ContactResource();
 	}
 
 	public void set(ContactResource resource) {
