@@ -44,6 +44,7 @@ import org.ff.rest.subdivision1.resource.Subdivision1Resource;
 import org.ff.rest.subdivision1.resource.Subdivision1ResourceAssembler;
 import org.ff.rest.subdivision2.resource.Subdivision2Resource;
 import org.ff.rest.subdivision2.resource.Subdivision2ResourceAssembler;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -163,7 +164,7 @@ public class TenderResourceAssembler {
 		return resource;
 	}
 
-	public List<TenderResource> toResources(List<Tender> entities, boolean light) {
+	public List<TenderResource> toResources(Iterable<Tender> entities, boolean light) {
 		List<TenderResource> resources = new ArrayList<>();
 		for (Tender entity : entities) {
 			resources.add(toResource(entity, light));
@@ -201,7 +202,7 @@ public class TenderResourceAssembler {
 					tenderItem.setItem(item);
 				}
 
-				setEntityValue(item, itemResource, tenderItem);
+				setEntityValue(item, itemResource, tenderItem, false);
 				entity.getItems().add(tenderItem);
 			}
 		}
@@ -238,7 +239,7 @@ public class TenderResourceAssembler {
 					tenderItem.setItem(item);
 				}
 
-				setEntityValue(item, itemResource, tenderItem);
+				setEntityValue(item, itemResource, tenderItem, false);
 				entity.getItems().add(tenderItem);
 			}
 		}
@@ -386,10 +387,15 @@ public class TenderResourceAssembler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setEntityValue(Item item, ItemResource itemResource, TenderItem tenderItem) {
+	public void setEntityValue(Item item, ItemResource itemResource, TenderItem tenderItem, boolean isImport) {
 		if (itemResource.getType() == ItemType.DATE) {
-			String v = (itemResource.getValue() != null) ? ISODateTimeFormat.dateTime().parseLocalDateTime(itemResource.getValue().toString()).toLocalDate().toString() : null;
-			tenderItem.setValue(v);
+			if (isImport) {
+				String value = (itemResource.getValue() != null) ? DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(itemResource.getValue().toString()).toLocalDate().toString() : null;
+				tenderItem.setValue(value);
+			} else {
+				String value = (itemResource.getValue() != null) ? ISODateTimeFormat.dateTime().parseLocalDateTime(itemResource.getValue().toString()).toLocalDate().toString() : null;
+				tenderItem.setValue(value);
+			}
 		} else if (item.getType() == ItemType.CURRENCY) {
 			tenderItem.setValue((itemResource.getValue() != null) ? itemResource.getValue().toString() : null);
 			if (itemResource.getCurrency() != null) {

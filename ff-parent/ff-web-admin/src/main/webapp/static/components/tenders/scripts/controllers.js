@@ -6,7 +6,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $timeout, $interval, $filter, uiGridConstants, TendersService, ImagesService) {
+function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $timeout, $interval, $filter, uiGridConstants, Upload, TendersService, ImagesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -25,6 +25,10 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 		}
 		if ($rootScope.hasPermission(['tenders.delete'])) {
 			width = width + 26;
+			cnt++;
+		}
+		if ($rootScope.hasPermission(['tenders.export'])) {
+			width = width + 30;
 			cnt++;
 		}
 
@@ -147,7 +151,8 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 					width: calculateWidth(),
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
-							'<button ng-if="grid.appScope.hasPermission([\'tenders.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +	
+							'<button ng-if="grid.appScope.hasPermission([\'tenders.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'tenders.export\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportTender(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
 							'<button ng-disabled="row.entity.incomplete" ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
@@ -264,6 +269,45 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 	$scope.editEntity = function (entity) {
 		$state.go('tenders.edit', { 'id' : entity.id });
 	}
+	
+	$scope.importTenders = function(files) {
+		if (files && files.length) {
+			Upload.upload({
+		        url: '/api/v1/tenders/import',
+		        method: 'POST',
+		        file: files[0]
+		    }).success(function (data, status, headers, config) {
+		    	toastr.success($translate('ACTION_IMPORT_SUCCESS_MESSAGE'));
+		    	$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+		    }).error(function(data, status, headers, config) {
+		    	toastr.error($translate('ACTION_IMPORT_FAILURE_MESSAGE'));
+		    });
+		}
+	};
+	
+	$scope.exportTenders = function() {
+		TendersService.exportTenders()
+			.success(function(data, status) {
+				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
+				saveAs(blob, "ff_tenders.json");
+				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_EXPORT_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.exportTender = function(entity) {
+		TendersService.exportTender(entity.id)
+			.success(function(data, status) {
+				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
+				saveAs(blob, "ff_tenders.json");
+				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_EXPORT_FAILURE_MESSAGE'));
+			});
+	};
 	
 	$scope.activateEntity = function(entity) {
 		TendersService.activateEntity(entity.id)

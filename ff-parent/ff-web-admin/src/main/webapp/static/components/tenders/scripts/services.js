@@ -28,4 +28,10 @@ angular.module('FundFinder')
 	this.findMatchingUsers = function(id) {
 		return $http.get('/api/v1/tenders/' + id + "/users");
 	};
+	this.exportTenders = function() {
+		return $http.get('/api/v1/tenders/export');
+	};
+	this.exportTender = function(id) {
+		return $http.get('/api/v1/tenders/export/' + id);
+	};
 });

@@ -3,6 +3,7 @@ package org.ff.rest.tender.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -21,6 +22,8 @@ import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.BusinessRelationshipManager;
 import org.ff.jpa.domain.Email;
+import org.ff.jpa.domain.Image;
+import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemEntityType;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Item.ItemType;
@@ -31,6 +34,7 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.repository.EmailRepository;
+import org.ff.jpa.repository.ImageRepository;
 import org.ff.jpa.repository.ItemRepository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserEmailRepository;
@@ -108,6 +112,9 @@ public class TenderService extends BaseService {
 
 	@Autowired
 	private CurrencyService currencyService;
+
+	@Autowired
+	private ImageRepository imageRepository;
 
 	@Transactional(readOnly = true)
 	public TenderResource find(Integer id, Locale locale) {
@@ -370,6 +377,59 @@ public class TenderService extends BaseService {
 
 	public List<UserResource> findMatchingUsers(Integer id) {
 		return userResourceAssembler.toResources(algorithmService.findUsers4Tender(repository.findOne(id)), true);
+	}
+
+	@Transactional(readOnly = true)
+	public List<TenderResource> exportTenders() {
+		return resourceAssembler.toResources(repository.findAll(), false);
+	}
+
+	@Transactional(readOnly = true)
+	public List<TenderResource> exportTender(Integer id) {
+		List<TenderResource> result = new ArrayList<>();
+		result.add(resourceAssembler.toResource(repository.findOne(id), false));
+		return result;
+	}
+
+	@Transactional
+	public Integer importTenders(List<TenderResource> tenderResources) {
+		int cntImported = 0;
+
+		for (TenderResource tenderResource : tenderResources) {
+			log.debug("Importing {}", tenderResource);
+
+			Tender tender = new Tender();
+			tender.setStatus(Tender.TenderStatus.INACTIVE);
+			tender.setName(tenderResource.getName());
+			tender.setText(tenderResource.getText());
+
+			Image image = new Image();
+			image.setBase64((tenderResource.getImage() != null) ? tenderResource.getImage().getBase64() : null);
+			tender.setImage(imageRepository.save(image));
+
+			tender.setItems(new LinkedHashSet<TenderItem>());
+
+			if (tenderResource.getItems() != null && !tenderResource.getItems().isEmpty()) {
+				for (ItemResource itemResource : tenderResource.getItems()) {
+					Item item = itemRepository.findByCodeAndEntityType(itemResource.getCode(), ItemEntityType.TENDER);
+					if (item != null) {
+						TenderItem tenderItem = new TenderItem();
+						tenderItem.setTender(tender);
+						tenderItem.setItem(item);
+						resourceAssembler.setEntityValue(item, itemResource, tenderItem, true);
+						tender.getItems().add(tenderItem);
+					} else {
+						log.warn("Tender item not found for code [{}]", itemResource.getCode());
+					}
+				}
+			}
+
+			repository.save(tender);
+
+			cntImported++;
+		}
+
+		return cntImported;
 	}
 
 }
