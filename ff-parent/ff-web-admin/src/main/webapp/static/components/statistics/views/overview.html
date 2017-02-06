@@ -20,13 +20,16 @@
                                 <button ng-click="changeCompaniesByCountiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByCountiesView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
+                                <button ng-click="exportCompaniesByCountiesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                    <i class="fa fa-lg fa-download" role="button"></i>
+                                </button>
                             </div>
                             <div class="col-lg-12 m-t-sm" ng-if="companiesByCountiesView == 'CHART_VIEW'">
                                 <canvas id="{{typeCompaniesByCounties}}" class="chart chart-bar" chart-data="dataCompaniesByCounties" height="100"
                                     chart-options="options" chart-labels="labelsCompaniesByCounties4ChartView" chart-click="showCompanies"></canvas>
                             </div>
                             <div class="col-lg-12 m-t-md" ng-if="companiesByCountiesView == 'TABLE_VIEW'">
-								<table width="100%" class="table">
+								<table id="tableCompaniesByCounties" width="100%" class="table">
 									<thead>
 										<tr style="border-bottom: 1px solid #808080; font-weight: bold;">
 										   <th>{{ 'COLUMN_SUBDIVISION1' | translate }}</th>
@@ -60,6 +63,9 @@
                                 </button>
                                 <button ng-click="changeCompaniesByRevenuesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByRevenuesView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="exportCompaniesByRevenuesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                    <i class="fa fa-lg fa-download" role="button"></i>
                                 </button>
                             </div>
                             <div class="col-lg-12 m-t-sm" ng-if="companiesByRevenuesView == 'CHART_VIEW'">
@@ -102,6 +108,9 @@
                                 <button ng-click="changeCompaniesBySizeView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesBySizeView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
+                                <button ng-click="exportCompaniesBySizeCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                    <i class="fa fa-lg fa-download" role="button"></i>
+                                </button>
                             </div>
                             <div class="col-lg-12 m-t-sm" ng-if="companiesBySizeView == 'CHART_VIEW'">
                                 <canvas id="{{typeCompaniesBySize}}" class="chart chart-bar" chart-data="dataCompaniesBySize" height="100"
@@ -142,6 +151,9 @@
                                 </button>
                                 <button ng-click="changeInvestmentsByCountiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : investmentsByCountiesView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="exportInvestmentsByCountiesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                    <i class="fa fa-lg fa-download" role="button"></i>
                                 </button>
                             </div>
                             <div class="col-lg-12 m-t-sm" ng-if="investmentsByCountiesView == 'CHART_VIEW'">
@@ -186,6 +198,9 @@
                                 </button>
                                 <button ng-click="changeInvestmentsByActivitiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : investmentsByActivitiesView == 'CHART_VIEW'}" role="button"></i>
+                                </button>
+                                <button ng-click="exportInvestmentsByActivitiesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                    <i class="fa fa-lg fa-download" role="button"></i>
                                 </button>
                             </div>
                             <div class="col-lg-12 m-t-sm" ng-if="investmentsByActivitiesView == 'CHART_VIEW'">

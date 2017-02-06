@@ -1,7 +1,7 @@
 angular.module('FundFinder')
 	.controller('StatisticsController', StatisticsController);
 
-function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filter, StatisticsService) {
+function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filter, StatisticsService, FileSaver, Blob) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	var $limitTo = $filter('limitTo');
@@ -93,6 +93,17 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				});
 				
 				$scope.totalCompaniesByCounties4TableView = total;
+				
+				// export data (CSV)
+				var companiesByCounties4ExportCSV = new Array();
+				$.each(data.data, function(index, value) {
+					companiesByCounties4ExportCSV.push({
+						"county" : data.labels[index],
+						"number" : value,
+						"percentage" : $scope.percentageCompaniesByCounties4TableView[index]
+					});
+				});
+				$scope.companiesByCounties4ExportCSV = companiesByCounties4ExportCSV;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
@@ -103,6 +114,18 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
+	};
+	
+	$scope.exportCompaniesByCountiesCSV = function() {
+		var rows = new Array();
+		rows.push(['county', 'number', 'percentage']);
+		
+		$.each($scope.companiesByCounties4ExportCSV, function(index, value) {
+			rows.push([value.county, value.number, value.percentage]);
+		});
+		
+        var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
+        FileSaver.saveAs(data, 'companies_by_county.csv');
 	};
 	
 	$scope.getCompaniesByRevenues = function() {
@@ -135,6 +158,17 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				});
 				
 				$scope.totalCompaniesByRevenues4TableView = total;
+				
+				// export data (CSV)
+				var companiesByRevenues4ExportCSV = new Array();
+				$.each(data.data, function(index, value) {
+					companiesByRevenues4ExportCSV.push({
+						"revenue" : data.labels[index],
+						"number" : value,
+						"percentage" : $scope.percentageCompaniesByRevenues4TableView[index]
+					});
+				});
+				$scope.companiesByRevenues4ExportCSV = companiesByRevenues4ExportCSV;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
@@ -145,6 +179,18 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
+	};
+	
+	$scope.exportCompaniesByRevenuesCSV = function() {
+		var rows = new Array();
+		rows.push(['revenue', 'number', 'percentage']);
+		
+		$.each($scope.companiesByRevenues4ExportCSV, function(index, value) {
+			rows.push([value.revenue, value.number, value.percentage]);
+		});
+		
+		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
+        FileSaver.saveAs(data, 'companies_by_revenue.csv');
 	};
 	
 	$scope.getCompaniesBySize = function() {
@@ -177,6 +223,17 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				});
 				
 				$scope.totalCompaniesBySize4TableView = total;
+				
+				// export data (CSV)
+				var companiesBySize4ExportCSV = new Array();
+				$.each(data.data, function(index, value) {
+					companiesBySize4ExportCSV.push({
+						"size" : data.labels[index],
+						"number" : value,
+						"percentage" : $scope.percentageCompaniesBySize4TableView[index]
+					});
+				});
+				$scope.companiesBySize4ExportCSV = companiesBySize4ExportCSV;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
@@ -187,6 +244,18 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
+	};
+	
+	$scope.exportCompaniesBySizeCSV = function() {
+		var rows = new Array();
+		rows.push(['size', 'number', 'percentage']);
+		
+		$.each($scope.companiesBySize4ExportCSV, function(index, value) {
+			rows.push([value.size, value.number, value.percentage]);
+		});
+		
+		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
+        FileSaver.saveAs(data, 'companies_by_size.csv');
 	};
 	
 	$scope.getInvestmentsByCounties = function() {
@@ -229,6 +298,18 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				
 				// currency
 				$scope.currency = data.currency; 
+				
+				// export data (CSV)
+				var investmentsByCounties4ExportCSV = new Array();
+				$.each(data.data, function(index, value) {
+					investmentsByCounties4ExportCSV.push({
+						"county" : data.labels[index],
+						"number" : value,
+						"percentage" : $scope.percentageInvestmentsByCounties4TableView[index],
+						"value" : $scope.investmentAmountByCounties[index]
+					});
+				});
+				$scope.investmentsByCounties4ExportCSV = investmentsByCounties4ExportCSV;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
@@ -239,6 +320,18 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
+	};
+	
+	$scope.exportInvestmentsByCountiesCSV = function() {
+		var rows = new Array();
+		rows.push(['county', 'number', 'percentage', 'value']);
+		
+		$.each($scope.investmentsByCounties4ExportCSV, function(index, value) {
+			rows.push([value.county, value.number, value.percentage, value.value]);
+		});
+		
+		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
+        FileSaver.saveAs(data, 'investments_by_county.csv');
 	};
 	
 	$scope.getInvestmentsByActivities = function() {
@@ -280,7 +373,19 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 				});
 				
 				// currency
-				$scope.currency = data.currency; 
+				$scope.currency = data.currency;
+				
+				// export data (CSV)
+				var investmentsByActivities4ExportCSV = new Array();
+				$.each(data.data, function(index, value) {
+					investmentsByActivities4ExportCSV.push({
+						"activity" : data.labels[index],
+						"number" : value,
+						"percentage" : $scope.percentageInvestmentsByActivities4TableView[index],
+						"value" : $scope.investmentAmountByActivities[index]
+					});
+				});
+				$scope.investmentsByActivities4ExportCSV = investmentsByActivities4ExportCSV;
 			})
 			.error(function(data, status) {
 				if (status == 404) {
@@ -291,6 +396,18 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 				}
 			});	
+	};
+	
+	$scope.exportInvestmentsByActivitiesCSV = function() {
+		var rows = new Array();
+		rows.push(['activity', 'number', 'percentage', 'value']);
+		
+		$.each($scope.investmentsByActivities4ExportCSV, function(index, value) {
+			rows.push([value.activity, value.number, value.percentage, value.value]);
+		});
+		
+		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
+        FileSaver.saveAs(data, 'investments_by_activity.csv');
 	};
 	
 };
