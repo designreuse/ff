@@ -18,8 +18,11 @@ public class DashboardResource {
 	@JsonProperty("chartLabels")
 	private List<String> chartLabels = new LinkedList<>();
 
-	@JsonProperty("chartData")
-	private List<Number> chartData = new LinkedList<>();
+	@JsonProperty("chartDataSeria1")
+	private List<Number> chartDataSeria1 = new LinkedList<>();
+
+	@JsonProperty("chartDataSeria2")
+	private List<Double> chartDataSeria2 = new LinkedList<>();
 
 	@JsonProperty("tenders")
 	private List<TenderResource> tenders = new LinkedList<>();

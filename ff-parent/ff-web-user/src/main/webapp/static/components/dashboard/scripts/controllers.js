@@ -7,6 +7,7 @@ angular.module('FundFinder')
 function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter, CommonService, DashboardService, ArticlesService, ImagesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
+	var $currency = $filter('currency');
 	
 	$scope.data = {
 			cntTenders : 0,
@@ -16,6 +17,7 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			cntArticles : 0
 	};
 	
+	$scope.chartDatasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
 	$scope.chartOptions = {
 		scales: {
 		    xAxes: [{
@@ -32,27 +34,73 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 					fontSize: 10
 				}
 		    }],
-		    yAxes: [{
-		    	display: true,
-		    	ticks: {
-					fontSize: 10,
-					stepSize: 1
-				}
-		    }]
+		    yAxes: [
+		        {
+		        	id: 'y-axis-1',
+		        	type: 'linear',
+		        	display: true,
+		        	position: 'left',
+		        	scaleLabel: {
+			    		display: true,
+			    		labelString: $translate('HEADER_DASHBOARD_CHART_X_AXIS'),
+			    		fontSize: 10
+			    	}, 
+		        	gridLines: {
+			    		display: false
+			    	},
+		        	ticks: {
+		        		fontSize: 10
+		        	}
+		        },
+		        {
+		        	id: 'y-axis-2',
+		        	type: 'linear',
+		        	display: true,
+		        	position: 'right',
+		        	scaleLabel: {
+			    		display: true,
+			    		labelString: $translate('HEADER_DASHBOARD_CHART_Y_AXIS'),
+			    		fontSize: 10
+			    	}, 
+		        	gridLines: {
+			    		display: false
+			    	},
+		        	ticks: {
+		        		fontSize: 10,
+		        		callback: function(value) {
+		        			return $currency(value, "");
+		        		}
+		        	}
+		        }
+		    ]
 		},	
 		tooltips: {
 			enabled: true,
-			titleFontSize: 10
+			titleFontSize: 10,
+			bodyFontSize: 10,
+			callbacks: {
+	            label: function(tooltipItem, data) {
+	            	if (tooltipItem.datasetIndex == 0) {
+	            		return " " + $translate('HEADER_DASHBOARD_CHART_X_AXIS') + ": " + tooltipItem.yLabel;
+	            	} else if (tooltipItem.datasetIndex == 1) {
+	            		return " " + $translate('HEADER_DASHBOARD_CHART_Y_AXIS') + ": " + $currency(tooltipItem.yLabel, "") + " HRK";
+	            	}
+	            }
+	        }
 		}
 	};
 	
 	DashboardService.getData()
 		.success(function(data, status) {
 			if (status == 200) {
-				$scope.chartLabels = data.chartLabels;
-				$scope.chartData = new Array();
-				$scope.chartData.push(data.chartData);
 				$scope.data = data
+				
+				// chart
+				$scope.chartLabels = data.chartLabels;
+				$scope.chartSeries = ['Broj natječaja', 'Ukupna vrijednost natječaja'];
+				$scope.chartData = new Array();
+				$scope.chartData.push(data.chartDataSeria1);
+				$scope.chartData.push(data.chartDataSeria2);
 			} else {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			}
@@ -112,5 +160,4 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 	};
 	
 	$scope.findArticles();
-	
 };

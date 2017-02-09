@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.algorithm.AlgorithmService;
 import org.ff.jpa.domain.Article.ArticleStatus;
@@ -72,13 +73,15 @@ public class DashboardService {
 		DashboardResource resource = new DashboardResource();
 
 		LocalDate today = new LocalDate();
-		DateTime date12MonthsAgo = new DateTime().minusMonths(12);
+		DateTime date3MonthsAgo = new DateTime().minusMonths(3);
 		DateTime date30DaysAgo = new DateTime().minusDays(30);
 
-		Map<String, AtomicInteger> map = new LinkedHashMap<>();
-		for (int i = 0; i<12; i++) {
-			date12MonthsAgo = date12MonthsAgo.plusMonths(1);
-			map.put(monthFormat.format(date12MonthsAgo.toDate()), new AtomicInteger(0));
+		Map<String, AtomicInteger> map1 = new LinkedHashMap<>();
+		Map<String, Double> map2 = new LinkedHashMap<>();
+		for (int i = 0; i<6; i++) {
+			date3MonthsAgo = date3MonthsAgo.plusMonths(1);
+			map1.put(monthFormat.format(date3MonthsAgo.toDate()), new AtomicInteger(0));
+			map2.put(monthFormat.format(date3MonthsAgo.toDate()), new Double(0));
 		}
 
 		AtomicInteger cntTenders = new AtomicInteger(0);
@@ -88,8 +91,8 @@ public class DashboardService {
 			cntTenders.incrementAndGet();
 
 			String s = monthFormat.format(tender.getCreationDate().toDate());
-			if (map.containsKey(s)) {
-				map.get(s).incrementAndGet();
+			if (map1.containsKey(s)) {
+				map1.get(s).incrementAndGet();
 
 				if (tender.getCreationDate().isBefore(date30DaysAgo)) {
 					// skip tenders that are older then 30 days
@@ -134,11 +137,27 @@ public class DashboardService {
 					}
 				}
 			}
+
+			if (map2.containsKey(s)) {
+				for (TenderItem tenderItem : tender.getItems()) {
+					Item item = tenderItem.getItem();
+					if (item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING) {
+						if (StringUtils.isNotBlank(tenderItem.getValue())) {
+							double value = Double.parseDouble(tenderItem.getValue());
+							map2.put(s, map2.get(s) + value);
+						}
+					}
+				}
+			}
 		}
 
-		for (Entry<String, AtomicInteger> entry : map.entrySet()) {
+		for (Entry<String, AtomicInteger> entry : map1.entrySet()) {
 			resource.getChartLabels().add(entry.getKey());
-			resource.getChartData().add(entry.getValue());
+			resource.getChartDataSeria1().add(entry.getValue());
+		}
+
+		for (Entry<String, Double> entry : map2.entrySet()) {
+			resource.getChartDataSeria2().add(entry.getValue());
 		}
 
 		resource.setCntTenders(cntTenders.intValue());
