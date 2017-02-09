@@ -200,7 +200,7 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
 							'<button ng-if="grid.appScope.hasPermission([\'contacts.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
-							'<button ng-if="grid.appScope.hasPermission([\'contacts.export\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
+							'<a href="{{ grid.appScope.contextPath }}/api/v1/contacts/{{row.entity.id}}/export/pdf" target="_blank" ng-if="grid.appScope.hasPermission([\'contacts.export\'])" class="m-l-xs m-r-xs" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true"><i class="fa fa-2x fa-download"></i></a>' +
 							'<button ng-if="grid.appScope.hasPermission([\'contacts.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
 						'</div>'
 				}

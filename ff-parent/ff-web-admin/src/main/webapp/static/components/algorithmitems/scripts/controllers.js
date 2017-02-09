@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, Upload, AlgorithmItemsService) {
+function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, Upload, AlgorithmItemsService, FileSaver, Blob) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -325,7 +325,7 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 		AlgorithmItemsService.exportData()
 			.success(function(data, status) {
 				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
-				saveAs(blob, "ff_algorithm_items.json");
+				FileSaver.saveAs(blob, "ff_algorithm_items.json");
 				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
 			})
 			.error(function(data, status) {

@@ -6,7 +6,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $timeout, $interval, $filter, uiGridConstants, Upload, TendersService, ImagesService) {
+function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $timeout, $interval, $filter, uiGridConstants, Upload, TendersService, ImagesService, FileSaver, Blob) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -289,7 +289,7 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 		TendersService.exportTenders()
 			.success(function(data, status) {
 				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
-				saveAs(blob, "ff_tenders.json");
+				FileSaver.saveAs(blob, "ff_tenders.json");
 				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
 			})
 			.error(function(data, status) {
@@ -301,7 +301,7 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 		TendersService.exportTender(entity.id)
 			.success(function(data, status) {
 				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
-				saveAs(blob, "ff_tenders.json");
+				FileSaver.saveAs(blob, "ff_tender.json");
 				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
 			})
 			.error(function(data, status) {

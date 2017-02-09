@@ -757,7 +757,8 @@ angular.module('FundFinder')
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
-	$rootScope.version = "v1.0.5";
+	$rootScope.version = "v1.0.6";
+	$rootScope.contextPath = constants.contextPath;
 	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	
 	$locale.NUMBER_FORMATS.DECIMAL_SEP= ',';
@@ -992,7 +993,7 @@ angular.module('FundFinder')
 		}
 		
 		var permission;
-		if (this.stateParams.id == 0 && this.stateParams.permission.endsWith(".update")) {
+		if (this.stateParams.id === 0 && this.stateParams.permission.endsWith(".update")) {
 			// special handling
 			permission = this.stateParams.permission.replace(".update", ".create");
 		} else {

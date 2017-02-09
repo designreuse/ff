@@ -6,7 +6,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, Upload, ItemsService) {
+function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, Upload, ItemsService, FileSaver, Blob) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -391,7 +391,7 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 		ItemsService.exportData($stateParams.entityType)
 			.success(function(data, status) {
 				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
-				saveAs(blob, "ff_" + $lowercase($stateParams.entityType)  + "_items.json");
+				FileSaver.saveAs(blob, "ff_" + $lowercase($stateParams.entityType)  + "_items.json");
 				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
 			})
 			.error(function(data, status) {

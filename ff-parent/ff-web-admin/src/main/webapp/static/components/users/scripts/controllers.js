@@ -228,7 +228,7 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					cellTemplate:
 						'<div style="padding-top: 1px; text-align: right;">' +
 							'<button ng-if="grid.appScope.hasPermission([\'users.read\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
-							'<button ng-if="grid.appScope.hasPermission([\'users.export\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
+							'<a href="{{ grid.appScope.contextPath }}/api/v1/users/{{row.entity.id}}/export/pdf" target="_blank" ng-if="grid.appScope.hasPermission([\'users.export\']) && row.entity.status != \'WAITING_CONFIRMATION\'" class="m-l-xs m-r-xs" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}}" tooltip-append-to-body="true"><i class="fa fa-2x fa-download"></i></a>' +
 							'<button ng-if="grid.appScope.hasPermission([\'users.update\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
 							'<button ng-if="grid.appScope.hasPermission([\'users.update\']) && row.entity.status != \'WAITING_CONFIRMATION\'" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'users.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
@@ -371,12 +371,6 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 		$scope.sortArray = sortArray;
 		$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 	};
-	
-	$scope.exportEntity = function(entity) {
-		var downloadLink = angular.element('<a target="_blank"></a>');
-        downloadLink.attr('href', constants.contextPath + "/api/v1/users/" + entity.id + "/export/pdf");
-        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
-	}
 	
 	$scope.showEntity = function (entity) {
 		$state.go('users.details', { 'id' : entity.id });

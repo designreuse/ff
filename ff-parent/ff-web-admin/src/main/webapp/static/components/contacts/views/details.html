@@ -3,7 +3,7 @@
         <h1>{{ 'HEADER_CONTACT_DETAILS' | translate }}</h1>
     </div>
     <div class="col-lg-2">
-        <button ng-if="hasPermission(['contacts.export'])" ng-click="exportPdf()" class="btn btn-primary m-t-md pull-right"><i class="fa fa-export"></i> {{ 'BUTTON_EXPORT_PDF' | translate }}</button>
+        <a href="{{ contextPath }}/api/v1/contacts/{{entity.id}}/export/pdf" target="_blank" ng-if="hasPermission(['contacts.export'])" class="btn btn-primary m-t-md pull-right">{{ 'BUTTON_EXPORT_PDF' | translate }}</a>
     </div>
 </div>
       
