@@ -6,10 +6,25 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
-		<div class="col-lg-8">
-			<img class="m-b-md" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="320">
-			<div ng-bind-html="toTrusted(tender.text)" />
+		<div class="col-lg-12">
+			<div class="row">
+                <div class="col-lg-3">
+                    <img class="m-b-md" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="100%">                
+                </div>
+                <div class="col-lg-9">
+                    <div class="text-justify" ng-bind-html="toTrusted(tender.text)" />                
+                </div>
+			</div>
 			
+			<div class="form-group">
+	            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+                    <label class="ff-label">{{ 'HEADER_PROJECTS_4_TENDER' | translate }}</label>
+                    <ul>
+                        <li ng-repeat="project in tender.projects"><h5><a class="ff-a" ng-click="showProject(project.id)">{{ project.name }}</a></h5></li>
+                    </ul>
+	            </div>
+	        </div>
+        
             <div class="form-group" ng-repeat="item in tender.items" ng-if="item.summaryItem && item.valueMapped">
                 <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
                     <label class="ff-label">{{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>
@@ -29,23 +44,10 @@
                 </div>
             </div>
 		</div>
-		
-		<div class="col-lg-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title ff-ibox-title">
-                    <h4>{{ 'HEADER_PROJECTS_4_TENDER' | translate }}</h4>
-                </div>
-                <div class="ibox-content ff-ibox-content">
-                    <ul>
-                        <li ng-repeat="project in tender.projects"><h5><a class="ff-a" ng-click="showProject(project.id)">{{ project.name }}</a></h5></li>
-                    </ul>
-                </div>
-            </div>
-		</div>
 	</div>
 	
 	<div class="row m-t-md">
-		<div class="col-lg-8">
+		<div class="col-lg-12">
 			<div style="text-align: right;">
 				<small>{{ 'LABEL_LAST_MODIFIED' | translate }}: {{ tender.lastModifiedDate | date : dateTimeFormat }}</small>
 			</div>
