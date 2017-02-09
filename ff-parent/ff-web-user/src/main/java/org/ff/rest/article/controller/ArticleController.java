@@ -39,6 +39,17 @@ public class ArticleController extends BaseController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value="/latest")
+	public List<ArticleResource> findLatest() {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findLatest");
+		try {
+			return articleService.findLatest();
+		} finally {
+			etmService.collect(point);
+			log.debug(".findLatest finished in {} ms", point.getTransactionTime());
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
 	public ArticleResource find(@AuthenticationPrincipal UserDetails user, @PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");

@@ -3,6 +3,7 @@ package org.ff.rest.tender.resource;
 import java.util.Date;
 import java.util.List;
 
+import org.ff.jpa.domain.Tender.TenderState;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.rest.image.resource.ImageResource;
 import org.ff.rest.item.resource.ItemResource;
@@ -23,6 +24,9 @@ public class TenderResource {
 
 	@JsonProperty("status")
 	private TenderStatus status;
+
+	@JsonProperty("state")
+	private TenderState state;
 
 	@JsonProperty("incomplete")
 	private Boolean incomplete;

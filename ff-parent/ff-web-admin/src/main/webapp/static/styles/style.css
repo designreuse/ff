@@ -373,7 +373,9 @@
 
 .ff-masonry-brick-text {
     margin: 5px; 
-    height: 100px;
+    min-height: 10px;
+    max-height: 100px;
+    padding-bottom: 5px;
 }
 
 .ff-masonry-brick-label {

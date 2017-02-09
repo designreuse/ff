@@ -13,6 +13,10 @@ public interface ArticleRepository extends CrudRepository<Article, Integer>, Jpa
 
 	Page<Article> findAll(Pageable pageable);
 
-	List<Article> findByStatusOrderByLastModifiedDateDesc(ArticleStatus status);
+	List<Article> findByStatusOrderByLastModifiedDateDesc(ArticleStatus ArticleStatus);
+
+	List<Article> findTop10ByStatusOrderByLastModifiedDateDesc(ArticleStatus ArticleStatus);
+
+	Integer countByStatus(ArticleStatus ArticleStatus);
 
 }

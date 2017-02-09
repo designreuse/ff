@@ -27,7 +27,16 @@ public class DashboardResource {
 	@JsonProperty("cntTenders")
 	private Integer cntTenders;
 
+	@JsonProperty("cntTendersOpen")
+	private Integer cntTendersOpen;
+
+	@JsonProperty("cntTenders4U")
+	private Integer cntTenders4U;
+
 	@JsonProperty("cntProjects")
 	private Integer cntProjects;
+
+	@JsonProperty("cntArticles")
+	private Integer cntArticles;
 
 }

@@ -34,6 +34,8 @@ public class Tender extends AbstractEntity {
 
 	public enum TenderStatus { ACTIVE, INACTIVE };
 
+	public enum TenderState { CLOSE, OPEN, PENDING };
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

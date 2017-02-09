@@ -20,15 +20,22 @@ function config($translateProvider) {
 			HEADER_PROJECT_EDIT: 'Uredi projekt',
 			HEADER_PROJECTS_4_TENDER: 'Projekti za koje je ovaj natječaj prikladan',
 			
+			HEADER_DASHBOARD_ARTICLE: 'Najnoviji članci',
 			HEADER_DASHBOARD_TENDERS: 'Najnoviji natječaji',
 			HEADER_DASHBOARD_TENDERS_BADGE: 'Objavljeni u zadnjih 30 dana',
 			HEADER_DASHBOARD_TENDERS_CHART: 'Broj objavljenih natječaja',
 			HEADER_DASHBOARD_TENDERS_CHART_BADGE: 'Zadnjih 12 mjeseci',
-			HEADER_DASHBOARD_TENDERS_CNT: 'Natječaji',
-			HEADER_DASHBOARD_TENDERS_CNT_BADGE: 'Ukupno',
+			HEADER_DASHBOARD_TENDERS1_CNT: 'Natječaji',
+			HEADER_DASHBOARD_TENDERS1_CNT_BADGE: 'Ukupno',
+			HEADER_DASHBOARD_TENDERS2_CNT: 'Otvoreni natječaji',
+			HEADER_DASHBOARD_TENDERS2_CNT_BADGE: 'Ukupno',
+			HEADER_DASHBOARD_TENDERS3_CNT: 'Natječaji za vas',
+			HEADER_DASHBOARD_TENDERS3_CNT_BADGE: 'Ukupno',
 			HEADER_DASHBOARD_PROJECTS_CNT: 'Vaši projekti',
 			HEADER_DASHBOARD_PROJECTS_CNT_BADGE: 'Ukupno',
-			HEADER_DASHBOARD_PROFILE_CNT: 'Profil',
+			HEADER_DASHBOARD_ARTICLES_CNT: 'Članci',
+			HEADER_DASHBOARD_ARTICLES_CNT_BADGE: 'Ukupno',
+			HEADER_DASHBOARD_PROFILE_CNT: 'Popunjenost profila',
 			HEADER_DASHBOARD_PROFILE_CNT_BADGE: 'Popunjenost',
 			
 			MENU_TENDERS: 'Moji natječaji',
@@ -80,6 +87,9 @@ function config($translateProvider) {
 			LABEL_NO_MATCHING_TENDERS: 'Nije pronađen niti jedan natječaj koji odgovara vašem profilu',
 			
 			TOOLTIP_DELETE: 'Obriši',
+			
+			TENDER_STATE_OPEN: 'OTVOREN',
+			TENDER_STATE_PENDING: 'U NAJAVI',
 			
 			DLG_DELETE_HDR: 'Obriši projekt',
 			DLG_DELETE_MSG: 'Da li doista želite obrisati projekt?',

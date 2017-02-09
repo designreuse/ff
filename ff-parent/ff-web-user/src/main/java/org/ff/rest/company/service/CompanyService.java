@@ -39,11 +39,11 @@ public class CompanyService {
 	}
 
 	@Transactional(readOnly = true)
-	public Double validate(UserDetails principal) {
+	public Double profileCompleteness(UserDetails principal, Boolean all) {
 		if (principal != null) {
 			CompanyResource resource = resourceAssembler.toResource(userRepository.findByEmail(principal.getUsername()).getCompany(), false);
 
-			double cntMandatoryItems = 0;
+			double cntItems = 0;
 			double cntEnteredItems = 0;
 
 			for (ItemResource itemResource : resource.getItems()) {
@@ -51,20 +51,27 @@ public class CompanyService {
 					continue;
 				}
 
-				if (Boolean.TRUE == itemResource.getMandatory()) {
-					cntMandatoryItems++;
+				if (Boolean.FALSE == all) {
+					if (Boolean.TRUE == itemResource.getMandatory()) {
+						cntItems++;
+						if (itemResource.getValue() != null) {
+							cntEnteredItems++;
+						}
+					}
+				} else {
+					cntItems++;
 					if (itemResource.getValue() != null) {
 						cntEnteredItems++;
 					}
 				}
 			}
 
-			if (cntMandatoryItems == 0) {
+			if (cntItems == 0) {
 				return 100d;
-			} else if (cntMandatoryItems > 0 && cntEnteredItems == 0) {
+			} else if (cntItems > 0 && cntEnteredItems == 0) {
 				return 0d;
 			} else {
-				return (cntEnteredItems / cntMandatoryItems) * 100;
+				return (cntEnteredItems / cntItems) * 100;
 			}
 
 		}

@@ -7,4 +7,7 @@ angular.module('FundFinder')
 	this.findAll = function() {
 		return $http.get('/api/v1/articles');
 	};
+	this.findLatest = function() {
+		return $http.get('/api/v1/articles/latest');
+	};
 });

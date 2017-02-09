@@ -219,7 +219,9 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: ['components/dashboard/scripts/controllers.js',
-	        			        'components/dashboard/scripts/services.js']
+	        			        'components/dashboard/scripts/services.js',
+	        			        'components/images/scripts/services.js',
+	        			        'components/articles/scripts/services.js']
 	        		});
 	        	}
 	        }
@@ -329,8 +331,8 @@ angular.module('FundFinder')
 	 * Function validates company profile.
 	 * Profile is valid if all mandatory items are entered.
 	 */
-	$rootScope.validateProfile = function() {
-		CommonService.validateProfile()
+	$rootScope.profileCompleteness = function() {
+		CommonService.profileCompleteness(false)
 			.success(function(data, status) {
 				var profileCompleteness = parseFloat(data);
 				$rootScope.profileCompleteness = profileCompleteness;
@@ -342,5 +344,5 @@ angular.module('FundFinder')
 	}
 	
 	$rootScope.profileIncomplete = false;
-	$rootScope.validateProfile();
+	$rootScope.profileCompleteness();
 });

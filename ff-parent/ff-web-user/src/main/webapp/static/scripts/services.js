@@ -1,8 +1,8 @@
 angular.module('FundFinder')
 
 .service('CommonService', function($http) {
-	this.validateProfile = function() {
-		return $http.get('/api/v1/company/validate');
+	this.profileCompleteness = function(all) {
+		return $http.get('/api/v1/company/profileCompleteness/' + all);
 	};
 })
 

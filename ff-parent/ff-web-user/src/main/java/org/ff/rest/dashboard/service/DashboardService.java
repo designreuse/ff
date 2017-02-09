@@ -10,11 +10,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 
 import org.ff.base.properties.BaseProperties;
+import org.ff.common.algorithm.AlgorithmService;
+import org.ff.jpa.domain.Article.ArticleStatus;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Tender;
+import org.ff.jpa.domain.Tender.TenderState;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.jpa.domain.TenderItem;
+import org.ff.jpa.repository.ArticleRepository;
 import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
@@ -24,6 +28,8 @@ import org.ff.rest.item.resource.ItemResourceAssembler;
 import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.tender.resource.TenderResourceAssembler;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -47,7 +53,13 @@ public class DashboardService {
 	private ProjectRepository projectRepository;
 
 	@Autowired
+	private ArticleRepository articleRepository;
+
+	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private AlgorithmService algorithmService;
 
 	private SimpleDateFormat monthFormat;
 
@@ -59,22 +71,20 @@ public class DashboardService {
 	public DashboardResource getData(UserDetails principal) {
 		DashboardResource resource = new DashboardResource();
 
+		LocalDate today = new LocalDate();
 		DateTime date12MonthsAgo = new DateTime().minusMonths(12);
 		DateTime date30DaysAgo = new DateTime().minusDays(30);
 
 		Map<String, AtomicInteger> map = new LinkedHashMap<>();
 		for (int i = 0; i<12; i++) {
-			map.put(monthFormat.format(date12MonthsAgo.toDate()), new AtomicInteger(0));
 			date12MonthsAgo = date12MonthsAgo.plusMonths(1);
+			map.put(monthFormat.format(date12MonthsAgo.toDate()), new AtomicInteger(0));
 		}
 
 		AtomicInteger cntTenders = new AtomicInteger(0);
-		for (Tender tender : tenderRepository.findAll()) {
-			if (tender.getStatus() == TenderStatus.INACTIVE) {
-				// skip inactive tenders
-				continue;
-			}
+		AtomicInteger cntTendersOpen = new AtomicInteger(0);
 
+		for (Tender tender : tenderRepository.findByStatus(TenderStatus.ACTIVE)) {
 			cntTenders.incrementAndGet();
 
 			String s = monthFormat.format(tender.getCreationDate().toDate());
@@ -95,10 +105,32 @@ public class DashboardService {
 
 				for (TenderItem tenderItem : tender.getItems()) {
 					Item item = tenderItem.getItem();
-					if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE || item.getMetaTag() == ItemMetaTag.TENDER_END_DATE || item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING) {
+					if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE || item.getMetaTag() == ItemMetaTag.TENDER_END_DATE
+							|| item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING || item.getMetaTag() == ItemMetaTag.TENDER_MAX_AID_INTENSITY) {
 						ItemResource itemResource = itemResourceAssembler.toResource(item, true);
 						tenderResourceAssembler.setResourceValue(tenderResource, itemResource, tenderItem);
 						tenderResource.getItems().add(itemResource);
+
+						if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE) {
+							if (tenderItem.getValue() != null) {
+								LocalDate startDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+								if (startDate.isBefore(today)) {
+									cntTendersOpen.incrementAndGet();
+									tenderResource.setState(TenderState.OPEN);
+								} else if (startDate.isAfter(today)) {
+									tenderResource.setState(TenderState.PENDING);
+								}
+							}
+						}
+
+						if (item.getMetaTag() == ItemMetaTag.TENDER_END_DATE) {
+							if (tenderItem.getValue() != null) {
+								LocalDate endDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+								if (endDate.isBefore(today)) {
+									tenderResource.setState(TenderState.CLOSE);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -110,8 +142,11 @@ public class DashboardService {
 		}
 
 		resource.setCntTenders(cntTenders.intValue());
+		resource.setCntTendersOpen(cntTendersOpen.intValue());
+		resource.setCntTenders4U(algorithmService.findTenders4User(userRepository.findByEmail(principal.getUsername())).size()); // TODO: this might slow down things
 
 		resource.setCntProjects(projectRepository.countByCompany(userRepository.findByEmail(principal.getUsername()).getCompany()));
+		resource.setCntArticles(articleRepository.countByStatus(ArticleStatus.ACTIVE));
 
 		return resource;
 	}

@@ -61,4 +61,18 @@ public class ArticleService {
 		return resourceAssembler.toResource(entity, false);
 	}
 
+	@Transactional(readOnly = true)
+	public List<ArticleResource> findLatest() {
+		log.debug("Finding latest articles...");
+
+		List<ArticleResource> resources = resourceAssembler.toResources(repository.findTop10ByStatusOrderByLastModifiedDateDesc(ArticleStatus.ACTIVE), false);
+		for (ArticleResource resource : resources) {
+			if (resource.getImage() != null && StringUtils.isNotBlank(resource.getImage().getBase64())) {
+				resource.setImageId(resource.getImage().getId());
+				resource.getImage().setBase64(null);
+			}
+		}
+		return resources;
+	}
+
 }

@@ -7,6 +7,7 @@ import org.ff.rest.company.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,14 +51,14 @@ public class CompanyController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/validate")
-	public Double validate(@AuthenticationPrincipal UserDetails principal) {
-		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".validate");
+	@RequestMapping(method = RequestMethod.GET, value = "/profileCompleteness/{all}")
+	public Double profileCompleteness(@AuthenticationPrincipal UserDetails principal, @PathVariable Boolean all) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".profileCompleteness");
 		try {
-			return companyService.validate(principal);
+			return companyService.profileCompleteness(principal, all);
 		} finally {
 			etmService.collect(point);
-			log.debug(".validate finished in {} ms", point.getTransactionTime());
+			log.debug(".profileCompleteness finished in {} ms", point.getTransactionTime());
 		}
 	}
 
