@@ -10,4 +10,6 @@ public interface BusinessRelationshipManagerRepository extends CrudRepository<Bu
 
 	Page<BusinessRelationshipManager> findAll(Pageable pageable);
 
+	BusinessRelationshipManager findByEmail(String email);
+
 }

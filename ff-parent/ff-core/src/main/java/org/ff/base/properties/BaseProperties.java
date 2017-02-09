@@ -11,6 +11,8 @@ import lombok.Setter;
 @Getter @Setter
 public class BaseProperties {
 
+	private Boolean testMode = Boolean.FALSE;
+
 	private String monthFormat;
 
 	private String dateFormat;

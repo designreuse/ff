@@ -61,8 +61,7 @@ public class SessionClient extends WebServiceGatewaySupport {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
-			// TODO: remove following code block
-			{
+			if (baseProperties.getTestMode() == Boolean.TRUE) {
 				data.put("user_id", "12345678901"); // OIB zastupnika
 				data.put("user_id2", "49355429927"); // OIB pravne osobe
 

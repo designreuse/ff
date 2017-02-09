@@ -31,6 +31,24 @@
 		<div class="row">
 			<div class="col-lg-12">
 				
+				<div ng-if="principal.registrationType == 'EXTERNAL'" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_COMPANY_NAME' | translate }}
+                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.name.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.name.$valid }"></i></span>
+                        </label>
+                        <input ng-model="company.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="255" />
+                    </div>
+                </div>
+                
+                <div ng-if="principal.registrationType == 'EXTERNAL'" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_COMPANY_CODE' | translate }}
+                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.code.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.code.$valid }"></i></span>
+                        </label>
+                        <input ng-model="company.code" type="text" class="form-control ff-form-control" name="code" ng-required="true" maxlength="64" />
+                    </div>
+                </div>
+                
                 <div class="form-group" ng-repeat="(parentIndex, item) in company.items" ng-if="!item.metaTag || item.metaTag.indexOf('COMPANY_INVESTMENT_') == -1">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ item.text }}

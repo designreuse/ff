@@ -76,4 +76,13 @@ public class ExternalCompanyResource {
 	@JsonProperty("totalLiabilities")
 	private String totalLiabilities;
 
+	@JsonProperty("vpoFirstName")
+	private String vpoFirstName;
+
+	@JsonProperty("vpoLastName")
+	private String vpoLastName;
+
+	@JsonProperty("vpoEmail")
+	private String vpoEmail;
+
 }

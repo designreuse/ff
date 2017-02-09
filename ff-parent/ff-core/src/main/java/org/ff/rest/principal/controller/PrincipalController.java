@@ -3,8 +3,8 @@ package org.ff.rest.principal.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ff.common.security.AppUserDetails;
 import org.ff.common.security.AppUser.AppUserRole;
+import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Permission;
 import org.ff.jpa.domain.Role;
 import org.ff.jpa.repository.PermissionRepository;
@@ -40,7 +40,8 @@ public class PrincipalController {
 				String roleName = principal.getAuthorities().iterator().next().toString();
 				List<String> permissions = getPermissions(roleName);
 
-				resource = new PrincipalResource(principal.getUsername(), roleName, permissions, principal.getUser().getFirstName(), principal.getUser().getLastName(), principal.getUser().getDemoUser());
+				resource = new PrincipalResource(principal.getUsername(), roleName, permissions, principal.getUser().getFirstName(),
+						principal.getUser().getLastName(), principal.getUser().getDemoUser(), principal.getUser().getRegistrationType());
 			} else if (authentication instanceof UsernamePasswordAuthenticationToken) {
 				// admin application
 				UsernamePasswordAuthenticationToken principal = (UsernamePasswordAuthenticationToken) authentication;
@@ -48,7 +49,7 @@ public class PrincipalController {
 				String roleName = principal.getAuthorities().iterator().next().toString();
 				List<String> permissions = getPermissions(roleName);
 
-				resource = new PrincipalResource(principal.getName(), roleName, permissions, null, null, null);
+				resource = new PrincipalResource(principal.getName(), roleName, permissions, null, null, null, null);
 			}
 		}
 

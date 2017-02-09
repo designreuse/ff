@@ -2,6 +2,8 @@ package org.ff.common.security;
 
 import java.util.List;
 
+import org.ff.jpa.domain.User.UserRegistrationType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +34,7 @@ public class AppUser {
 	private String lastName;
 
 	private Boolean demoUser;
+
+	private UserRegistrationType registrationType;
 
 }

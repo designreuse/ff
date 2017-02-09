@@ -15,6 +15,7 @@ import org.apache.commons.lang.math.DoubleRange;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.password.PasswordService;
+import org.ff.jpa.domain.BusinessRelationshipManager;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Item;
@@ -24,6 +25,7 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.domain.ZabaMappingsLocation;
+import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.CompanyItemRepository;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.Subdivision2Repository;
@@ -79,6 +81,9 @@ public class ExternalFlowService {
 	@Autowired
 	private LogClientHttpRequestInterceptor interceptor;
 
+	@Autowired
+	private BusinessRelationshipManagerRepository businessRelationshipManagerRepository;
+
 	private RestTemplate restTemplate;
 
 	private DateFormat dateFormat;
@@ -112,6 +117,8 @@ public class ExternalFlowService {
 				User user = null;
 				String password = passwordGeneratorService.generate();
 
+				BusinessRelationshipManager businessRelationshipManager = processVpoData(companyData);
+
 				if (company == null) {
 					user = new User();
 					user.setStatus(UserStatus.ACTIVE);
@@ -126,6 +133,9 @@ public class ExternalFlowService {
 					user.setLastLoginDate(new DateTime());
 					user.setDemoUser(Boolean.FALSE);
 					user.setRegistrationType(UserRegistrationType.EXTERNAL);
+					if (businessRelationshipManager != null) {
+						user.setBusinessRelationshipManager(businessRelationshipManager);
+					}
 					userRepository.save(user);
 
 					log.debug("New user [{}] created", user.getId());
@@ -149,6 +159,9 @@ public class ExternalFlowService {
 				} else {
 					user = company.getUser();
 					user.setLastLoginDate(new DateTime());
+					if (businessRelationshipManager != null) {
+						user.setBusinessRelationshipManager(businessRelationshipManager);
+					}
 					userRepository.save(user);
 
 					importCompanyData(company, companyData);
@@ -165,6 +178,34 @@ public class ExternalFlowService {
 			log.error(e.getMessage(), e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	private BusinessRelationshipManager processVpoData(ExternalCompanyResource companyData) throws Exception {
+		BusinessRelationshipManager businessRelationshipManager = null;
+
+		if (StringUtils.isNotBlank(companyData.getVpoEmail())) {
+			businessRelationshipManager = businessRelationshipManagerRepository.findByEmail(companyData.getVpoEmail());
+
+			if (businessRelationshipManager == null) {
+				// create
+				businessRelationshipManager = new BusinessRelationshipManager();
+				businessRelationshipManager.setFirstName(companyData.getVpoFirstName());
+				businessRelationshipManager.setLastName(companyData.getVpoLastName());
+				businessRelationshipManager.setEmail(companyData.getVpoEmail());
+			} else {
+				// update
+				if (StringUtils.isNotBlank(companyData.getVpoFirstName())) {
+					businessRelationshipManager.setFirstName(companyData.getVpoFirstName());
+				}
+				if (StringUtils.isNotBlank(companyData.getVpoLastName())) {
+					businessRelationshipManager.setLastName(companyData.getVpoLastName());
+				}
+			}
+
+			businessRelationshipManagerRepository.save(businessRelationshipManager);
+		}
+
+		return businessRelationshipManager;
 	}
 
 	private ExternalCompanyResource getCompanyData(String matbr) throws Exception {

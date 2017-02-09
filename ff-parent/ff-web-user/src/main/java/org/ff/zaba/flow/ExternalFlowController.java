@@ -27,6 +27,12 @@ public class ExternalFlowController {
 		return externalFlowService.authorize(authId);
 	}
 
+	/**
+	 * Dummy method to simulate ZaBA API end-point.
+	 * @param companyNumber
+	 * @param branchOfficeNumber
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/getByCompanyNumber")
 	public ResponseEntity<?> getByCompanyNumber(@RequestParam String companyNumber, @RequestParam String branchOfficeNumber) {
 		try {
@@ -52,6 +58,9 @@ public class ExternalFlowController {
 			resource.setNumberOfEmployeesAnnual("99");
 			resource.setCapital("4642015.00");
 			resource.setTotalLiabilities("11476427.00");
+			resource.setVpoFirstName("Jack");
+			resource.setVpoLastName("Russel");
+			resource.setVpoEmail("jack.russel@gmail.com");
 
 			return new ResponseEntity<>(resource, HttpStatus.OK);
 		} catch (Exception e) {
