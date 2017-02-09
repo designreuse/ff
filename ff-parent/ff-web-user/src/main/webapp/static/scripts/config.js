@@ -331,12 +331,11 @@ angular.module('FundFinder')
 	 * Function validates company profile.
 	 * Profile is valid if all mandatory items are entered.
 	 */
-	$rootScope.profileCompleteness = function() {
-		CommonService.profileCompleteness(false)
+	$rootScope.getProfileCompleteness = function() {
+		CommonService.getProfileCompleteness(false)
 			.success(function(data, status) {
-				var profileCompleteness = parseFloat(data);
-				$rootScope.profileCompleteness = profileCompleteness;
-				$rootScope.profileIncomplete = (profileCompleteness == 100) ? false : true;
+				$rootScope.profileCompleteness = parseFloat(data);
+				$rootScope.profileIncomplete = ($rootScope.profileCompleteness == 100) ? false : true;
 			})
 			.error(function(data, status) {
 				$log.error(data);
@@ -344,5 +343,5 @@ angular.module('FundFinder')
 	}
 	
 	$rootScope.profileIncomplete = false;
-	$rootScope.profileCompleteness();
+	$rootScope.getProfileCompleteness();
 });

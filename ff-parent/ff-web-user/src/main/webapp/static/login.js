@@ -30,40 +30,40 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	
 	// translations
 	$translateProvider
-		.translations('en', {
-			LBL_WELCOME: 'Welcome to Fund Finder',
-			LBL_USERNAME: 'Username',
-			LBL_PASSWORD: 'Password',
-			LBL_CONFIRM_PASSWORD: 'Confirm password',
-			LBL_RESET_PASSWORD: 'Reset password',
-			LBL_REGISTRATION: 'Registration',
-			LBL_CANCEL: 'Cancel',
-			LBL_TERMS_OF_USE: 'Terms of use',
-			LBL_FIRST_NAME: 'First name',
-			LBL_LAST_NAME: 'Last name',
-			LBL_EMAIL: 'Email',
-			LBL_COMPANY_NAME: 'Company name',
-			LBL_LOADING: 'LOADING FUND FINDER',
-			LBL_UNAUTHORIZE: 'UNAUTHORIZE ACCESS DETECTED',
+		.translations('hr', {
+			LBL_WELCOME: 'Fund Finder prijava',
+			LBL_USERNAME: 'Korisničko ime',
+			LBL_PASSWORD: 'Zaporka',
+			LBL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
+			LBL_RESET_PASSWORD: 'Resetiraj zaporku',
+			LBL_REGISTRATION: 'Registracija',
+			LBL_CANCEL: 'Otkaži',
+			LBL_TERMS_OF_USE: 'Uvjeti korištenja',
+			LBL_FIRST_NAME: 'Ime',
+			LBL_LAST_NAME: 'Prezime',
+			LBL_EMAIL: 'E-mail',
+			LBL_COMPANY_NAME: 'Ime tvtke',
+			LBL_LOADING: 'UČITAVAM FUND FINDER',
+			LBL_UNAUTHORIZE: 'NEAUTORIZIRAN PRISTUP',
 			
-			BTN_LOGIN: 'Login',
-			BTN_REGISTER: 'Register',
-			BTN_SEND: 'Send',
-			BTN_CLOSE: 'Close',
+			BTN_LOGIN: 'Prijava',
+			BTN_REGISTER: 'Registriraj',
+			BTN_SEND: 'Pošalji',
+			BTN_CLOSE: 'Zatvori',
 			
-			HDR_SUCCESS: 'Success',
-			HDR_WARNING: 'Warning',
-			HDR_ERROR: 'Error',
+			HDR_SUCCESS: 'Uspjeh',
+			HDR_WARNING: 'Upozorenje',
+			HDR_ERROR: 'Greška',
 			
-			MSG_REGISTRATION_SUCCESS: 'Your registration form has been successfully submitted.<p>In a few minutes you should receive confirmation email. Please click the URL from email to complete registration. After that you can login to Fund Finder.',
-			MSG_REGISTRATION_ERROR: 'We are sorry, but action has failed.<p>For more information please contact customer support service.',
-			MSG_REGISTRATION_CONFLICT: 'User with entered email already exists in Fund Finder system.',
+			MSG_REGISTRATION_SUCCESS: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u Find Finder.',
+			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
+			MSG_REGISTRATION_CONFLICT: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',
 				
-			MSG_RESET_PASSWORD_SUCCESS: 'New password has been sent to your email.',
-			MSG_RESET_PASSWORD_ERROR: 'We are sorry, but action has failed.<p>For more information please contact customer support service.',
-			MSG_RESET_PASSWORD_NOT_FOUND: 'User with entered email not found in Fund Finder system.',
+			MSG_RESET_PASSWORD_SUCCESS: 'Nova zaporka je poslana na vaš e-mail.',
+			MSG_RESET_PASSWORD_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
+			MSG_RESET_PASSWORD_NOT_FOUND: 'Korisnik sa upisanim e-mailom nije pronađen.',
 		});
-	$translateProvider.preferredLanguage("en");
+	$translateProvider.preferredLanguage("hr");
 })
 
 // ================================================================================

@@ -59,7 +59,7 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 		        	position: 'right',
 		        	scaleLabel: {
 			    		display: true,
-			    		labelString: $translate('HEADER_DASHBOARD_CHART_Y_AXIS'),
+			    		labelString: $translate('HEADER_DASHBOARD_CHART_Y_AXIS') + " HRK",
 			    		fontSize: 10
 			    	}, 
 		        	gridLines: {
@@ -109,10 +109,9 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 		});
 	
-	CommonService.profileCompleteness(true)
+	CommonService.getProfileCompleteness(true)
 		.success(function(data, status) {
-			var profileCompleteness = parseFloat(data);
-			$scope.profileCompleteness = profileCompleteness;
+			$scope.profileCompleteness = parseFloat(data);
 		})
 		.error(function(data, status) {
 			$log.error(data);
