@@ -126,6 +126,11 @@ public class ExternalFlowService {
 					user.setLastName(data.get("prezime"));
 					if (data.containsKey("email") && StringUtils.isNotBlank(data.get("email"))) {
 						user.setEmail(data.get("email"));
+
+						if (userRepository.findByEmail(data.get("email")) != null) {
+							log.warn("User with e-mail [{}] is already registered", data.get("email"));
+							return new ResponseEntity<>(HttpStatus.CONFLICT);
+						}
 					} else {
 						user.setEmail(data.get("user_id"));
 					}

@@ -45,6 +45,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			LBL_COMPANY_NAME: 'Ime tvtke',
 			LBL_LOADING: 'UČITAVAM FUND FINDER',
 			LBL_UNAUTHORIZE: 'NEAUTORIZIRAN PRISTUP',
+			LBL_USER_ALREADY_REGISTERED: 'Korisnik je već registriran',
 			
 			BTN_LOGIN: 'Prijava',
 			BTN_REGISTER: 'Registriraj',
@@ -216,6 +217,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			})
 			.error(function(data, status, headers, config) {
 				$scope.unauthorize = true;
+				$scope.status = status;
 			});
 	} else {
 		$scope.showLogin();		
