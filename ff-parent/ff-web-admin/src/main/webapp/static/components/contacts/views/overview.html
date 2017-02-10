@@ -23,11 +23,11 @@
             <div class="btn-group pull-right m-l-sm" ng-if="hasPermission(['contacts.export'])">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'BUTTON_EXPORT' | translate }} <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a ng-click="exportAll('CSV')">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'BUTTON_AS_CSV' | translate }}</a></li>
-                    <li><a ng-click="exportSelected('CSV')">{{ 'BUTTON_EXPORT_SELECTED' | translate }} {{ 'BUTTON_AS_CSV' | translate }}</a></li>
+                    <li><a ng-click="exportAll('CSV')">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+                    <li><a ng-click="exportSelected('CSV')">{{ 'BUTTON_EXPORT_SELECTED' | translate }} {{ 'TO_CSV' | translate }}</a></li>
                     <li class="divider" style="margin: 0px;"></li>
-                    <li><a ng-click="exportAll('PDF')">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'BUTTON_AS_PDF' | translate }}</a></li>
-                    <li><a ng-click="exportSelected('PDF')">{{ 'BUTTON_EXPORT_SELECTED' | translate }} {{ 'BUTTON_AS_PDF' | translate }}</a></li>
+                    <li><a ng-click="exportAll('PDF')">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+                    <li><a ng-click="exportSelected('PDF')">{{ 'BUTTON_EXPORT_SELECTED' | translate }} {{ 'TO_PDF' | translate }}</a></li>
                 </ul>
             </div>
         </div>

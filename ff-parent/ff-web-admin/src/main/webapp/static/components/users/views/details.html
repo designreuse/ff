@@ -35,7 +35,7 @@
         <h1>{{ 'HEADER_USER_DETAILS' | translate }}</h1>
     </div>
     <div class="col-lg-2">
-        <a href="{{ contextPath }}/api/v1/users/{{entity.id}}/export/pdf" target="_blank" ng-if="hasPermission(['users.export']) && entity.status != 'WAITING_CONFIRMATION'" class="btn btn-primary m-t-md pull-right">{{ 'BUTTON_EXPORT_PDF' | translate }}</a>
+        <a href="{{ contextPath }}/api/v1/users/{{entity.id}}/export/pdf" target="_blank" ng-if="hasPermission(['users.export']) && entity.status != 'WAITING_CONFIRMATION'" class="btn btn-primary m-t-md pull-right m-r-sm">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a>
     </div>
 </div>
 

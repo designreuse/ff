@@ -13,8 +13,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a ng-click="exportData()">{{ 'BUTTON_EXPORT' | translate }}</a></li>
-                    <li><a href="#" ngf-select ngf-change="importData($files)">{{ 'BUTTON_IMPORT' | translate }}</a></li>
+                    <li><a ng-click="exportData()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_JSON' | translate }}</a></li>
+                    <li><a href="#" ngf-select ngf-change="importData($files)">{{ 'BUTTON_IMPORT' | translate }} {{ 'FROM_JSON' | translate }}...</a></li>
                 </ul>
             </div>
         </div>

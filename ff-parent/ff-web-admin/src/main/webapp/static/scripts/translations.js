@@ -206,13 +206,15 @@ function config($translateProvider) {
 			BUTTON_SELECT: 'Select...',
 			BUTTON_SEND: 'Send',
 			BUTTON_YES: 'Yes',
-			BUTTON_EXPORT_PDF: 'Export to PDF',
 			BUTTON_EXPORT: 'Export',
 			BUTTON_EXPORT_ALL: 'Export all',
 			BUTTON_EXPORT_SELECTED: 'Export selected',
 			BUTTON_IMPORT: 'Import',
-			BUTTON_AS_CSV: 'to CSV',
-			BUTTON_AS_PDF: 'to PDF',
+
+			TO_CSV: 'to CSV',
+			TO_PDF: 'to PDF',
+			TO_JSON: 'to JSON',
+			FROM_JSON: 'from JSON',
 			
 			DATETIMEPICKER_TODAY: 'Today',
 			DATETIMEPICKER_YESTERDAY: 'Yesterday',

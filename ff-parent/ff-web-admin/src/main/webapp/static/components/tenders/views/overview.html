@@ -30,8 +30,8 @@ p span {
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a ng-click="exportTenders()">{{ 'BUTTON_EXPORT_ALL' | translate }}</a></li>
-                    <li><a href="#" ngf-select ngf-change="importTenders($files)">{{ 'BUTTON_IMPORT' | translate }}...</a></li>
+                    <li><a ng-click="exportTenders()">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'TO_JSON' | translate }}</a></li>
+                    <li><a href="#" ngf-select ngf-change="importTenders($files)">{{ 'BUTTON_IMPORT' | translate }} {{ 'FROM_JSON' | translate }}...</a></li>
                 </ul>
             </div>
 		</div>
