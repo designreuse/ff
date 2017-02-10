@@ -37,6 +37,17 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		}
 	};
 	
+	$scope.optionsPie = {
+		legend: {
+			display: true,
+			position: "right"
+		},
+		tooltips: {
+			enabled: true,
+			titleFontSize: 10
+		}
+	};
+	
 	$scope.companiesByCountiesView = 'CHART_VIEW';
 	$scope.companiesByRevenuesView = 'CHART_VIEW';
 	$scope.companiesBySizeView = 'CHART_VIEW';
@@ -139,17 +150,15 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					$scope.labelsCompaniesByRevenues4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
 				});
 				
-				var dataArray = new Array();
-				dataArray.push(data.data);
-				$scope.dataCompaniesByRevenues = dataArray;
+				$scope.dataCompaniesByRevenues = data.data;
 				
 				var total = 0;
-				$.each(dataArray[0], function(index, value) {
+				$.each(data.data, function(index, value) {
 					total = total + parseInt(value);
 				});
 				
 				$scope.percentageCompaniesByRevenues4TableView = new Array();
-				$.each(dataArray[0], function(index, value) {
+				$.each(data.data, function(index, value) {
 					if (total == 0) {
 						$scope.percentageCompaniesByRevenues4TableView.push(0);
 					} else {
@@ -204,17 +213,15 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 					$scope.labelsCompaniesBySize4ChartView.push($limitTo(value, limitToThreshold) + ((value.length > limitToThreshold) ? "..." : ""));
 				});
 				
-				var dataArray = new Array();
-				dataArray.push(data.data);
-				$scope.dataCompaniesBySize = dataArray;
+				$scope.dataCompaniesBySize = data.data;
 				
 				var total = 0;
-				$.each(dataArray[0], function(index, value) {
+				$.each(data.data, function(index, value) {
 					total = total + parseInt(value);
 				});
 				
 				$scope.percentageCompaniesBySize4TableView = new Array();
-				$.each(dataArray[0], function(index, value) {
+				$.each(data.data, function(index, value) {
 					if (total == 0) {
 						$scope.percentageCompaniesBySize4TableView.push(0);
 					} else {
