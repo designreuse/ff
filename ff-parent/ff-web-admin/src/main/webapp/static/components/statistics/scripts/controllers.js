@@ -5,8 +5,28 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	var $limitTo = $filter('limitTo');
+	var $currency = $filter('currency');
 	
 	var limitToThreshold = 30;
+	
+	// styles for PDF make
+	var pdfMakeStyles = {
+		header: {
+			fontSize: 14,
+			bold: true,
+			margin: [0, 0, 0, 15]
+		},
+		tableContent: {
+			margin: [0, 15, 0, 15]
+		},
+		tableHeader: {
+			bold: true,
+			fontSize: 8
+		},
+		tableRow: {
+			fontSize: 8
+		}	
+	};
 	
 	$scope.options = {
 		scales: {
@@ -139,6 +159,45 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
         FileSaver.saveAs(data, 'companies_by_county.csv');
 	};
 	
+	$scope.exportCompaniesByCountiesPDF = function() {
+		var rows = new Array();
+		rows.push([
+		    { text: $translate('COLUMN_SUBDIVISION1'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_NO_OF_COMPANIES'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_PERCENTAGE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+		]);
+		
+		$.each($scope.companiesByCounties4ExportCSV, function(index, value) {
+			rows.push([
+			    { text: value.county, style: 'tableRow', alignment: 'left' },
+			    { text: value.number.toString(), style: 'tableRow', alignment: 'right' },
+			    { text: value.percentage + "%", style: 'tableRow', alignment: 'right' }
+			]);
+		});
+		
+		var docDefinition = {
+			pageSize: 'A4',
+			content: [
+			    { text: $translate('TAB_STATS_COMPANIES_BY_COUNTIES'), style: 'header' },
+			    {
+			        image: document.getElementById($scope.typeCompaniesByCounties).toDataURL('image/png'),
+			        width: 515
+				},
+			    {
+			    	style: 'tableContent',
+			    	table: {
+		        		headerRows: 1,
+		        		widths: [ '*', 100, 50 ],
+		        		body: rows
+		        	}
+			    }
+			],
+			styles: pdfMakeStyles
+		};
+		
+		pdfMake.createPdf(docDefinition).open();
+	};
+	
 	$scope.getCompaniesByRevenues = function() {
 		StatisticsService.getCompaniesByRevenues()
 			.success(function(data, status) {
@@ -202,6 +261,45 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
         FileSaver.saveAs(data, 'companies_by_revenue.csv');
 	};
 	
+	$scope.exportCompaniesByRevenuesPDF = function() {
+		var rows = new Array();
+		rows.push([
+		    { text: $translate('COLUMN_REVENUE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_NO_OF_COMPANIES'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_PERCENTAGE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+		]);
+		
+		$.each($scope.companiesByRevenues4ExportCSV, function(index, value) {
+			rows.push([
+			    { text: value.revenue, style: 'tableRow', alignment: 'left' },
+			    { text: value.number.toString(), style: 'tableRow', alignment: 'right' },
+			    { text: value.percentage + "%", style: 'tableRow', alignment: 'right' }
+			]);
+		});
+		
+		var docDefinition = {
+			pageSize: 'A4',
+			content: [
+			    { text: $translate('TAB_STATS_COMPANIES_BY_REVENUES'), style: 'header' },
+			    {
+			        image: document.getElementById($scope.typeCompaniesByRevenues).toDataURL('image/png'),
+			        width: 350
+				},
+			    {
+			    	style: 'tableContent',
+			    	table: {
+		        		headerRows: 1,
+		        		widths: [ '*', 100, 50 ],
+		        		body: rows
+		        	}
+			    }
+			],
+			styles: pdfMakeStyles
+		};
+		
+		pdfMake.createPdf(docDefinition).open();
+	};
+	
 	$scope.getCompaniesBySize = function() {
 		StatisticsService.getCompaniesBySize()
 			.success(function(data, status) {
@@ -263,6 +361,45 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		
 		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
         FileSaver.saveAs(data, 'companies_by_size.csv');
+	};
+	
+	$scope.exportCompaniesBySizePDF = function() {
+		var rows = new Array();
+		rows.push([
+		    { text: $translate('COLUMN_SIZE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_NO_OF_COMPANIES'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_PERCENTAGE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+		]);
+		
+		$.each($scope.companiesBySize4ExportCSV, function(index, value) {
+			rows.push([
+			    { text: value.size, style: 'tableRow', alignment: 'left' },
+			    { text: value.number.toString(), style: 'tableRow', alignment: 'right' },
+			    { text: value.percentage + "%", style: 'tableRow', alignment: 'right' }
+			]);
+		});
+		
+		var docDefinition = {
+			pageSize: 'A4',
+			content: [
+			    { text: $translate('TAB_STATS_COMPANIES_BY_SIZE'), style: 'header' },
+			    {
+			        image: document.getElementById($scope.typeCompaniesBySize).toDataURL('image/png'),
+			        width: 350
+				},
+			    {
+			    	style: 'tableContent',
+			    	table: {
+		        		headerRows: 1,
+		        		widths: [ '*', 100, 50 ],
+		        		body: rows
+		        	}
+			    }
+			],
+			styles: pdfMakeStyles
+		};
+		
+		pdfMake.createPdf(docDefinition).open();
 	};
 	
 	$scope.getInvestmentsByCounties = function() {
@@ -341,6 +478,47 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
         FileSaver.saveAs(data, 'investments_by_county.csv');
 	};
 	
+	$scope.exportInvestmentsByCountiesPDF = function() {
+		var rows = new Array();
+		rows.push([
+		    { text: $translate('COLUMN_SUBDIVISION1'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_NO_OF_COMPANIES'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_PERCENTAGE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_INVESTMENT_VALUE_TOTAL'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+		]);
+		
+		$.each($scope.investmentsByCounties4ExportCSV, function(index, value) {
+			rows.push([
+			    { text: value.county, style: 'tableRow', alignment: 'left' },
+			    { text: value.number.toString(), style: 'tableRow', alignment: 'right' },
+			    { text: value.percentage + "%", style: 'tableRow', alignment: 'right' },
+			    { text: $currency(value.value, "") + " " + $scope.currency, style: 'tableRow', alignment: 'right' }
+			]);
+		});
+		
+		var docDefinition = {
+			pageSize: 'A4',
+			content: [
+			    { text: $translate('TAB_STATS_INVESTMENTS_BY_COUNTIES'), style: 'header' },
+			    {
+			        image: document.getElementById($scope.typeInvestmentsByCounties).toDataURL('image/png'),
+			        width: 515
+				},
+			    {
+			    	style: 'tableContent',
+			    	table: {
+		        		headerRows: 1,
+		        		widths: [ '*', 100, 50, 100 ],
+		        		body: rows
+		        	}
+			    }
+			],
+			styles: pdfMakeStyles
+		};
+		
+		pdfMake.createPdf(docDefinition).open();
+	};
+	
 	$scope.getInvestmentsByActivities = function() {
 		StatisticsService.getInvestmentsByActivities()
 			.success(function(data, status) {
@@ -415,6 +593,47 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		
 		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
         FileSaver.saveAs(data, 'investments_by_activity.csv');
+	};
+	
+	$scope.exportInvestmentsByActivitiesPDF = function() {
+		var rows = new Array();
+		rows.push([
+		    { text: $translate('COLUMN_ACTIVITY'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_NO_OF_COMPANIES'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_PERCENTAGE'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' },
+		    { text: $translate('COLUMN_INVESTMENT_VALUE_TOTAL'), style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+		]);
+		
+		$.each($scope.investmentsByActivities4ExportCSV, function(index, value) {
+			rows.push([
+			    { text: value.activity, style: 'tableRow', alignment: 'left' },
+			    { text: value.number.toString(), style: 'tableRow', alignment: 'right' },
+			    { text: value.percentage + "%", style: 'tableRow', alignment: 'right' },
+			    { text: $currency(value.value, "") + " " + $scope.currency, style: 'tableRow', alignment: 'right' }
+			]);
+		});
+		
+		var docDefinition = {
+			pageSize: 'A4',
+			content: [
+			    { text: $translate('TAB_STATS_INVESTMENTS_BY_ACTIVITIES'), style: 'header' },
+			    {
+			        image: document.getElementById($scope.typeInvestmentsByActivities).toDataURL('image/png'),
+			        width: 515
+				},
+			    {
+			    	style: 'tableContent',
+			    	table: {
+		        		headerRows: 1,
+		        		widths: [ '*', 100, 50, 100 ],
+		        		body: rows
+		        	}
+			    }
+			],
+			styles: pdfMakeStyles
+		};
+		
+		pdfMake.createPdf(docDefinition).open();
 	};
 	
 };

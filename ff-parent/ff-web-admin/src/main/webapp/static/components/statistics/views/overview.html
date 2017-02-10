@@ -14,21 +14,27 @@
                         <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_COUNTIES' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <div class="pull-right">
+                                <div class="btn-group m-r-md">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                        <i class="fa fa-lg fa-download" role="button"></i> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a ng-click="exportCompaniesByCountiesCSV()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+                                        <li><a ng-click="exportCompaniesByCountiesPDF()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+                                    </ul>
+                                </div>
                                 <button ng-click="changeCompaniesByCountiesView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : companiesByCountiesView == 'TABLE_VIEW'}" role="button"></i>
                                 </button>
                                 <button ng-click="changeCompaniesByCountiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByCountiesView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
-                                <button ng-click="exportCompaniesByCountiesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
-                                    <i class="fa fa-lg fa-download" role="button"></i>
-                                </button>
                             </div>
-                            <div class="col-lg-12 m-t-sm" ng-if="companiesByCountiesView == 'CHART_VIEW'">
+                            <div class="col-lg-12 m-t-sm" ng-show="companiesByCountiesView == 'CHART_VIEW'">
                                 <canvas id="{{typeCompaniesByCounties}}" class="chart chart-bar" chart-data="dataCompaniesByCounties" height="100"
                                     chart-options="options" chart-labels="labelsCompaniesByCounties4ChartView" chart-click="showCompanies"></canvas>
                             </div>
-                            <div class="col-lg-12 m-t-md" ng-if="companiesByCountiesView == 'TABLE_VIEW'">
+                            <div class="col-lg-12 m-t-md" ng-show="companiesByCountiesView == 'TABLE_VIEW'">
 								<table id="tableCompaniesByCounties" width="100%" class="table">
 									<thead>
 										<tr style="border-bottom: 1px solid #808080; font-weight: bold;">
@@ -58,21 +64,27 @@
                         <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_REVENUES' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <div class="pull-right">
+                                <div class="btn-group m-r-md">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                        <i class="fa fa-lg fa-download" role="button"></i> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a ng-click="exportCompaniesByRevenuesCSV()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+                                        <li><a ng-click="exportCompaniesByRevenuesPDF()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+                                    </ul>
+                                </div>
                                 <button ng-click="changeCompaniesByRevenuesView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-pie-chart" ng-class="{'ff-text-muted' : companiesByRevenuesView == 'TABLE_VIEW'}" role="button"></i>
                                 </button>
                                 <button ng-click="changeCompaniesByRevenuesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesByRevenuesView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
-                                <button ng-click="exportCompaniesByRevenuesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
-                                    <i class="fa fa-lg fa-download" role="button"></i>
-                                </button>
                             </div>
-                            <div class="col-lg-6 m-t-sm" ng-if="companiesByRevenuesView == 'CHART_VIEW'">
+                            <div class="col-lg-6 m-t-sm" ng-show="companiesByRevenuesView == 'CHART_VIEW'">
                                 <canvas id="{{typeCompaniesByRevenues}}" height="200" class="chart chart-pie" chart-data="dataCompaniesByRevenues"
                                     chart-labels="labelsCompaniesByRevenues4ChartView" chart-options="optionsPie"></canvas>
                             </div>
-                            <div class="col-lg-12 m-t-md" ng-if="companiesByRevenuesView == 'TABLE_VIEW'">
+                            <div class="col-lg-12 m-t-md" ng-show="companiesByRevenuesView == 'TABLE_VIEW'">
                                 <table width="100%" class="table">
                                     <thead>
                                         <tr style="border-bottom: 1px solid #808080; font-weight: bold;">
@@ -102,21 +114,27 @@
                         <uib-tab-heading>{{ 'TAB_STATS_COMPANIES_BY_SIZE' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <div class="pull-right">
+                                <div class="btn-group m-r-md">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                        <i class="fa fa-lg fa-download" role="button"></i> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a ng-click="exportCompaniesBySizeCSV()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+                                        <li><a ng-click="exportCompaniesBySizePDF()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+                                    </ul>
+                                </div>
                                 <button ng-click="changeCompaniesBySizeView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-pie-chart" ng-class="{'ff-text-muted' : companiesBySizeView == 'TABLE_VIEW'}" role="button"></i>
                                 </button>
                                 <button ng-click="changeCompaniesBySizeView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : companiesBySizeView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
-                                <button ng-click="exportCompaniesBySizeCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
-                                    <i class="fa fa-lg fa-download" role="button"></i>
-                                </button>
                             </div>
-                            <div class="col-lg-6 m-t-sm" ng-if="companiesBySizeView == 'CHART_VIEW'">
+                            <div class="col-lg-6 m-t-sm" ng-show="companiesBySizeView == 'CHART_VIEW'">
                                 <canvas id="{{typeCompaniesBySize}}" height="200" class="chart chart-pie" chart-data="dataCompaniesBySize"
                                     chart-labels="labelsCompaniesBySize4ChartView" chart-options="optionsPie"></canvas>
                             </div>
-                            <div class="col-lg-12 m-t-md" ng-if="companiesBySizeView == 'TABLE_VIEW'">
+                            <div class="col-lg-12 m-t-md" ng-show="companiesBySizeView == 'TABLE_VIEW'">
                                 <table width="100%" class="table">
                                     <thead>
                                         <tr style="border-bottom: 1px solid #808080; font-weight: bold;">
@@ -146,21 +164,27 @@
                         <uib-tab-heading>{{ 'TAB_STATS_INVESTMENTS_BY_COUNTIES' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <div class="pull-right">
+                                <div class="btn-group m-r-md">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                        <i class="fa fa-lg fa-download" role="button"></i> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a ng-click="exportInvestmentsByCountiesCSV()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+                                        <li><a ng-click="exportInvestmentsByCountiesPDF()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+                                    </ul>
+                                </div>
                                 <button ng-click="changeInvestmentsByCountiesView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : investmentsByCountiesView == 'TABLE_VIEW'}" role="button"></i>
                                 </button>
                                 <button ng-click="changeInvestmentsByCountiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : investmentsByCountiesView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
-                                <button ng-click="exportInvestmentsByCountiesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
-                                    <i class="fa fa-lg fa-download" role="button"></i>
-                                </button>
                             </div>
-                            <div class="col-lg-12 m-t-sm" ng-if="investmentsByCountiesView == 'CHART_VIEW'">
+                            <div class="col-lg-12 m-t-sm" ng-show="investmentsByCountiesView == 'CHART_VIEW'">
                                 <canvas id="{{typeInvestmentsByCounties}}" class="chart chart-bar" chart-data="dataInvestmentsByCounties" height="100"
                                     chart-options="options" chart-labels="labelsInvestmentsByCounties4ChartView" chart-click="showInvestments"></canvas>
                             </div>
-                            <div class="col-lg-12 m-t-md" ng-if="investmentsByCountiesView == 'TABLE_VIEW'">
+                            <div class="col-lg-12 m-t-md" ng-show="investmentsByCountiesView == 'TABLE_VIEW'">
                                 <table width="100%" class="table">
                                     <thead>
                                         <tr style="border-bottom: 1px solid #808080; font-weight: bold;">
@@ -193,21 +217,27 @@
                         <uib-tab-heading>{{ 'TAB_STATS_INVESTMENTS_BY_ACTIVITIES' | translate }}</uib-tab-heading>
                         <div class="panel-body">
                             <div class="pull-right">
+                                <div class="btn-group m-r-md">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+                                        <i class="fa fa-lg fa-download" role="button"></i> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a ng-click="exportInvestmentsByActivitiesCSV()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+                                        <li><a ng-click="exportInvestmentsByActivitiesPDF()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+                                    </ul>
+                                </div>
                                 <button ng-click="changeInvestmentsByActivitiesView('CHART_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_CHART_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-bar-chart" ng-class="{'ff-text-muted' : investmentsByActivitiesView == 'TABLE_VIEW'}" role="button"></i>
                                 </button>
                                 <button ng-click="changeInvestmentsByActivitiesView('TABLE_VIEW')" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'TOOLTIP_TABLE_VIEW' | translate }}">
                                     <i class="fa fa-lg fa-table" ng-class="{'ff-text-muted' : investmentsByActivitiesView == 'CHART_VIEW'}" role="button"></i>
                                 </button>
-                                <button ng-click="exportInvestmentsByActivitiesCSV()" class="btn btn-white" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
-                                    <i class="fa fa-lg fa-download" role="button"></i>
-                                </button>
                             </div>
-                            <div class="col-lg-12 m-t-sm" ng-if="investmentsByActivitiesView == 'CHART_VIEW'">
+                            <div class="col-lg-12 m-t-sm" ng-show="investmentsByActivitiesView == 'CHART_VIEW'">
                                 <canvas id="{{typeInvestmentsByActivities}}" class="chart chart-bar" chart-data="dataInvestmentsByActivities" height="100"
                                     chart-options="options" chart-labels="labelsInvestmentsByActivities4ChartView" chart-click="showInvestments"></canvas>
                             </div>
-                            <div class="col-lg-12 m-t-md" ng-if="investmentsByActivitiesView == 'TABLE_VIEW'">
+                            <div class="col-lg-12 m-t-md" ng-show="investmentsByActivitiesView == 'TABLE_VIEW'">
                                 <table width="100%" class="table">
                                     <thead>
                                         <tr style="border-bottom: 1px solid #808080; font-weight: bold;">
