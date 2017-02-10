@@ -1,3 +1,21 @@
+<style>
+    .chosen-container-single {
+        width: 100%;
+    }
+    .chosen-container-single .chosen-single {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi {
+        width: 100%;
+    }
+    .chosen-container-multi .chosen-choices {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi .chosen-choices li.search-field .default {
+        color: #b0b0b0 !important;
+    }
+</style>
+
 <div class="row border-bottom">
     <div class="col-lg-12">
         <h1>{{ 'HEADER_ARTICLE_DETAILS' | translate }}</h1>
@@ -24,8 +42,8 @@
                         <uib-tab-heading>{{ 'TAB_STATISTICS' | translate }}</uib-tab-heading>
                         <div class="panel-body">
 							<div class="row">
-								<div class="col-lg-12">
-									<div class="col-lg-8 form-horizontal m-t-xs m-b-sm">
+								<div class="col-lg-8">
+									<div class="col-lg-6 form-horizontal m-t-xs m-b-sm">
 										<div class="form-group">
 											<label class="col-sm-3 control-label">{{ 'LABEL_STATISTICS_FOR' | translate }}</label>
 											<div class="col-sm-9">
@@ -33,7 +51,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-lg-2 m-b-sm">
+									<div class="col-lg-3 m-b-sm">
 										<div class="widget style1 navy-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
 											<div class="row vertical-align">
 												<div class="col-xs-3">
@@ -46,7 +64,7 @@
 										</div>
 										<small style="padding-left: 20px;">{{ 'TOOLTIP_TOTAL_IMPRESSIONS' | translate }}</small>
 									</div>
-									<div class="col-lg-2 m-b-sm">
+									<div class="col-lg-3 m-b-sm">
 										<div class="widget style1 yellow-bg" style="margin-top: 0px; padding-top: 10px; padding-bottom: 5px; margin-bottom: 0px;">
 											<div class="row vertical-align">
 												<div class="col-xs-3">
@@ -62,8 +80,8 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-12 m-b-md">
-									<canvas class="chart chart-bar" chart-legend="true" chart-colours="colours" chart-data="impressionStatistics.data" chart-labels="impressionStatistics.labels" chart-series="impressionStatistics.series"></canvas>
+								<div class="col-lg-8 m-b-md">
+									<canvas class="chart chart-bar" height="125" chart-legend="true" chart-colours="colours" chart-data="impressionStatistics.data" chart-labels="impressionStatistics.labels" chart-series="impressionStatistics.series"></canvas>
 								</div>
 							</div>
 						</div>
