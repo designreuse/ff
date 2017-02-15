@@ -3,9 +3,9 @@
 <html>
     <body>
         <div>
-            A new tender, you might be interested in, has just opened: <b><i>${tenderName}</i></b>
+            Novi natječaj, koji bi vas mogao zanimati, se upravo otvorio: <b><i>${tenderName}</i></b>
             <p>
-            For more information please visit <i>Fund Finder</i> web site
+            Za više informacija molimo posjetite <i>Fund Finder</i>
         </div>
     </body>
 </html>

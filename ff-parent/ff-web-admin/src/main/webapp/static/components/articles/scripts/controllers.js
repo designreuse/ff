@@ -265,14 +265,14 @@ function ArticlesOverviewController($rootScope, $scope, $state, $log, $timeout, 
 		ArticlesService.activateEntity(entity.id)
 			.success(function(data, status) {
 				if (status == 200) {
-					toastr.success($translate('ACTION_ACTIVATE_SUCCESS_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+					toastr.success($translate('ACTION_ACTIVATE_SUCCESS_MESSAGE'));
 					$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 				} else {
-					toastr.error($translate('ACTION_ACTIVATE_FAILURE_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+					toastr.error($translate('ACTION_ACTIVATE_FAILURE_MESSAGE'));
 				}
 			})
 			.error(function(data, status) {
-				toastr.error($translate('ACTION_ACTIVATE_FAILURE_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+				toastr.error($translate('ACTION_ACTIVATE_FAILURE_MESSAGE'));
 			});
 	}
 	
@@ -280,22 +280,22 @@ function ArticlesOverviewController($rootScope, $scope, $state, $log, $timeout, 
 		ArticlesService.deactivateEntity(entity.id)
 			.success(function(data, status) {
 				if (status == 200) {
-					toastr.success($translate('ACTION_DEACTIVATE_SUCCESS_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+					toastr.success($translate('ACTION_DEACTIVATE_SUCCESS_MESSAGE'));
 					$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 				} else {
-					toastr.error($translate('ACTION_DEACTIVATE_FAILURE_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+					toastr.error($translate('ACTION_DEACTIVATE_FAILURE_MESSAGE'));
 				}
 			})
 			.error(function(data, status) {
-				toastr.error($translate('ACTION_DEACTIVATE_FAILURE_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+				toastr.error($translate('ACTION_DEACTIVATE_FAILURE_MESSAGE'));
 			});
 	}
 	
 	$scope.deleteEntity = function (entity) {
 		BootstrapDialog.show({
 			type: BootstrapDialog.TYPE_DEFAULT,
-            title: $translate('DIALOG_DELETE_HEADER', { entity: $lowercase($translate('ENTITY_ARTICLE')) }),
-            message: $translate('DIALOG_DELETE_MESSAGE', { entity: $lowercase($translate('ENTITY_ARTICLE')) }),
+            title: $translate('DIALOG_DELETE_HEADER'),
+            message: $translate('DIALOG_DELETE_MESSAGE'),
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
@@ -311,14 +311,14 @@ function ArticlesOverviewController($rootScope, $scope, $state, $log, $timeout, 
 	                	ArticlesService.deleteEntity(entity.id)
 		    				.success(function(data, status) {
 		    					if (status == 200) {
-		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
 		    						$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 		    					} else {
-		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
 		    					}
 		    				})
 		    				.error(function(data, status) {
-		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE', { entity: $translate('ENTITY_ARTICLE') }));
+		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
 		    				});
 	        			dialog.close();
 	                }	                

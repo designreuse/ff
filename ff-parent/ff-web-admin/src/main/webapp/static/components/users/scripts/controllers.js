@@ -152,7 +152,7 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 							{ value: 'EXTERNAL', label: $translate('REGISTRATION_TYPE_EXTERNAL') }]
 					},
 					enableHiding: false,
-					width: 125,
+					width: 150,
 					cellTemplate:
 						'<div ng-show="row.entity.registrationType == \'INTERNAL\'" class="ui-grid-cell-contents"><span>{{\'REGISTRATION_TYPE_INTERNAL\' | translate}}</span></div>' + 
 						'<div ng-show="row.entity.registrationType == \'EXTERNAL\'" class="ui-grid-cell-contents"><span>{{\'REGISTRATION_TYPE_EXTERNAL\' | translate}}</span></div>'
@@ -541,7 +541,6 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 	        expandableRowHeight: 125,
 	        expandableRowScope: { 
 	        	toTrusted: function(html) {
-	        		console.log(html);
 	        		return $sce.trustAsHtml(html);
 	        	}
 	        },

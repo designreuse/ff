@@ -355,8 +355,8 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 	$scope.deleteEntity = function (entity) {
 		BootstrapDialog.show({
 			type: BootstrapDialog.TYPE_DEFAULT,
-            title: $translate('DIALOG_DELETE_HEADER', { entity: $lowercase($translate('ENTITY_CONTACT')) }),
-            message: $translate('DIALOG_DELETE_MESSAGE', { entity: $lowercase($translate('ENTITY_CONTACT')) }),
+            title: $translate('DIALOG_DELETE_HEADER'),
+            message: $translate('DIALOG_DELETE_MESSAGE'),
             buttons: [
 				{
 					label: $translate('BUTTON_NO'),
@@ -372,14 +372,14 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 	                	ContactsService.deleteEntity(entity.id)
 		    				.success(function(data, status) {
 		    					if (status == 200) {
-		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE', { entity: $translate('ENTITY_CONTACT') }));
+		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
 		    						$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 		    					} else {
-		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE', { entity: $translate('ENTITY_CONTACT') }));
+		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
 		    					}
 		    				})
 		    				.error(function(data, status) {
-		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE', { entity: $translate('ENTITY_CONTACT') }));
+		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
 		    				});
 	        			dialog.close();
 	                }	                
