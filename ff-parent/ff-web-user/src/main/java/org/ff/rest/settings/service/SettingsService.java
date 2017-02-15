@@ -2,13 +2,13 @@ package org.ff.rest.settings.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.common.password.PasswordService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.settings.resource.SettingsResource;
 import org.ff.rest.user.resource.UserResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +25,8 @@ public class SettingsService {
 	private UserResourceAssembler userResourceAssembler;
 
 	@Transactional
-	public SettingsResource find(UserDetails principal) {
-		User user = userRepository.findByEmail(principal.getUsername());
+	public SettingsResource find(AppUserDetails principal) {
+		User user = userRepository.findOne(principal.getUser().getId());
 
 		SettingsResource resource = new SettingsResource();
 		resource.setUser(userResourceAssembler.toResource(user, true));
@@ -35,13 +35,14 @@ public class SettingsService {
 	}
 
 	@Transactional
-	public SettingsResource save(UserDetails principal, SettingsResource resource) {
+	public SettingsResource save(AppUserDetails principal, SettingsResource resource) {
 		log.debug("Saving settings [{}] for user [{}]", resource, principal.getUsername());
 
-		User user = userRepository.findByEmail(principal.getUsername());
+		User user = userRepository.findOne(principal.getUser().getId());
 
 		user.setFirstName(resource.getUser().getFirstName());
 		user.setLastName(resource.getUser().getLastName());
+		user.setEmail(resource.getUser().getEmail());
 		user.setEmail2(resource.getUser().getEmail2());
 
 		if (StringUtils.isNotBlank(resource.getUser().getPassword())) {
@@ -56,8 +57,8 @@ public class SettingsService {
 	}
 
 	@Transactional
-	public SettingsResource deactivate(UserDetails principal) {
-		User user = userRepository.findByEmail(principal.getUsername());
+	public SettingsResource deactivate(AppUserDetails principal) {
+		User user = userRepository.findOne(principal.getUser().getId());
 
 		user.setStatus(UserStatus.INACTIVE);
 		userRepository.save(user);

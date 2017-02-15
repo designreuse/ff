@@ -46,7 +46,9 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		User user = userRepository.findByEmail(authentication.getName());
+		AppUserDetails principal = (AppUserDetails) authentication.getPrincipal();
+
+		User user = userRepository.findOne(principal.getUser().getId());
 		if (user != null) {
 			user.setLastLoginDate(new DateTime());
 			userRepository.save(user);

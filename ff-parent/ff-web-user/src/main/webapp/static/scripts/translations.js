@@ -83,6 +83,8 @@ function config($translateProvider) {
 			
 			TOOLTIP_DELETE: 'Obriši',
 			
+			VALIDATION_FAILED_HEADER: 'Neuspješna validacija',
+			
 			TENDER_STATE_OPEN: 'OTVOREN',
 			TENDER_STATE_PENDING: 'U NAJAVI',
 			
@@ -90,7 +92,7 @@ function config($translateProvider) {
 			DLG_DELETE_MSG: 'Da li doista želite obrisati projekt?',
 			
 			DLG_DEACTIVATE_HDR: 'Deaktivacija profila',
-			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila biti ćete automatski odjavljeni te više nećete moći pristupiti Fund Finder aplikaciji. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Da li stvarno želite deaktivirati vaš profil?',
+			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila biti ćete automatski odjavljeni te više nećete moći pristupiti Fund Finder aplikaciji. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Da li doista želite deaktivirati vaš profil?',
 			
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil tvrtke',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu vaše tvrtke.',

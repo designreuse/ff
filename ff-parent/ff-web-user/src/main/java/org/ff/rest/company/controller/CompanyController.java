@@ -2,11 +2,11 @@ package org.ff.rest.company.controller;
 
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +28,7 @@ public class CompanyController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public CompanyResource find(@AuthenticationPrincipal UserDetails principal) {
+	public CompanyResource find(@AuthenticationPrincipal AppUserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return companyService.find(principal);
@@ -39,7 +39,7 @@ public class CompanyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public CompanyResource save(@AuthenticationPrincipal UserDetails principal, @RequestBody CompanyResource resource) {
+	public CompanyResource save(@AuthenticationPrincipal AppUserDetails principal, @RequestBody CompanyResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			return companyService.save(principal, resource);
@@ -52,7 +52,7 @@ public class CompanyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/profileCompleteness/{all}")
-	public Double profileCompleteness(@AuthenticationPrincipal UserDetails principal, @PathVariable Boolean all) {
+	public Double profileCompleteness(@AuthenticationPrincipal AppUserDetails principal, @PathVariable Boolean all) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".profileCompleteness");
 		try {
 			return companyService.profileCompleteness(principal, all);

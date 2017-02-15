@@ -6,11 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.rest.project.resource.ProjectResource;
 import org.ff.rest.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class ProjectController extends BaseController {
 
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<ProjectResource> findAll(@AuthenticationPrincipal UserDetails principal) {
+	public List<ProjectResource> findAll(@AuthenticationPrincipal AppUserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
 			return projectService.findAll(principal);
@@ -41,7 +41,7 @@ public class ProjectController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public ProjectResource find(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id, HttpServletRequest request) {
+	public ProjectResource find(@AuthenticationPrincipal AppUserDetails principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return projectService.find(principal, id);
@@ -51,7 +51,7 @@ public class ProjectController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ProjectResource save(@AuthenticationPrincipal UserDetails principal, @RequestBody ProjectResource resource) {
+	public ProjectResource save(@AuthenticationPrincipal AppUserDetails principal, @RequestBody ProjectResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
 			return projectService.save(principal, resource);
@@ -63,7 +63,7 @@ public class ProjectController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
-	public void delete(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id) {
+	public void delete(@AuthenticationPrincipal AppUserDetails principal, @PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
 			projectService.delete(principal, id);

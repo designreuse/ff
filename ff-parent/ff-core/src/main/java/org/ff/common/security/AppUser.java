@@ -15,6 +15,8 @@ public class AppUser {
 
 	public enum AppUserRole { ROLE_USER, ROLE_ADMIN, ERROR_ROLE_NOT_FOUND, ERROR_ROLE_NOT_RECOGNIZED }
 
+	private Integer id;
+
 	private String username;
 
 	private String password;

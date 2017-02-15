@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.algorithm.AlgorithmService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Article.ArticleStatus;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemMetaTag;
@@ -19,6 +20,7 @@ import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.Tender.TenderState;
 import org.ff.jpa.domain.Tender.TenderStatus;
 import org.ff.jpa.domain.TenderItem;
+import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.ArticleRepository;
 import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.TenderRepository;
@@ -32,7 +34,6 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,7 +70,7 @@ public class DashboardService {
 		monthFormat = new SimpleDateFormat(baseProperties.getMonthFormat());
 	}
 
-	public DashboardResource getData(UserDetails principal) {
+	public DashboardResource getData(AppUserDetails principal) {
 		DashboardResource resource = new DashboardResource();
 
 		LocalDate today = new LocalDate();
@@ -160,11 +161,13 @@ public class DashboardService {
 			resource.getChartDataSeria2().add(entry.getValue());
 		}
 
+		User user = userRepository.findOne(principal.getUser().getId());
+
 		resource.setCntTenders(cntTenders.intValue());
 		resource.setCntTendersOpen(cntTendersOpen.intValue());
-		resource.setCntTenders4U(algorithmService.findTenders4User(userRepository.findByEmail(principal.getUsername())).size()); // TODO: this might slow down things
+		resource.setCntTenders4U(algorithmService.findTenders4User(user).size()); // TODO: this might slow down things
 
-		resource.setCntProjects(projectRepository.countByCompany(userRepository.findByEmail(principal.getUsername()).getCompany()));
+		resource.setCntProjects(projectRepository.countByCompany(user.getCompany()));
 		resource.setCntArticles(articleRepository.countByStatus(ArticleStatus.ACTIVE));
 
 		return resource;

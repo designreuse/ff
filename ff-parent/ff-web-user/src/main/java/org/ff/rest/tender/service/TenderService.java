@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.common.algorithm.AlgorithmService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.domain.Impression;
@@ -34,7 +35,6 @@ import org.ff.rest.tender.resource.DemoResource;
 import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.tender.resource.TenderResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,10 +81,12 @@ public class TenderService {
 	private ProjectRepository companyInvestmentRepository;
 
 	@Transactional(readOnly = true)
-	public List<TenderResource> findAll(UserDetails principal) {
+	public List<TenderResource> findAll(AppUserDetails principal) {
 		List<TenderResource> result = new ArrayList<>();
 
-		for (Tender tender : algorithmService.findTenders4User(userRepository.findByEmail(principal.getUsername()))) {
+		User user = userRepository.findOne(principal.getUser().getId());
+
+		for (Tender tender : algorithmService.findTenders4User(user)) {
 			TenderResource resource = new TenderResource();
 			resource.setId(tender.getId());
 			resource.setStatus(tender.getStatus());
@@ -129,14 +131,14 @@ public class TenderService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<TenderResource> findAllDemo(UserDetails principal, DemoResource demoResource) {
+	public List<TenderResource> findAllDemo(AppUserDetails principal, DemoResource demoResource) {
 		List<TenderResource> result = new ArrayList<>();
 
 		if (demoResource.getCompany() == null) {
 			return result;
 		}
 
-		User user = userRepository.findByEmail(principal.getUsername());
+		User user = userRepository.findOne(principal.getUser().getId());
 
 		CompanyResource companyResource = demoResource.getCompany();
 
@@ -182,13 +184,13 @@ public class TenderService {
 	}
 
 	@Transactional
-	public TenderResource find(UserDetails principal, Integer id) {
+	public TenderResource find(AppUserDetails principal, Integer id) {
 		Tender entity = tenderRepository.findOne(id);
 		if (entity == null) {
 			throw new RuntimeException(String.format("Tender [%s] not found", id));
 		}
 
-		User user = userRepository.findByEmail(principal.getUsername());
+		User user = userRepository.findOne(principal.getUser().getId());
 		List<Project> projects = companyInvestmentRepository.findByCompany(user.getCompany());
 		algorithmService.processTender4Investments(entity, projects);
 

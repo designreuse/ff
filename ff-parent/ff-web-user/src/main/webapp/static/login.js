@@ -211,7 +211,8 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$http.get("/e/api/v1/externalflow/authorize?authId=" + authId)
 			.success(function(data, status, headers, config) {
 				$scope.unauthorize = false;
-				$scope.username = data.email;
+				// to indicate that this is external flow authorization we create username as concatenation of ___ and userId
+				$scope.username = "___" + data.id;
 				$scope.password = data.password;
 				$scope.login();
 			})

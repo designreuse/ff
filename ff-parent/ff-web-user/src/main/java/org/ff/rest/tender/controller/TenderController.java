@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.rest.tender.resource.DemoResource;
 import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.tender.service.TenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class TenderController extends BaseController {
 	private EtmService etmService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<TenderResource> findAll(@AuthenticationPrincipal UserDetails principal) {
+	public List<TenderResource> findAll(@AuthenticationPrincipal AppUserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
 			return tenderService.findAll(principal);
@@ -42,7 +42,7 @@ public class TenderController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/demo")
-	public List<TenderResource> findAllDemo(@AuthenticationPrincipal UserDetails principal, @RequestBody DemoResource resource) {
+	public List<TenderResource> findAllDemo(@AuthenticationPrincipal AppUserDetails principal, @RequestBody DemoResource resource) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAllDemo");
 		try {
 			return tenderService.findAllDemo(principal, resource);
@@ -53,7 +53,7 @@ public class TenderController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	public TenderResource find(@AuthenticationPrincipal UserDetails principal, @PathVariable Integer id) {
+	public TenderResource find(@AuthenticationPrincipal AppUserDetails principal, @PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".find");
 		try {
 			return tenderService.find(principal, id);

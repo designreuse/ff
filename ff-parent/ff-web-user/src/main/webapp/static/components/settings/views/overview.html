@@ -3,7 +3,7 @@
         <h1>{{ 'SETTINGS' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
     </div>
     <div class="col-lg-2 m-t-md">
-        <button ng-if="settings.user.status == 'ACTIVE'" ng-click="deactivate()" type="button" class="btn btn-danger pull-right">{{ 'BUTTON_DISABLE' | translate }}</button>
+        <button ng-if="settings.user.status == 'ACTIVE'" ng-click="deactivate()" type="button" class="btn btn-danger pull-right m-r-sm">{{ 'BUTTON_DISABLE' | translate }}</button>
     </div>
 </div>
 
@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_EMAIL' | translate }}</label>
-                        <input ng-model="settings.user.email" type="email" class="form-control ff-form-control" style="background: #fafafa;" name="email" ng-disabled="true" />
+                        <input ng-model="settings.user.email" type="email" class="form-control ff-form-control" name="email" />
                     </div>
                 </div>
                 <div class="form-group">

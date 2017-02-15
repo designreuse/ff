@@ -8,11 +8,7 @@ function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $
 	$scope.find = function() {
 		SettingsService.find()
 			.success(function(data, status) {
-				if (status == 200) {
-					$scope.settings = data;
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-				}
+				$scope.settings = data;
 			})
 			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
@@ -22,16 +18,16 @@ function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $
 	$scope.save = function() {
 		SettingsService.save($scope.settings)
 			.success(function(data, status, headers, config) {
-				if (status == 200) {
-					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
-					$rootScope.principal.firstName = data.user.firstName;
-					$rootScope.principal.lastName = data.user.lastName;
+				toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
+				$rootScope.principal.firstName = data.user.firstName;
+				$rootScope.principal.lastName = data.user.lastName;
+			})
+			.error(function(data, status, headers, config) {
+				if (data.exception.indexOf("ValidationFailedException") != -1) {
+					toastr.warning(data.message);
 				} else {
 					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 				}
-			})
-			.error(function(data, status, headers, config) {
-				toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 			});	
 	};
 	
@@ -56,13 +52,7 @@ function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $
 		        			.success(function(data, status, headers, config) {
 		        				if (status == 200) {
 		        					$scope.settings = data;
-		        					$http.post('/logout', {})
-			        					.success(function() {
-			        						$window.location.href = '';
-			        					})
-			        					.error(function(data) {
-			        						$log.error(data);
-			        					});
+		        					$scope.logout();
 		        				} else {
 		        					toastr.error($translate('ACTION_DEACTIVATE_FAILURE_MESSAGE'));
 		        				}
@@ -75,6 +65,16 @@ function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $
             	}
             ]
         });
+	};
+	
+	$scope.logout = function() {
+		$http.post('/logout', {})
+			.success(function() {
+				$window.location.href = '';
+			})
+			.error(function(data) {
+				$log.error(data);
+			});
 	};
 	
 	// initial load

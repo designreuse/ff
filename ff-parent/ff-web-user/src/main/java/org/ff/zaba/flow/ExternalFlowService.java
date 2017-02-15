@@ -120,20 +120,23 @@ public class ExternalFlowService {
 				BusinessRelationshipManager businessRelationshipManager = processVpoData(companyData);
 
 				if (company == null) {
+					log.debug("Creating new user and company...");
+
 					user = new User();
 					user.setStatus(UserStatus.ACTIVE);
 					user.setFirstName(data.get("ime"));
 					user.setLastName(data.get("prezime"));
-					if (data.containsKey("email") && StringUtils.isNotBlank(data.get("email"))) {
-						user.setEmail(data.get("email"));
 
+					if (data.containsKey("email") && StringUtils.isNotBlank(data.get("email"))) {
 						if (userRepository.findByEmail(data.get("email")) != null) {
 							log.warn("User with e-mail [{}] is already registered", data.get("email"));
 							return new ResponseEntity<>(HttpStatus.CONFLICT);
 						}
+						user.setEmail(data.get("email"));
 					} else {
-						user.setEmail(data.get("user_id"));
+						user.setEmail("");
 					}
+
 					user.setPassword(PasswordService.encodePassword(password));
 					user.setLastLoginDate(new DateTime());
 					user.setDemoUser(Boolean.FALSE);
@@ -162,7 +165,19 @@ public class ExternalFlowService {
 
 					importCompanyData(company, companyData);
 				} else {
+					log.debug("Existing company detected...");
+
 					user = company.getUser();
+					if (data.containsKey("email") && StringUtils.isNotBlank(data.get("email"))) {
+						User userTmp = userRepository.findByEmail(data.get("email"));
+						if (userTmp != null && !userTmp.getId().equals(user.getId())) {
+							log.warn("User with e-mail [{}] already exists; existing e-mail won't be changed", data.get("email"));
+						} else {
+							user.setEmail(data.get("email"));
+						}
+					} else {
+						user.setEmail("");
+					}
 					user.setLastLoginDate(new DateTime());
 					if (businessRelationshipManager != null) {
 						user.setBusinessRelationshipManager(businessRelationshipManager);
@@ -172,6 +187,7 @@ public class ExternalFlowService {
 					importCompanyData(company, companyData);
 				}
 
+				resource.setId(user.getId());
 				resource.setEmail(user.getEmail());
 				resource.setPassword(user.getPassword());
 

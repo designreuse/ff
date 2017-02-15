@@ -25,12 +25,19 @@ public class AppUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("Authenticating user with username [{}]", username);
 
-		User user = userRepository.findByEmail(username);
+		User user = null;
+		if (username.startsWith("___")) {
+			// external flow
+			user = userRepository.findOne(Integer.parseInt(username.replace("___", "")));
+		} else {
+			user = userRepository.findByEmail(username);
+		}
 
 		AppUser appUser = null;
 		if (user != null && user.getStatus() == UserStatus.ACTIVE) {
-			appUser = new AppUser(user.getEmail(), user.getPassword(), false, false, true, false,
-					Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(), user.getDemoUser(), user.getRegistrationType());
+			appUser = new AppUser(user.getId(), user.getEmail(), user.getPassword(), false, false, true, false,
+					Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(),
+					user.getDemoUser(), user.getRegistrationType());
 		}
 
 		if (appUser == null) {

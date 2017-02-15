@@ -1,5 +1,6 @@
 package org.ff.rest.company.service;
 
+import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.UserRepository;
@@ -8,7 +9,6 @@ import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,23 +25,23 @@ public class CompanyService {
 	private CompanyResourceAssembler resourceAssembler;
 
 	@Transactional(readOnly = true)
-	public CompanyResource find(UserDetails principal) {
+	public CompanyResource find(AppUserDetails principal) {
 		CompanyResource resource = resourceAssembler.toResource(
-				userRepository.findByEmail(principal.getUsername()).getCompany(), false);
+				userRepository.findOne(principal.getUser().getId()).getCompany(), false);
 		return resource;
 	}
 
 	@Transactional
-	public CompanyResource save(UserDetails principal, CompanyResource resource) {
+	public CompanyResource save(AppUserDetails principal, CompanyResource resource) {
 		Company entity = companyRepository.save(resourceAssembler.updateEntity(companyRepository.findOne(resource.getId()), resource));
 		resource = resourceAssembler.toResource(entity, false);
 		return resource;
 	}
 
 	@Transactional(readOnly = true)
-	public Double profileCompleteness(UserDetails principal, Boolean all) {
+	public Double profileCompleteness(AppUserDetails principal, Boolean all) {
 		if (principal != null) {
-			CompanyResource resource = resourceAssembler.toResource(userRepository.findByEmail(principal.getUsername()).getCompany(), false);
+			CompanyResource resource = resourceAssembler.toResource(userRepository.findOne(principal.getUser().getId()).getCompany(), false);
 
 			double cntItems = 0;
 			double cntEnteredItems = 0;

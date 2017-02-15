@@ -3,22 +3,22 @@ package org.ff.rest.project.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Company;
-import org.ff.jpa.domain.Project;
 import org.ff.jpa.domain.Item;
 import org.ff.jpa.domain.Item.ItemEntityType;
 import org.ff.jpa.domain.Item.ItemMetaTag;
-import org.ff.jpa.repository.ProjectRepository;
+import org.ff.jpa.domain.Project;
 import org.ff.jpa.repository.ItemRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.currency.service.CurrencyService;
 import org.ff.rest.item.resource.ItemResourceAssembler;
+import org.ff.rest.project.resource.ProjectItemResource;
 import org.ff.rest.project.resource.ProjectResource;
 import org.ff.rest.project.resource.ProjectResourceAssembler;
-import org.ff.rest.project.resource.ProjectItemResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,15 +47,15 @@ public class ProjectService {
 	private ItemRepository itemRepository;
 
 	@Transactional(readOnly = true)
-	public List<ProjectResource> findAll(UserDetails principal) {
-		return projectResourceAssembler.toResources(projectRepository.findByCompany(userRepository.findByEmail(principal.getUsername()).getCompany()), true);
+	public List<ProjectResource> findAll(AppUserDetails principal) {
+		return projectResourceAssembler.toResources(projectRepository.findByCompany(userRepository.findOne(principal.getUser().getId()).getCompany()), true);
 	}
 
 	@Transactional(readOnly = true)
-	public ProjectResource find(UserDetails principal, Integer id) {
+	public ProjectResource find(AppUserDetails principal, Integer id) {
 		if (id == 0) {
 			ProjectResource resource = new ProjectResource();
-			Company company = userRepository.findByEmail(principal.getUsername()).getCompany();
+			Company company = userRepository.findOne(principal.getUser().getId()).getCompany();
 			resource.setCompany(companyResourceAssembler.toResource(company, true));
 			resource.setItems(new ArrayList<ProjectItemResource>());
 			for (Item item : itemRepository.findByEntityType(ItemEntityType.COMPANY)) {
@@ -74,7 +74,7 @@ public class ProjectService {
 	}
 
 	@Transactional
-	public ProjectResource save(UserDetails principal, ProjectResource resource) {
+	public ProjectResource save(AppUserDetails principal, ProjectResource resource) {
 		Project entity = null;
 		if (resource.getId() == null) {
 			entity = projectResourceAssembler.createEntity(resource);
@@ -86,7 +86,7 @@ public class ProjectService {
 	}
 
 	@Transactional
-	public void delete(UserDetails principal, Integer id) {
+	public void delete(AppUserDetails principal, Integer id) {
 		Project entity = projectRepository.findOne(id);
 		projectRepository.delete(entity);
 	}

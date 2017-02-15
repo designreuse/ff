@@ -201,6 +201,20 @@ public class CompanyResourceAssembler {
 					itemResource.setValue((itemOption != null) ? itemOptionResourceAssembler.toResource(itemOption, true) : null);
 					itemResource.setValueMapped((itemOption != null) ? itemOption.getText() : null);
 				}
+			} else if (itemResource.getType() == ItemType.MULTISELECT) {
+				if (StringUtils.isNotBlank(companyItem.getValue())) {
+					List<ItemOptionResource> value = new ArrayList<>();
+					List<String> valueMapped = new ArrayList<>();
+					for (String id : companyItem.getValue().split("\\|")) {
+						ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
+						if (itemOption != null) {
+							value.add(itemOptionResourceAssembler.toResource(itemOption, true));
+							valueMapped.add(itemOption.getText());
+						}
+					}
+					itemResource.setValue(value);
+					itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
+				}
 			} else if (itemResource.getType() == ItemType.ACTIVITY) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
 					Activity entity = activityRepository.findOne(Integer.parseInt(companyItem.getValue()));
@@ -234,6 +248,7 @@ public class CompanyResourceAssembler {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setEntityValue(ItemResource itemResource, CompanyItem companyItem) {
 		String value = null;
 
@@ -253,6 +268,21 @@ public class CompanyResourceAssembler {
 				} else if (itemResource.getType() == ItemType.SELECT) {
 					ItemOptionResource itemOptionResource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), ItemOptionResource.class);
 					value = itemOptionResource.getId().toString();
+				} else if (itemResource.getType() == ItemType.MULTISELECT) {
+					List<String> values = null;
+					if (itemResource.getValue() != null) {
+						values = new ArrayList<>();
+						List<Object> objects = (List<Object>) itemResource.getValue();
+						for (Object object : objects) {
+							try {
+								ItemOptionResource itemOptionResource = objectMapper.readValue(objectMapper.writeValueAsString(object), ItemOptionResource.class);
+								values.add(itemOptionResource.getId().toString());
+							} catch (Exception e) {
+								log.error(e.getMessage(), e);
+							}
+						}
+					}
+					value = (values != null && !values.isEmpty()) ? StringUtils.join(values, "|") : null;
 				} else if (itemResource.getType() == ItemType.ACTIVITY) {
 					ActivityResource resource = objectMapper.readValue(objectMapper.writeValueAsString(itemResource.getValue()), ActivityResource.class);
 					value = resource.getId().toString();
