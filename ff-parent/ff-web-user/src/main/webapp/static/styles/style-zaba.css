@@ -102,6 +102,32 @@ h1, h2, h3, h4, h5, h6 {
     color: #00afd0;
 }
 
+.navbar-toggle{
+	background-color: transparent;
+	color: #333333;
+	font-size: 18px;
+}
+
+@media screen and (max-width: 768px) {
+    .nav.navbar-right{
+    	border-top: 1px solid #e7eaec; 
+    }
+    
+    .nav.navbar-right .dropdown-menu{
+    	position: relative;
+    	box-shadow: none;
+    	margin-left: 40px;
+    }
+    
+    .nav.navbar-right .dropdown-menu .divider{
+    	display: none;
+    }
+    
+    .top-navigation .navbar-nav .dropdown-menu{
+    	border: none;
+    }
+}
+
 /* =========================== */
 /* ====== G E N E R A L ====== */
 /* =========================== */
@@ -219,6 +245,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 12px;
     border: 1px solid #ccc !important;
     border-radius: 4px;
+    background: none;
 }
 
 .contact-form .chosen-container-single .chosen-single div b{
@@ -234,4 +261,10 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+.floating-button{
+	position: fixed;
+	bottom: 50px;
+	right: 25px;
 }

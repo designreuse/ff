@@ -3,8 +3,12 @@
 
         <div class="navbar-header">
             <div class="ff-logo"></div>
+            <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+            	<i class="fa fa-reorder"></i>
+            </button>
         </div>
         
+        <div class="navbar-collapse collapse" id="navbar">
         <ul ng-show="userAuthorized" class="nav navbar-nav" style="margin-left: 40px;">
             <li ng-class="{active: $state.includes('dashboard')}">
                 <a ui-sref="dashboard.overview"><span class="nav-label">{{ 'MENU_DASHBOARD' | translate }}</span></a>
@@ -66,6 +70,6 @@
                 <label><i class="fa fa-user m-r-xs"></i> {{ principal.username }} [{{ principal.role | translate }}]</label>
             </li>
         </ul>
-        
+        </div>
     </nav>
 </div>
