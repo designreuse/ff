@@ -934,6 +934,8 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $sce, $timeout, $filter, uiGridConstants, TendersService, Subdivisions1Service, Subdivisions2Service, ActivitiesService, InvestmentsService, CurrenciesService) {
 	var $translate = $filter('translate');
 	
+	$scope.id = $stateParams.id;
+	
 	var trusted = {};
 	$scope.toTrusted = function(html) {
 		if (html) {
@@ -955,8 +957,10 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 		};
 	
 	$scope.getEntity = function(id) {
+		Pace.restart();
 		TendersService.getEntity(id)
 			.success(function(data, status) {
+				Pace.stop();
 				if (data.items) { 
 					$.each(data.items, function(index, item) {
 						if (item.type == 'DATE') {
@@ -970,13 +974,16 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 				$scope.entity = data;
 			})
 			.error(function(data, status) {
+				Pace.stop();
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			});
 	};
 	
 	$scope.saveEntity = function() {
+		$scope.saving = true;
 		TendersService.saveEntity($scope.entity)
 			.success(function(data, status, headers, config) {
+				$scope.saving = false;
 				if (status == 200) {
 					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
 					$state.go('tenders.edit', { 'id' : data.id });
@@ -990,6 +997,7 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 				}
 			})
 			.error(function(data, status, headers, config) {
+				$scope.saving = false;
 				toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 			});		
 	};
@@ -1101,19 +1109,8 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 		$scope.entity.image.base64 = null;
 	};
 	
-	$scope.loadItems = function() {
-		var items = new Array();
-		if ($scope.entity.items) { 
-			$.each($scope.entity.items, function(index, item) {
-				items.push(item);
-			});
-		}
-		$scope.items = items;
-	}
-	
 	$scope.mandatoryItemsOnlyChanged = function() {
-		$scope.mandatoryItemsOnly = !$scope.mandatoryItemsOnly;
-		$scope.loadItems();
+		console.log($scope.mandatoryItemsOnly);
 	};
 	
 	$scope.dictPopupDate = new Object();
@@ -1124,7 +1121,6 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 	
 	// initial load
 	$scope.mandatoryItemsOnly = true;
-	$scope.items = new Array();
 	
 	$scope.getEntity($stateParams.id);
 	$scope.getCurrencies();

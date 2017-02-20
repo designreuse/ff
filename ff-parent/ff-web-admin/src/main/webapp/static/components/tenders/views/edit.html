@@ -22,8 +22,8 @@
 
 <div class="row border-bottom">
 	<div class="col-sm-10">
-		<h1 ng-show="entity != null && entity.id == null">{{ 'HEADER_TENDER_ADD' | translate }}</h1>
-		<h1 ng-show="entity != null && entity.id != null">{{ 'HEADER_TENDER_EDIT' | translate }}</h1>
+		<h1 ng-show="id == 0">{{ 'HEADER_TENDER_ADD' | translate }}</h1>
+		<h1 ng-show="id != 0">{{ 'HEADER_TENDER_EDIT' | translate }}</h1>
 	</div>
 	<div class="col-lg-2">
         <span ng-if="entity.incomplete" class="badge badge-danger pull-right m-t-lg m-r-md"><h5 style="margin: 3px;">{{'STATUS_INCOMPLETE' | translate | uppercase}}</h5></span>
@@ -33,173 +33,108 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeIn">
-    <div class="row">
-		<div class="col-lg-12">
-		   <form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
-                <div class="tabs-container">
-	                <uib-tabset>
-	                    <uib-tab> 
-	                        <uib-tab-heading>{{ 'TAB_BASIC_DATA' | translate }}</uib-tab-heading>
-	                        <div class="panel-body">
-	                            <div class="form-group">
-				                    <div class="col-sm-12">
-				                        <label class="ff-label">{{ 'LABEL_NAME' | translate }}
-				                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.name.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.name.$valid }"></i></span>
-				                        </label>
-				                        <input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="512" />
-				                    </div>
-				                </div>
-				                <div class="form-group">
-				                    <div class="col-sm-12">
-				                        <label class="ff-label">{{ 'LABEL_TEXT' | translate }}</label>
-				                        <summernote config="summernoteOptions" ng-model="entity.text" name="text" />
-				                    </div>
-				                </div>
-				                <div class="form-group">
-				                    <div class="col-sm-12">
-				                        <label class="ff-label">{{ 'LABEL_IMAGE' | translate }} <small class="pull-right">400x300px</small></label>
-				                        <img ng-show="entity.image.base64" ng-src="data:image/JPEG;base64,{{entity.image.base64}}" width="320">
-				                        <a ng-show="!entity.image.base64" href="#" class="btn btn-white" ngf-select ngf-change="selectImage($files)">{{ 'BUTTON_SELECT' | translate }}</a>
-				                        <a ng-show="entity.image.base64" uib-tooltip="{{ 'ACTION_TOOLTIP_DELETE' | translate }}" class="btn btn-sm btn-white" ng-click="deleteImage($files)" style="vertical-align: top;" ><i class="fa fa-remove"></i></a>
-				                    </div>
-				                </div>
-	                        </div>
-	                    </uib-tab>
-	                    <uib-tab select="loadItems()"> 
-                            <uib-tab-heading>{{ 'TAB_COMMON_ITEMS' | translate }}</uib-tab-heading>
-                            <div class="panel-body">
-                                <div class="form-group m-b-xxs">
-                                    <div class="col-sm-12">
-                                        <div class="p-xs pull-right">
-                                            <input ng-change="mandatoryItemsOnlyChanged()" ng-model="mandatoryItemsOnly" type="checkbox" /><span class="m-l-xs">{{ 'LABEL_MANDATORY_ITEMS_ONLY' | translate }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <ul style="list-style-type: none; padding-left: 0px;">
-                                    <li quick-ng-repeat="item in items" quick-repeat-list="items" ng-show="!mandatoryItemsOnly || (mandatoryItemsOnly && item.mandatory)">
-                                        <div class="form-group">
-		                                    <div class="col-sm-12">
-		                                        <label class="ff-label">{{ item.position }}. {{ item.text }}
-		                                            <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup>
-		                                            <span ng-if="item.mandatory" class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'item'+$index}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'item'+$index}}.$valid }"></i></span>
-		                                        </label>
-		                                        
-		                                        <input ng-if="item.type == 'TEXT'" ng-model="item.value" type="text" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" maxlength="512" />
-		                                        
-		                                        <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+$index}}" style="resize: none;"></textarea>
-		                                        
-		                                        <input ng-if="item.type == 'NUMBER'" ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
-		                                        
-		                                        <div ng-if="item.type == 'CURRENCY'" class="input-group">
-		                                            <input ng-model="item.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="border-right: none;" />
-		                                            <span class="input-group-addon" style="border: none; padding: 0px;">
-		                                                <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>                                     
-		                                            </span>
-		                                        </div>
-		                                        
-		                                        <div ng-if="item.type == 'PERCENTAGE'" class="input-group">
-		                                            <input ng-model="item.value" type="number" min="0" max="100" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
-		                                            <span class="input-group-addon">%</span>
-		                                        </div>
-		                                    
-		                                        <div ng-if="item.type == 'DATE'">
-		                                            <div class="input-group">
-		                                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="true" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+$index}}" />
-		                                                <span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate($index)">
-		                                                    <i class="glyphicon glyphicon-calendar"></i>
-		                                                </span>
-		                                            </div>
-		                                        </div>
-		                                        
-		                                        <select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
-                                        
-		                                        <select ng-if="item.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
-		                                 
-		                                        <input ng-if="item.type == 'HYPERLINK'" ng-model="item.value" type="url" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
-		                                        
-		                                        <select ng-if="item.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
-		                                           
-		                                        <select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
-		                                        
-		                                        <select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
-		                                        
-		                                        <select ng-if="item.type == 'INVESTMENTS_PRIMARY' || item.type == 'INVESTMENTS_SECONDARY'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
-		                                    </div>
-		                                </div>
-                                    </li>
-                                </ul>
-                                
-                                <!--  
-                                <div class="form-group" quick-ng-repeat="item in entity.items" quick-repeat-list="entity.items" ng-show="!mandatoryItemsOnly || (mandatoryItemsOnly && item.mandatory)">
-                                    <div class="col-sm-12">
-                                        <label class="ff-label">{{ item.position }}. {{ item.text }}
-                                            <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup>
-                                            <span ng-if="item.mandatory" class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'item'+$index}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'item'+$index}}.$valid }"></i></span>
-                                        </label>
-                                        
-                                        <input ng-if="item.type == 'TEXT'" ng-model="item.value" type="text" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" maxlength="512" />
-                                        
-                                        <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+$index}}" style="resize: none;"></textarea>
-                                        
-                                        <input ng-if="item.type == 'NUMBER'" ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
-                                        
-                                        <div ng-if="item.type == 'CURRENCY'" class="input-group">
-                                            <input ng-model="item.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="border-right: none;" />
-                                            <span class="input-group-addon" style="border: none; padding: 0px;">
-                                                <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>                                     
-                                            </span>
-                                        </div>
-                                        
-                                        <div ng-if="item.type == 'PERCENTAGE'" class="input-group">
-                                            <input ng-model="item.value" type="number" min="0" max="100" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
-                                            <span class="input-group-addon">%</span>
-                                        </div>
-                                    
-                                        <div ng-if="item.type == 'DATE'">
-                                            <div class="input-group">
-                                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="true" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+$index}}" />
-                                                <span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate($index)">
-                                                    <i class="glyphicon glyphicon-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        
-                                        <select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
-                                        
-                                        <select ng-if="item.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
-                                 
-                                        <input ng-if="item.type == 'HYPERLINK'" ng-model="item.value" type="url" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
-                                        
-                                        <select ng-if="item.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
-                                           
-                                        <select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
-                                        
-                                        <select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
-                                        
-                                        <select ng-if="item.type == 'INVESTMENTS_PRIMARY' || item.type == 'INVESTMENTS_SECONDARY'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
-                                    </div>
-                                </div>
-                                -->
-
-                            </div>
-                        </uib-tab>
-                        <uib-tab> 
-                            <uib-tab-heading>{{ 'TAB_CUSTOM_ITEMS' | translate }}</uib-tab-heading>
-                            <div class="panel-body">
-                                
-                            </div>
-                        </uib-tab>
-	                </uib-tabset>		       
+	<form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="form-group">
+                    <div class="col-sm-12">
+                        <h3 class="border-bottom" style="padding-bottom: 5px; margin-bottom: 0px;">{{ 'TAB_BASIC_DATA' | translate }}</h3>
+                    </div>
                 </div>
-		   </form>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<label class="ff-label">{{ 'LABEL_NAME' | translate }} 
+                            <span class="pull-right">
+								<i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.name.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.name.$valid }"></i>
+                            </span>
+						</label> 
+						<input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="512" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<label class="ff-label">{{ 'LABEL_TEXT' | translate }}</label>
+						<summernote config="summernoteOptions" ng-model="entity.text" name="text" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<label class="ff-label">{{ 'LABEL_IMAGE' | translate }} <small class="pull-right">400x300px</small></label> <img ng-show="entity.image.base64" ng-src="data:image/JPEG;base64,{{entity.image.base64}}" width="320">
+						<a ng-show="!entity.image.base64" href="#" class="btn btn-white" ngf-select ngf-change="selectImage($files)">{{ 'BUTTON_SELECT' | translate }}</a>
+						<a ng-show="entity.image.base64" uib-tooltip="{{ 'ACTION_TOOLTIP_DELETE' | translate }}" class="btn btn-sm btn-white" ng-click="deleteImage($files)" style="vertical-align: top;">
+							<i class="fa fa-remove"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+                    <div class="col-sm-12">
+                        <h3 class="border-bottom" style="padding-bottom: 5px; margin-bottom: 0px;">{{ 'TAB_COMMON_ITEMS' | translate }}
+                            <span class="pull-right">
+	                            <input ng-change="mandatoryItemsOnlyChanged()" ng-model="mandatoryItemsOnly" type="checkbox" />
+	                            <small class="m-l-xs">{{ 'LABEL_MANDATORY_ITEMS_ONLY' | translate }}</small>    
+	                        </span>                        
+                        </h3>
+                    </div>
+                </div>
+				<div class="form-group" quick-ng-repeat="item in entity.items" quick-repeat-list="items" ng-show="!mandatoryItemsOnly || (mandatoryItemsOnly && item.mandatory)">
+					<div class="col-sm-12">
+						<label class="ff-label">{{ item.position }}. {{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup> <span ng-if="item.mandatory" class="pull-right">
+								<i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'item'+$index}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'item'+$index}}.$valid }"></i>
+							</span>
+						</label>
+						
+						<input ng-if="item.type == 'TEXT'" ng-model="item.value" type="text" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" maxlength="512" />
+	                                                
+	                    <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+$index}}" style="resize: none;"></textarea>
+	                                                
+	                    <input ng-if="item.type == 'NUMBER'" ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
+	                    
+	                    <div ng-if="item.type == 'CURRENCY'" class="input-group">
+	                        <input ng-model="item.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="border-right: none;" />
+	                        <span class="input-group-addon" style="border: none; padding: 0px;">
+	                            <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>                                     
+	                        </span>
+	                    </div>
+	                    
+						<div ng-if="item.type == 'PERCENTAGE'" class="input-group">
+							<input ng-model="item.value" type="number" min="0" max="100" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
+							<span class="input-group-addon">%</span>
+						</div>
+						
+						<div ng-if="item.type == 'DATE'">
+							<div class="input-group">
+								<input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate($index)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="true" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[$index].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+$index}}" />
+								<span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate($index)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</div>
+						</div>
+						
+						<select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
+	                                        
+	                    <select ng-if="item.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
+	                                         
+	                    <input ng-if="item.type == 'HYPERLINK'" ng-model="item.value" type="url" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
+	                                                
+	                    <select ng-if="item.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+	                                                   
+	                    <select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+	                                                
+	                    <select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+	                                                
+	                    <select ng-if="item.type == 'INVESTMENTS_PRIMARY' || item.type == 'INVESTMENTS_SECONDARY'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
+                    </div>
+				</div>
+			</div>
 		</div>
-	</div>
+	</form>
 	
 	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
         <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
             <button ng-click="back()" class="btn btn-white m-r-sm">{{ 'BUTTON_BACK' | translate }}</button>
-            <button ng-click="saveEntity()" ng-disabled="form.$invalid" class="btn btn-primary">{{ 'BUTTON_SAVE' | translate }}</button>
+            <button ladda="saving" ng-click="saveEntity()" ng-disabled="form.$invalid" class="btn btn-primary">{{ 'BUTTON_SAVE' | translate }}</button>
         </div>
     </div>
 </div>

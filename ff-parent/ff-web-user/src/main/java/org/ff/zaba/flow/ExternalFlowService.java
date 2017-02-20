@@ -94,7 +94,7 @@ public class ExternalFlowService {
 		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
 		interceptors.add(interceptor);
 		restTemplate.setInterceptors(interceptors);
-		dateFormat = new SimpleDateFormat(baseProperties.getDateFormat());
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 
 	public ResponseEntity<UserResource> authorize(String authId) {
