@@ -957,21 +957,17 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 	$scope.getEntity = function(id) {
 		TendersService.getEntity(id)
 			.success(function(data, status) {
-				if (status == 200) {
-					if (data.items) { 
-						$.each(data.items, function(index, item) {
-							if (item.type == 'DATE') {
-								if (item.value) {
-									item.value = moment.utc(item.value, $rootScope.dateFormatDB.toUpperCase()).toDate();
-								}
-								$scope.dictPopupDate[index] = { opened: false };
+				if (data.items) { 
+					$.each(data.items, function(index, item) {
+						if (item.type == 'DATE') {
+							if (item.value) {
+								item.value = moment.utc(item.value, $rootScope.dateFormatDB.toUpperCase()).toDate();
 							}
-						});
-					}
-					$scope.entity = data;
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+							$scope.dictPopupDate[index] = { opened: false };
+						}
+					});
 				}
+				$scope.entity = data;
 			})
 			.error(function(data, status) {
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
@@ -1105,8 +1101,19 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 		$scope.entity.image.base64 = null;
 	};
 	
+	$scope.loadItems = function() {
+		var items = new Array();
+		if ($scope.entity.items) { 
+			$.each($scope.entity.items, function(index, item) {
+				items.push(item);
+			});
+		}
+		$scope.items = items;
+	}
+	
 	$scope.mandatoryItemsOnlyChanged = function() {
 		$scope.mandatoryItemsOnly = !$scope.mandatoryItemsOnly;
+		$scope.loadItems();
 	};
 	
 	$scope.dictPopupDate = new Object();
@@ -1116,11 +1123,13 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 	};
 	
 	// initial load
-	$scope.mandatoryItemsOnly = false;
+	$scope.mandatoryItemsOnly = true;
+	$scope.items = new Array();
+	
+	$scope.getEntity($stateParams.id);
 	$scope.getCurrencies();
 	$scope.getInvestments();
 	$scope.getSubdivisions1();
 	$scope.getSubdivisions2();
 	$scope.getActivities();
-	$scope.getEntity($stateParams.id);
 };

@@ -122,12 +122,22 @@ public class TenderResourceAssembler {
 		resource.setIncomplete(Boolean.FALSE);
 		for (Item item : items) {
 			if (Boolean.TRUE == item.getMandatory()) {
+				Boolean found = Boolean.FALSE;
 				for (TenderItem tenderItem : tenderItems) {
-					if (item.getId().equals(tenderItem.getItem().getId()) && StringUtils.isBlank(tenderItem.getValue())) {
-						resource.setIncomplete(Boolean.TRUE);
-						break;
+					if (item.getId().equals(tenderItem.getItem().getId())) {
+						found = Boolean.TRUE;
+						if (StringUtils.isBlank(tenderItem.getValue())) {
+							resource.setIncomplete(Boolean.TRUE);
+							break;
+						}
 					}
 				}
+
+				if (Boolean.FALSE == found) {
+					resource.setIncomplete(Boolean.TRUE);
+					break;
+				}
+
 				if (Boolean.TRUE == resource.getIncomplete()) {
 					break;
 				}

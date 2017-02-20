@@ -282,6 +282,10 @@ public class AlgorithmService extends BaseService {
 		CompanyItem companyItem = getCompanyItem4Item(companyItems, algorithmItem.getCompanyItem());
 		TenderItem tenderItem = getTenderItem4Item(tender.getItems(), algorithmItem.getTenderItem());
 
+		if (companyItem == null || tenderItem == null) {
+			return Boolean.FALSE;
+		}
+
 		if (algorithmItem.getCompanyItem().getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(algorithmItem.getCompanyItem().getMetaTag())) {
 			if (algorithmItem.getCompanyItem().getType() == ItemType.SUBDIVISION1 && algorithmItem.getOperator() == Operator.IN
 					&& tenderItem.getItem().getType() == ItemType.MULTISELECT && tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_DEVELOPMENT_INDEX_SUBDIVISION1) {

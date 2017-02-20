@@ -16,6 +16,7 @@
         'ngStorage',
         'oc.lazyLoad',							// https://oclazyload.readme.io/
         'pascalprecht.translate',				// https://angular-translate.github.io/
+        'QuickList',							// https://github.com/allaud/quick-ng-repeat
         'summernote',							// https://github.com/summernote/angular-summernote
         'ui.router',							// http://angular-ui.github.io/ui-router/site/#/api/ui.router
         'ui.router.grant',						// https://github.com/ryandrewjohnson/ui-router.grant
