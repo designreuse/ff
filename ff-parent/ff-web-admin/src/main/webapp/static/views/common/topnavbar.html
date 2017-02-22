@@ -61,6 +61,9 @@
 	                <li ng-class="{active: $state.is('settings.businessrelationshipmanagers_overview') || $state.is('settings.businessrelationshipmanagers_edit') }">
 	                    <a class="ff-nav-second-level" ui-sref="settings.businessrelationshipmanagers_overview">{{ 'MENU_BUSINESSRELATIONSHIPMANAGERS' | translate }}</a>
 	                </li>
+	                <li ng-class="{ active: $state.is('settings.debugging') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.debugging">{{ 'MENU_DEBUGGING' | translate }}</a>
+                    </li>
                 </ul>
             </li>
         </ul>

@@ -749,6 +749,24 @@ angular.module('FundFinder')
 	        }
 	    })
 	    
+	    .state('settings.debugging', {
+	    	url: "/debugging/overview",
+	        templateUrl: constants.contextPath + "/components/debugging/views/overview.html",
+	        controller: 'DebuggingController',
+	        data: { pageTitle: 'Debugging' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/debugging/scripts/controllers.js',
+	        			        constants.contextPath + '/components/debugging/scripts/services.js',
+	        			        constants.contextPath + '/components/users/scripts/services.js',
+	        			        constants.contextPath + '/components/tenders/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    
 })
 
 .run(function ($rootScope, $state, $stateParams, $log, $localStorage, $timeout, $locale, $templateCache, $filter, ModalService, grant, constants, CountersService) {

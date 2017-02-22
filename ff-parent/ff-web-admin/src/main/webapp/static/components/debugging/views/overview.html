@@ -1,0 +1,51 @@
+<style>
+.lbl-entry {
+    font-weight: normal;
+}
+</style>
+
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1>{{ 'MENU_DEBUGGING' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row m-b-md">
+		<div class="col-lg-5">
+			<select chosen class="form-control ff-form-control" ng-model="user" data-placeholder-text-single="'User / company'" allow-single-deselect="true" options="users" ng-options="(user.email + ' / ' + user.company.name) for user in users track by user.id">
+				<option value=""></option>
+			</select>
+		</div>
+		<div class="col-lg-5">
+            <select chosen class="form-control ff-form-control" ng-model="tender" data-placeholder-text-single="'Tender'" allow-single-deselect="true" options="users" ng-options="tender.name for tender in tenders track by tender.id">
+                <option value=""></option>
+            </select>
+		</div>
+		<div class="col-lg-2">
+            <button ng-disabled="!user || !tender" ng-click="debug()" type="button" class="btn btn-primary">{{ 'BUTTON_DEBUG' | translate }}</button>
+        </div>
+    </div>
+    
+    <div class="row" ng-if="data">
+        <div class="col-lg-12">
+            <span style="color: green;" ng-if="data.isMatch"><h1>MATCH</h1></span>
+            <span style="color: red;" ng-if="!data.isMatch"><h1>NO MATCH</h1></span>      
+        </div>
+    </div>
+    
+	<div class="row" ng-if="data">
+		<div class="col-lg-12">
+            <ul style="list-style-type:none; padding-left: 5px;">
+                <li ng-repeat="entry in data.entries">
+                    <label class="lbl-entry" style="width: 50px;">
+                        <span style="color: green;" ng-if="entry.status == 'OK'">{{ entry.status }}</span>
+                        <span style="color: red;" ng-if="entry.status == 'NOK'">{{ entry.status }}</span>
+                    </label> 
+                    <label class="lbl-entry" style="width: 125px;">{{ entry.date | date:dateTimeFormat }}</label> 
+                    <label class="lbl-entry">{{ entry.text }}</label>
+                </li>
+            </ul>    		  
+		</div>
+	</div>
+</div>

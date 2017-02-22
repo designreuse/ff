@@ -26,6 +26,7 @@ import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.dashboard.resource.DashboardResource;
+import org.ff.rest.debugging.resource.DebuggingResource;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.item.resource.ItemResourceAssembler;
 import org.ff.rest.tender.resource.TenderResource;
@@ -165,7 +166,7 @@ public class DashboardService {
 
 		resource.setCntTenders(cntTenders.intValue());
 		resource.setCntTendersOpen(cntTendersOpen.intValue());
-		resource.setCntTenders4U(algorithmService.findTenders4User(user).size()); // TODO: this might slow down things
+		resource.setCntTenders4U(algorithmService.findTenders4User(user, new DebuggingResource()).size()); // TODO: this might slow down things
 
 		resource.setCntProjects(projectRepository.countByCompany(user.getCompany()));
 		resource.setCntArticles(articleRepository.countByStatus(ArticleStatus.ACTIVE));

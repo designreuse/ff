@@ -31,6 +31,7 @@ import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.UserSpecification;
 import org.ff.rest.counters.service.CountersService;
+import org.ff.rest.debugging.resource.DebuggingResource;
 import org.ff.rest.email.resource.SendEmailResource;
 import org.ff.rest.project.resource.ProjectResource;
 import org.ff.rest.tender.resource.TenderResource;
@@ -120,7 +121,7 @@ public class UserService extends BaseService {
 
 		UserResource resource = resourceAssembler.toResource(entity, false);
 
-		List<Tender> tenders = algorithmService.findTenders4User(entity);
+		List<Tender> tenders = algorithmService.findTenders4User(entity, new DebuggingResource());
 		if (tenders != null && !tenders.isEmpty()) {
 			resource.getCompany().setTenders(tenderResourceAssembler.toResources(tenders, true));
 		}

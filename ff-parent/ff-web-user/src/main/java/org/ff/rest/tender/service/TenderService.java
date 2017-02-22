@@ -26,6 +26,7 @@ import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.currency.service.CurrencyService;
+import org.ff.rest.debugging.resource.DebuggingResource;
 import org.ff.rest.image.resource.ImageResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.item.resource.ItemResourceAssembler;
@@ -86,7 +87,7 @@ public class TenderService {
 
 		User user = userRepository.findOne(principal.getUser().getId());
 
-		for (Tender tender : algorithmService.findTenders4User(user)) {
+		for (Tender tender : algorithmService.findTenders4User(user, new DebuggingResource())) {
 			TenderResource resource = new TenderResource();
 			resource.setId(tender.getId());
 			resource.setStatus(tender.getStatus());
@@ -153,7 +154,7 @@ public class TenderService {
 			company.getItems().add(companyItem);
 		}
 
-		for (Tender tender : algorithmService.findTenders4User(user)) {
+		for (Tender tender : algorithmService.findTenders4User(user, new DebuggingResource())) {
 			TenderResource tenderResource = new TenderResource();
 			tenderResource.setId(tender.getId());
 			tenderResource.setStatus(tender.getStatus());

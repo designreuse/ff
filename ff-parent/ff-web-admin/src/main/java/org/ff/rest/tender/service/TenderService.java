@@ -42,6 +42,7 @@ import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.TenderSpecification;
 import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.currency.service.CurrencyService;
+import org.ff.rest.debugging.resource.DebuggingResource;
 import org.ff.rest.email.resource.SendEmailResource;
 import org.ff.rest.image.resource.ImageResource;
 import org.ff.rest.item.resource.ItemResource;
@@ -310,7 +311,7 @@ public class TenderService extends BaseService {
 			Map<String, Set<String>> businessRelationshipManagers = new HashMap<>();
 			for (UserGroupResource userGroup : resource.getUserGroups()) {
 				if (userGroup.getMetaTag() == UserGroupMetaTag.MATCHING_USERS) {
-					List<User> users = algorithmService.findUsers4Tender(tender);
+					List<User> users = algorithmService.findUsers4Tender(tender, new DebuggingResource());
 					userGroup.setUsers(userResourceAssembler.toResources(users, true));
 				}
 
@@ -376,7 +377,7 @@ public class TenderService extends BaseService {
 	}
 
 	public List<UserResource> findMatchingUsers(Integer id) {
-		return userResourceAssembler.toResources(algorithmService.findUsers4Tender(repository.findOne(id)), true);
+		return userResourceAssembler.toResources(algorithmService.findUsers4Tender(repository.findOne(id), new DebuggingResource()), true);
 	}
 
 	@Transactional(readOnly = true)
