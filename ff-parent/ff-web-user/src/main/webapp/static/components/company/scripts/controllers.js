@@ -107,8 +107,10 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 			SessionStorage.setSession("company", $scope.company);
 			toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
 		} else {
+			$scope.saving = true;
 			CompanyService.save($scope.company)
 				.success(function(data, status, headers, config) {
+					$scope.saving = false;
 					if (status == 200) {
 						$rootScope.getProfileCompleteness();
 						toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
@@ -117,6 +119,7 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 					}
 				})
 				.error(function(data, status, headers, config) {
+					$scope.saving = false;
 					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 				});	
 		}

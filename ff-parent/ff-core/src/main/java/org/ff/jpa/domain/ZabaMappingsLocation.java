@@ -24,7 +24,6 @@ public class ZabaMappingsLocation {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Nationalized
 	@Column(name = "zip_code", nullable = true, length = 16)
 	private String zipCode;
 

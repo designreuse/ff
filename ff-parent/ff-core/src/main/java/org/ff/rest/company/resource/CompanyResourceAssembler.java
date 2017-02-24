@@ -92,9 +92,11 @@ public class CompanyResourceAssembler {
 
 			for (ItemResource itemResource : resource.getItems()) {
 				for (CompanyItem companyItem : entity.getItems()) {
-					if (itemResource.getId().equals(companyItem.getItem().getId())) {
-						setResourceValue(itemResource, companyItem);
-						break;
+					if (itemResource != null && itemResource.getId() != null && companyItem != null && companyItem.getItem() != null) {
+						if (itemResource.getId().equals(companyItem.getItem().getId())) {
+							setResourceValue(itemResource, companyItem);
+							break;
+						}
 					}
 				}
 
@@ -142,9 +144,11 @@ public class CompanyResourceAssembler {
 
 				// existing company item
 				for (CompanyItem companyItemTmp : entity.getItems()) {
-					if (companyItemTmp.getItem().getId().equals(itemResource.getId())) {
-						companyItem = companyItemTmp;
-						break;
+					if (companyItemTmp != null && companyItemTmp.getItem() != null && itemResource != null && itemResource.getId() != null) {
+						if (companyItemTmp.getItem().getId().equals(itemResource.getId())) {
+							companyItem = companyItemTmp;
+							break;
+						}
 					}
 				}
 

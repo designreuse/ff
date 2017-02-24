@@ -279,7 +279,7 @@ public class ExternalFlowMappingService {
 	 * @param capital
 	 * 		External value for the 'Capital' (e.g. 4642015.00).
 	 * @param totalLiabilities
-	 * 		External value for the 'Capital' (e.g. 11476427.00).
+	 * 		External value for the 'Total liabilities' (e.g. 11476427.00).
 	 * @return
 	 */
 	public ItemOption getCapitalTotalLiabilities(String capital, String totalLiabilities) {

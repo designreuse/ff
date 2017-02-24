@@ -168,6 +168,8 @@ public class ExternalFlowService {
 					log.debug("Existing company detected...");
 
 					user = company.getUser();
+					user.setFirstName(data.get("ime"));
+					user.setLastName(data.get("prezime"));
 					if (data.containsKey("email") && StringUtils.isNotBlank(data.get("email"))) {
 						User userTmp = userRepository.findByEmail(data.get("email"));
 						if (userTmp != null && !userTmp.getId().equals(user.getId())) {
@@ -420,9 +422,8 @@ public class ExternalFlowService {
 		try {
 			log.debug("Importing last year income [{}] for company [{}]", companyData.getLastYearIncome(), company.getName());
 
-			Item item = externalFlowMappingService.getLastYearIncomeMapping();
 			if (companyData.getLastYearIncome() != null) {
-
+				Item item = externalFlowMappingService.getLastYearIncomeMapping();
 				Map<ItemOption, DoubleRange> ranges = new HashMap<>();
 				for (ItemOption itemOption : item.getOptions()) {
 					String value = itemOption.getText();
