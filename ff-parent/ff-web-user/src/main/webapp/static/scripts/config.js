@@ -237,7 +237,7 @@ angular.module('FundFinder')
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
-	$rootScope.version = "v1.0.6";
+	$rootScope.version = "v1.0.7";
 	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	
 	$locale.NUMBER_FORMATS.DECIMAL_SEP= ',';
