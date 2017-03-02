@@ -1094,7 +1094,13 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 		if (files && files.length == 1) {
 			var reader = new FileReader();
 			reader.onload = function(readerEvt) {
-	            var binaryString = readerEvt.target.result;
+				var binaryString;
+				if (!readerEvt) {
+			        binaryString = reader.content;
+			    } else {
+			    	binaryString = readerEvt.target.result;
+			    }
+				
 	            setTimeout(function () {
 	                $scope.$apply(function () {
 	                	$scope.entity.image.base64 = btoa(binaryString);
