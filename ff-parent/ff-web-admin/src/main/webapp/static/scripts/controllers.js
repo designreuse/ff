@@ -4,13 +4,10 @@ angular.module('FundFinder')
 //	TopnavbarController
 // ====================================================================================
 .controller('TopnavbarController', function($scope, $http, $window, $translate, $state, $log) {
-	
-	// change language function
 	$scope.changeLanguage = function(langKey) {
 		$translate.use(langKey);
 		$state.go($state.current, {}, { reload: true });
 	};
-	
 })
 
 // ====================================================================================
