@@ -250,12 +250,12 @@
 	                                </div>
                                 </div>
                                 
-                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.orgUnit || entity.businessRelationshipManagerSubstitute.orgUnit">
+                                <div class="row m-t-sm" ng-if="entity.businessRelationshipManager.organizationalUnit || entity.businessRelationshipManagerSubstitute.organizationalUnit">
                                     <div class="col-sm-4">
-                                        <span ng-if="entity.businessRelationshipManager.orgUnit"><i class="fa fa-star-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.orgUnit }}</span>
+                                        <span ng-if="entity.businessRelationshipManager.organizationalUnit"><i class="fa fa-star-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManager.organizationalUnit.name }} ({{ entity.businessRelationshipManager.organizationalUnit.code }})</span>
                                     </div>
                                     <div class="col-sm-4 m-l-md">
-                                        <span ng-if="entity.businessRelationshipManagerSubstitute.orgUnit"><i class="fa fa-star-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManagerSubstitute.orgUnit }}</span>
+                                        <span ng-if="entity.businessRelationshipManagerSubstitute.organizationalUnit"><i class="fa fa-star-o m-r-xs" aria-hidden="true"></i> {{ entity.businessRelationshipManagerSubstitute.organizationalUnit.name }} ({{ entity.businessRelationshipManager.organizationalUnit.code }})</span>
                                     </div>
                                 </div>
                                 

@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_ORG_UNIT' | translate }}</label>
-                        <input ng-model="entity.orgUnit" type="text" class="form-control ff-form-control" name="orgUnit" maxlength="255" />
+                        <select chosen class="form-control" ng-required="true" search-contains="true" ng-model="entity.organizationalUnit" name="organizationalUnit" options="organizationalUnits" ng-options='(organizationalUnit.name + " (" + organizationalUnit.code + ")") for organizationalUnit in organizationalUnits track by organizationalUnit.id'></select>
                     </div>
                 </div>
                 

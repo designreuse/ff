@@ -1,8 +1,6 @@
-package org.ff.rest.businessrelationshipmanager.resource;
+package org.ff.rest.organizationalunit.resource;
 
 import java.util.Date;
-
-import org.ff.rest.organizationalunit.resource.OrganizationalUnitResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -12,28 +10,16 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class BusinessRelationshipManagerResource {
+public class OrganizationalUnitResource {
 
 	@JsonProperty("id")
 	private Integer id;
 
-	@JsonProperty("firstName")
-	private String firstName;
+	@JsonProperty("code")
+	private String code;
 
-	@JsonProperty("lastName")
-	private String lastName;
-
-	@JsonProperty("phone")
-	private String phone;
-
-	@JsonProperty("mobile")
-	private String mobile;
-
-	@JsonProperty("email")
-	private String email;
-
-	@JsonProperty("organizationalUnit")
-	private OrganizationalUnitResource organizationalUnit;
+	@JsonProperty("name")
+	private String name;
 
 	@JsonProperty("creationDate")
 	private Date creationDate;

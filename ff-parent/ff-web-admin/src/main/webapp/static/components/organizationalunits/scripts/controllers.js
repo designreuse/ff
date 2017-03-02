@@ -1,11 +1,11 @@
 angular.module('FundFinder')
-	.controller('BusinessRelationshipManagerOverviewController', BusinessRelationshipManagerOverviewController)
-	.controller('BusinessRelationshipManagerEditController', BusinessRelationshipManagerEditController);
+	.controller('OrganizationalUnitsOverviewController', OrganizationalUnitsOverviewController)
+	.controller('OrganizationalUnitsEditController', OrganizationalUnitsEditController);
 
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function BusinessRelationshipManagerOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, BusinessRelationshipManagerService) {
+function OrganizationalUnitsOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, Upload, FileSaver, Blob, OrganizationalUnitsService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -38,48 +38,8 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 					width: 60
 				},  
 				{
-					displayName: $translate('COLUMN_FIRST_NAME'),
-					field: 'firstName',
-					type: 'string',
-					cellTooltip: false, 
-					enableSorting: true,
-					enableFiltering: true,
-					enableHiding: true,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
-				},
-				{
-					displayName: $translate('COLUMN_LAST_NAME'),
-					field: 'lastName',
-					type: 'string',
-					cellTooltip: false, 
-					enableSorting: true,
-					enableFiltering: true,
-					enableHiding: true,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
-				},
-				{
-					displayName: $translate('COLUMN_ORG_UNIT'),
-					field: 'organizationalUnit.name',
-					type: 'string',
-					cellTooltip: false, 
-					enableSorting: true,
-					enableFiltering: true,
-					enableHiding: true,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
-				},
-				{
-					displayName: $translate('COLUMN_EMAIL'),
-					field: 'email',
-					type: 'string',
-					cellTooltip: false, 
-					enableSorting: true,
-					enableFiltering: true,
-					enableHiding: true,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
-				},
-				{
-					displayName: $translate('COLUMN_PHONE'),
-					field: 'phone',
+					displayName: $translate('COLUMN_CODE'),
+					field: 'code',
 					type: 'string',
 					cellTooltip: false, 
 					enableSorting: true,
@@ -89,15 +49,14 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 					width: 150
 				},
 				{
-					displayName: $translate('COLUMN_MOBILE'),
-					field: 'mobile',
+					displayName: $translate('COLUMN_NAME'),
+					field: 'name',
 					type: 'string',
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss',
-					width: 150
+					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
 					displayName: $translate('COLUMN_CREATION_DATE'),
@@ -220,7 +179,7 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 			"filter" : $scope.filterArray
 		};
 		
-		BusinessRelationshipManagerService.getPage(uiGridResource)
+		OrganizationalUnitsService.getPage(uiGridResource)
 			.success(function(data, status, headers, config) {
 				$scope.loading = false;
 				if (status == 200) {
@@ -251,11 +210,11 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.businessrelationshipmanagers_edit', { 'id' : 0 });
+		$state.go('settings.organizationalunits_edit', { 'id' : 0 });
 	}
 	
 	$scope.editEntity = function (entity) {
-		$state.go('settings.businessrelationshipmanagers_edit', { 'id' : entity.id });
+		$state.go('settings.organizationalunits_edit', { 'id' : entity.id });
 	}
 	
 	$scope.deleteEntity = function (entity) {
@@ -275,7 +234,7 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
             		label: $translate('BUTTON_YES'),
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
-	                	BusinessRelationshipManagerService.deleteEntity(entity.id)
+	                	OrganizationalUnitsService.deleteEntity(entity.id)
 		    				.success(function(data, status) {
 		    					if (status == 200) {
 		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
@@ -343,10 +302,37 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 	$scope.setInitialSorting = function() {
 		if (!$scope.sortArray) {
 			var sortArray = new Array();
-			sortArray.push({ name: "lastName", priority: 0, direction: uiGridConstants.ASC });
+			sortArray.push({ name: "name", priority: 0, direction: uiGridConstants.ASC });
 			$scope.sortArray = sortArray;			
 		}
 	}
+	
+	$scope.importData = function(files) {
+		if (files && files.length) {
+			Upload.upload({
+		        url: '/api/v1/organizationalunits/import',
+		        method: 'POST',
+		        file: files[0]
+		    }).success(function (data, status, headers, config) {
+		    	toastr.success($translate('ACTION_IMPORT_SUCCESS_MESSAGE'));
+		    	$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
+		    }).error(function(data, status, headers, config) {
+		    	toastr.error($translate('ACTION_IMPORT_FAILURE_MESSAGE'));
+		    });
+		}
+	};
+	
+	$scope.exportData = function() {
+		OrganizationalUnitsService.exportData()
+			.success(function(data, status) {
+				var blob = new Blob([angular.toJson(data)], { type : "application/json;charset=utf-8;" });	
+				FileSaver.saveAs(blob, "ff__organizational_units.json");
+				toastr.success($translate('ACTION_EXPORT_SUCCESS_MESSAGE'));
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_EXPORT_FAILURE_MESSAGE'));
+			});
+	};
 	
 	// initial load
 	$scope.loading = true;
@@ -364,11 +350,11 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 // ========================================================================
 //	EDIT CONTROLLER
 // ========================================================================
-function BusinessRelationshipManagerEditController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, BusinessRelationshipManagerService, OrganizationalUnitsService) {
+function OrganizationalUnitsEditController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, uiGridConstants, OrganizationalUnitsService) {
 	var $translate = $filter('translate');
 	
 	$scope.getEntity = function(id) {
-		BusinessRelationshipManagerService.getEntity(id)
+		OrganizationalUnitsService.getEntity(id)
 			.success(function(data, status) {
 				if (status == 200) {
 					$scope.entity = data;
@@ -382,11 +368,11 @@ function BusinessRelationshipManagerEditController($rootScope, $scope, $state, $
 	};
 	
 	$scope.saveEntity = function() {
-		BusinessRelationshipManagerService.saveEntity($scope.entity)
+		OrganizationalUnitsService.saveEntity($scope.entity)
 			.success(function(data, status, headers, config) {
 				if (status == 200) {
 					toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
-					$state.go('settings.businessrelationshipmanagers_edit', { 'id' : data.id });
+					$state.go('settings.organizationalunits_edit', { 'id' : data.id });
 				} else {
 					if (data.exception.indexOf("ValidationFailedException") != -1) {
 						toastr.warning(data.message, $translate('VALIDATION_FAILED_HEADER'));
@@ -400,21 +386,10 @@ function BusinessRelationshipManagerEditController($rootScope, $scope, $state, $
 			});		
 	};
 	
-	$scope.getOrganizationalUnits = function(id) {
-		OrganizationalUnitsService.getEntities()
-			.success(function(data, status) {
-				$scope.organizationalUnits = data;
-			})
-			.error(function(data, status) {
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
-			});
-	};
-	
 	$scope.back = function() {
-		$state.go('settings.businessrelationshipmanagers_overview');
+		$state.go('settings.organizationalunits_overview');
 	};
 	
 	// initial load
-	$scope.getOrganizationalUnits();
 	$scope.getEntity($stateParams.id);
 };

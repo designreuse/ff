@@ -59,8 +59,11 @@
 	                    <a class="ff-nav-second-level" ui-sref="settings.usergroups_overview">{{ 'MENU_USER_GROUPS' | translate }}</a>
 	                </li>
 	                <li ng-class="{active: $state.is('settings.businessrelationshipmanagers_overview') || $state.is('settings.businessrelationshipmanagers_edit') }">
-	                    <a class="ff-nav-second-level" ui-sref="settings.businessrelationshipmanagers_overview">{{ 'MENU_BUSINESSRELATIONSHIPMANAGERS' | translate }}</a>
+	                    <a class="ff-nav-second-level" ui-sref="settings.businessrelationshipmanagers_overview">{{ 'MENU_BUSINESS_RELATIONSHIP_MANAGERS' | translate }}</a>
 	                </li>
+	                <li ng-class="{active: $state.is('settings.organizationalunits_overview') || $state.is('settings.organizationalunits_edit') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.organizationalunits_overview">{{ 'MENU_ORG_UNITS' | translate }}</a>
+                    </li>
 	                <li ng-class="{ active: $state.is('settings.debugging') }">
                         <a class="ff-nav-second-level" ui-sref="settings.debugging">{{ 'MENU_DEBUGGING' | translate }}</a>
                     </li>

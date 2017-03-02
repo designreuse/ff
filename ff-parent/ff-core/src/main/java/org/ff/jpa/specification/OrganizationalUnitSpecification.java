@@ -9,15 +9,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.ff.jpa.SearchCriteria;
-import org.ff.jpa.domain.BusinessRelationshipManager;
 import org.ff.jpa.domain.OrganizationalUnit;
 import org.springframework.data.jpa.domain.Specification;
 
-public class BusinessRelationshipManagerSpecification implements Specification<BusinessRelationshipManager> {
+public class OrganizationalUnitSpecification implements Specification<OrganizationalUnit> {
 
 	private SearchCriteria criteria;
 
-	public BusinessRelationshipManagerSpecification(final SearchCriteria criteria) {
+	public OrganizationalUnitSpecification(final SearchCriteria criteria) {
 		super();
 		this.criteria = criteria;
 	}
@@ -28,7 +27,7 @@ public class BusinessRelationshipManagerSpecification implements Specification<B
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Predicate toPredicate(Root<BusinessRelationshipManager> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+	public Predicate toPredicate(Root<OrganizationalUnit> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 		switch (criteria.getOperation()) {
 			case EQUALITY:
 				return builder.equal(root.get(criteria.getKey()), criteria.getValue());
@@ -45,9 +44,6 @@ public class BusinessRelationshipManagerSpecification implements Specification<B
 			case ENDS_WITH:
 				return builder.like(root.<String> get(criteria.getKey()), "%" + criteria.getValue());
 			case CONTAINS:
-				if (criteria.getKey().equals("organizationalUnit.name")) {
-					return builder.like(root.<OrganizationalUnit> get("organizationalUnit").<String>get("name"), "%" + criteria.getValue() + "%");
-				}
 				return builder.like(root.<String> get(criteria.getKey()), "%" + criteria.getValue() + "%");
 			case BETWEEN:
 				List<Date> range = (List<Date>) criteria.getValue();

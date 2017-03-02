@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
@@ -45,8 +47,8 @@ public class BusinessRelationshipManager extends AbstractEntity {
 	@Column(name = "email", nullable = true, length = 255)
 	private String email;
 
-	@Nationalized
-	@Column(name = "org_unit", nullable = true, length = 255)
-	private String orgUnit;
+	@ManyToOne
+	@JoinColumn(name = "organizational_unit", nullable = true)
+	private OrganizationalUnit organizationalUnit;
 
 }

@@ -743,7 +743,40 @@ angular.module('FundFinder')
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
 	        			files: [constants.contextPath + '/components/businessrelationshipmanagers/scripts/controllers.js',
-	        			        constants.contextPath + '/components/businessrelationshipmanagers/scripts/services.js']
+	        			        constants.contextPath + '/components/businessrelationshipmanagers/scripts/services.js',
+	        			        constants.contextPath + '/components/organizationalunits/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    
+	    .state('settings.organizationalunits_overview', {
+	    	url: "/organizationalunits/overview",
+	        templateUrl: constants.contextPath + "/components/organizationalunits/views/overview.html",
+	        controller: 'OrganizationalUnitsOverviewController',
+	        data: { pageTitle: 'Organizational units overview' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/organizationalunits/scripts/controllers.js',
+	        			        constants.contextPath + '/components/organizationalunits/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('settings.organizationalunits_edit', {
+	    	url: "/organizationalunits/edit/:id",
+	    	params: { 'id' : null },
+	        templateUrl: constants.contextPath + "/components/organizationalunits/views/edit.html",
+	        controller: 'OrganizationalUnitsEditController',
+	        data: { pageTitle: 'Edit organizational unit' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/organizationalunits/scripts/controllers.js',
+	        			        constants.contextPath + '/components/organizationalunits/scripts/services.js']
 	        		});
 	        	}
 	        }
