@@ -1,3 +1,7 @@
 /target/
 /logs/
 /.apt_generated/
+/.settings/
+/.classpath
+/.factorypath
+/.project
