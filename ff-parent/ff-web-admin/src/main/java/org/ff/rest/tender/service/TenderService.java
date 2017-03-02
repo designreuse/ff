@@ -40,7 +40,6 @@ import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.TenderSpecification;
-import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.currency.service.CurrencyService;
 import org.ff.rest.debugging.resource.DebuggingResource;
 import org.ff.rest.email.resource.SendEmailResource;
@@ -86,9 +85,6 @@ public class TenderService extends BaseService {
 
 	@Autowired
 	private ItemResourceAssembler itemResourceAssembler;
-
-	@Autowired
-	private CountersService countersService;
 
 	@Autowired
 	private EmailRepository emailRepository;
@@ -194,8 +190,6 @@ public class TenderService extends BaseService {
 		repository.save(entity);
 		resource = resourceAssembler.toResource(entity, false);
 
-		countersService.sendEvent();
-
 		return resource;
 	}
 
@@ -242,8 +236,6 @@ public class TenderService extends BaseService {
 		}
 
 		repository.delete(entity);
-
-		countersService.sendEvent();
 	}
 
 	@Transactional(readOnly = true)

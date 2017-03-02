@@ -25,12 +25,14 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.domain.UserEmail;
+import org.ff.jpa.domain.UserGroup;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.EmailRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.UserEmailRepository;
+import org.ff.jpa.repository.UserGroupRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.specification.UserSpecification;
-import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.debugging.resource.DebuggingResource;
 import org.ff.rest.email.resource.SendEmailResource;
 import org.ff.rest.project.resource.ProjectResource;
@@ -71,9 +73,6 @@ public class UserService extends BaseService {
 	private TenderResourceAssembler tenderResourceAssembler;
 
 	@Autowired
-	private CountersService countersService;
-
-	@Autowired
 	private Collator collator;
 
 	@Autowired
@@ -93,6 +92,12 @@ public class UserService extends BaseService {
 
 	@Autowired
 	private BusinessRelationshipManagerRepository businessRelationshipManagerRepository;
+
+	@Autowired
+	private UserGroupRepository userGroupRepository;
+
+	@Autowired
+	private ProjectRepository projectRepository;
 
 	@Transactional(readOnly = true)
 	public List<UserResource> findAll() {
@@ -185,8 +190,6 @@ public class UserService extends BaseService {
 		repository.save(entity);
 		resource = resourceAssembler.toResource(entity, false);
 
-		countersService.sendEvent();
-
 		return resource;
 	}
 
@@ -240,9 +243,29 @@ public class UserService extends BaseService {
 					new Object[] { messageSource.getMessage("resource.user", null, locale), id }, locale));
 		}
 
-		repository.delete(entity);
+		// delete projects
+		Long cntDeletedProjects = projectRepository.deleteByCompany(entity.getCompany());
+		if (cntDeletedProjects > 0) {
+			log.debug("{} user/company projects deleted", cntDeletedProjects);
+		}
 
-		countersService.sendEvent();
+		// delete e-mails
+		Long cntDeletedEmails = userEmailRepository.deleteByUser(entity);
+		if (cntDeletedEmails > 0) {
+			log.debug("{} user e-mails deleted", cntDeletedEmails);
+		}
+
+		// remove from user groups
+		List<UserGroup> userGroups = userGroupRepository.findByUsersIn(entity);
+		for (UserGroup userGroup : userGroups) {
+			log.debug("Removing user [{}] from user group [{}]", entity.getId(), userGroup.getId());
+			userGroup.getUsers().remove(entity);
+			userGroupRepository.save(userGroup);
+		}
+
+		// delete
+		repository.delete(entity);
+		log.debug("User [{}] deleted", entity.getId());
 	}
 
 	@Transactional(readOnly = true)

@@ -17,7 +17,6 @@ import org.ff.jpa.repository.ArticleRepository;
 import org.ff.jpa.specification.ArticleSpecification;
 import org.ff.rest.article.resource.ArticleResource;
 import org.ff.rest.article.resource.ArticleResourceAssembler;
-import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.image.resource.ImageResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,9 +40,6 @@ public class ArticleService extends BaseService {
 
 	@Autowired
 	private ArticleResourceAssembler resourceAssembler;
-
-	@Autowired
-	private CountersService countersService;
 
 	@Transactional(readOnly = true)
 	public ArticleResource find(Integer id, Locale locale) {
@@ -78,8 +74,6 @@ public class ArticleService extends BaseService {
 
 		repository.save(entity);
 		resource = resourceAssembler.toResource(entity, false);
-
-		countersService.sendEvent();
 
 		return resource;
 	}
@@ -127,8 +121,6 @@ public class ArticleService extends BaseService {
 		}
 
 		repository.delete(entity);
-
-		countersService.sendEvent();
 	}
 
 	@Transactional(readOnly = true)

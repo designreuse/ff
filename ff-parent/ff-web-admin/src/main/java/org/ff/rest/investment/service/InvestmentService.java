@@ -18,7 +18,6 @@ import org.ff.jpa.domain.Investment;
 import org.ff.jpa.domain.Investment.InvestmentStatus;
 import org.ff.jpa.repository.InvestmentRepository;
 import org.ff.jpa.specification.InvestmentSpecification;
-import org.ff.rest.counters.service.CountersService;
 import org.ff.rest.image.resource.ImageResource;
 import org.ff.rest.investment.resource.InvestmentResource;
 import org.ff.rest.investment.resource.InvestmentResourceAssembler;
@@ -47,9 +46,6 @@ public class InvestmentService extends BaseService {
 
 	@Autowired
 	private Collator collator;
-
-	@Autowired
-	private CountersService countersService;
 
 	@Transactional(readOnly = true)
 	public List<InvestmentResource> findAll() {
@@ -98,8 +94,6 @@ public class InvestmentService extends BaseService {
 		repository.save(entity);
 		resource = resourceAssembler.toResource(entity, false);
 
-		countersService.sendEvent();
-
 		return resource;
 	}
 
@@ -146,8 +140,6 @@ public class InvestmentService extends BaseService {
 		}
 
 		repository.delete(entity);
-
-		countersService.sendEvent();
 	}
 
 	@Transactional(readOnly = true)

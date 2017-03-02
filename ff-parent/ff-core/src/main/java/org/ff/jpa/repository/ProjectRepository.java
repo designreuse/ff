@@ -13,4 +13,6 @@ public interface ProjectRepository extends CrudRepository<Project, Integer>, Jpa
 
 	Integer countByCompany(Company company);
 
+	Long deleteByCompany(Company company);
+
 }
