@@ -3,7 +3,7 @@ package org.ff.rest.tender.resource;
 import java.util.List;
 
 import org.ff.rest.company.resource.CompanyResource;
-import org.ff.rest.investment.resource.InvestmentResource;
+import org.ff.rest.project.resource.ProjectResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -18,7 +18,7 @@ public class DemoResource {
 	@JsonProperty("company")
 	private CompanyResource company;
 
-	@JsonProperty("investments")
-	private List<InvestmentResource> investments;
+	@JsonProperty("projects")
+	private List<ProjectResource> projects;
 
 }

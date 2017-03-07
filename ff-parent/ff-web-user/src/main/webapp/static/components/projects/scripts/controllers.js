@@ -28,9 +28,14 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
 	};
 	
 	$scope.getProjects = function() {
-		if ($rootScope.principal.demoUser && SessionStorage.getSession("projects")) {
-			// DEMO MODE
+		if ($rootScope.principal.demoUser) {
+			// ================================================
+			// 	DEMO MODE
+			// ================================================
 			$scope.projects = SessionStorage.getSession("projects");
+			if (!$scope.projects) {
+				$scope.projects = new Array();
+			}
 		} else {
 			ProjectsService.findAll()
 				.success(function(data, status) {
@@ -62,7 +67,7 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
 		$state.go('projects.edit', { 'id' : entity.id });
 	}
 	
-	$scope.deleteEntity = function (entity) {
+	$scope.deleteEntity = function(entity) {
 		BootstrapDialog.show({
 			type: BootstrapDialog.TYPE_DEFAULT,
             title: $translate('DLG_DELETE_HDR'),
@@ -79,18 +84,39 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
             		label: $translate('BUTTON_YES'),
 	                cssClass: 'btn-primary',
 	                action: function(dialog) {
-	                	ProjectsService.delete(entity.id)
-		    				.success(function(data, status) {
-		    					if (status == 200) {
-		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
-		    						$scope.getProjects();
-		    					} else {
-		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
-		    					}
-		    				})
-		    				.error(function(data, status) {
-		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
-		    				});
+	                	if ($rootScope.principal.demoUser) {
+	                		// ================================================
+	            			// 	DEMO MODE
+	                		// ================================================
+	                		var projects = SessionStorage.getSession("projects");
+	            			
+	            			$.each(projects, function(index, value) {
+	            				if (value.id == entity.id) {
+	            					projects.splice(index, 1);
+	            					return;
+	            				}
+	            			});
+	            			
+	            			SessionStorage.setSession("projects", projects);
+	            			toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
+    						
+	            			$timeout(function() {
+    							$scope.getProjects();
+							}, 200);
+	            		} else {	
+		                	ProjectsService.delete(entity.id)
+			    				.success(function(data, status) {
+			    					if (status == 200) {
+			    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
+			    						$scope.getProjects();
+			    					} else {
+			    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
+			    					}
+			    				})
+			    				.error(function(data, status) {
+			    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
+			    				});
+	            		}
 	        			dialog.close();
 	                }	                
             	}
@@ -102,7 +128,7 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
 	$scope.getProjects();
 };
 
-function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, InvestmentsService, ProjectsService, ActivitiesService, CurrenciesService, Subdivisions1Service, Subdivisions2Service) {
+function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, SessionStorage, InvestmentsService, ProjectsService, ActivitiesService, CurrenciesService, Subdivisions1Service, Subdivisions2Service) {
 	var $translate = $filter('translate');
 	
 	$scope.getInvestments = function() {
@@ -190,10 +216,18 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 	};
 	
 	$scope.getEntity = function(id) {
-		ProjectsService.find(id)
-			.success(function(data, status) {
-				if (status == 200) {
-					$scope.entity = data;
+		if ($rootScope.principal.demoUser && id != 0) {
+			// ================================================
+			// 	DEMO MODE
+			// ================================================
+			var projects = SessionStorage.getSession("projects");
+			if (!projects) {
+				projects = new Array();
+			}
+			
+			$.each(projects, function(index, value) {
+				if (value.id == id) {
+					$scope.entity = value;
 					if ($scope.entity && $scope.entity.items) {
 						$.each($scope.entity.items, function(index, value) {
 							if (value.item.type == 'SUBDIVISION1') {
@@ -202,18 +236,57 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 							}
 						});						
 					}
-				} else {
-					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+					return;
 				}
-			})
-			.error(function(data, status) {
-				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			});
+		} else {
+			ProjectsService.find(id)
+				.success(function(data, status) {
+					if (status == 200) {
+						$scope.entity = data;
+						if ($scope.entity && $scope.entity.items) {
+							$.each($scope.entity.items, function(index, value) {
+								if (value.item.type == 'SUBDIVISION1') {
+									$scope.loadSubdivisions2(value);
+									return;
+								}
+							});						
+						}
+					} else {
+						toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+					}
+				})
+				.error(function(data, status) {
+					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
+				});
+		}
 	};
 	
 	$scope.save = function() {
 		if ($rootScope.principal.demoUser) {
-			// DEMO MODE
+			// ================================================
+			// 	DEMO MODE
+			// ================================================
+			var projects = SessionStorage.getSession("projects");
+			
+			if (!$scope.entity.id) {
+				// create
+				$scope.entity.id = _.random(100000, 999999);
+				projects.push($scope.entity);				
+			} else {
+				// update
+				$.each(projects, function(index, value) {
+					if (value.id == $scope.entity.id) {
+						projects[index] = $scope.entity;
+						return;
+					}
+				});
+			}
+			
+			SessionStorage.setSession("projects", projects);
+			
+			$state.go('projects.edit', { 'id' : $scope.entity.id });
+			toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
 		} else {
 			ProjectsService.save($scope.entity)
 				.success(function(data, status, headers, config) {
@@ -232,7 +305,9 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 	};
 	
 	$scope.loadSubdivisions2 = function(item) {
-		$scope.getSubdivisions24Subdivision1(item.value.id);
+		if (item && item.value) {
+			$scope.getSubdivisions24Subdivision1(item.value.id);
+		}
 	};
 	
 	$scope.back = function() {

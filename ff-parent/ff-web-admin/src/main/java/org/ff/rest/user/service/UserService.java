@@ -126,7 +126,7 @@ public class UserService extends BaseService {
 
 		UserResource resource = resourceAssembler.toResource(entity, false);
 
-		List<Tender> tenders = algorithmService.findTenders4User(entity, new DebuggingResource());
+		List<Tender> tenders = algorithmService.findTenders4User(entity, entity.getCompany(), projectRepository.findByCompany(entity.getCompany()), new DebuggingResource()); // TODO: this might slow things down
 		if (tenders != null && !tenders.isEmpty()) {
 			resource.getCompany().setTenders(tenderResourceAssembler.toResources(tenders, true));
 		}

@@ -4,10 +4,10 @@ import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
 import org.ff.common.security.AppUserDetails;
 import org.ff.rest.company.resource.CompanyResource;
+import org.ff.rest.company.resource.ProfileCompletenessResource;
 import org.ff.rest.company.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,11 +51,11 @@ public class CompanyController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/profileCompleteness/{all}")
-	public Double profileCompleteness(@AuthenticationPrincipal AppUserDetails principal, @PathVariable Boolean all) {
+	@RequestMapping(method = RequestMethod.GET, value = "/profileCompleteness")
+	public ProfileCompletenessResource profileCompleteness(@AuthenticationPrincipal AppUserDetails principal) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".profileCompleteness");
 		try {
-			return companyService.profileCompleteness(principal, all);
+			return companyService.profileCompleteness(principal);
 		} finally {
 			etmService.collect(point);
 			log.debug(".profileCompleteness finished in {} ms", point.getTransactionTime());

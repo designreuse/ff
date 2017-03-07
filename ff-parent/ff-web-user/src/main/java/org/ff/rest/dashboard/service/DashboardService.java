@@ -166,7 +166,7 @@ public class DashboardService {
 
 		resource.setCntTenders(cntTenders.intValue());
 		resource.setCntTendersOpen(cntTendersOpen.intValue());
-		resource.setCntTenders4U(algorithmService.findTenders4User(user, new DebuggingResource()).size()); // TODO: this might slow down things
+		resource.setCntTenders4U(algorithmService.findTenders4User(user, user.getCompany(), projectRepository.findByCompany(user.getCompany()), new DebuggingResource()).size()); // TODO: this might slow down things
 
 		resource.setCntProjects(projectRepository.countByCompany(user.getCompany()));
 		resource.setCntArticles(articleRepository.countByStatus(ArticleStatus.ACTIVE));

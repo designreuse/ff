@@ -75,16 +75,13 @@ public class AlgorithmService extends BaseService {
 	private Subdivision2Repository subdivision2Repository;
 
 	@Autowired
-	private ProjectRepository companyInvestmentRepository;
+	private ProjectRepository projectRepository;
 
-	public boolean isMatch(User user, Tender tender, DebuggingResource debug) {
+	public boolean isMatch(User user, Company company, List<Project> companyProjects, Tender tender, DebuggingResource debug) {
 		if (user.getCompany() == null) {
 			debug.add(new DebuggingEntry(new Date(), String.format("Company not found"), Status.NOK));
 			return false;
 		}
-
-		// company
-		Company company = user.getCompany();
 
 		// company items
 		Set<CompanyItem> companyItems = company.getItems();
@@ -92,18 +89,15 @@ public class AlgorithmService extends BaseService {
 		// tender investments
 		List<Integer> tenderInvestments = getTenderInvestments(tender);
 
-		// company investments
-		List<Project> companyInvestments = companyInvestmentRepository.findByCompany(company);
-
 		// check if company investments match tender investments
-		if (!processCompany4Investments(companyInvestments, tenderInvestments, debug)) {
+		if (!processCompany4Investments(companyProjects, tenderInvestments, debug)) {
 			return false;
 		}
 
 		Map<AlgorithmItem, Boolean> match4AlgorithmItem = new HashMap<>();
 
 		for (AlgorithmItem algorithmItem : algorithmItemRepository.findByStatusOrderByCode(AlgorithmItemStatus.ACTIVE)) {
-			if (processAlgorithmItem(tender, companyItems, companyInvestments, algorithmItem, debug) == Boolean.TRUE) {
+			if (processAlgorithmItem(tender, companyItems, companyProjects, algorithmItem, debug) == Boolean.TRUE) {
 				match4AlgorithmItem.put(algorithmItem, Boolean.TRUE);
 				log.debug("Algorithm item [{}]: match", algorithmItem.getCode());
 			} else {
@@ -144,7 +138,7 @@ public class AlgorithmService extends BaseService {
 			log.debug("Find users for tender [{}]...", tender.getId());
 
 			for (User user : userRepository.findByStatus(UserStatus.ACTIVE)) {
-				if (isMatch(user, tender, debug)) {
+				if (isMatch(user, user.getCompany(), projectRepository.findByCompany(user.getCompany()), tender, debug)) {
 					result.add(user);
 				}
 			}
@@ -156,17 +150,16 @@ public class AlgorithmService extends BaseService {
 		}
 	}
 
-	public List<Tender> findTenders4User(User user, DebuggingResource debug) {
+	public List<Tender> findTenders4User(User user, Company company, List<Project> companyProjects, DebuggingResource debug) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findTenders4User");
 
 		List<Tender> result = new ArrayList<>();
-		Company company = user.getCompany();
 
 		try {
 			log.debug("Find tenders for {} [{}]...", company.getName(), company.getId());
 
 			for (Tender tender : tenderRepository.findByStatus(TenderStatus.ACTIVE)) {
-				if (isMatch(user, tender, debug)) {
+				if (isMatch(user, company, companyProjects, tender, debug)) {
 					result.add(tender);
 				}
 			}

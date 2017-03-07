@@ -6,6 +6,7 @@ import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
+import org.ff.rest.company.resource.ProfileCompletenessResource;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.project.resource.ProjectResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,44 +40,47 @@ public class CompanyService {
 	}
 
 	@Transactional(readOnly = true)
-	public Double profileCompleteness(AppUserDetails principal, Boolean all) {
+	public ProfileCompletenessResource profileCompleteness(AppUserDetails principal) {
+		ProfileCompletenessResource result = new ProfileCompletenessResource();
+
 		if (principal != null) {
-			CompanyResource resource = resourceAssembler.toResource(userRepository.findOne(principal.getUser().getId()).getCompany(), false);
+			double cntTotal = 0;
+			double cntTotalFilled = 0;
+			double cntMandatory = 0;
+			double cntMandatoryFilled = 0;
 
-			double cntItems = 0;
-			double cntEnteredItems = 0;
-
-			for (ItemResource itemResource : resource.getItems()) {
+			for (ItemResource itemResource : resourceAssembler.toResource(userRepository.findOne(principal.getUser().getId()).getCompany(), false).getItems()) {
 				if (itemResource.getMetaTag() != null && ProjectResourceAssembler.getCompanyInvestmentMetaTags().contains(itemResource.getMetaTag())) {
 					continue;
 				}
 
-				if (Boolean.FALSE == all) {
-					if (Boolean.TRUE == itemResource.getMandatory()) {
-						cntItems++;
-						if (itemResource.getValue() != null) {
-							cntEnteredItems++;
-						}
-					}
-				} else {
-					cntItems++;
+				cntTotal++;
+				if (itemResource.getValue() != null) {
+					cntTotalFilled++;
+				}
+
+				if (Boolean.TRUE == itemResource.getMandatory()) {
+					cntMandatory++;
 					if (itemResource.getValue() != null) {
-						cntEnteredItems++;
+						cntMandatoryFilled++;
 					}
 				}
 			}
 
-			if (cntItems == 0) {
-				return 100d;
-			} else if (cntItems > 0 && cntEnteredItems == 0) {
-				return 0d;
+			if (cntTotalFilled == 0) {
+				result.setProfileCompleteness(0d);
 			} else {
-				return (cntEnteredItems / cntItems) * 100;
+				result.setProfileCompleteness((cntTotalFilled / cntTotal) * 100);
 			}
 
+			if (cntMandatory == cntMandatoryFilled) {
+				result.setProfileIncomplete(Boolean.FALSE);
+			} else {
+				result.setProfileIncomplete(Boolean.TRUE);
+			}
 		}
 
-		return null;
+		return result;
 	}
 
 }

@@ -68,7 +68,7 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 				$.each($scope.company.items, function(index, item) {
 					if (item.type == 'DATE') {
 						if (item.value) {
-							item.value = moment.utc(item.value, $rootScope.dateFormat.toUpperCase()).toDate();
+							item.value = moment.utc(item.value, $rootScope.dateFormatDB.toUpperCase()).toDate();
 						}
 						$scope.dictPopupDate[index] = { opened: false };
 					}
@@ -106,6 +106,10 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 			// ================
 			SessionStorage.setSession("company", $scope.company);
 			toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
+			
+			$timeout(function() {
+				$rootScope.getProfileCompleteness();
+			}, 500);
 		} else {
 			$scope.saving = true;
 			CompanyService.save($scope.company)

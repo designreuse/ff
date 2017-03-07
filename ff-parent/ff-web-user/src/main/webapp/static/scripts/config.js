@@ -40,6 +40,7 @@ angular.module('FundFinder')
 			
 			if (request.status == 200) {
 				$rootScope.principal = jQuery.parseJSON(request.response);
+				$rootScope.getProfileCompleteness();
 			} else {
 				$log.error('Error occurred while getting principal!', status, data);
 			}
@@ -221,6 +222,7 @@ angular.module('FundFinder')
 	        			files: ['components/dashboard/scripts/controllers.js',
 	        			        'components/dashboard/scripts/services.js',
 	        			        'components/images/scripts/services.js',
+	        			        'components/tenders/scripts/services.js',
 	        			        'components/articles/scripts/services.js']
 	        		});
 	        	}
@@ -233,7 +235,7 @@ angular.module('FundFinder')
 	    })
 })
 	
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, $locale, ModalService, CommonService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, $locale, SessionStorage, ModalService, CommonService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -285,21 +287,21 @@ angular.module('FundFinder')
 	}
 	
 	$rootScope.setDateFilters = function (creationDateEl, lastModifiedDateEl, filterArray) {
-		for(var i in filterArray) {
+		for (var i in filterArray) {
 			var filter = filterArray[i];
 			
-			if(filter.name == "creationDate" && creationDateEl != undefined) {
+			if (filter.name == "creationDate" && creationDateEl != undefined) {
 				creationDateEl.val(filter.term);
 			}
-			if(filter.name == "lastModifiedDate" && lastModifiedDateEl != undefined) {
+			if (filter.name == "lastModifiedDate" && lastModifiedDateEl != undefined) {
 				lastModifiedDateEl.val(filter.term);
 			}
 		}
 	}
 
 	$rootScope.saveGridState = function (view, gridApi, creationDateEl, lastModifiedDateEl) {
-		if(view != undefined && gridApi != undefined && gridApi.saveState != undefined) {
-			if($localStorage.gridStates == undefined) {
+		if (view != undefined && gridApi != undefined && gridApi.saveState != undefined) {
+			if ($localStorage.gridStates == undefined) {
 				$localStorage.gridStates = new Array();
 			}
 			var gridState = gridApi.saveState.save();
@@ -314,7 +316,7 @@ angular.module('FundFinder')
 	}
 	
 	$rootScope.restoreGridState = function (view, gridApi, creationDateEl, lastModifiedDateEl) {
-		if(view != undefined && $localStorage.gridStates != undefined && $localStorage.gridStates[view] != undefined
+		if (view != undefined && $localStorage.gridStates != undefined && $localStorage.gridStates[view] != undefined
 				&& gridApi != undefined && gridApi.saveState != undefined) {
 			var state = $localStorage.gridStates[view];
 			
@@ -328,20 +330,62 @@ angular.module('FundFinder')
 	}
 	
 	/**
-	 * Function validates company profile.
-	 * Profile is valid if all mandatory items are entered.
+	 * Function calculates completeness of company profile.
 	 */
 	$rootScope.getProfileCompleteness = function() {
-		CommonService.getProfileCompleteness(false)
-			.success(function(data, status) {
-				$rootScope.profileCompleteness = parseFloat(data);
-				$rootScope.profileIncomplete = ($rootScope.profileCompleteness == 100) ? false : true;
-			})
-			.error(function(data, status) {
-				$log.error(data);
-			});
+		if ($rootScope.principal.demoUser) {
+			// ================================================
+			// 	DEMO MODE
+			// ================================================
+			var company = SessionStorage.getSession("company");
+			if (company) {
+				var cntTotal = 0;
+				var cntTotalFilled = 0;
+				var cntMandatory = 0;
+				var cntMandatoryFilled = 0;
+				
+				$.each(company.items, function(index, item) {
+					if (item.metaTag && item.metaTag.startsWith('COMPANY_INVESTMENT')) {
+						return;
+					}
+					
+					cntTotal++;
+					if (item.value) {
+						cntTotalFilled++;
+					}
+					
+					if (item.mandatory) {
+						cntMandatory++;
+						if (item.value) {
+							cntMandatoryFilled++;
+						}	
+					}
+				});
+
+				if (cntTotalFilled == 0) {
+					$rootScope.profileCompleteness = 0;
+				} else {
+					$rootScope.profileCompleteness = (cntTotalFilled / cntTotal) * 100;
+				}
+				
+				if (cntMandatory == cntMandatoryFilled) {
+					$rootScope.profileIncomplete = false;
+				} else {
+					$rootScope.profileIncomplete = true;
+				}
+			}
+		} else {
+			CommonService.getProfileCompleteness()
+				.success(function(data, status) {
+					$rootScope.profileCompleteness = data.profileCompleteness;
+					$rootScope.profileIncomplete = data.profileIncomplete;
+				})
+				.error(function(data, status) {
+					$log.error(data);
+				});
+		}
 	}
 	
-	$rootScope.profileIncomplete = false;
-	$rootScope.getProfileCompleteness();
+	$rootScope.profileCompleteness = 0;
+	$rootScope.profileIncomplete = true;
 });

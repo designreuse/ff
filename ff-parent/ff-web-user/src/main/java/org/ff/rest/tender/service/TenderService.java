@@ -26,8 +26,8 @@ import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
 import org.ff.rest.currency.service.CurrencyService;
+import org.ff.rest.debugging.resource.DebuggingEntry;
 import org.ff.rest.debugging.resource.DebuggingResource;
-import org.ff.rest.image.resource.ImageResourceAssembler;
 import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.item.resource.ItemResourceAssembler;
 import org.ff.rest.project.resource.ProjectResource;
@@ -39,6 +39,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class TenderService {
 
@@ -61,9 +64,6 @@ public class TenderService {
 	private ImpressionRepository impressionRepository;
 
 	@Autowired
-	private ImageResourceAssembler imageResourceAssembler;
-
-	@Autowired
 	private ItemResourceAssembler itemResourceAssembler;
 
 	@Autowired
@@ -79,7 +79,7 @@ public class TenderService {
 	private CurrencyService currencyService;
 
 	@Autowired
-	private ProjectRepository companyInvestmentRepository;
+	private ProjectRepository projectRepository;
 
 	@Transactional(readOnly = true)
 	public List<TenderResource> findAll(AppUserDetails principal) {
@@ -87,7 +87,7 @@ public class TenderService {
 
 		User user = userRepository.findOne(principal.getUser().getId());
 
-		for (Tender tender : algorithmService.findTenders4User(user, new DebuggingResource())) {
+		for (Tender tender : algorithmService.findTenders4User(user, user.getCompany(), projectRepository.findByCompany(user.getCompany()), new DebuggingResource())) {
 			TenderResource resource = new TenderResource();
 			resource.setId(tender.getId());
 			resource.setStatus(tender.getStatus());
@@ -154,14 +154,20 @@ public class TenderService {
 			company.getItems().add(companyItem);
 		}
 
-		for (Tender tender : algorithmService.findTenders4User(user, new DebuggingResource())) {
+		List<Project> companyProjects = new ArrayList<>();
+		for (ProjectResource projectResource : demoResource.getProjects()) {
+			companyProjects.add(projectResourceAssembler.createEntity(projectResource));
+		}
+
+		DebuggingResource debug = new DebuggingResource();
+		for (Tender tender : algorithmService.findTenders4User(user, company, companyProjects, debug)) {
 			TenderResource tenderResource = new TenderResource();
 			tenderResource.setId(tender.getId());
 			tenderResource.setStatus(tender.getStatus());
 			tenderResource.setName(tender.getName());
 			tenderResource.setText(tender.getText());
 			if (tender.getImage() != null) {
-				tenderResource.setImage(imageResourceAssembler.toResource(tender.getImage(), false));
+				tenderResource.setImageId(tender.getImage().getId());
 			}
 			tenderResource.setCreationDate(tender.getCreationDate().toDate());
 			tenderResource.setCreatedBy(tender.getCreatedBy());
@@ -181,6 +187,10 @@ public class TenderService {
 			result.add(tenderResource);
 		}
 
+		for (DebuggingEntry entry : debug.getEntries()) {
+			log.debug("{}", entry.toString());
+		}
+
 		return result;
 	}
 
@@ -192,7 +202,7 @@ public class TenderService {
 		}
 
 		User user = userRepository.findOne(principal.getUser().getId());
-		List<Project> projects = companyInvestmentRepository.findByCompany(user.getCompany());
+		List<Project> projects = projectRepository.findByCompany(user.getCompany());
 		algorithmService.processTender4Investments(entity, projects);
 
 		Impression impression = new Impression();

@@ -1,6 +1,8 @@
 package org.ff.rest.debugging.service;
 
 import org.ff.common.algorithm.AlgorithmService;
+import org.ff.jpa.domain.User;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.TenderRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.debugging.resource.DebuggingResource;
@@ -20,10 +22,15 @@ public class DebuggingService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ProjectRepository projectRepository;
+
 	public DebuggingResource debug(Integer userId, Integer tenderId) {
 		DebuggingResource debug = new DebuggingResource();
 
-		debug.setIsMatch(algorithmService.isMatch(userRepository.findOne(userId), tenderRepository.findOne(tenderId), debug));
+		User user = userRepository.findOne(userId);
+
+		debug.setIsMatch(algorithmService.isMatch(user, user.getCompany(), projectRepository.findByCompany(user.getCompany()), tenderRepository.findOne(tenderId), debug));
 
 		return debug;
 	}
