@@ -15,6 +15,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.google.common.io.BaseEncoding;
+
 import hr.zaba.session.CheckAuthIdRequestType;
 import hr.zaba.session.CheckAuthIdResponseType;
 import hr.zaba.session.ObjectFactory;
@@ -55,31 +57,36 @@ public class SessionClient extends WebServiceGatewaySupport {
 			CheckAuthIdResponseType response = element.getValue();
 			log.debug("Response: {}", response);
 
-			data.putAll(parseXmlFromString(response.getParams()));
+			data.putAll(parseXmlFromString(new String(BaseEncoding.base64().decode(response.getParams()), "UTF-8")));
 
 			log.debug("Data: {}", data);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
 			if (baseProperties.getTestMode() == Boolean.TRUE) {
-				data.put("user_id", "12345678901"); // OIB zastupnika
-				data.put("user_id2", "49355429927"); // OIB pravne osobe
+				try {
+					data.put("user_id", "12345678901"); // OIB zastupnika
+					data.put("user_id2", "49355429927"); // OIB pravne osobe
 
-				CheckAuthIdResponseType response = new CheckAuthIdResponseType();
-				StringBuilder sb = new StringBuilder();
-				sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-				sb.append("<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">");
-				sb.append("<properties>");
-				sb.append("<comment>ezaba-ff transfer</comment>");
-				sb.append("<entry key=\"matbr\">00242861-000</entry>");
-				sb.append("<entry key=\"suglasnost\">0</entry>");
-				sb.append("<entry key=\"ime\">John</entry>");
-				sb.append("<entry key=\"prezime\">Doe</entry>");
-				sb.append("<entry key=\"email\">john.doe@gmail.com</entry>");
-				sb.append("</properties>");
-				response.setParams(sb.toString());
+					StringBuilder sb = new StringBuilder();
+					sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+					sb.append("<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">");
+					sb.append("<properties>");
+					sb.append("<comment>ezaba-ff transfer</comment>");
+					sb.append("<entry key=\"matbr\">00242861-000</entry>");
+					sb.append("<entry key=\"suglasnost\">0</entry>");
+					sb.append("<entry key=\"ime\">Šime</entry>");
+					sb.append("<entry key=\"prezime\">Jakovčić</entry>");
+					sb.append("<entry key=\"email\">sime.jakovcic@gmail.com</entry>");
+					sb.append("</properties>");
 
-				data.putAll(parseXmlFromString(response.getParams()));
+					CheckAuthIdResponseType response = new CheckAuthIdResponseType();
+					response.setParams(BaseEncoding.base64().encode(sb.toString().getBytes("UTF-8")));
+
+					data.putAll(parseXmlFromString(new String(BaseEncoding.base64().decode(response.getParams()), "UTF-8")));
+				} catch (Exception exc) {
+					log.error(exc.getMessage(), exc);
+				}
 			}
 		}
 
