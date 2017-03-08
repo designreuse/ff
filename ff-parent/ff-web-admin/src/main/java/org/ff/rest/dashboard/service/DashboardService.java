@@ -172,8 +172,6 @@ public class DashboardService {
 				DateTime from = date;
 				DateTime to = date.plusMonths(1).minusDays(1).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 
-				log.info("{} - {}", from, to);
-
 				LinkedList<Object> data = new LinkedList<>();
 				data.add(from.toDate());
 				if (type == DashboardChartType.USERS) {
