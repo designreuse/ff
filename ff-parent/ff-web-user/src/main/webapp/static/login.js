@@ -159,7 +159,19 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			});
 	};
 	
+	$scope.showLanding = function() {
+		$scope.landingVisible = true;
+		$scope.welcomeVisible = false;
+		$scope.loginVisible = false;
+		$scope.resetPasswordVisible = false;
+		$scope.registrationVisible = false;
+		
+		$scope.username = undefined;
+		$scope.password = undefined;
+	};
+	
 	$scope.showWelcome = function() {
+		$scope.landingVisible = false;
 		$scope.welcomeVisible = true;
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = false;
@@ -170,6 +182,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	$scope.showLogin = function() {
+		$scope.landingVisible = false;
 		$scope.welcomeVisible = false;
 		$scope.loginVisible = true;
 		$scope.resetPasswordVisible = false;
@@ -180,6 +193,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	$scope.showResetPassword = function() {
+		$scope.landingVisible = false;
 		$scope.welcomeVisible = false;
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = true;
@@ -189,6 +203,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	};
 	
 	$scope.showRegistration = function() {
+		$scope.landingVisible = false;
 		$scope.welcomeVisible = false;
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = false;
@@ -221,6 +236,38 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 				$scope.status = status;
 			});
 	} else {
-		$scope.showLogin();		
+		$scope.showLanding();		
 	}
 });
+
+$(function() {
+	  $('.nav-link').click(function() {
+	    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	      var target = $(this.hash);
+	      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	      if (target.length) {
+	        $('html, body').animate({
+	          scrollTop: target.offset().top
+	        }, 1000);
+	        return false;
+	      }
+	    }
+	  });
+	});
+
+$(document).ready(function () {
+	$('.panel-title').click(function(e) {
+
+	    $('a').removeClass('active');
+
+	    var $parent = $(this).parent();
+	    if (!$parent.hasClass('active')) {
+	        $parent.addClass('active');
+	    }
+	    e.preventDefault();
+	  })
+	});
+	$('.screen-changer').click(function() {
+	  var thisLink = $(this).attr('data-imagelink');
+	  $('#screen').attr('src', thisLink);
+	});

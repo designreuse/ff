@@ -16,7 +16,10 @@
         <link rel="stylesheet" type="text/css" href="external/sweetalert2/sweetalert2.min.css">
         <link rel="stylesheet" type="text/css" href="styles/style.css" />
         <link rel="stylesheet" type="text/css" href="styles/style-zaba.css" />
+        <link rel="stylesheet" type="text/css" href="styles/style-landing.css" />
         
+        <script src="webjars/inspinia/js/jquery/jquery-2.1.1.min.js"></script>
+        <script src="webjars/inspinia/js/bootstrap/bootstrap.min.js"></script>
         <script src="webjars/inspinia/js/angular/angular.min.js"></script>
         <script src="webjars/inspinia/js/ui-router/angular-ui-router.min.js"></script>
         <script src="webjars/inspinia/js/angular-translate/angular-translate.min.js"></script>
@@ -28,6 +31,202 @@
     </head>
 
     <body class="white-bg" ng-controller="Controller">
+    
+    
+    	<div ng-show="landingVisible" class="animated">
+    	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" ng-click="showLanding()"><img src="styles/logo.svg" alt="" /> </a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#what-is-it" class="nav-link">What is it?</a>
+          </li>
+          <li>
+            <a href="#how-to-use" class="nav-link">How to use it?</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a class="nav-link" ng-click="showLogin()">Login</a>
+          </li>
+          <li>
+            <a class="nav-link" ng-click="showRegistration()">Signup</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+            
+  <header id="myCarousel" class="carousel slide">
+
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="item active">
+        <div class="fill" style="background-image:url('http://www.zaba.hr/home/med/189/gotovinski-krediti-biciklist-1920x550.jpg');"></div>
+        <div class="carousel-caption">
+          <p>Login or register and start exploring your opportunities <a href="#" class="btn btn-blue">More</a></p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="fill" style="background-image:url('http://www.zaba.hr/home/med/124/paket-za-mlade-1920x550-.jpg');"></div>
+        <div class="carousel-caption">
+          <p>Create a temporary account and explore opportunities <a href="#" class="btn btn-blue">More</a></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <section id="what-is-it">
+      <div class="container">
+        <div class="row mt-50">
+          <div class="col-lg-12 text-center">
+            <h1>What is FundFinder</h1>
+          </div>
+        </div>
+        <div class="row mt-50 intro">
+          <div class="col-lg-12 text-center">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="not-convinced">
+      <div class="container">
+        <div class="row mt-50">
+          <div class="col-lg-12 text-center">
+            <h2>Still not convinced? Take a free trial!</h2>
+          </div>
+        </div>
+        <div class="row mt-50 mb-50">
+          <div class="col-lg-12 text-center">
+            <a href="#" class="btn btn-blue-outline">Free trial</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="how-to-use">
+      <div class="container">
+        <div class="row mt-50">
+          <div class="col-lg-12 text-center">
+            <h1>How to use it?</h1>
+          </div>
+        </div>
+        <div class="row mt-50 intro">
+          <div class="col-lg-12 text-center">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscings
+            </p>
+          </div>
+        </div>
+        <div class="row mt-50">
+          <div class="col-md-5 steps">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                <div class="panel-heading active" role="tab" id="headingOne">
+                  <h4 class="panel-title">
+                    <a role="button" class="screen-changer collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" data-imagelink="styles/step1-laptop.png">
+                      <span>1.</span> Set up a company profile
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                  <div class="panel-body">
+                    <p>
+                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading active" role="tab" id="headingTwo">
+                  <h4 class="panel-title">
+                    <a class="screen-changer collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" data-imagelink="styles/step2-laptop.png">
+                      <span>2.</span> Choose your investment options
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                  <div class="panel-body">
+                    <p>
+                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading active" role="tab" id="headingThree">
+                  <h4 class="panel-title">
+                    <a class="screen-changer collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" data-imagelink="styles/step3-laptop.png">
+                      <span>3.</span> Get results
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
+                  <div class="panel-body">
+                    <p>
+                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel panel-default">
+                <div class="panel-heading active" role="tab" id="headingThree">
+                  <h4 class="panel-title">
+                    <a class="screen-changer" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour" data-imagelink="styles/step4-laptop.png">
+                      <span>4.</span> Next steps
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="true">
+                  <div class="panel-body">
+                    <p>
+                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <img id="screen" class="img img-responsive" src="styles/step1-laptop.png">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="row mt-50 mb-50 footer-links">
+          <div class="col-lg-12 text-center">
+            <ul>
+              <li><a href="#what-is-it" class="nav-link">What is it?</a></li>
+              <li><a href="#how-to-use" class="nav-link">How to use it?</a></li>
+              <li><a ng-click="showLogin()">Login</a></li>
+              <li><a ng-click="showRegistration()">Signup</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+        </div>
+        
         <div ng-show="welcomeVisible" class="loginColumns animated">
             <div class="row">
                 <div class="col-md-3"></div>
@@ -45,6 +244,8 @@
         </div>
         
         <div ng-show="loginVisible" class="loginColumns animated flipInY">
+           <a class="return-home" ng-click="showLanding()"><img src="styles/logo.svg" alt="" /> <span>Home</span></a>
+        
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -73,6 +274,7 @@
         </div>
         
         <div ng-show="resetPasswordVisible" class="loginColumns animated flipInY">
+        <a class="return-home" ng-click="showLanding()"><img src="styles/logo.svg" alt="" /> <span>Home</span></a>
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -100,6 +302,7 @@
         </div>
         
         <div ng-show="registrationVisible" class="loginColumns animated flipInY">
+        <a class="return-home" ng-click="showLanding()"><img src="styles/logo.svg" alt="" /> <span>Home</span></a>
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
