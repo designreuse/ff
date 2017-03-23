@@ -1,14 +1,8 @@
 angular.module('FundFinder')
 
 .service('ContactService', function($http) {
-	this.getTopics = function() {
-		return $http.get('/api/v1/contact/topics');
-	};
-	this.getTypes = function() {
-		return $http.get('/api/v1/contact/types');
-	};
-	this.getChannels = function() {
-		return $http.get('/api/v1/contact/channels');
+	this.getLocations = function() {
+		return $http.get('/api/v1/contact/locations');
 	};
 	this.get = function() {
 		return $http.get('/api/v1/contact');

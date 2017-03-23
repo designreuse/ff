@@ -1,6 +1,10 @@
 package org.ff.rest.contact.service;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,9 @@ import freemarker.template.Template;
 public class ContactService {
 
 	@Autowired
+	private Collator collator;
+
+	@Autowired
 	private MailSenderService mailSender;
 
 	@Autowired
@@ -38,29 +45,25 @@ public class ContactService {
 	@Autowired
 	private ContactRepository contactRepository;
 
-	private Map<Integer, String> contactTopics;
-	private Map<Integer, String> contactTypes;
-	private Map<Integer, String> contactChannels;
+	private Map<Integer, String> contactLocations;
+
 	private List<String> contactEmails;
 
 	@PostConstruct
 	public void init() {
-		contactTopics = new HashMap<>();
-		for (String str : baseProperties.getContactTopics().split("\\|")) {
-			String[] array = str.split("\\:");
-			contactTopics.put(Integer.parseInt(array[0]), array[1]);
-		}
+		contactLocations = new HashMap<>();
+		List<String> locations = Arrays.asList(baseProperties.getContactLocations().split("\\|"));
 
-		contactTypes = new HashMap<>();
-		for (String str : baseProperties.getContactTypes().split("\\|")) {
-			String[] array = str.split("\\:");
-			contactTypes.put(Integer.parseInt(array[0]), array[1]);
-		}
+		Collections.sort(locations, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return collator.compare(o1, o2);
+			}
+		});
 
-		contactChannels = new HashMap<>();
-		for (String str : baseProperties.getContactChannels().split("\\|")) {
-			String[] array = str.split("\\:");
-			contactChannels.put(Integer.parseInt(array[0]), array[1]);
+		int i = 1;
+		for (String location : locations) {
+			contactLocations.put(i++, location);
 		}
 
 		contactEmails = new ArrayList<>();
@@ -69,25 +72,9 @@ public class ContactService {
 		}
 	}
 
-	public List<KeyValueResource> getTopics() {
+	public List<KeyValueResource> getLocations() {
 		List<KeyValueResource> resources = new ArrayList<>();
-		for (Entry<Integer, String> entry : contactTopics.entrySet()) {
-			resources.add(new KeyValueResource(entry.getKey(), entry.getValue()));
-		}
-		return resources;
-	}
-
-	public List<KeyValueResource> getTypes() {
-		List<KeyValueResource> resources = new ArrayList<>();
-		for (Entry<Integer, String> entry : contactTypes.entrySet()) {
-			resources.add(new KeyValueResource(entry.getKey(), entry.getValue()));
-		}
-		return resources;
-	}
-
-	public List<KeyValueResource> getChannels() {
-		List<KeyValueResource> resources = new ArrayList<>();
-		for (Entry<Integer, String> entry : contactChannels.entrySet()) {
+		for (Entry<Integer, String> entry : contactLocations.entrySet()) {
 			resources.add(new KeyValueResource(entry.getKey(), entry.getValue()));
 		}
 		return resources;
@@ -106,9 +93,7 @@ public class ContactService {
 			model.put("contactName", resource.getName());
 			model.put("contactEmail", resource.getEmail());
 			model.put("contactPhone", StringUtils.isNotBlank(resource.getPhone()) ? resource.getPhone() : "");
-			model.put("topic", resource.getTopic().getValue());
-			model.put("channel", resource.getChannel().getValue());
-			model.put("type", resource.getType().getValue());
+			model.put("location", resource.getLocation().getValue());
 			model.put("text", StringUtils.isNotBlank(resource.getText()) ? resource.getText() : "");
 
 			mailSender.send(contactEmails.toArray(new String[contactEmails.size()]), baseProperties.getContactEmailSubject(),
@@ -123,9 +108,7 @@ public class ContactService {
 		contact.setName(resource.getName());
 		contact.setEmail(resource.getEmail());
 		contact.setPhone(resource.getPhone());
-		contact.setTopic(resource.getTopic().getValue());
-		contact.setType(resource.getType().getValue());
-		contact.setChannel(resource.getChannel().getValue());
+		contact.setLocation(resource.getLocation().getValue());
 		contact.setText(resource.getText());
 		contactRepository.save(contact);
 	}

@@ -49,9 +49,7 @@ public class Application extends SpringBootServletInitializer {
 		log.debug("colatorLocale: {}", properties.getColatorLocale());
 		log.debug("url: {}", properties.getUrl());
 		log.debug("mailSender: {}", properties.getMailSender());
-		log.debug("contactTopics: {}", properties.getContactTopics());
-		log.debug("contactTypes: {}", properties.getContactTypes());
-		log.debug("contactChannels: {}", properties.getContactChannels());
+		log.debug("contactLocations: {}", properties.getContactLocations());
 		log.debug("contactEmailTo: {}", properties.getContactEmailTo());
 		log.debug("contactEmailSubject: {}", properties.getContactEmailSubject());
 		log.debug("zabaSovaUrl: {}", properties.getZabaSovaUrl());

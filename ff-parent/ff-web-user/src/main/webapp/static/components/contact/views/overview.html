@@ -17,91 +17,83 @@
     }
 </style>
 
-<div class="row border-bottom">
-    <div class="col-lg-12">
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6 border-bottom">
         <h1>{{ 'MENU_CONTACT' | translate }} <sup ng-if="helpEnabled"><small><i class="fa fa-question-circle" role="button"></i></small></sup></h1>
+        <h3>{{ 'LABEL_CONTACT_SUBHEADER' | translate }}</h3>
     </div>
+    <div class="col-lg-3"></div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <form name="form" class="form-horizontal ng-pristine ng-valid contact-form" novalidate>
-        <div class="row">
+        <div class="row m-b-md">
+            <div class="col-lg-3"></div>
             <div class="col-lg-6">
-                
+                <span style="color: #999; font-size: 12px;">{{ 'LABEL_CONTACT_DISCLAIMER' | translate }}</span>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_COMPANY_NAME' | translate }}
+                        <label class="ff-label">{{ 'LABEL_COMPANY_NAME' | translate }} *
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.companyName.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.companyName.$valid }"></i></span>
                         </label> 
-                        <input ng-model="entity.company.name" type="text" class="form-control ff-form-control" name="companyName" ng-required="true" maxlength="255" />
+                        <input ng-model="entity.company.name" type="text" class="form-control ff-form-control" name="companyName" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_COMPANY_NAME' | translate }}" />
                     </div>
                 </div>
-                
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_COMPANY_CODE' | translate }}
+                        <label class="ff-label">{{ 'LABEL_COMPANY_CODE' | translate }} *
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.companyCode.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.companyCode.$valid }"></i></span>
                         </label> 
-                        <input ng-model="entity.company.code" type="text" class="form-control ff-form-control" name="companyCode" ng-required="true" maxlength="255" />
+                        <input ng-model="entity.company.code" type="text" class="form-control ff-form-control" name="companyCode" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_COMPANY_CODE' | translate }}" />
                     </div>
                 </div>
-                
                 <div class="form-group">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_CONTACT_DATA' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : (form.name.$invalid || form.email.$invalid), 'fa fa-check-circle m-l-xs ff-valid' : (form.name.$valid && form.email.$valid) }"></i></span>
                         </label>
-                        <input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_CONTACT_PERSON' | translate }}" />
-                        <input ng-model="entity.email" type="text" class="form-control ff-form-control m-t-xs" name="email" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_CONTACT_EMAIL' | translate }}" />
+                        <input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_CONTACT_PERSON' | translate }} *" />
+                        <input ng-model="entity.email" type="email" class="form-control ff-form-control m-t-xs" name="email" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_CONTACT_EMAIL' | translate }} *" />
                         <input ng-model="entity.phone" type="text" class="form-control ff-form-control m-t-xs" name="phone" maxlength="255" placeholder="{{ 'LABEL_CONTACT_PHONE' | translate }}" /> 
                     </div>
                 </div>
-                
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_CONTACT_LOCATION' | translate }} *
+                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.location.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.location.$valid }"></i></span>
+                        </label> 
+                        <select chosen class="form-control ff-form-control" width="1" ng-required="true" ng-model="entity.location" name="location" options="locations" ng-options="location.value for location in locations track by location.key"></select>
+                    </div>
+                </div>
             </div>
-            
-            <div class="col-lg-6">
-                
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_CONTACT_TOPIC' | translate }}
-                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.topic.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.topic.$valid }"></i></span>
-                        </label> 
-                        <select chosen class="form-control ff-form-control" width="1" ng-required="true" ng-model="entity.topic" name="topic" options="topics" ng-options="topic.value for topic in topics track by topic.key"></select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_CONTACT_CHANNEL' | translate }}
-                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.channel.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.channel.$valid }"></i></span>
-                        </label> 
-                        <select chosen class="form-control ff-form-control" width="1" ng-required="true" ng-model="entity.channel" name="channel" options="channels" ng-options="channel.value for channel in channels track by channel.key"></select>                        
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_CONTACT_TYPE' | translate }}
-                            <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.type.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.type.$valid }"></i></span>
-                        </label> 
-                        <select chosen class="form-control ff-form-control" width="1" ng-required="true" ng-model="entity.type" name="type" options="types" ng-options="type.value for type in types track by type.key"></select>
-                    </div>
-                </div>
-                
-            </div>
+            <div class="col-lg-3"></div>
         </div>
        
         <div class="row">
-            <div class="col-lg-12">
-                <label class="ff-label">{{ 'LABEL_CONTACT_TEXT' | translate }}</label>
-                <textarea class="form-control ff-form-control" style="resize: none;" rows="10" ng-model="entity.text"></textarea>
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <label class="ff-label">{{ 'LABEL_CONTACT_TEXT' | translate }} *
+                    <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.text.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.text.$valid }"></i></span>
+                </label>
+                <textarea class="form-control ff-form-control" style="resize: none;" rows="10" ng-required="true" name="text" ng-model="entity.text"></textarea>
             </div>
+            <div class="col-lg-3"></div>
         </div>
         
         <div class="row m-t-sm">
-            <div class="col-lg-12 m-b-sm">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 m-b-sm">
                 <button ladda="sendingEmail" data-style="zoom-in" ng-click="send()" ng-disabled="form.$invalid" class="btn btn-primary pull-right">{{ 'BUTTON_SEND' | translate }}</button>
             </div>
+            <div class="col-lg-3"></div>
         </div>
     </form>
 </div>

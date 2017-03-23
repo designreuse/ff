@@ -132,22 +132,12 @@ public class ContactExportService {
 		.newRow(verticalGap);
 
 		horizontalList.add(
-				cmp.text(messageSource.getMessage("report.lbl.contactTopic", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
-				cmp.text((contact.getTopic() != null) ? contact.getTopic() : "").setStyle(valueStyle))
+				cmp.text(messageSource.getMessage("report.lbl.contactLocation", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
+				cmp.text((contact.getLocation() != null) ? contact.getLocation() : "").setStyle(valueStyle))
 		.newRow(verticalGap);
 
 		horizontalList.add(
-				cmp.text(messageSource.getMessage("report.lbl.contactType", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
-				cmp.text((contact.getType() != null) ? contact.getType() : "").setStyle(valueStyle))
-		.newRow(verticalGap);
-
-		horizontalList.add(
-				cmp.text(messageSource.getMessage("report.lbl.contactChannel", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
-				cmp.text((contact.getChannel() != null) ? contact.getChannel() : "").setStyle(valueStyle))
-		.newRow(verticalGap);
-
-		horizontalList.add(
-				cmp.text(messageSource.getMessage("report.lbl.text", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
+				cmp.text(messageSource.getMessage("report.lbl.message", null, locale)).setFixedWidth(labelWidth).setStyle(labelStyle),
 				cmp.text((contact.getText() != null) ? contact.getText() : "").setStyle(valueStyle))
 		.newRow(verticalGap);
 

@@ -48,18 +48,8 @@ public class Contact extends AbstractEntity {
 
 	@Lob
 	@Nationalized
-	@Column(name = "topic", nullable = true)
-	private String topic;
-
-	@Lob
-	@Nationalized
-	@Column(name = "type", nullable = true)
-	private String type;
-
-	@Lob
-	@Nationalized
-	@Column(name = "channel", nullable = true)
-	private String channel;
+	@Column(name = "location", nullable = true)
+	private String location;
 
 	@Lob
 	@Nationalized

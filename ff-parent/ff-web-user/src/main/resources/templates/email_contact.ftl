@@ -13,13 +13,9 @@
              <p>
              <b>Telefon: </b>${contactPhone}
              <p>
-             <b>Tema: </b>${topic}
+             <b>Poslovnica: </b>${location}
              <p>
-             <b>Želim da me kontaktirate: </b>${channel}
-             <p>
-             <b>Vrsta upita: </b>${type}
-             <p>
-             <b>Tekst: </b>${text}
+             <b>Poruka: </b>${text}
              <p>
         </div>
     </body>

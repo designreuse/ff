@@ -17,9 +17,7 @@ public class ContactResourceAssembler {
 		resource.setName(entity.getName());
 		resource.setEmail(entity.getEmail());
 		resource.setPhone(entity.getPhone());
-		resource.setTopic(entity.getTopic());
-		resource.setType(entity.getType());
-		resource.setChannel(entity.getChannel());
+		resource.setLocation(entity.getLocation());
 		resource.setText(entity.getText());
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());

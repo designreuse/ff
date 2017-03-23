@@ -21,19 +21,9 @@ public class ContactController extends BaseController {
 	@Autowired
 	private ContactService service;
 
-	@RequestMapping(method = RequestMethod.GET, value="/topics")
-	public List<KeyValueResource> getTopics() {
-		return service.getTopics();
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/types")
-	public List<KeyValueResource> getType() {
-		return service.getTypes();
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/channels")
-	public List<KeyValueResource> getChannels() {
-		return service.getChannels();
+	@RequestMapping(method = RequestMethod.GET, value="/locations")
+	public List<KeyValueResource> getLocations() {
+		return service.getLocations();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

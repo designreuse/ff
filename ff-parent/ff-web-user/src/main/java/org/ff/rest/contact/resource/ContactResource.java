@@ -25,14 +25,8 @@ public class ContactResource {
 	@JsonProperty("phone")
 	private String phone;
 
-	@JsonProperty("topic")
-	private KeyValueResource topic;
-
-	@JsonProperty("channel")
-	private KeyValueResource channel;
-
-	@JsonProperty("type")
-	private KeyValueResource type;
+	@JsonProperty("location")
+	private KeyValueResource location;
 
 	@JsonProperty("text")
 	private String text;

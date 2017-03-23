@@ -29,11 +29,7 @@ public class BaseProperties {
 
 	private String mailSender;
 
-	private String contactTopics;
-
-	private String contactTypes;
-
-	private String contactChannels;
+	private String contactLocations;
 
 	private String contactEmailTo;
 

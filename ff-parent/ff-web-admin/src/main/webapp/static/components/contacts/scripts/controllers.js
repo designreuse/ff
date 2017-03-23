@@ -121,7 +121,7 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
-					displayName: $translate('COLUMN_NAME'),
+					displayName: $translate('COLUMN_FIRST_AND_LAST_NAME'),
 					field: 'name',
 					type: 'string',
 					cellTooltip: false, 
@@ -156,36 +156,14 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
-					displayName: $translate('COLUMN_CONTACT_TOPIC'),
-					field: 'topic',
+					displayName: $translate('COLUMN_CONTACT_LOCATION'),
+					field: 'location',
 					type: 'string',
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: true,
-					width: 150,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
-				},
-				{
-					displayName: $translate('COLUMN_CONTACT_TYPE'),
-					field: 'type',
-					type: 'string',
-					cellTooltip: false, 
-					enableSorting: true,
-					enableFiltering: true,
-					enableHiding: true,
-					width: 150,
-					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
-				},
-				{
-					displayName: $translate('COLUMN_CONTACT_CHANNEL'),
-					field: 'channel',
-					type: 'string',
-					cellTooltip: false, 
-					enableSorting: true,
-					enableFiltering: true,
-					enableHiding: true,
-					width: 150,
+					width: 200,
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{

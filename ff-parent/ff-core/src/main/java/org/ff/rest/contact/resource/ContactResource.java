@@ -30,14 +30,8 @@ public class ContactResource {
 	@JsonProperty("phone")
 	private String phone;
 
-	@JsonProperty("topic")
-	private String topic;
-
-	@JsonProperty("type")
-	private String type;
-
-	@JsonProperty("channel")
-	private String channel;
+	@JsonProperty("location")
+	private String location;
 
 	@JsonProperty("text")
 	private String text;
