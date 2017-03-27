@@ -808,7 +808,7 @@ angular.module('FundFinder')
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
-	$rootScope.version = "v1.0.9";
+	$rootScope.version = "v1.0.10";
 	$rootScope.contextPath = constants.contextPath;
 	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	
