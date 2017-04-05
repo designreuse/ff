@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeIn">
+<div class="wrapper wrapper-content animated fadeIn" style="margin-bottom: 200px;">
 	<form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
 		<div class="row">
 			<div class="col-lg-6">
@@ -72,7 +72,7 @@
                     <div class="col-sm-12">
                         <h3 class="border-bottom" style="padding-bottom: 5px; margin-bottom: 0px;">{{ 'TAB_COMMON_ITEMS' | translate }}
                             <span class="pull-right">
-	                            <input ng-change="mandatoryItemsOnlyChanged()" ng-model="mandatoryItemsOnly" type="checkbox" />
+	                            <input ng-model="mandatoryItemsOnly" type="checkbox" />
 	                            <small class="m-l-xs">{{ 'LABEL_MANDATORY_ITEMS_ONLY' | translate }}</small>    
 	                        </span>                        
                         </h3>
@@ -120,7 +120,7 @@
 	                                                
 	                    <select ng-if="item.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
 	                                                   
-	                    <select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+	                    <select ng-if="item.type == 'SUBDIVISIONS1'" ng-change="getSubdivisions2(item)" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
 	                                                
 	                    <select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
 	                                                

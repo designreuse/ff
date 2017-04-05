@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
 import org.ff.common.uigrid.PageableResource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -45,10 +47,10 @@ public class Subdivision2Controller extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Subdivision2Resource> findAll(Principal principal) {
+	public List<Subdivision2Resource> findAll(Principal principal, @RequestParam(required = false) String subdivision1Ids) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".findAll");
 		try {
-			return subdivision2Service.findAll();
+			return (StringUtils.isBlank(subdivision1Ids)) ? subdivision2Service.findAll() : subdivision2Service.findAll4Subdivision1(subdivision1Ids);
 		} finally {
 			etmService.collect(point);
 		}

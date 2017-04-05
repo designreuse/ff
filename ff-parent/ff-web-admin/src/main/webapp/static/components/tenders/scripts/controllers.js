@@ -961,6 +961,8 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 		TendersService.getEntity(id)
 			.success(function(data, status) {
 				Pace.stop();
+				
+				var subdivision2Item = null;
 				if (data.items) { 
 					$.each(data.items, function(index, item) {
 						if (item.type == 'DATE') {
@@ -968,9 +970,14 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 								item.value = moment.utc(item.value, $rootScope.dateFormatDB.toUpperCase()).toDate();
 							}
 							$scope.dictPopupDate[index] = { opened: false };
+						} else if (item.metaTag == 'TENDER_SUBDIVISION1') {
+							subdivision2Item = item;
 						}
 					});
 				}
+				
+				$scope.getSubdivisions2(subdivision2Item);
+				
 				$scope.entity = data;
 			})
 			.error(function(data, status) {
@@ -1016,8 +1023,18 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 			});
 	};
 	
-	$scope.getSubdivisions2 = function() {
-		Subdivisions2Service.getEntities()
+	$scope.getSubdivisions2 = function(item) {
+		var subdivision1Ids = "";
+		if (item && item.value) {
+			$.each(item.value, function(index, item) {
+				subdivision1Ids = subdivision1Ids + item.id + "|";
+			});
+		}
+		$scope.getSubdivisions24Subdivisions1(subdivision1Ids);
+	};
+	
+	$scope.getSubdivisions24Subdivisions1 = function(subdivision1Ids) {
+		Subdivisions2Service.getEntities4Subdivisions1(subdivision1Ids)
 			.success(function(data, status) {
 				if (status == 200) {
 					$scope.subdivisions2 = data;
@@ -1115,10 +1132,6 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 		$scope.entity.image.base64 = null;
 	};
 	
-	$scope.mandatoryItemsOnlyChanged = function() {
-		console.log($scope.mandatoryItemsOnly);
-	};
-	
 	$scope.dictPopupDate = new Object();
 	
 	$scope.openPopupDate = function(index) {
@@ -1132,6 +1145,5 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 	$scope.getCurrencies();
 	$scope.getInvestments();
 	$scope.getSubdivisions1();
-	$scope.getSubdivisions2();
 	$scope.getActivities();
 };

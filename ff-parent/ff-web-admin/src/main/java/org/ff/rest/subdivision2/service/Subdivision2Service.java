@@ -14,6 +14,7 @@ import org.ff.common.uigrid.UiGridResource;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Subdivision2;
+import org.ff.jpa.repository.Subdivision1Repository;
 import org.ff.jpa.repository.Subdivision2Repository;
 import org.ff.jpa.specification.Subdivision2Specification;
 import org.ff.rest.subdivision2.resource.Subdivision2Resource;
@@ -35,10 +36,13 @@ public class Subdivision2Service extends BaseService {
 	private MessageSource messageSource;
 
 	@Autowired
-	private Subdivision2Repository repository;
+	private Subdivision1Repository subdivision1Repository;
 
 	@Autowired
-	private Subdivision2ResourceAssembler resourceAssembler;
+	private Subdivision2Repository subdivision2Repository;
+
+	@Autowired
+	private Subdivision2ResourceAssembler subdivision2ResourceAssembler;
 
 	@Autowired
 	private Collator collator;
@@ -46,7 +50,25 @@ public class Subdivision2Service extends BaseService {
 	@Cacheable("subdivisions2")
 	@Transactional(readOnly = true)
 	public List<Subdivision2Resource> findAll() {
-		List<Subdivision2Resource> result = resourceAssembler.toResources(repository.findAll(), false);
+		List<Subdivision2Resource> result = subdivision2ResourceAssembler.toResources(subdivision2Repository.findAll(), false);
+		Collections.sort(result, new Comparator<Subdivision2Resource>() {
+			@Override
+			public int compare(Subdivision2Resource o1, Subdivision2Resource o2) {
+				return collator.compare(o1.getName(), o2.getName());
+			}
+		});
+
+		return result;
+	}
+
+	@Transactional(readOnly = true)
+	public List<Subdivision2Resource> findAll4Subdivision1(String subdivision1Ids) {
+		List<Subdivision2Resource> result = new ArrayList<>();
+
+		for (String subdivision1Id : subdivision1Ids.split("\\|")) {
+			result.addAll(subdivision2ResourceAssembler.toResources(subdivision2Repository.findBySubdivision1(subdivision1Repository.findOne(Integer.parseInt(subdivision1Id))), false));
+		}
+
 		Collections.sort(result, new Comparator<Subdivision2Resource>() {
 			@Override
 			public int compare(Subdivision2Resource o1, Subdivision2Resource o2) {
@@ -63,13 +85,13 @@ public class Subdivision2Service extends BaseService {
 			return new Subdivision2Resource();
 		}
 
-		Subdivision2 entity = repository.findOne(id);
+		Subdivision2 entity = subdivision2Repository.findOne(id);
 		if (entity == null) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.subdivision2", null, locale), id }, locale));
 		}
 
-		return resourceAssembler.toResource(entity, false);
+		return subdivision2ResourceAssembler.toResource(entity, false);
 	}
 
 	@Transactional
@@ -77,27 +99,27 @@ public class Subdivision2Service extends BaseService {
 	public Subdivision2Resource save(Subdivision2Resource resource) {
 		Subdivision2 entity = null;
 		if (resource.getId() == null) {
-			entity = resourceAssembler.createEntity(resource);
+			entity = subdivision2ResourceAssembler.createEntity(resource);
 		} else {
-			entity = repository.findOne(resource.getId());
-			entity = resourceAssembler.updateEntity(entity, resource);
+			entity = subdivision2Repository.findOne(resource.getId());
+			entity = subdivision2ResourceAssembler.updateEntity(entity, resource);
 		}
 
-		repository.save(entity);
+		subdivision2Repository.save(entity);
 
-		return resourceAssembler.toResource(entity, false);
+		return subdivision2ResourceAssembler.toResource(entity, false);
 	}
 
 	@Transactional
 	@CacheEvict(value = "subdivisions2", allEntries = true)
 	public void delete(Integer id, Locale locale) {
-		Subdivision2 entity = repository.findOne(id);
+		Subdivision2 entity = subdivision2Repository.findOne(id);
 		if (entity == null) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.subdivision2", null, locale), id }, locale));
 		}
 
-		repository.delete(entity);
+		subdivision2Repository.delete(entity);
 	}
 
 	@Transactional(readOnly = true)
@@ -122,13 +144,13 @@ public class Subdivision2Service extends BaseService {
 					specification = Specifications.where(specification).and(specifications.get(i));
 				}
 			}
-			page = repository.findAll(specification, createPageable(resource));
+			page = subdivision2Repository.findAll(specification, createPageable(resource));
 		} else {
 			// no filtering
-			page = repository.findAll(createPageable(resource));
+			page = subdivision2Repository.findAll(createPageable(resource));
 		}
 
-		return new PageableResource<>(page.getTotalElements(), resourceAssembler.toResources(page.getContent(), true));
+		return new PageableResource<>(page.getTotalElements(), subdivision2ResourceAssembler.toResources(page.getContent(), true));
 	}
 
 	private Subdivision2Specification createSpecification(UiGridFilterResource resource) {

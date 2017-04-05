@@ -781,7 +781,7 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 	};
 	
 	$scope.addOption = function(index) {
-		$scope.entity.options.splice(index + 1, 0, { })
+		$scope.entity.options.splice(index + 1, 0, { });
 	}
 	
 	$scope.removeOption = function(index) {

@@ -71,9 +71,9 @@
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_OPTIONS' | translate }}</label>
                         <div>
-                            <div ng-show="entity.options.length == 0" class="col-sm-12 m-b-xs" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="col-sm-12 m-b-xs" style="padding-left: 0px; padding-right: 0px;">
                                 <div class="col-sm-12" style="padding-right: 0px; text-align: right;">
-                                    <button type="button" ng-click="addOption(0)" class="btn btn-white m-l-xxs"><i class="fa fa-plus"></i></button>
+                                    <button type="button" ng-click="addOption(-1)" class="btn btn-white m-l-xxs"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                             <div ng-show="entity.options.length > 0" ng-repeat="option in entity.options" class="col-sm-12 m-b-xs" style="padding-left: 0px; padding-right: 0px;">
