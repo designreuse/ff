@@ -452,11 +452,11 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 		    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
 		    						$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
 		    					} else {
-		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
+		    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE') + "<br><small>" + data.message + "</small>");
 		    					}
 		    				})
 		    				.error(function(data, status) {
-		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
+		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE') + "<br><small>" + data.message + "</small>");
 		    				});
 	        			dialog.close();
 	                }	                

@@ -16,4 +16,6 @@ public interface CompanyItemRepository extends CrudRepository<CompanyItem, Integ
 
 	CompanyItem findByCompanyAndItem(Company company, Item item);
 
+	Long deleteByItem(Item item);
+
 }

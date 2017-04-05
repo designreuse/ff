@@ -20,4 +20,6 @@ public interface TenderItemRepository extends CrudRepository<TenderItem, Integer
 
 	TenderItem findByTenderAndItem(Tender tender, Item item);
 
+	Long deleteByItem(Item item);
+
 }

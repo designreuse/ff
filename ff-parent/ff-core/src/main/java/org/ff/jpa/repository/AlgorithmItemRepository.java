@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ff.jpa.domain.AlgorithmItem;
 import org.ff.jpa.domain.AlgorithmItem.AlgorithmItemStatus;
+import org.ff.jpa.domain.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,5 +17,9 @@ public interface AlgorithmItemRepository extends CrudRepository<AlgorithmItem, I
 	List<AlgorithmItem> findByStatusOrderByCode(AlgorithmItemStatus status);
 
 	AlgorithmItem findByCode(String code);
+
+	Long countByCompanyItem(Item companyItem);
+
+	Long countByTenderItem(Item tenderItem);
 
 }

@@ -21,7 +21,10 @@ import org.ff.jpa.domain.Item.ItemMetaTag;
 import org.ff.jpa.domain.Item.ItemStatus;
 import org.ff.jpa.domain.Item.ItemType;
 import org.ff.jpa.domain.ItemOption;
+import org.ff.jpa.repository.AlgorithmItemRepository;
+import org.ff.jpa.repository.CompanyItemRepository;
 import org.ff.jpa.repository.ItemRepository;
+import org.ff.jpa.repository.TenderItemRepository;
 import org.ff.jpa.specification.ItemSpecification;
 import org.ff.rest.item.resource.ItemOptionResource;
 import org.ff.rest.item.resource.ItemResource;
@@ -51,6 +54,15 @@ public class ItemService extends BaseService {
 
 	@Autowired
 	private Collator collator;
+
+	@Autowired
+	private TenderItemRepository tenderItemRepository;
+
+	@Autowired
+	private CompanyItemRepository companyItemRepository;
+
+	@Autowired
+	private AlgorithmItemRepository algorithmItemRepository;
 
 	@Transactional(readOnly = true)
 	public List<ItemResource> findAll(ItemEntityType entityType) {
@@ -147,6 +159,18 @@ public class ItemService extends BaseService {
 		if (entity == null) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.item", null, locale), id }, locale));
+		}
+
+		if (entity.getEntityType() == ItemEntityType.TENDER) {
+			if (algorithmItemRepository.countByTenderItem(entity) > 0) {
+				throw new RuntimeException(messageSource.getMessage("exception.itemDeleteNotAllowed", new Object[] { }, locale));
+			}
+			tenderItemRepository.deleteByItem(entity);
+		} else if (entity.getEntityType() == ItemEntityType.COMPANY) {
+			if (algorithmItemRepository.countByCompanyItem(entity) > 0) {
+				throw new RuntimeException(messageSource.getMessage("exception.itemDeleteNotAllowed", new Object[] { }, locale));
+			}
+			companyItemRepository.deleteByItem(entity);
 		}
 
 		repository.delete(entity);
