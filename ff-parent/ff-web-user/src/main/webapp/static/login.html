@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         
-        <title>Fund Finder</title>
+        <title>MojEUfond</title>
         
         <link rel="stylesheet" type="text/css" href="webjars/inspinia/font-awesome/css/font-awesome.css" />
         <link rel="stylesheet" type="text/css" href="webjars/inspinia/css/bootstrap.min.css" />
@@ -260,7 +260,9 @@
                                 <input ng-model="password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
                                 <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
                             </div>
-                            <p class="{{msgClass}}" ng-bind="msg"></p>
+                            <div style="height: 24px; text-align: center;">
+                                <small class="{{msgClass}}">{{ msg }}</small>
+                            </div>
                             <button type="submit" ng-disabled="formLogin.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_LOGIN' | translate }}</button>
                         </form>
                     </div>

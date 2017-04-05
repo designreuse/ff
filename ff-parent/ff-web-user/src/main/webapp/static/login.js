@@ -31,7 +31,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	// translations
 	$translateProvider
 		.translations('hr', {
-			LBL_WELCOME: 'Fund Finder prijava',
+			LBL_WELCOME: 'MojEUfond prijava',
 			LBL_USERNAME: 'Korisničko ime',
 			LBL_PASSWORD: 'Zaporka',
 			LBL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
@@ -43,8 +43,8 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			LBL_LAST_NAME: 'Prezime',
 			LBL_EMAIL: 'E-mail',
 			LBL_COMPANY_NAME: 'Ime tvtke',
-			LBL_LOADING: 'UČITAVAM FUND FINDER',
-			LBL_UNAUTHORIZE: 'NEAUTORIZIRAN PRISTUP',
+			LBL_LOADING: 'Učitavam MojEUfond',
+			LBL_UNAUTHORIZE: 'Neautoriziran pristup',
 			LBL_USER_ALREADY_REGISTERED: 'Korisnik je već registriran',
 			
 			BTN_LOGIN: 'Prijava',
@@ -56,7 +56,10 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			HDR_WARNING: 'Upozorenje',
 			HDR_ERROR: 'Greška',
 			
-			MSG_REGISTRATION_SUCCESS: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u Find Finder.',
+			LOGIN_OK: 'Prijava uspješna',
+			LOGIN_NOK: 'Prijava neuspješna, molimo pokušajte ponovo...',
+			
+			MSG_REGISTRATION_SUCCESS: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u MojEUfond.',
 			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
 			MSG_REGISTRATION_CONFLICT: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',
 				
@@ -72,7 +75,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 // ================================================================================
 .controller('Controller', function($rootScope, $scope, $http, $location, $window, $filter, $timeout, $log) {
 	var $translate = $filter('translate');
-	
+
 	if ($window.location.hash.indexOf('logoutSuccess') != -1) {
 		$window.location.hash = "";
 	}
@@ -82,7 +85,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			params : { username: $scope.username, password: $scope.password }
 		})
 		.success(function(data, status, headers, config) {
-			$scope.msg = data.message;
+			$scope.msg = (data.status == 'OK') ? $translate('LOGIN_OK') : $translate('LOGIN_NOK');
 			$scope.msgClass = "text-danger";
 			if (data.url != null) {
 				$scope.msgClass = "text-success";

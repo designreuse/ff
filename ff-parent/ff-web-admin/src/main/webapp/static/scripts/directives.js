@@ -6,9 +6,9 @@ function pageTitle($rootScope, $timeout) {
         link: function(scope, element) {
             var listener = function(event, toState, toParams, fromState, fromParams) {
                 // default title
-                var title = 'Fund Finder';
+                var title = 'MojEUfond';
                 // create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = 'Fund Finder | ' + toState.data.pageTitle;
+                if (toState.data && toState.data.pageTitle) title = 'MojEUfond | ' + toState.data.pageTitle;
                 $timeout(function() {
                     element.text(title);
                 });

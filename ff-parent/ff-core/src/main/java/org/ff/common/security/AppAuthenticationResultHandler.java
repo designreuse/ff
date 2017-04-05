@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class AppAuthenticationResultHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
 
+	private static final String STATUS = "status";
 	private static final String MESSAGE = "message";
 	private static final String URL = "url";
 
@@ -61,6 +62,7 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 		}
 
 		Map<String, String> data = new HashMap<>();
+		data.put(STATUS, "OK");
 		data.put(MESSAGE, "Login success");
 		data.put(URL, contextPath + "/#/dashboard/overview");
 		objectMapper.writeValue(response.getOutputStream(), data);
@@ -71,6 +73,7 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		Map<String, String> data = new HashMap<>();
+		data.put(STATUS, "NOK");
 		data.put(MESSAGE, exception.getLocalizedMessage());
 		objectMapper.writeValue(response.getOutputStream(), data);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);

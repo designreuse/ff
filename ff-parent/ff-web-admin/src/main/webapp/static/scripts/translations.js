@@ -370,7 +370,7 @@ function config($translateProvider) {
 			DASHBOARD_INACTIVE: 'Neaktivni',
 			DASHBOARD_CHART_DIMENSION: 'Dimenzija',
 			DASHBOARD_CHART_PERIOD: 'Period',
-			DASHBOARD_REGISTRATION_TYPE_INTERNAL: 'Registrirani kroz Fund Finder',
+			DASHBOARD_REGISTRATION_TYPE_INTERNAL: 'Registrirani kroz MojEUfond',
 			DASHBOARD_REGISTRATION_TYPE_EXTERNAL: 'Registrirani kroz e-ZaBa-u',
 			DASHBOARD_TOTAL_VALUE: 'Ukupna vrijednost investicija',
 			DASHBOARD_AVERAGE_VALUE: 'Prosječna vrijednost investicije',

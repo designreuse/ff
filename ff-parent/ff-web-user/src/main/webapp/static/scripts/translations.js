@@ -12,7 +12,7 @@ function config($translateProvider) {
 			LOGOUT: 'Odjava',
 			SETTINGS: 'Postavke',
 			
-			HEADER_MAIN: 'Fund Finder',
+			HEADER_MAIN: 'MojEUfond',
 			HEADER_PERSONAL_DATA: 'Osobni podaci',
 			HEADER_EMAIL: 'E-mail',
 			HEADER_CHANGE_PASSWORD: 'Promjena zaporke',
@@ -92,7 +92,7 @@ function config($translateProvider) {
 			DLG_DELETE_MSG: 'Da li doista želite obrisati projekt?',
 			
 			DLG_DEACTIVATE_HDR: 'Deaktivacija profila',
-			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila biti ćete automatski odjavljeni te više nećete moći pristupiti Fund Finder aplikaciji. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Da li doista želite deaktivirati vaš profil?',
+			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila biti ćete automatski odjavljeni te više nećete moći pristupiti MojEUfond aplikaciji. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Da li doista želite deaktivirati vaš profil?',
 			
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil tvrtke',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu vaše tvrtke.',

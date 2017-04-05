@@ -12,7 +12,7 @@
         </style>
     </head>
     <body>
-        <h1>Fund Finder User</h1>
+        <h1>MojEUfond User</h1>
         <div>
             ${data}
         </div>
