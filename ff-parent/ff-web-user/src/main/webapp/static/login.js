@@ -269,8 +269,10 @@ $(document).ready(function () {
 	    }
 	    e.preventDefault();
 	  })
+	  
+	  $('.screen-changer').click(function() {
+		  var thisLink = $(this).attr('data-imagelink');
+		  $('#screen').attr('src', thisLink);
+		});
 	});
-	$('.screen-changer').click(function() {
-	  var thisLink = $(this).attr('data-imagelink');
-	  $('#screen').attr('src', thisLink);
-	});
+	

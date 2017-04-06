@@ -370,7 +370,8 @@ p{
 }
 
 .steps .panel-body p{
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 footer{
@@ -453,4 +454,20 @@ footer{
 	margin-top: 10px;
 	font-family: unicredit-bold;
 	color: #333;
+}
+
+.panel-default>.panel-heading{
+	border: none;
+}
+
+group .panel-heading+.panel-collapse>.panel-body {
+	border: none;
+}
+
+.panel-default>.panel-heading+.panel-collapse>.panel-body{
+	border: none;
+}
+
+.form-control:focus, .single-line:focus{
+	border-color: #00afd0 !important;
 }

@@ -155,6 +155,7 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 0;
     margin-left: -15px;
     margin-right: -15px;
+    z-index: 4;
 }
 
 .footer-contact::before{
@@ -415,7 +416,10 @@ input:-webkit-autofill:active {
 
 .floating-button{
 	position: fixed;
-	bottom: 50px;
+	top: 65px;
 	right: 25px;
+	z-index: 3;
 }
+
+
 
