@@ -11,7 +11,7 @@ angular.module('FundFinder')
 		return $http.post('/api/v1/projects', resource);
 	};
 	this.delete = function(id) {
-		return $http.delete('/api/v1/projects/' + id);
+		return $http.get('/api/v1/projects/delete/' + id);
 	};
 })
 

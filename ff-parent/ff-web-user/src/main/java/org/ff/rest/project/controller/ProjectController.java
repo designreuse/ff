@@ -62,7 +62,7 @@ public class ProjectController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
+	@RequestMapping(method = RequestMethod.GET, value="/delete/{id}")
 	public void delete(@AuthenticationPrincipal AppUserDetails principal, @PathVariable Integer id) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {
