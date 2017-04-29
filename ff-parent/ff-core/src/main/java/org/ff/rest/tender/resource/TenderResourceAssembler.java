@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.ff.jpa.domain.Activity;
 import org.ff.jpa.domain.Image;
 import org.ff.jpa.domain.Investment;
@@ -272,15 +273,11 @@ public class TenderResourceAssembler {
 			itemResource.setValue(tenderItem.getValue());
 			itemResource.setValueMapped(tenderItem.getValue());
 		} else if (itemResource.getType() == ItemType.RADIO) {
-			if (tenderItem.getValue() != null) {
-				try {
-					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
-					if (itemOption != null) {
-						itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
-						itemResource.setValueMapped(itemOption.getText());
-					}
-				} catch (NumberFormatException e) {
-					log.warn(e.getMessage(), e);
+			if (NumberUtils.isNumber(tenderItem.getValue())) {
+				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
+				if (itemOption != null) {
+					itemResource.setValue(Integer.parseInt(tenderItem.getValue()));
+					itemResource.setValueMapped(itemOption.getText());
 				}
 			}
 		} else if (itemResource.getType() == ItemType.CHECKBOX) {
@@ -301,7 +298,7 @@ public class TenderResourceAssembler {
 				itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
 			}
 		} else if (itemResource.getType() == ItemType.SELECT) {
-			if (StringUtils.isNotBlank(tenderItem.getValue())) {
+			if (NumberUtils.isNumber(tenderItem.getValue())) {
 				ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(tenderItem.getValue()));
 				if (itemOption != null) {
 					itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
@@ -309,16 +306,22 @@ public class TenderResourceAssembler {
 				} else {
 					resource.setIncomplete(Boolean.TRUE);
 				}
+			} else {
+				resource.setIncomplete(Boolean.TRUE);
 			}
 		} else if (itemResource.getType() == ItemType.MULTISELECT) {
 			if (StringUtils.isNotBlank(tenderItem.getValue())) {
 				List<ItemOptionResource> value = new ArrayList<>();
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
-					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
-					if (itemOption != null) {
-						value.add(itemOptionResourceAssembler.toResource(itemOption, true));
-						valueMapped.add(itemOption.getText());
+					if (NumberUtils.isNumber(id)) {
+						ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
+						if (itemOption != null) {
+							value.add(itemOptionResourceAssembler.toResource(itemOption, true));
+							valueMapped.add(itemOption.getText());
+						} else {
+							resource.setIncomplete(Boolean.TRUE);
+						}
 					} else {
 						resource.setIncomplete(Boolean.TRUE);
 					}
@@ -331,10 +334,14 @@ public class TenderResourceAssembler {
 				List<ActivityResource> value = new ArrayList<>();
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
-					Activity entity = activityRepository.findOne(Integer.parseInt(id));
-					if (entity != null) {
-						value.add(activityResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
+					if (NumberUtils.isNumber(id)) {
+						Activity entity = activityRepository.findOne(Integer.parseInt(id));
+						if (entity != null) {
+							value.add(activityResourceAssembler.toResource(entity, true));
+							valueMapped.add(entity.getName());
+						} else {
+							resource.setIncomplete(Boolean.TRUE);
+						}
 					} else {
 						resource.setIncomplete(Boolean.TRUE);
 					}
@@ -347,10 +354,14 @@ public class TenderResourceAssembler {
 				List<Subdivision1Resource> value = new ArrayList<>();
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
-					Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(id));
-					if (entity != null) {
-						value.add(subdivision1ResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
+					if (NumberUtils.isNumber(id)) {
+						Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(id));
+						if (entity != null) {
+							value.add(subdivision1ResourceAssembler.toResource(entity, true));
+							valueMapped.add(entity.getName());
+						} else {
+							resource.setIncomplete(Boolean.TRUE);
+						}
 					} else {
 						resource.setIncomplete(Boolean.TRUE);
 					}
@@ -363,10 +374,14 @@ public class TenderResourceAssembler {
 				List<Subdivision2Resource> value = new ArrayList<>();
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
-					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(id));
-					if (entity != null) {
-						value.add(subdivision2ResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
+					if (NumberUtils.isNumber(id)) {
+						Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(id));
+						if (entity != null) {
+							value.add(subdivision2ResourceAssembler.toResource(entity, true));
+							valueMapped.add(entity.getName());
+						} else {
+							resource.setIncomplete(Boolean.TRUE);
+						}
 					} else {
 						resource.setIncomplete(Boolean.TRUE);
 					}
@@ -379,10 +394,14 @@ public class TenderResourceAssembler {
 				List<InvestmentResource> value = new ArrayList<>();
 				List<String> valueMapped = new ArrayList<>();
 				for (String id : tenderItem.getValue().split("\\|")) {
-					Investment entity = investmentRepository.findOne(Integer.parseInt(id));
-					if (entity != null) {
-						value.add(investmentResourceAssembler.toResource(entity, true));
-						valueMapped.add(entity.getName());
+					if (NumberUtils.isNumber(id)) {
+						Investment entity = investmentRepository.findOne(Integer.parseInt(id));
+						if (entity != null) {
+							value.add(investmentResourceAssembler.toResource(entity, true));
+							valueMapped.add(entity.getName());
+						} else {
+							resource.setIncomplete(Boolean.TRUE);
+						}
 					} else {
 						resource.setIncomplete(Boolean.TRUE);
 					}

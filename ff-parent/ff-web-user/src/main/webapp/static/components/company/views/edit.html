@@ -60,7 +60,7 @@
                         <input ng-if="item.type == 'TEXT'" ng-model="item.value" type="text" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" />
                         
                         <!-- TEXT_AREA -->
-                        <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+parentIndex}}" style="resize: none;"></textarea>
+                        <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" style="resize: none;"></textarea>
                         
                         <!-- NUMBER -->
                         <input ng-if="item.type == 'NUMBER'" ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" />

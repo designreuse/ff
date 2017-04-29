@@ -34,7 +34,7 @@ public class Company extends AbstractEntity {
 	private Integer id;
 
 	@Nationalized
-	@Column(name = "name", nullable = false, length = 255)
+	@Column(name = "name", nullable = true, length = 255)
 	private String name;
 
 	@Nationalized

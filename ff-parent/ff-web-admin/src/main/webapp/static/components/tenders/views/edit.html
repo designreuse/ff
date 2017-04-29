@@ -87,7 +87,7 @@
 						
 						<input ng-if="item.type == 'TEXT'" ng-model="item.value" type="text" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" maxlength="512" />
 	                                                
-	                    <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+$index}}" style="resize: none;"></textarea>
+	                    <textarea ng-if="item.type == 'TEXT_AREA'" ng-model="item.value" rows="5" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" style="resize: none;"></textarea>
 	                                                
 	                    <input ng-if="item.type == 'NUMBER'" ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
 	                    

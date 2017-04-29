@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.ff.jpa.domain.Activity;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
@@ -172,12 +173,14 @@ public class CompanyResourceAssembler {
 	private void setResourceValue(ItemResource itemResource, CompanyItem companyItem) {
 		try {
 			if (itemResource.getType() == ItemType.NUMBER) {
-				itemResource.setValue((companyItem.getValue() != null) ? Integer.parseInt(companyItem.getValue()) : null);
-				itemResource.setValueMapped(companyItem.getValue());
+				if (NumberUtils.isNumber(companyItem.getValue())) {
+					itemResource.setValue((companyItem.getValue() != null) ? Integer.parseInt(companyItem.getValue()) : null);
+					itemResource.setValueMapped(companyItem.getValue());
+				}
 			} else if (itemResource.getType() == ItemType.CURRENCY) {
-				itemResource.setValue((companyItem.getValue() != null) ? Integer.parseInt(companyItem.getValue()) : null);
-				itemResource.setValueMapped(companyItem.getValue());
-				if (itemResource.getType() == ItemType.CURRENCY) {
+				if (NumberUtils.isNumber(companyItem.getValue())) {
+					itemResource.setValue((companyItem.getValue() != null) ? Integer.parseInt(companyItem.getValue()) : null);
+					itemResource.setValueMapped(companyItem.getValue());
 					if (StringUtils.isNotBlank(companyItem.getCurrency())) {
 						itemResource.setCurrency(new CurrencyResource(companyItem.getCurrency()));
 					} else {
@@ -188,19 +191,15 @@ public class CompanyResourceAssembler {
 				itemResource.setValue(companyItem.getValue());
 				itemResource.setValueMapped(companyItem.getValue());
 			} else if (itemResource.getType() == ItemType.RADIO) {
-				if (companyItem.getValue() != null) {
-					try {
-						ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue()));
-						if (itemOption != null) {
-							itemResource.setValue(Integer.parseInt(companyItem.getValue()));
-							itemResource.setValueMapped(itemOption.getText());
-						}
-					} catch (NumberFormatException e) {
-						log.warn(e.getMessage(), e);
+				if (NumberUtils.isNumber(companyItem.getValue())) {
+					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue()));
+					if (itemOption != null) {
+						itemResource.setValue(Integer.parseInt(companyItem.getValue()));
+						itemResource.setValueMapped(itemOption.getText());
 					}
 				}
 			} else if (itemResource.getType() == ItemType.SELECT) {
-				if (StringUtils.isNotBlank(companyItem.getValue())) {
+				if (NumberUtils.isNumber(companyItem.getValue())) {
 					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue()));
 					if (itemOption != null) {
 						itemResource.setValue((itemOption != null) ? itemOptionResourceAssembler.toResource(itemOption, true) : null);
@@ -212,17 +211,19 @@ public class CompanyResourceAssembler {
 					List<ItemOptionResource> value = new ArrayList<>();
 					List<String> valueMapped = new ArrayList<>();
 					for (String id : companyItem.getValue().split("\\|")) {
-						ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
-						if (itemOption != null) {
-							value.add(itemOptionResourceAssembler.toResource(itemOption, true));
-							valueMapped.add(itemOption.getText());
+						if (NumberUtils.isNumber(id)) {
+							ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
+							if (itemOption != null) {
+								value.add(itemOptionResourceAssembler.toResource(itemOption, true));
+								valueMapped.add(itemOption.getText());
+							}
 						}
 					}
 					itemResource.setValue(value);
 					itemResource.setValueMapped(StringUtils.join(valueMapped, "<br>"));
 				}
 			} else if (itemResource.getType() == ItemType.ACTIVITY) {
-				if (StringUtils.isNotBlank(companyItem.getValue())) {
+				if (NumberUtils.isNumber(companyItem.getValue())) {
 					Activity entity = activityRepository.findOne(Integer.parseInt(companyItem.getValue()));
 					if (entity != null) {
 						itemResource.setValue(activityResourceAssembler.toResource(entity, true));
@@ -230,7 +231,7 @@ public class CompanyResourceAssembler {
 					}
 				}
 			} else if (itemResource.getType() == ItemType.SUBDIVISION1) {
-				if (StringUtils.isNotBlank(companyItem.getValue())) {
+				if (NumberUtils.isNumber(companyItem.getValue())) {
 					Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(companyItem.getValue()));
 					if (entity != null) {
 						itemResource.setValue(subdivision1ResourceAssembler.toResource(entity, true));
@@ -238,7 +239,7 @@ public class CompanyResourceAssembler {
 					}
 				}
 			} else if (itemResource.getType() == ItemType.SUBDIVISION2) {
-				if (StringUtils.isNotBlank(companyItem.getValue())) {
+				if (NumberUtils.isNumber(companyItem.getValue())) {
 					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(companyItem.getValue()));
 					if (entity != null) {
 						itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));

@@ -102,7 +102,7 @@ CREATE TABLE [dbo].[company](
 	[branch_office_number] [nvarchar](255) NULL,
 	[code] [nvarchar](64) NULL,
 	[company_number] [nvarchar](255) NULL,
-	[name] [nvarchar](255) NOT NULL,
+	[name] [nvarchar](255) NULL,
 	[other_business] [ntext] NULL,
 	[primary_business] [nvarchar](255) NULL,
 	[registration_number] [nvarchar](255) NULL,

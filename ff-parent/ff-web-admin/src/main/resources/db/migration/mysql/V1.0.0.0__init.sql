@@ -101,7 +101,7 @@ CREATE TABLE `company` (
   `branch_office_number` varchar(255) DEFAULT NULL,
   `code` varchar(64) DEFAULT NULL,
   `company_number` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `other_business` longtext,
   `primary_business` varchar(255) DEFAULT NULL,
   `registration_number` varchar(255) DEFAULT NULL,
