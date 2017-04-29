@@ -244,7 +244,7 @@ function Subdivisions1OverviewController($rootScope, $scope, $state, $log, $time
 		    					}
 		    				})
 		    				.error(function(data, status) {
-		    					toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
+		    					toastr.error("<b>" + $translate('ACTION_DELETE_FAILURE_MESSAGE') + "</b><br>" + data.message);
 		    				});
 	        			dialog.close();
 	                }	                

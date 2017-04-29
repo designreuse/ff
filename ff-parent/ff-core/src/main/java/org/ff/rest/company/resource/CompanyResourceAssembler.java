@@ -202,8 +202,10 @@ public class CompanyResourceAssembler {
 			} else if (itemResource.getType() == ItemType.SELECT) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {
 					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(companyItem.getValue()));
-					itemResource.setValue((itemOption != null) ? itemOptionResourceAssembler.toResource(itemOption, true) : null);
-					itemResource.setValueMapped((itemOption != null) ? itemOption.getText() : null);
+					if (itemOption != null) {
+						itemResource.setValue((itemOption != null) ? itemOptionResourceAssembler.toResource(itemOption, true) : null);
+						itemResource.setValueMapped((itemOption != null) ? itemOption.getText() : null);
+					}
 				}
 			} else if (itemResource.getType() == ItemType.MULTISELECT) {
 				if (StringUtils.isNotBlank(companyItem.getValue())) {

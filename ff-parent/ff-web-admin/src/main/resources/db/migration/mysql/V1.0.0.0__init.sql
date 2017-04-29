@@ -10,8 +10,6 @@
 # Dump of table activity
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `activity`;
-
 CREATE TABLE `activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -26,8 +24,6 @@ CREATE TABLE `activity` (
 
 # Dump of table algorithm_item
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `algorithm_item`;
 
 CREATE TABLE `algorithm_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -54,8 +50,6 @@ CREATE TABLE `algorithm_item` (
 # Dump of table article
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `article`;
-
 CREATE TABLE `article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -76,8 +70,6 @@ CREATE TABLE `article` (
 # Dump of table business_relationship_manager
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `business_relationship_manager`;
-
 CREATE TABLE `business_relationship_manager` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -89,15 +81,16 @@ CREATE TABLE `business_relationship_manager` (
   `last_name` varchar(128) DEFAULT NULL,
   `mobile` varchar(128) DEFAULT NULL,
   `phone` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `organizational_unit` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_5nw6y0obewou7dam5lvdw3muq` (`organizational_unit`),
+  CONSTRAINT `FK_5nw6y0obewou7dam5lvdw3muq` FOREIGN KEY (`organizational_unit`) REFERENCES `organizational_unit` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
 # Dump of table company
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `company`;
 
 CREATE TABLE `company` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -123,8 +116,6 @@ CREATE TABLE `company` (
 # Dump of table company_item
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `company_item`;
-
 CREATE TABLE `company_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -147,23 +138,19 @@ CREATE TABLE `company_item` (
 # Dump of table contact
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `contact`;
-
 CREATE TABLE `contact` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
   `creation_date` datetime NOT NULL,
   `last_modified_by` varchar(128) DEFAULT NULL,
   `last_modified_date` datetime NOT NULL,
-  `channel` longtext,
   `company_code` varchar(255) DEFAULT NULL,
   `company_name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `location` longtext,
   `name` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `text` longtext,
-  `topic` longtext,
-  `type` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -171,8 +158,6 @@ CREATE TABLE `contact` (
 
 # Dump of table email
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `email`;
 
 CREATE TABLE `email` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -190,8 +175,6 @@ CREATE TABLE `email` (
 # Dump of table image
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `image`;
-
 CREATE TABLE `image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -206,8 +189,6 @@ CREATE TABLE `image` (
 
 # Dump of table impression
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `impression`;
 
 CREATE TABLE `impression` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -224,8 +205,6 @@ CREATE TABLE `impression` (
 
 # Dump of table investment
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `investment`;
 
 CREATE TABLE `investment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -246,8 +225,6 @@ CREATE TABLE `investment` (
 
 # Dump of table item
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `item`;
 
 CREATE TABLE `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -274,8 +251,6 @@ CREATE TABLE `item` (
 # Dump of table item_option
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `item_option`;
-
 CREATE TABLE `item_option` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -292,10 +267,24 @@ CREATE TABLE `item_option` (
 
 
 
-# Dump of table permission
+# Dump of table organizational_unit
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `organizational_unit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` varchar(128) DEFAULT NULL,
+  `creation_date` datetime NOT NULL,
+  `last_modified_by` varchar(128) DEFAULT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table permission
+# ------------------------------------------------------------
 
 CREATE TABLE `permission` (
   `id` int(11) NOT NULL,
@@ -307,8 +296,6 @@ CREATE TABLE `permission` (
 
 # Dump of table project
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `project`;
 
 CREATE TABLE `project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -329,8 +316,6 @@ CREATE TABLE `project` (
 # Dump of table project_investment
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `project_investment`;
-
 CREATE TABLE `project_investment` (
   `project_id` int(11) NOT NULL,
   `investment_id` int(11) NOT NULL,
@@ -345,8 +330,6 @@ CREATE TABLE `project_investment` (
 
 # Dump of table project_item
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `project_item`;
 
 CREATE TABLE `project_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -370,8 +353,6 @@ CREATE TABLE `project_item` (
 # Dump of table role
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `role`;
-
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -386,8 +367,6 @@ CREATE TABLE `role` (
 
 # Dump of table role_permission
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `role_permission`;
 
 CREATE TABLE `role_permission` (
   `role_id` int(11) NOT NULL,
@@ -404,8 +383,6 @@ CREATE TABLE `role_permission` (
 # Dump of table subdivision1
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `subdivision1`;
-
 CREATE TABLE `subdivision1` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -421,8 +398,6 @@ CREATE TABLE `subdivision1` (
 
 # Dump of table subdivision2
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `subdivision2`;
 
 CREATE TABLE `subdivision2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -443,8 +418,6 @@ CREATE TABLE `subdivision2` (
 # Dump of table tender
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `tender`;
-
 CREATE TABLE `tender` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -464,8 +437,6 @@ CREATE TABLE `tender` (
 
 # Dump of table tender_item
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `tender_item`;
 
 CREATE TABLE `tender_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -489,8 +460,6 @@ CREATE TABLE `tender_item` (
 # Dump of table user
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `user`;
-
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -499,6 +468,7 @@ CREATE TABLE `user` (
   `last_modified_date` datetime NOT NULL,
   `demo_user` tinyint(1) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `email2` varchar(255) DEFAULT NULL,
   `first_name` varchar(128) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
   `last_name` varchar(128) DEFAULT NULL,
@@ -521,8 +491,6 @@ CREATE TABLE `user` (
 
 # Dump of table user_email
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `user_email`;
 
 CREATE TABLE `user_email` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -547,8 +515,6 @@ CREATE TABLE `user_email` (
 # Dump of table user_group
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `user_group`;
-
 CREATE TABLE `user_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` varchar(128) DEFAULT NULL,
@@ -565,8 +531,6 @@ CREATE TABLE `user_group` (
 # Dump of table user_group_user
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `user_group_user`;
-
 CREATE TABLE `user_group_user` (
   `user_group_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -577,6 +541,21 @@ CREATE TABLE `user_group_user` (
   CONSTRAINT `FK_phklr5y0o9nl2xt5v47gkwlko` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
+# Dump of table zaba_mappings_location
+# ------------------------------------------------------------
+
+CREATE TABLE `zaba_mappings_location` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subdivision2` varchar(512) DEFAULT NULL,
+  `subdivision3` varchar(512) DEFAULT NULL,
+  `zip_code` varchar(16) DEFAULT NULL,
+  `subdivision2_development_index` varchar(16) DEFAULT NULL,
+  `subdivision1` varchar(512) DEFAULT NULL,
+  `subdivision1_development_index` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

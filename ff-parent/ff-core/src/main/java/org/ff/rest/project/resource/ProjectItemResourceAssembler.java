@@ -149,26 +149,34 @@ public class ProjectItemResourceAssembler {
 			} else if (itemResource.getItem().getType() == ItemType.SELECT) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(projectItem.getValue()));
-					itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
-					itemResource.setValueMapped(itemOption.getText());
+					if (itemOption != null) {
+						itemResource.setValue(itemOptionResourceAssembler.toResource(itemOption, true));
+						itemResource.setValueMapped(itemOption.getText());
+					}
 				}
 			} else if (itemResource.getItem().getType() == ItemType.ACTIVITY) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					Activity entity = activityRepository.findOne(Integer.parseInt(projectItem.getValue()));
-					itemResource.setValue(activityResourceAssembler.toResource(entity, true));
-					itemResource.setValueMapped(entity.getName());
+					if (entity != null) {
+						itemResource.setValue(activityResourceAssembler.toResource(entity, true));
+						itemResource.setValueMapped(entity.getName());
+					}
 				}
 			} else if (itemResource.getItem().getType() == ItemType.SUBDIVISION1) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					Subdivision1 entity = subdivision1Repository.findOne(Integer.parseInt(projectItem.getValue()));
-					itemResource.setValue(subdivision1ResourceAssembler.toResource(entity, true));
-					itemResource.setValueMapped(entity.getName());
+					if (entity != null) {
+						itemResource.setValue(subdivision1ResourceAssembler.toResource(entity, true));
+						itemResource.setValueMapped(entity.getName());
+					}
 				}
 			} else if (itemResource.getItem().getType() == ItemType.SUBDIVISION2) {
 				if (StringUtils.isNotBlank(projectItem.getValue())) {
 					Subdivision2 entity = subdivision2Repository.findOne(Integer.parseInt(projectItem.getValue()));
-					itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));
-					itemResource.setValueMapped(entity.getName());
+					if (entity != null) {
+						itemResource.setValue(subdivision2ResourceAssembler.toResource(entity, true));
+						itemResource.setValueMapped(entity.getName());
+					}
 				}
 			} else {
 				itemResource.setValue(projectItem.getValue());

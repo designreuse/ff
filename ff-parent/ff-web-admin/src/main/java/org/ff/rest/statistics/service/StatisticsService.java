@@ -95,10 +95,12 @@ public class StatisticsService {
 		}
 
 		for (CompanyItem companyItem : companyItemRepository.findByItem(items.get(0))) {
-			if (companyItem.getValue() != null) {
+			if (companyItem != null && companyItem.getValue() != null) {
 				Subdivision2 subdivision2 = subdivision2Repository.findOne(Integer.parseInt(companyItem.getValue()));
-				Subdivision1 subdivision1 = subdivision2.getSubdivision1();
-				counters.put(subdivision1, new AtomicInteger(counters.get(subdivision1).incrementAndGet()));
+				if (subdivision2 != null) {
+					Subdivision1 subdivision1 = subdivision2.getSubdivision1();
+					counters.put(subdivision1, new AtomicInteger(counters.get(subdivision1).incrementAndGet()));
+				}
 			}
 		}
 
@@ -134,7 +136,7 @@ public class StatisticsService {
 		}
 
 		for (CompanyItem companyItem : companyItemRepository.findByItem(items.get(0))) {
-			if (companyItem.getValue() != null) {
+			if (companyItem != null && companyItem.getValue() != null) {
 				counters.put(Integer.parseInt(companyItem.getValue()), new AtomicInteger(counters.get(Integer.parseInt(companyItem.getValue())).incrementAndGet()));
 			}
 		}
@@ -171,7 +173,7 @@ public class StatisticsService {
 		}
 
 		for (CompanyItem companyItem : companyItemRepository.findByItem(items.get(0))) {
-			if (companyItem.getValue() != null) {
+			if (companyItem != null && companyItem.getValue() != null) {
 				counters.put(Integer.parseInt(companyItem.getValue()), new AtomicInteger(counters.get(Integer.parseInt(companyItem.getValue())).incrementAndGet()));
 			}
 		}
@@ -213,10 +215,12 @@ public class StatisticsService {
 		}
 
 		for (ProjectItem projectItem : projectItemRepository.findByItem(items.get(0))) {
-			if (projectItem.getValue() != null) {
+			if (projectItem != null && projectItem.getValue() != null) {
 				Subdivision1 subdivision1 = subdivision1Repository.findOne(Integer.parseInt(projectItem.getValue()));
-				counters.put(subdivision1, new AtomicInteger(counters.get(subdivision1).incrementAndGet()));
-				amounts.put(subdivision1, amounts.get(subdivision1).doubleValue() + getAmount(projectItem.getProject()).doubleValue());
+				if (subdivision1 != null) {
+					counters.put(subdivision1, new AtomicInteger(counters.get(subdivision1).incrementAndGet()));
+					amounts.put(subdivision1, amounts.get(subdivision1).doubleValue() + getAmount(projectItem.getProject()).doubleValue());
+				}
 			}
 		}
 
@@ -258,10 +262,12 @@ public class StatisticsService {
 		}
 
 		for (ProjectItem projectItem : projectItemRepository.findByItem(items.get(0))) {
-			if (projectItem.getValue() != null) {
+			if (projectItem != null && projectItem.getValue() != null) {
 				Activity activity = activityRepository.findOne(Integer.parseInt(projectItem.getValue()));
-				counters.put(activity, new AtomicInteger(counters.get(activity).incrementAndGet()));
-				amounts.put(activity, amounts.get(activity).doubleValue() + getAmount(projectItem.getProject()).doubleValue());
+				if (activity != null) {
+					counters.put(activity, new AtomicInteger(counters.get(activity).incrementAndGet()));
+					amounts.put(activity, amounts.get(activity).doubleValue() + getAmount(projectItem.getProject()).doubleValue());
+				}
 			}
 		}
 
