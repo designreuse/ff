@@ -233,6 +233,10 @@ function config($translateProvider) {
 			DATETIMEPICKER_THIS_MONTH: 'Ovaj mjesec',
 			DATETIMEPICKER_LAST_MONTH: 'Prošli mjesec',
 			DATETIMEPICKER_CUSTOM: 'Proizvoljni period',
+			DATETIMEPICKER_FROM: 'Od',
+			DATETIMEPICKER_TO: 'Do',
+			DATETIMEPICKER_APPLY: 'Primjeni',
+			DATETIMEPICKER_CANCEL: 'Poništi',
 			
 			STATISTICS_PERIOD_LAST_7_DAYS: 'Posljednih 7 dana',
 			STATISTICS_PERIOD_LAST_6_MONTHS: 'Posljednih 6 mjeseci',

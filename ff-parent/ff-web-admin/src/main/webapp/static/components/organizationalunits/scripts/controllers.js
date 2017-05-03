@@ -267,8 +267,15 @@ function OrganizationalUnitsOverviewController($rootScope, $scope, $state, $log,
 		format: $rootScope.dateFormat.toUpperCase(),
 		ranges: rangesJSON,
 		locale: { 
-			customRangeLabel: $translate('DATETIMEPICKER_CUSTOM') 
-		}, 
+			daysOfWeek: $rootScope.dpDaysOfWeek,
+			monthNames: $rootScope.dpMonthNames,
+			applyLabel: $translate('DATETIMEPICKER_APPLY'),
+	        cancelLabel: $translate('DATETIMEPICKER_CANCEL'),
+	        fromLabel: $translate('DATETIMEPICKER_FROM'),
+	        toLabel: $translate('DATETIMEPICKER_TO'),
+	        customRangeLabel: $translate('DATETIMEPICKER_CUSTOM'),
+			firstDay: 1
+		},
 		showDropdowns: true,
 		eventHandlers: {
 			'apply.daterangepicker': function(ev, picker) {

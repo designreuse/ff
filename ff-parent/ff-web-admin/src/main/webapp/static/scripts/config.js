@@ -820,6 +820,9 @@ angular.module('FundFinder')
 	$rootScope.dateFormatDB = "yyyy-MM-dd";
 	$rootScope.dateTimeFormatDB = "yyyy-MM-dd HH:mm:ss";
 	
+	$rootScope.dpDaysOfWeek = [ "Ned", "Pon", "Uto", "Sri", "\u010cet", "Pet", "Sub" ];
+	$rootScope.dpMonthNames = [ "Sije\u010danj", "Velja\u010da", "O\u017eujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac" ];
+	
 	$rootScope.rowHeight = 30;
 	$rootScope.paginationPageSize = 10;
 	$rootScope.paginationPageSizes = [10, 25, 50, 100];
