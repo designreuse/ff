@@ -85,7 +85,11 @@
                         <!-- DATE -->
                         <div ng-if="item.type == 'DATE'">
                             <div class="input-group">
-                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" ng-click="openPopupDate(parentIndex)" style="background-color: white;" datepicker-append-to-body="true" show-button-bar="true" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[parentIndex].opened" ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+parentIndex}}" />
+                                <input ng-required="item.mandatory" type="text" class="form-control ff-form-control" readonly="readonly" 
+                                	ng-click="openPopupDate(parentIndex)" style="background-color: white;" datepicker-append-to-body="true" 
+                                	show-button-bar="true" uib-datepicker-popup="{{dateFormat}}" is-open="dictPopupDate[parentIndex].opened" 
+                                	ng-model="item.value" ng-model-options="{ timezone: 'utc' }" name="{{'item'+parentIndex}}" 
+                                	current-text="{{ 'BUTTON_DATE_CURRENT' | translate }}" clear-text="{{ 'BUTTON_DATE_CLEAR' | translate }}" close-text="{{ 'BUTTON_DATE_CLOSE' | translate }}" />
                                 <span class="input-group-addon" style="cursor: pointer;" ng-click="openPopupDate(parentIndex)">
                                     <i class="glyphicon glyphicon-calendar"></i>
                                 </span>

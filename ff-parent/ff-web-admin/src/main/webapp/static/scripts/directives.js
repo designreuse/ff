@@ -178,6 +178,12 @@ function icheck($timeout) {
     };
 }
 
+function filterSelect() {
+	return {
+		template: '<select class="form-control" style="height: 22px; font-size: 11px; font-weight: normal;" ng-model="colFilter.term" ng-options="option.id as option.value for option in colFilter.options"></select>'
+	};
+}
+
 /**
  *
  * Pass all functions into module
@@ -188,4 +194,5 @@ angular.module('FundFinder')
     .directive('iboxTools', iboxTools)
     .directive('minimalizaSidebar', minimalizaSidebar)
     .directive('iboxToolsFullScreen', iboxToolsFullScreen)
-    .directive('icheck', icheck);
+    .directive('icheck', icheck)
+	.directive('filterSelect', filterSelect);

@@ -41,6 +41,12 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 		return width;
 	};
 	
+	var statuses = [
+		  { value: $translate('LABEL_ALL_TENDERS'), id: '' },
+		  { value: $translate('STATUS_ACTIVE'), id: 'ACTIVE' },
+		  { value: $translate('STATUS_INACTIVE'), id: 'INACTIVE' }
+	];
+	
 	$scope.gridOptions = {
 			rowHeight: $rootScope.rowHeight,
 			paginationPageSize: $rootScope.paginationPageSize,
@@ -91,13 +97,8 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 					cellTooltip: false, 
 					enableSorting: true,
 					enableFiltering: true,
-					filter: {
-						type: uiGridConstants.filter.SELECT,
-						disableCancelFilterButton: true,
-						selectOptions: [
-							{ value: 'ACTIVE', label: $translate('STATUS_ACTIVE') },
-							{ value: 'INACTIVE', label: $translate('STATUS_INACTIVE') }]
-					},
+					filterHeaderTemplate: '<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters"><div filter-select></div></div>', 
+				    filter: {  term: '', options: statuses },
 					enableHiding: false,
 					width: 100,
 					cellTemplate:
@@ -153,7 +154,7 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 						'<div style="padding-top: 1px">' +
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.read\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DETAILS\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.showEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-search-plus"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.export\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EXPORT\' | translate}} {{\'TO_JSON\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.exportTender(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-download"></i></button>' +
-							'<button ng-disabled="row.entity.incomplete" ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
+							'<button ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_ACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'INACTIVE\'" ng-click="grid.appScope.activateEntity(row.entity)" class=" ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-off"></i></button>' + 
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DEACTIVATE\' | translate}}" tooltip-append-to-body="true" ng-show="row.entity.status == \'ACTIVE\'" ng-click="grid.appScope.deactivateEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-toggle-on"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
 							'<button ng-if="grid.appScope.hasPermission([\'tenders.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 

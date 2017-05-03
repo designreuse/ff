@@ -86,6 +86,7 @@ function config($translateProvider) {
 			
 			LABEL_ACTIVITY: 'Sektor',
 			LABEL_ACTIVITY_NAME: 'Naziv sektora',
+			LABEL_ALL_TENDERS: 'Svi natječaji',
 			LABEL_AREA: 'Area',
 			LABEL_CODE: 'Oznaka',
 			LABEL_COMPANY_CODE: 'OIB',
@@ -215,6 +216,10 @@ function config($translateProvider) {
 			BUTTON_EXPORT_ALL: 'Izvezi sve',
 			BUTTON_EXPORT_SELECTED: 'Izvezi odabrane',
 			BUTTON_IMPORT: 'Uvoz',
+			
+			BUTTON_DATE_CURRENT: 'Danas',
+			BUTTON_DATE_CLEAR: 'Izbriši',
+			BUTTON_DATE_CLOSE: 'Zatvori',
 
 			TO_CSV: 'u CSV',
 			TO_PDF: 'u PDF',

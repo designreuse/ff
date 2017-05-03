@@ -66,6 +66,24 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 		    exporterFieldCallback: function (grid, row, col, value) {
 		    	if (col.name === 'creationDate' || col.name === 'lastModifiedDate') {
 		    		return (value) ? ($filter('date')(value, $rootScope.dateTimeFormat)) : '';
+		    	} else if (col.name === 'registrationType') {
+		    		if (value == 'INTERNAL') {
+		    			return $translate('REGISTRATION_TYPE_INTERNAL');
+		    		} else if (value == 'EXTERNAL') {
+		    			return $translate('REGISTRATION_TYPE_EXTERNAL');
+		    		} else {
+		    			return value;
+		    		}
+		    	} else if (col.name === 'status') {
+		    		if (value == 'ACTIVE') {
+		    			return $translate('STATUS_ACTIVE');
+		    		} else if (value == 'INACTIVE') {
+		    			return $translate('STATUS_INACTIVE');
+		    		} else if (value == 'WAITING_CONFIRMATION') {
+		    			return $translate('STATUS_WAITING_CONFIRMATION');	
+		    		} else {
+		    			return value;
+		    		}
 		    	}
 		    	return value;
 		    },

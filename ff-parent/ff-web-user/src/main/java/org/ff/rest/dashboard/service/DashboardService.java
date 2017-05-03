@@ -37,6 +37,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class DashboardService {
 
@@ -78,8 +81,9 @@ public class DashboardService {
 		DateTime date3MonthsAgo = new DateTime().minusMonths(3);
 		DateTime date30DaysAgo = new DateTime().minusDays(30);
 
-		Map<String, AtomicInteger> map1 = new LinkedHashMap<>();
-		Map<String, Double> map2 = new LinkedHashMap<>();
+		Map<String, AtomicInteger> map1 = new LinkedHashMap<>(); // tenders count by month
+		Map<String, Double> map2 = new LinkedHashMap<>(); // tenders total value by month
+
 		for (int i = 0; i<6; i++) {
 			date3MonthsAgo = date3MonthsAgo.plusMonths(1);
 			map1.put(monthFormat.format(date3MonthsAgo.toDate()), new AtomicInteger(0));
@@ -92,10 +96,18 @@ public class DashboardService {
 		for (Tender tender : tenderRepository.findByStatus(TenderStatus.ACTIVE)) {
 			cntTenders.incrementAndGet();
 
-			String s = monthFormat.format(tender.getCreationDate().toDate());
-			if (map1.containsKey(s)) {
-				map1.get(s).incrementAndGet();
+			LocalDate tenderStartDate = getTenderStartDate(tender);
+			if (tenderStartDate == null) {
+				// skip tender if start date is not known
+				continue;
+			}
 
+			String tenderStartDateFormatted = monthFormat.format(tenderStartDate.toDate());
+
+			if (map1.containsKey(tenderStartDateFormatted)) {
+				map1.get(tenderStartDateFormatted).incrementAndGet();
+
+				// add tender to latest tenders if it's
 				if (tender.getCreationDate().isBefore(date30DaysAgo)) {
 					// skip tenders that are older then 30 days
 					continue;
@@ -140,13 +152,13 @@ public class DashboardService {
 				}
 			}
 
-			if (map2.containsKey(s)) {
+			if (map2.containsKey(tenderStartDateFormatted)) {
 				for (TenderItem tenderItem : tender.getItems()) {
 					Item item = tenderItem.getItem();
 					if (item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING) {
 						if (StringUtils.isNotBlank(tenderItem.getValue())) {
 							double value = Double.parseDouble(tenderItem.getValue());
-							map2.put(s, map2.get(s) + value);
+							map2.put(tenderStartDateFormatted, map2.get(tenderStartDateFormatted) + value);
 						}
 					}
 				}
@@ -172,6 +184,22 @@ public class DashboardService {
 		resource.setCntArticles(articleRepository.countByStatus(ArticleStatus.ACTIVE));
 
 		return resource;
+	}
+
+	private LocalDate getTenderStartDate(Tender tender) {
+		try {
+			if (tender != null && tender.getItems() != null) {
+				for (TenderItem tenderItem : tender.getItems()) {
+					if (tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_START_DATE) {
+						return DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("Getting tender's start date failed", e);
+		}
+
+		return null;
 	}
 
 }

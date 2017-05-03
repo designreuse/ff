@@ -49,6 +49,10 @@ function config($translateProvider) {
 			BUTTON_DISABLE: 'Deaktiviraj',
 			BUTTON_ENABLE: 'Aktiviraj',
 			
+			BUTTON_DATE_CURRENT: 'Danas',
+			BUTTON_DATE_CLEAR: 'Izbriši',
+			BUTTON_DATE_CLOSE: 'Zatvori',
+			
 			ACTION_LOAD_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom učitavanja podataka',
 			ACTION_SAVE_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom spremanja podataka',
 			ACTION_SAVE_SUCCESS_MESSAGE: 'Podaci uspješno spremljeni',
@@ -64,8 +68,8 @@ function config($translateProvider) {
 			LABEL_COMPANY_CODE: 'OIB tvrtke',
 			LABEL_FIRST_NAME: 'Ime',
 			LABEL_LAST_NAME: 'Prezime',
-			LABEL_EMAIL: 'Email',
-			LABEL_EMAIL2: 'Email (sekundarni)',
+			LABEL_EMAIL: 'E-mail',
+			LABEL_EMAIL2: 'Dodatni e-mail (unesite ako želite obavijesti o novim prilikama dobivati i na ovu e-mail adresu',
 			LABEL_NEW_PASSWORD: 'Nova zaporka',
 			LABEL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
 			LABEL_NAME: 'Naziv',

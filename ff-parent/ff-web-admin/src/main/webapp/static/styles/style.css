@@ -42,6 +42,13 @@
 }
 
 /* ************************************************************ */
+/*  uib-datepicker                                              */
+/* ************************************************************ */
+.uib-datepicker-popup {
+	padding-bottom: 5px;
+}
+
+/* ************************************************************ */
 /*  ui-grid                                                     */
 /* ************************************************************ */
 .ui-grid-pager-panel {
@@ -435,6 +442,14 @@
     margin-top: -9px; 
     margin-right: 3px; 
     color: white;
+}
+
+.ff-masonry-brick-edit {
+    border-radius: 5px; 
+    margin-top: -10px; 
+    margin-right: 3px; 
+    color: white;
+    cursor: pointer;
 }
 
 .ff-masonry-brick-title {
