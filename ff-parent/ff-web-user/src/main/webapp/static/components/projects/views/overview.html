@@ -27,7 +27,7 @@ p span {
 		            <a ui-sref="projects.edit({ id: project.id })">
 		                <img class="img-rounded ff-masonry-brick-img" ng-show="project.image.base64" ng-src="data:image/JPEG;base64,{{project.image.base64}}" width="100%">
 		            </a>
-		            <p style="margin-bottom: 0px;" data-ng-bind="project.description | htmlToPlaintext" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
+		            <p style="margin-bottom: 0px; word-wrap: break-word" ng-bind-html="project.description | nl2br" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
 		        </div>
 		    </div>
 		</div>

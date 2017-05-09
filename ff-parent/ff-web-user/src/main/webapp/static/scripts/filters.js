@@ -15,6 +15,13 @@ angular.module('FundFinder')
 		};
 	})
 	
+	.filter('nl2br', function() {
+		return function(text) {
+			if (!text) return text;
+			return text.replace(/\n\r?/g, '<br />');
+		};
+	})
+	
 	.filter("customCurrency", function (numberFilter) {
 		function isNumeric(value) {
 			return (!isNaN(parseFloat(value)) && isFinite(value));
