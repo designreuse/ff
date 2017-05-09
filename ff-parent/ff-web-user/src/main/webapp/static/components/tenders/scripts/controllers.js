@@ -79,6 +79,10 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $
 		$state.go('tenders.details', { 'id' : tender.id });
 	};
 	
+	$scope.showProject = function(id) {
+		$state.go('projects.edit', { 'id' : id });
+	}
+	
 	// initial load
 	$scope.findAll();
 };

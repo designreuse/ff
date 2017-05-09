@@ -192,7 +192,7 @@ public class AlgorithmService extends BaseService {
 		return Boolean.FALSE;
 	}
 
-	public Boolean processTender4Investments(Tender tender, List<Project> projects) {
+	public Boolean processTender4Projects(Tender tender, List<Project> projects) {
 		List<Integer> tenderInvestments = getTenderInvestments(tender);
 
 		if (tenderInvestments.isEmpty()) {

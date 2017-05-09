@@ -87,7 +87,11 @@ public class TenderService {
 
 		User user = userRepository.findOne(principal.getUser().getId());
 
+		List<Project> projects = projectRepository.findByCompany(user.getCompany());
+
 		for (Tender tender : algorithmService.findTenders4User(user, user.getCompany(), projectRepository.findByCompany(user.getCompany()), new DebuggingResource())) {
+			algorithmService.processTender4Projects(tender, projects);
+
 			TenderResource resource = new TenderResource();
 			resource.setId(tender.getId());
 			resource.setStatus(tender.getStatus());
@@ -203,7 +207,7 @@ public class TenderService {
 
 		User user = userRepository.findOne(principal.getUser().getId());
 		List<Project> projects = projectRepository.findByCompany(user.getCompany());
-		algorithmService.processTender4Investments(entity, projects);
+		algorithmService.processTender4Projects(entity, projects);
 
 		Impression impression = new Impression();
 		impression.setEntityType(EntityType.TENDER);

@@ -4,7 +4,10 @@ angular.module('FundFinder')
     "contextPath": "/fundfinder"
 })
 
-.config(function config($provide, $stateProvider, $httpProvider, $urlRouterProvider, cfpLoadingBarProvider, constants) {
+.config(function config($provide, $stateProvider, $httpProvider, $sceProvider, $urlRouterProvider, cfpLoadingBarProvider, constants) {
+	// disable SCE (Strict Contextual Escaping)
+	$sceProvider.enabled(false);
+	
 	// configure interceptor
 	$httpProvider.interceptors.push(function($location) {  
 		var path = {
@@ -239,7 +242,7 @@ angular.module('FundFinder')
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
-	$rootScope.version = "v1.0.12";
+	$rootScope.version = "v1.0.13";
 	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	
 	$locale.NUMBER_FORMATS.DECIMAL_SEP= ',';
