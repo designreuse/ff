@@ -173,8 +173,48 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			});
 	};
 	
+	$scope.getShowSyncDataWarningOrNot = function() {
+		DashboardService.showSyncDataWarningOrNot()
+			.success(function(data, status) {
+				$scope.showSyncDataWarningOrNot = data;
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.getHideSyncDataWarning = function() {
+		DashboardService.getHideSyncDataWarning()
+			.success(function(data, status) {
+				$scope.hideSyncDataWarning = { value : data };
+				console.log($scope.hideSyncDataWarning);
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_FAILURE_MESSAGE'));
+			});
+	};
+	
+	$scope.syncCompanyData = function(option) {
+		DashboardService.syncCompanyData(option, $scope.hideSyncDataWarning.value)
+			.success(function(data, status) {
+				if (option == 0) {
+					toastr.success($translate('ACTION_SYNC_DATA_SUCCESS_MESSAGE'));
+					$scope.showSyncDataWarningOrNot = false;
+				} else if (option == 1) {
+					toastr.success($translate('ACTION_SYNC_DATA_ALWAYS_SUCCESS_MESSAGE'));
+					$scope.showSyncDataWarningOrNot = false;
+				} else if (option == 2) {
+					$scope.showSyncDataWarningOrNot = false;
+				}
+			})
+			.error(function(data, status) {
+				toastr.error($translate('ACTION_FAILURE_MESSAGE'));
+			});
+	};
 	
 	// initial load
 	$scope.getData();
 	$scope.findArticles();
+	$scope.getShowSyncDataWarningOrNot();
+	$scope.getHideSyncDataWarning();
 };

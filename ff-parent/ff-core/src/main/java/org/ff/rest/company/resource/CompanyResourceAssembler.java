@@ -86,6 +86,8 @@ public class CompanyResourceAssembler {
 		resource.setId(entity.getId());
 		resource.setName(entity.getName());
 		resource.setCode(entity.getCode());
+		resource.setSyncData(entity.getSyncData());
+		resource.setHideSyncDataWarning(entity.getHideSyncDataWarning());
 
 		if (!light) {
 			// items
@@ -126,12 +128,16 @@ public class CompanyResourceAssembler {
 		Company entity = new Company();
 		entity.setName(resource.getName());
 		entity.setCode(resource.getCode());
+		entity.setSyncData(Boolean.FALSE);
+		entity.setHideSyncDataWarning(Boolean.FALSE);
 		return entity;
 	}
 
 	public Company updateEntity(Company entity, CompanyResource resource) {
 		entity.setName(resource.getName());
 		entity.setCode(resource.getCode());
+		entity.setSyncData(resource.getSyncData());
+		entity.setHideSyncDataWarning(resource.getHideSyncDataWarning());
 
 		if (entity.getItems() == null) {
 			entity.setItems(new LinkedHashSet<CompanyItem>());

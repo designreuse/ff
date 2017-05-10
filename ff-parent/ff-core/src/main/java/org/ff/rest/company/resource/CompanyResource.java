@@ -31,6 +31,12 @@ public class CompanyResource {
 	@JsonProperty("tenders")
 	private List<TenderResource> tenders;
 
+	@JsonProperty("syncData")
+	private Boolean syncData;
+
+	@JsonProperty("hideSyncDataWarning")
+	private Boolean hideSyncDataWarning;
+
 	@JsonProperty("creationDate")
 	private Date creationDate;
 

@@ -49,6 +49,10 @@ function config($translateProvider) {
 			BUTTON_DISABLE: 'Deaktiviraj',
 			BUTTON_ENABLE: 'Aktiviraj',
 			
+			BUTTON_SYNC_DATA: 'Ažuriraj podatke',
+			BUTTON_SYNC_DATA_ALWAYS: 'Ažuriraj podatke sad i ubuduće',
+			BUTTON_SYNC_DATA_NOT: 'Nemoj ažurirati podatke',
+			
 			BUTTON_DATE_CURRENT: 'Danas',
 			BUTTON_DATE_CLEAR: 'Izbriši',
 			BUTTON_DATE_CLOSE: 'Zatvori',
@@ -61,6 +65,9 @@ function config($translateProvider) {
 			ACTION_SEND_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom slanja poruke',
 			ACTION_SEND_SUCCESS_MESSAGE: 'Poruka uspješno poslana',
 			ACTION_DEACTIVATE_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom deaktivacije profila',
+			ACTION_SYNC_DATA_SUCCESS_MESSAGE: 'Podaci o tvrtki su uspješno ažurirani',
+			ACTION_SYNC_DATA_ALWAYS_SUCCESS_MESSAGE: 'Podaci o tvrtki su uspješno ažurirani, te će i ubuduće biti automatski ažurirani',
+			ACTION_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom izvršavanja akcije',
 			
 			LABEL_LAST_MODIFIED: 'Zadnja promjena',
 			LABEL_READ_MORE: 'Pročitajte više',
@@ -84,8 +91,14 @@ function config($translateProvider) {
 			LABEL_CONTACT_SUBHEADER: 'Zatražite termin',
 			LABEL_CONTACT_DISCLAIMER: 'Zagrebačka banka osobne podatke unesene u donji obrazac obrađuje u svrhu ugovaranja sastanka u poslovnici. Radi pripreme bankara za sastanak u poslovnici molimo unesite OIB.',
 			LABEL_NO_MATCHING_TENDERS: 'Nije pronađen niti jedan natječaj koji odgovara vašem profilu',
+			LABEL_SYNC_DATA: 'Prilikom prijave automatski ažuriraj podatke koje ste unijeli sa podacima koje ima banka',
+			LABEL_SYNC_DATA_WARNING: 'Podaci o tvrtki koje ste unijeli se razlikuju od podataka koje ima banka. Molimo odaberite akciju.',
+			LABEL_SHOW_SYNC_DATA_WARNING: 'Nemoj više prikazivati ovo upozorenje',
 			
 			TOOLTIP_DELETE: 'Obriši',
+			TOOLTIP_SYNC_DATA: 'Ažuriraj podatke o tvrtki koje ste unijeli sa podacima koje ima banka',
+			TOOLTIP_SYNC_DATA_ALWAYS: 'Ažuriraj podatke o tvrtki koje ste unijeli sa podacima koje ima banka sad i ubuduće',
+			TOOLTIP_SYNC_DATA_NOT: 'Nemoj ažurirati podatke sad niti ubuduće',
 			
 			VALIDATION_FAILED_HEADER: 'Neuspješna validacija',
 			

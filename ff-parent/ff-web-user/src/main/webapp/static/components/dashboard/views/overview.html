@@ -5,6 +5,18 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div ng-if="showSyncDataWarningOrNot" class="row m-b-sm" style="margin-left: 0px; margin-right: 0px; border: 1px solid #f0f0f0;">
+    	<div class="col-lg-12 text-center m-t-sm m-b-sm">
+    		<h3><i class="fa fa-exclamation-triangle fa-lg" style="color: red;" aria-hidden="true"></i> {{ 'LABEL_SYNC_DATA_WARNING' | translate }}</h3>
+    		<button ng-click="syncCompanyData(0)" uib-tooltip="{{ 'TOOLTIP_SYNC_DATA' | translate }}" tooltip-append-to-body="true" class="btn btn-primary">{{ 'BUTTON_SYNC_DATA' | translate }}</button>
+    		<button ng-click="syncCompanyData(1)" uib-tooltip="{{ 'TOOLTIP_SYNC_DATA_ALWAYS' | translate }}" tooltip-append-to-body="true" class="btn btn-primary m-l-sm">{{ 'BUTTON_SYNC_DATA_ALWAYS' | translate }}</button>
+    		<button ng-click="syncCompanyData(2)" uib-tooltip="{{ 'TOOLTIP_SYNC_DATA_NOT' | translate }}" tooltip-append-to-body="true" class="btn btn-primary m-l-sm">{{ 'BUTTON_SYNC_DATA_NOT' | translate }}</button>
+    	</div>
+    	<div class="col-lg-12 text-center m-b-sm">
+			<input id="hideSyncDataWarning" type="checkbox" ng-model="hideSyncDataWarning.value" class="m-t-lg"></input>
+			<label for="hideSyncDataWarning" class="m-l-xs" style="font-weight: normal;">{{ 'LABEL_SHOW_SYNC_DATA_WARNING' | translate }}</label>    	
+    	</div>
+    </div>
     <div class="row">
         <div class="col-lg-2">
             <div class="ibox float-e-margins">
@@ -135,7 +147,7 @@
                                         <a class="ff-a" ui-sref="articles.details({ id: article.id })">
                                             <h4 style="margin-top: 0px; margin-bottom: 5px;">{{article.name}}</h4>
                                         </a>
-                                        <p style="margin: 0px; min-height: 10px; max-height: 75px;" data-ng-bind="article.text | htmlToPlaintext" class="text-justify" data-ellipsis></p>
+                                        <p style="margin: 0px; min-height: 10px; max-height: 75px; word-wrap: break-word;" ng-bind-html="article.text" class="text-justify" data-ellipsis></p>
                                     </div>
                                 </div>
                             </div>

@@ -70,4 +70,10 @@ public class Company extends AbstractEntity {
 	@Column(name = "other_business", nullable = true)
 	private String otherBusiness;
 
+	@Column(name = "sync_data", nullable = true)
+	private Boolean syncData;
+
+	@Column(name = "hide_sync_data_warning", nullable = true)
+	private Boolean hideSyncDataWarning;
+
 }

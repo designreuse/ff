@@ -159,6 +159,8 @@ public class ExternalFlowService {
 					if (companyData.getOtherBusiness() != null) {
 						company.setOtherBusiness(StringUtils.join(companyData.getOtherBusiness(), "|"));
 					}
+					company.setSyncData(Boolean.FALSE);
+					company.setHideSyncDataWarning(Boolean.FALSE);
 					companyRepository.save(company);
 
 					log.debug("New company [{}] created", company.getId());
@@ -289,10 +291,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Legal type number successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -315,10 +321,14 @@ public class ExternalFlowService {
 						CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, item);
 						if (companyItem == null) {
 							companyItem = new CompanyItem();
+							companyItem.setValue(subdivision2.getId().toString());
 						}
 						companyItem.setCompany(company);
 						companyItem.setItem(item);
-						companyItem.setValue(subdivision2.getId().toString());
+						companyItem.setValueExt(subdivision2.getId().toString());
+						if (Boolean.TRUE == company.getSyncData()) {
+							companyItem.setValue(companyItem.getValueExt());
+						}
 						companyItemRepository.save(companyItem);
 
 						log.debug("ZIP code successfully imported - company item [id: {}, value: {}]", companyItem.getId(), subdivision2.getName());
@@ -339,10 +349,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, item);
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(dateFormat.format(companyData.getFoundingDate()));
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(item);
-				companyItem.setValue(dateFormat.format(companyData.getFoundingDate()));
+				companyItem.setValueExt(dateFormat.format(companyData.getFoundingDate()));
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Founding date successfully imported - company item [id: {}, value: {}]", companyItem.getId(), companyItem.getValue());
@@ -361,10 +375,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Bankruptcy procedure successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -383,10 +401,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Blocked 5 days successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -405,10 +427,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Blocked 20 days successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -432,17 +458,19 @@ public class ExternalFlowService {
 						String[] values = value.split("\\-");
 						ranges.put(itemOption, new DoubleRange(Double.parseDouble(values[0]), Double.parseDouble(values[1])));
 					} else if (value.contains("<")) {
-						value = value.substring(value.indexOf("<")+1);
+						value = value.substring(value.indexOf("<") + 1);
 						ranges.put(itemOption, new DoubleRange(Double.MIN_VALUE, Double.parseDouble(value)));
 					} else if (value.contains(">")) {
-						value = value.substring(value.indexOf(">")+1);
+						value = value.substring(value.indexOf(">") + 1);
 						ranges.put(itemOption, new DoubleRange(Double.parseDouble(value), Double.MAX_VALUE));
 					}
 				}
 
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, item);
+				boolean newCompanyItem = false;
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					newCompanyItem = true;
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(item);
@@ -452,7 +480,10 @@ public class ExternalFlowService {
 				for (Entry<ItemOption, DoubleRange> range : ranges.entrySet()) {
 					if (range.getValue().containsDouble(value)) {
 						itemOption = range.getKey();
-						companyItem.setValue(itemOption.getId().toString());
+						companyItem.setValueExt(itemOption.getId().toString());
+						if (newCompanyItem || Boolean.TRUE == company.getSyncData()) {
+							companyItem.setValue(companyItem.getValueExt());
+						}
 						break;
 					}
 				}
@@ -475,10 +506,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Profit before tax successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -497,10 +532,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Profit or loss successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -519,10 +558,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, itemOption.getItem());
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(itemOption.getId().toString());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
-				companyItem.setValue(itemOption.getId().toString());
+				companyItem.setValueExt(itemOption.getId().toString());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Capital / total liabilities successfully imported - company item [id: {}, value: {}]", companyItem.getId(), itemOption.getText());
@@ -541,10 +584,14 @@ public class ExternalFlowService {
 				CompanyItem companyItem = companyItemRepository.findByCompanyAndItem(company, item);
 				if (companyItem == null) {
 					companyItem = new CompanyItem();
+					companyItem.setValue(companyData.getNumberOfEmployeesAnnual());
 				}
 				companyItem.setCompany(company);
 				companyItem.setItem(item);
-				companyItem.setValue(companyData.getNumberOfEmployeesAnnual());
+				companyItem.setValueExt(companyData.getNumberOfEmployeesAnnual());
+				if (Boolean.TRUE == company.getSyncData()) {
+					companyItem.setValue(companyItem.getValueExt());
+				}
 				companyItemRepository.save(companyItem);
 
 				log.debug("Number of employees successfully imported - company item [id: {}, value: {}]", companyItem.getId(), companyItem.getValue());
