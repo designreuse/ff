@@ -318,7 +318,13 @@ public class TenderResourceAssembler {
 						ItemOption itemOption = itemOptionRepository.findOne(Integer.parseInt(id));
 						if (itemOption != null) {
 							value.add(itemOptionResourceAssembler.toResource(itemOption, true));
-							valueMapped.add(itemOption.getText());
+
+							StringBuffer sb = new StringBuffer(itemOption.getText());
+							if (Boolean.TRUE == itemResource.getEmphasize() && StringUtils.isNotBlank(itemOption.getUrl())) {
+								sb.append("<a target='_blank' href='").append(itemOption.getUrl()).append("'><i class='fa fa-external-link m-l-xs' style='cursor: pointer' aria-hidden='true'></i></a>");
+							}
+
+							valueMapped.add(sb.toString());
 						} else {
 							resource.setIncomplete(Boolean.TRUE);
 						}

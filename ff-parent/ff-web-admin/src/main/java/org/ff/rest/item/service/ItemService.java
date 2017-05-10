@@ -88,6 +88,7 @@ public class ItemService extends BaseService {
 			resource.setEntityType(ItemEntityType.valueOf(entityType.toUpperCase()));
 			resource.setOptions(new ArrayList<ItemOptionResource>());
 			resource.setMandatory(Boolean.FALSE);
+			resource.setEmphasize(Boolean.FALSE);
 			resource.setSummaryItem(Boolean.FALSE);
 			resource.setWidgetItem(Boolean.FALSE);
 			return resource;

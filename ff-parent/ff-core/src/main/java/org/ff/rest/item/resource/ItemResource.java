@@ -46,6 +46,9 @@ public class ItemResource {
 	@JsonProperty("mandatory")
 	private Boolean mandatory;
 
+	@JsonProperty("emphasize")
+	private Boolean emphasize;
+
 	@JsonProperty("position")
 	private Integer position;
 

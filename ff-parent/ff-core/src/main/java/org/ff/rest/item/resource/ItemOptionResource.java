@@ -21,6 +21,9 @@ public class ItemOptionResource {
 	@JsonProperty("text")
 	private String text;
 
+	@JsonProperty("url")
+	private String url;
+
 	@JsonProperty("creationDate")
 	private Date creationDate;
 

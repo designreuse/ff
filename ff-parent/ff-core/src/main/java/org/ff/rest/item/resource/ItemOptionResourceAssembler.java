@@ -21,6 +21,7 @@ public class ItemOptionResourceAssembler {
 		resource.setId(entity.getId());
 		resource.setPosition(entity.getPosition());
 		resource.setText(entity.getText());
+		resource.setUrl(entity.getUrl());
 		resource.setCreationDate(entity.getCreationDate().toDate());
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());
@@ -39,6 +40,7 @@ public class ItemOptionResourceAssembler {
 	public ItemOption toEntity(ItemOptionResource resource) {
 		ItemOption entity = (resource.getId() == null) ? new ItemOption() : itemOptionRepository.findOne(resource.getId());
 		entity.setText(resource.getText());
+		entity.setUrl(resource.getUrl());
 		return entity;
 	}
 

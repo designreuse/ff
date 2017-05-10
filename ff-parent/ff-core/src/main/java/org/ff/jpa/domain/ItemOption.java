@@ -36,6 +36,11 @@ public class ItemOption extends AbstractEntity {
 	@Column(name = "text", nullable = true)
 	private String text;
 
+	@Lob
+	@Nationalized
+	@Column(name = "url", nullable = true)
+	private String url;
+
 	@ManyToOne
 	@JoinColumn(name = "item")
 	private Item item;

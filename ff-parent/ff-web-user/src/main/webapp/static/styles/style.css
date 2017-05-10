@@ -280,8 +280,44 @@
 
 .ff-label {
 	width: 100%;
-	background: #f0f0f0;
 	padding: 10px;
+	background: #f0f0f0;
+}
+
+.ff-item-box {
+	padding-left: 0px; 
+	padding-right: 0px;
+}
+
+.ff-value {
+	padding-left: 10px;
+}
+
+.ff-emphasize-item-label {
+	width: 100%;
+	padding: 10px;
+	background: red !important;
+	color: white !important;
+	font-family: unicredit-regular;
+	font-size: 16px;
+}
+
+.ff-emphasize-item-value {
+	padding-left: 10px;
+	background: transparent;
+	font-family: unicredit-light;
+	font-size: 14px;
+}
+
+.ff-emphasize-item-box {
+	padding-left: 0px; 
+	padding-right: 0px;
+	padding-bottom: 5px;
+	border: 1px solid red;
+}
+
+.ff-emphasize-item-help {
+	color: white !important;
 }
 
 .ff-nav-second-level {

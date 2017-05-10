@@ -88,6 +88,9 @@ public class Item extends AbstractEntity {
 	@Column(name = "mandatory", nullable = false)
 	private Boolean mandatory;
 
+	@Column(name = "emphasize", nullable = true)
+	private Boolean emphasize;
+
 	@Column(name = "position", nullable = false)
 	private Integer position;
 

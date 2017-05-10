@@ -78,11 +78,14 @@
                             </div>
                             <div ng-show="entity.options.length > 0" ng-repeat="option in entity.options" class="col-sm-12 m-b-xs" style="padding-left: 0px; padding-right: 0px;">
                                 <span ng-init="random = getRandom()"></span>
-                                <div class="col-sm-9" style="padding-left: 0px;">
-                                    <input type="text" class="form-control ff-form-control" ng-required="true" ng-model="option.text" name="{{'optionText' + random}}" maxlength="4096" /> 
+                                <div ng-class="entity.emphasize ? 'col-sm-6' : 'col-sm-9'"  style="padding-left: 0px;">
+                                    <input type="text" placeholder="{{ 'PLACEHOLDER_VALUE' | translate }}" class="form-control ff-form-control" ng-required="true" ng-model="option.text" name="{{'optionText' + random}}" maxlength="4096" /> 
                                 </div>
                                 <div class="col-sm-1" style="padding-left: 0px;">
                                     <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.{{'optionText' + random}}.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.{{'optionText' + random}}.$valid }"></i>
+                                </div>
+                                <div ng-if="entity.emphasize" class="col-sm-3" style="padding-left: 0px;">
+                                    <input type="text" placeholder="{{ 'PLACEHOLDER_URL' | translate }}" class="form-control ff-form-control" ng-model="option.url" name="{{'optionUrl' + random}}" maxlength="4096" /> 
                                 </div>
                                 <div class="col-sm-2" style="padding-right: 0px; text-align: right;">
                                     <button type="button" ng-click="removeOption($index)" class="btn btn-white"><i class="fa fa-minus"></i></button>
@@ -98,6 +101,15 @@
                         <div class="m-t-xs">
 	                        <span class="m-l-sm"><input ng-model="entity.mandatory" type="radio" ng-value="true" name="mandatory" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
 	                        <span class="m-l-sm"><input ng-model="entity.mandatory" type="radio" ng-value="false" name="mandatory" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="entity.entityType == 'TENDER'" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="ff-label">{{ 'LABEL_EMPHASIZE' | translate }}</label>
+                        <div class="m-t-xs">
+	                        <span class="m-l-sm"><input ng-model="entity.emphasize" type="radio" ng-value="true" name="emphasize" /> <label>{{ 'BOOLEAN_TRUE' | translate }}</label></span>
+	                        <span class="m-l-sm"><input ng-model="entity.emphasize" type="radio" ng-value="false" name="emphasize" /> <label>{{ 'BOOLEAN_FALSE' | translate }}</label></span>
                         </div>
                     </div>
                 </div>

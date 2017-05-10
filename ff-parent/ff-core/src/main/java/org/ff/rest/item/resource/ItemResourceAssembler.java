@@ -29,6 +29,7 @@ public class ItemResourceAssembler {
 		resource.setSummaryItem((entity.getSummaryItem() != null) ? entity.getSummaryItem() : Boolean.FALSE);
 		resource.setWidgetItem((entity.getWidgetItem() != null) ? entity.getWidgetItem() : Boolean.FALSE);
 		resource.setMandatory(entity.getMandatory());
+		resource.setEmphasize(entity.getEmphasize());
 		resource.setPosition(entity.getPosition());
 		resource.setText(entity.getText());
 		resource.setHelp(entity.getHelp());
@@ -62,6 +63,7 @@ public class ItemResourceAssembler {
 		entity.setSummaryItem((resource.getSummaryItem() != null) ? resource.getSummaryItem() : Boolean.FALSE);
 		entity.setWidgetItem((resource.getWidgetItem() != null) ? resource.getWidgetItem() : Boolean.FALSE);
 		entity.setMandatory((resource.getMandatory() != null) ? resource.getMandatory() : Boolean.FALSE);
+		entity.setEmphasize((resource.getEmphasize() != null) ? resource.getEmphasize() : Boolean.FALSE);
 		entity.setPosition(resource.getPosition());
 		entity.setText(resource.getText());
 		entity.setHelp(resource.getHelp());
@@ -90,6 +92,7 @@ public class ItemResourceAssembler {
 		entity.setSummaryItem((resource.getSummaryItem() != null) ? resource.getSummaryItem() : Boolean.FALSE);
 		entity.setWidgetItem((resource.getWidgetItem() != null) ? resource.getWidgetItem() : Boolean.FALSE);
 		entity.setMandatory((resource.getMandatory() != null) ? resource.getMandatory() : Boolean.FALSE);
+		entity.setEmphasize((resource.getEmphasize() != null) ? resource.getEmphasize() : Boolean.FALSE);
 		entity.setPosition(resource.getPosition());
 		entity.setText(resource.getText());
 		entity.setHelp(resource.getHelp());

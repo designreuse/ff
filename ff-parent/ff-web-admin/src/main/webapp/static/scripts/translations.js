@@ -102,6 +102,7 @@ function config($translateProvider) {
 			LABEL_EDIT_POSTSCRIPT: 'Prikaz pri uređivanju (npr. Uredi natječaj)',
 			LABEL_EMAIL: 'E-mail',
 			LABEL_EMAIL2: 'E-mail (sekundarni)',
+			LABEL_EMPHASIZE: 'Naglašena stavka',
 			LABEL_ENTITY_ATTRIBUTES: 'Atributi entiteta',
 			LABEL_ENTITY_TYPE: 'Tip entiteta',
 			LABEL_EXPORTING: 'IZVOZIM',
@@ -351,6 +352,9 @@ function config($translateProvider) {
 			
 			UI_GRID_LOADING_DATA: 'Učitavam podatake...',
 			UI_GRID_NO_DATA: 'Nema podataka',
+			
+			PLACEHOLDER_VALUE: 'Vrijednost',
+			PLACEHOLDER_URL: 'URL',
 			
 			ACCESS_DENIED_HEADER: 'Pristup odbijen',
 			ACCESS_DENIED_MESSAGE: 'Nemate ovlaštenja za pristup odabranom resursu',
