@@ -50,23 +50,28 @@
                             <div style="padding: 5px;" ng-bind-html="toTrusted(entity.text)" />
                             
                             <div class="form-group" ng-repeat="item in entity.items" ng-if="item.summaryItem && item.valueMapped">
-                                <div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
-                                    <label class="ff-label">{{ item.text }} <sup ng-if="item.help"><i class="fa fa-question-circle fa-lg" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i></sup></label>
-                                    
-                                    <div ng-if="item.type == 'TEXT' || item.type == 'TEXT_AREA'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'NUMBER'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'CURRENCY'" class="ff-value">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
-                                    <div ng-if="item.type == 'PERCENTAGE'" class="ff-value">{{ item.valueMapped }}<span ng-if="item.valueMapped">%</span></div>
-                                    <div ng-if="item.type == 'RADIO'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'CHECKBOX'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'DATE'" class="ff-value">{{ item.valueMapped | date:dateFormat }}</div>
-                                    <div ng-if="item.type == 'SELECT'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'MULTISELECT'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'HYPERLINK'" class="ff-value"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
-                                    <div ng-if="item.type == 'SUBDIVISIONS1'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                    <div ng-if="item.type == 'SUBDIVISIONS2'" class="ff-value" ng-bind-html="toTrusted(item.valueMapped)"></div>
-                                </div>
-                            </div>
+				                <div ng-class="item.emphasize ? ['col-sm-12', 'm-t-sm', 'ff-emphasize-item-box'] : ['col-sm-12', 'm-t-sm', 'ff-item-box']">
+				                    <label ng-class="item.emphasize ? 'ff-emphasize-item-label' : 'ff-label'">{{ item.text }} 
+				                    	<sup ng-if="item.help">
+				                    		<i ng-class="item.emphasize ? ['fa', 'fa-question-circle', 'fa-lg', 'ff-emphasize-item-help'] : ['fa', 'fa-question-circle', 'fa-lg']" role="button" uib-popover-html="toTrusted(item.help)" popover-append-to-body="true" popover-placement="bottom" popover-trigger="outsideClick"></i>
+										</sup>
+				                   	</label>
+				                   
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'TEXT'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'TEXT_AREA'" ng-bind-html="toTrusted(item.valueMapped)" style="padding-right: 5px;"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'NUMBER'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'CURRENCY'">{{ item.valueMapped | currency : "" }} <span ng-if="item.valueMapped">{{ item.currency.code }}</span></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'PERCENTAGE'">{{ item.valueMapped }}<span ng-if="item.valueMapped">%</span></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'RADIO'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'CHECKBOX'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'DATE'">{{ item.valueMapped | date:dateFormat }}</div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'SELECT'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'MULTISELECT'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'HYPERLINK'"><a href="{{ item.valueMapped }}" target="_blank">{{ item.valueMapped }}</a></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'SUBDIVISIONS1'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                    <div ng-class="item.emphasize ? 'ff-emphasize-item-value' : 'ff-value'" ng-if="item.type == 'SUBDIVISIONS2'" ng-bind-html="toTrusted(item.valueMapped)"></div>
+				                </div>
+				            </div>
                             
                             <div style="text-align: right;">
                                 <small>{{ 'LABEL_LAST_MODIFIED' | translate }}: {{ entity.lastModifiedDate | date : dateTimeFormat }}</small>
