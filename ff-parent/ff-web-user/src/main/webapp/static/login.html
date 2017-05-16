@@ -32,7 +32,7 @@
     </head>
 
     <body class="white-bg" ng-controller="Controller">
-    	<div ng-show="landingVisible" class="animated">
+    	<div ng-show="landingVisible" class="animated fadeIn">
     	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -41,17 +41,9 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" ng-click="showLanding()"><img src="styles/logo.svg" alt="" /> </a>
+        <a href="http://www.zaba.hr/home/" class="navbar-brand"><img src="styles/logo.svg" alt="" /> </a>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li>
-            <a href="#what-is-it" class="nav-link">Što je?</a>
-          </li>
-          <li>
-            <a href="#how-to-use" class="nav-link">Kako se koristi?</a>
-          </li>
-        </ul>
 
         <ul class="nav navbar-nav navbar-right">
           <li>
@@ -67,21 +59,22 @@
             
   <header id="myCarousel" class="carousel slide">
 
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-    </ol>
     <div class="carousel-inner">
       <div class="item active">
         <div class="fill" style="background-image:url('styles/mojeufondslide.jpg');"></div>
+        <h2 class="campaign-h1">
+        	<span class="hero-lg">uspjeh je</span>
+        	<span class="hero-sm">
+        		<span class="hero-row">kad ono što</span>
+        		<span class="hero-row">tražiš nađe tebe</span>
+        	</span>
+        </h2>
+        
+        <h2 class="campaign-h2">
+        	MojEUfond
+        </h2>
         <div class="carousel-caption">
-          <p>Što ako bismo mogli pronaći EU sredstva koja su namijenjena baš za Vaše poslovanje? <a ng-click="showLogin()" class="btn btn-blue">Prijava</a></p>
-        </div>
-      </div>
-      <div class="item">
-        <div class="fill" style="background-image:url('styles/mojeufondslide.jpg');"></div>
-        <div class="carousel-caption">
-          <p>Ne gubite više vrijeme bez rezultata - neka nove prilike za financiranje dođu ravno u Vaš inbox. <a href="#what-is-it" class="btn btn-blue nav-link">Pročitaj više</a></p>
+          <p>Ne gubite više vrijeme – neka nove prilike za financiranje iz EU fondova dođu ravno u Vaš inbox.</p>
         </div>
       </div>
     </div>
@@ -101,21 +94,6 @@
 				Informacije samo o natječajima za koje je poduzeće prihvatljivo <br>
 				Sve prilike za sufinanciranje planiranih ulaganja čim se one pojave <br>
 				Edukativni i informativni sadržaj i praktične savjete za pripremu i provedbu projekata</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="not-convinced">
-      <div class="container">
-        <div class="row mt-50">
-          <div class="col-lg-12 text-center">
-            <h2>Još niste uvjereni? Iskušajte besplatnu probnu verziju!</h2>
-          </div>
-        </div>
-        <div class="row mt-50 mb-50">
-          <div class="col-lg-12 text-center">
-            <a href="#" class="btn btn-blue-outline">Besplatna probna verzija</a>
           </div>
         </div>
       </div>
@@ -208,6 +186,21 @@ Trenutno nema prilika? Nema problema. Dok vi vodite vlastito poslovanje kao i in
         </div>
       </div>
     </section>
+    
+        <section id="not-convinced">
+      <div class="container">
+        <div class="row mt-50">
+          <div class="col-lg-12 text-center">
+            <h2>Još niste sigurni? Iskušajte probnu verziju bez obveze kreiranja računa.</h2>
+          </div>
+        </div>
+        <div class="row mt-50 mb-50">
+          <div class="col-lg-12 text-center">
+            <a class="btn btn-blue-outline" ng-click="showLogin()">Probna verzija</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <footer>
       <div class="container">
@@ -251,16 +244,22 @@ Trenutno nema prilika? Nema problema. Dok vi vodite vlastito poslovanje kao i in
                         <h3>{{ 'LBL_WELCOME' | translate }}</h3>
                         <form name="formLogin" role="form" ng-submit="login()">
                             <div class="form-group" style="margin-bottom: 5px;">
+                            	<small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                                 <input ng-model="username" type="text" class="form-control" name="username" ng-required="true" maxlength="255">
-                                <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
+                               
                             </div>
                             <div class="form-group" style="margin-bottom: 5px;">
-                                <input ng-model="password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
                                 <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
+                                <input ng-model="password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
                             </div>
-                            <p style="font-size: 11px; text-align: center; color: red;" ng-bind-html="msg"></p>
+                            <div style="height: 24px; text-align: center;">
+                                <small class="{{msgClass}}">{{ msg }}</small>
+                            </div>
                             <button type="submit" ng-disabled="formLogin.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_LOGIN' | translate }}</button>
                         </form>
+                        
+                        <button href="https://www.zaba.hr/ezaba" class="btn-primary block full-width m-b-xxs" id="e-zaba-btn">Prijava putem e-zabaPS</button>
+                        
                     </div>
                     <div class="p-xxs">
                         <small class="pull-left"><a class="ff-a-alt" ng-click="showResetPassword()">{{ 'LBL_RESET_PASSWORD' | translate }}</a></small>
@@ -281,12 +280,12 @@ Trenutno nema prilika? Nema problema. Dok vi vodite vlastito poslovanje kao i in
                         <form name="formResetPassword" role="form" ng-submit="resetPassword()">
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
+                                    <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                                     <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formResetPassword.email.$invalid, 'fa fa-check-circle ff-valid' : formResetPassword.email.$valid }"></i>
                                     </span>
                                 </div>
-                                <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                             </div>
                             <button ladda="processingResetPassword" data-style="zoom-in" type="submit" ng-disabled="formResetPassword.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_SEND' | translate }}</button>
                         </form>
@@ -309,54 +308,56 @@ Trenutno nema prilika? Nema problema. Dok vi vodite vlastito poslovanje kao i in
                         <form name="formRegistration" role="form" ng-submit="register()">
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
+									<small class="ff-postscript">{{ 'LBL_FIRST_NAME' | translate }}</small>
+                                
                                     <input ng-model="user.firstName" type="text" class="form-control" name="firstName" ng-required="true" maxlength="128">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.firstName.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.firstName.$valid }"></i>
                                     </span>
                                 </div>
-                                <small class="ff-postscript">{{ 'LBL_FIRST_NAME' | translate }}</small>
                             </div>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
+                                    <small class="ff-postscript">{{ 'LBL_LAST_NAME' | translate }}</small>
+                                
                                     <input ng-model="user.lastName" type="text" class="form-control" name="lastName" ng-required="true" maxlength="128">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.lastName.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.lastName.$valid }"></i>
                                     </span>
                                 </div>
-                                <small class="ff-postscript">{{ 'LBL_LAST_NAME' | translate }}</small>
                             </div>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
+                                    <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                                     <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.email.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.email.$valid }"></i>
                                     </span>
                                 </div>
-                                <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
                             </div>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
+                                    <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
                                     <input ng-model="user.password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.password.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.password.$valid }"></i>
                                     </span>
                                 </div>
-                                <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
                             </div>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
+                                    <small class="ff-postscript">{{ 'LBL_CONFIRM_PASSWORD' | translate }}</small>
                                     <input ng-model="user.confirmPassword" type="password" class="form-control" name="confirmPassword" ng-required="true" maxlength="128">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.confirmPassword.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword), 'fa fa-check-circle ff-valid' : formRegistration.confirmPassword.$valid && (user.confirmPassword.length > 0 && user.password == user.confirmPassword) }"></i>
                                     </span>
                                 </div>
-                                <small class="ff-postscript">{{ 'LBL_CONFIRM_PASSWORD' | translate }}</small>
                             </div>
                             <button ladda="processingRegister" data-style="zoom-in" type="submit" ng-disabled="formRegistration.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword)" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_REGISTER' | translate }}</button>
                         </form>
                     </div>
                     <div class="p-xxs">
-                        <small class="pull-left"><a class="ff-a-alt" ng-click="showLogin()">{{ 'LBL_CANCEL' | translate }}</a></small>
+                        <small class="pull-left"><a class="ff-a-alt" ng-click="showLanding()">{{ 'LBL_CANCEL' | translate }}</a></small>
                         <small class="pull-right"><a class="ff-a-alt" ng-click="showTermsOfUse()">{{ 'LBL_TERMS_OF_USE' | translate }}</a></small>
                     </div>
                 </div>

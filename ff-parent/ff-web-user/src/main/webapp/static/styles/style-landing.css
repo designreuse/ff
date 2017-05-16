@@ -101,6 +101,10 @@ p{
   background-color: #fff;
 }
 
+.navbar-right{
+	padding-right: 15px;
+}
+
 .carousel {
   height: 620px;
 }
@@ -470,4 +474,121 @@ group .panel-heading+.panel-collapse>.panel-body {
 
 .form-control:focus, .single-line:focus{
 	border-color: #00afd0 !important;
+}
+
+.campaign-h1 {
+    line-height: .85;
+    font-family: unicredit-regular;
+    font-weight: 400;
+    font-size: 1.5em;
+    color: #FFF;
+}
+
+.campaign-h2 {
+    position: absolute;
+    bottom: 100px;
+    left: 25px;
+    font-family: unicredit-bold;
+    color: #FFF;
+    font-size: 40px;
+}
+
+.hero-lg {
+    font-size: 155px;
+    display: block;
+}
+
+.hero-sm {
+    display: block;
+    font-size: 64px;
+    margin-left: .85em;
+}
+
+.hero-row {
+    display: block;
+    line-height: 70px;
+}
+
+.input-group-addon{
+	border: none;
+}
+
+
+
+@media (min-width: 781px){
+	.campaign-h1 {
+    	position: absolute;
+    	top: 75px;
+    	left: 24px;
+    	right: 24px;
+	}
+}
+
+@media (max-width: 781px){
+	.campaign-h1 {
+    	position: absolute;
+    	top: 140px;
+    	left: 24px;
+    	right: 24px;
+	}
+	
+	.hero-lg {
+    font-size: 100px;
+    display: block;
+}
+
+.hero-sm {
+    display: block;
+    font-size: 44px;
+    margin-left: .85em;
+}
+
+.hero-row {
+    display: block;
+    line-height: 50px;
+}
+
+.campaign-h2 {
+    bottom: 160px;
+    font-size: 30px;
+}
+}
+
+@media only screen and (max-width : 768px) {
+  .navbar-header{
+  	width: 100%;
+  }
+  
+  .navbar-collapse{
+  	width: 100%;
+  }
+  
+  .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{
+  	border-top: none;
+  }
+}
+
+#e-zaba-btn{
+	margin-top: 25px;
+	border: 0;
+    background: none;
+    text-transform: normal;
+    font-size: 14px;
+    font-family: unicredit-bold,sans-serif;
+    font-weight: 700;
+    min-width: 180px;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1;
+    padding: 15px 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    max-width: 100%;
+    text-align: center;
+    cursor: pointer;
 }
