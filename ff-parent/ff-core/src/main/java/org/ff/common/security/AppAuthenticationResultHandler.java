@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -73,7 +74,11 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		Map<String, String> data = new HashMap<>();
-		data.put(STATUS, "NOK");
+		if (exception instanceof DisabledException) {
+			data.put(STATUS, "Disabled");
+		} else {
+			data.put(STATUS, "BadCredentials");
+		}
 		data.put(MESSAGE, exception.getLocalizedMessage());
 		objectMapper.writeValue(response.getOutputStream(), data);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -16,20 +16,19 @@ p span {
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <form name="form" class="ng-pristine ng-valid" novalidate>
-		<div class="row">
-			<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
-		        <div class="masonry-brick ff-masonry-brick" ng-repeat="project in projects">
-		            <i ng-click="deleteEntity(project)" class="fa fa-remove pull-right" style="margin-right: 3px; margin-top: 3px; cursor: pointer;" uib-tooltip="{{ 'TOOLTIP_DELETE' | translate }}"></i>
-		            <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
-		                <a class="ff-a" ui-sref="projects.edit({ id: project.id })">{{project.name}}</a>
-		            </h5>
-		            <a ui-sref="projects.edit({ id: project.id })">
-		                <img class="img-rounded ff-masonry-brick-img" ng-show="project.image.base64" ng-src="data:image/JPEG;base64,{{project.image.base64}}" width="100%">
-		            </a>
-		            <p style="margin-bottom: 0px; word-wrap: break-word" ng-bind-html="project.description | nl2br" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
-		        </div>
-		    </div>
-		</div>
-	</form>
+	<div ng-if="projects.length == 0">
+		<h4>{{ 'LABEL_NO_PROJECTS' | translate }}</h4>
+	</div>
+	<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
+        <div class="masonry-brick ff-masonry-brick" ng-repeat="project in projects">
+            <i ng-click="deleteEntity(project)" class="fa fa-remove pull-right" style="margin-right: 3px; margin-top: 3px; cursor: pointer;" uib-tooltip="{{ 'TOOLTIP_DELETE' | translate }}"></i>
+            <h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
+                <a class="ff-a" ui-sref="projects.edit({ id: project.id })">{{project.name}}</a>
+            </h5>
+            <a ui-sref="projects.edit({ id: project.id })">
+                <img class="img-rounded ff-masonry-brick-img" ng-show="project.image.base64" ng-src="data:image/JPEG;base64,{{project.image.base64}}" width="100%">
+            </a>
+            <p style="margin-bottom: 0px; word-wrap: break-word" ng-bind-html="project.description | nl2br" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
+        </div>
+    </div>
 </div>

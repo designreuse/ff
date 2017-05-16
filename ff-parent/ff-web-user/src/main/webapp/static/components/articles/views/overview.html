@@ -13,6 +13,9 @@ p span {
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+	<div ng-if="articles.length == 0">
+		<h4>{{ 'LABEL_NO_ARTICLES' | translate }}</h4>
+	</div>
 	<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
 		<div class="masonry-brick ff-masonry-brick" ng-repeat="article in articles">
             <small class="label-default pull-right ff-masonry-brick-date ">{{article.lastModifiedDate | date : dateFormat}}</small>

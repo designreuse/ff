@@ -80,12 +80,20 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title ff-ibox-title">
-                    <h5>Trends</h5>
-                    <div class="pull-right">
+                    <h5>Trendovi</h5>
+					<div class="btn-group pull-right m-l-lg">
+						<button type="button" class="btn btn-xs btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tooltip-placement="top-right" uib-tooltip="{{ 'ACTION_TOOLTIP_EXPORT' | translate }}">
+							<i class="fa fa-lg fa-download" role="button"></i> <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a ng-click="exportPDF()">{{ 'BUTTON_EXPORT' | translate }} {{ 'TO_PDF' | translate }}</a></li>
+						</ul>
+					</div>
+					<div class="pull-right">
                         <span class="m-r-xs">{{ 'DASHBOARD_CHART_PERIOD' | translate }}:</span>
                         <div class="btn-group">
-                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'daily'">Zadnjih 7 dana</label> 
-                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'monthly'">Zadnjih 6 mjeseci</label> 
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'daily'">{{ 'STATISTICS_PERIOD_LAST_7_DAYS' | translate }}</label> 
+                            <label ng-change="change()" class="btn btn-xs btn-white" ng-model="period" uib-btn-radio="'monthly'">{{ 'STATISTICS_PERIOD_LAST_6_MONTHS' | translate }}</label> 
                         </div>
                     </div>
                     <div class="pull-right m-r-xl">
@@ -98,7 +106,7 @@
                     </div>
                 </div>
                 <div class="ibox-content ff-ibox-content">
-                    <div class="row">
+                    <div id="trendsChart" class="row p-xs">
                         <div class="col-lg-12">
                             <div class="flot-chart">
                                 <div flot class="flot-chart-content" dataset="flotData" options="flotOptions"></div>

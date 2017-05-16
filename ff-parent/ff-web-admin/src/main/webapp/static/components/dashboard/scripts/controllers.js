@@ -77,6 +77,100 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 		$scope.getChartData($scope.period, $scope.type);
 	};
 	
+	// styles for PDF make
+	var pdfMakeStyles = {
+		header: {
+			fontSize: 14,
+			bold: true,
+			margin: [0, 0, 0, 3]
+		},
+		subheader: {
+			fontSize: 10,
+			bold: false,
+			margin: [0, 0, 0, 15]
+		},
+		tableContent: {
+			margin: [0, 15, 0, 15]
+		},
+		tableHeader: {
+			bold: true,
+			fontSize: 8
+		},
+		tableRow: {
+			fontSize: 8
+		}	
+	};
+	
+	/**
+	 * Function returns version of IE or false, if browser is not Internet Explorer.
+	 */
+	function detectIE() {
+		var ua = window.navigator.userAgent;
+
+		var msie = ua.indexOf('MSIE ');
+		if (msie > 0) {
+			// IE 10 or older => return version number
+			return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+		}
+
+		var trident = ua.indexOf('Trident/');
+		if (trident > 0) {
+			// IE 11 => return version number
+			var rv = ua.indexOf('rv:');
+			return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+		}
+
+		var edge = ua.indexOf('Edge/');
+		if (edge > 0) {
+			// Edge (IE 12+) => return version number
+			return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+		}
+
+		// other browser
+		return false;
+	};
+	
+	$scope.exportPDF = function() {
+		var subheader = '';
+		
+		if ($scope.type == 'users') {
+			subheader = $translate('DASHBOARD_USERS');
+		} else if ($scope.type == 'visits') {
+			subheader = $translate('DASHBOARD_VISITS');
+		} else if ($scope.type == 'tenders') {
+			subheader = $translate('DASHBOARD_TENDERS');
+		}
+		
+		if ($scope.period == 'daily') {
+			subheader = subheader + ' - ' + $translate('STATISTICS_PERIOD_LAST_7_DAYS');
+		} else if ($scope.period == 'monthly') {
+			subheader = subheader + ' - ' + $translate('STATISTICS_PERIOD_LAST_6_MONTHS');
+		}
+		
+		html2canvas($('#trendsChart')).then(function(canvas) {
+		    var docDefinition = {
+				pageSize: 'A4',
+				pageOrientation: 'landscape',
+				content: [
+				    { text: 'Trendovi', style: 'header' },
+				    { text: subheader, style: 'subheader' },
+				    {
+				        image: canvas.toDataURL('image/png'),
+				        width: 800
+					}
+				],
+				styles: pdfMakeStyles
+			};
+			
+			if (detectIE()) {
+				pdfMake.createPdf(docDefinition).download();
+			} else {
+				pdfMake.createPdf(docDefinition).open();
+			}
+				
+		});
+	};
+	
 	$scope.period = 'daily';	
 	$scope.type = 'users';
 	$scope.getChartData($scope.period, $scope.type);

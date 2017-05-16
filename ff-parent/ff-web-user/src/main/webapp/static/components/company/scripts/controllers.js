@@ -119,12 +119,20 @@ function CompanyEditController($rootScope, $scope, $state, $log, $timeout, $sce,
 						$rootScope.getProfileCompleteness();
 						toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
 					} else {
-						toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+						if (data.exception.indexOf("ValidationFailedException") != -1) {
+							toastr.warning(data.message, $translate('VALIDATION_FAILED_HEADER'));
+						} else {
+							toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+						}
 					}
 				})
 				.error(function(data, status, headers, config) {
 					$scope.saving = false;
-					toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+					if (data.exception.indexOf("ValidationFailedException") != -1) {
+						toastr.warning(data.message, $translate('VALIDATION_FAILED_HEADER'));
+					} else {
+						toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
+					}
 				});	
 		}
 	};

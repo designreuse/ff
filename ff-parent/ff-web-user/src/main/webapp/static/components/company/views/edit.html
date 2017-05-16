@@ -38,7 +38,7 @@
                     </div>
 				</div>
 				
-				<div ng-if="principal.registrationType == 'EXTERNAL'" class="form-group">
+				<div class="form-group">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_COMPANY_NAME' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.name.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.name.$valid }"></i></span>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 
-                <div ng-if="principal.registrationType == 'EXTERNAL'" class="form-group">
+                <div class="form-group">
                     <div class="col-sm-12">
                         <label class="ff-label">{{ 'LABEL_COMPANY_CODE' | translate }}
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.code.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.code.$valid }"></i></span>

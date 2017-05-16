@@ -1,11 +1,14 @@
 package org.ff.rest.company.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
 import org.ff.common.security.AppUserDetails;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.ProfileCompletenessResource;
 import org.ff.rest.company.service.CompanyService;
+import org.ff.rest.company.validation.CompanyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.LocaleResolver;
 
 import etm.core.monitor.EtmPoint;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyController extends BaseController {
 
 	@Autowired
+	private LocaleResolver localeResolver;
+
+	@Autowired
 	private CompanyService companyService;
+
+	@Autowired
+	private CompanyValidator companyValidator;
 
 	@Autowired
 	private EtmService etmService;
@@ -40,9 +50,10 @@ public class CompanyController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public CompanyResource save(@AuthenticationPrincipal AppUserDetails principal, @RequestBody CompanyResource resource) {
+	public CompanyResource save(@AuthenticationPrincipal AppUserDetails principal, @RequestBody CompanyResource resource, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".save");
 		try {
+			companyValidator.validate(resource, localeResolver.resolveLocale(request));
 			return companyService.save(principal, resource);
 		} catch (RuntimeException e) {
 			throw processException(e);

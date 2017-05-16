@@ -258,9 +258,7 @@ Trenutno nema prilika? Nema problema. Dok vi vodite vlastito poslovanje kao i in
                                 <input ng-model="password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
                                 <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
                             </div>
-                            <div style="height: 24px; text-align: center;">
-                                <small class="{{msgClass}}">{{ msg }}</small>
-                            </div>
+                            <p style="font-size: 11px; text-align: center; color: red;" ng-bind-html="msg"></p>
                             <button type="submit" ng-disabled="formLogin.$invalid" class="btn btn-primary block full-width m-b-xxs">{{ 'BTN_LOGIN' | translate }}</button>
                         </form>
                     </div>

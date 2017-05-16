@@ -10,7 +10,10 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 // ================================================================================
 //	CONFIG
 // ================================================================================
-.config(function($httpProvider, $translateProvider, $locationProvider, constants) {  
+.config(function($httpProvider, $translateProvider, $locationProvider, $sceProvider, constants) {  
+	
+	// disable SCE (Strict Contextual Escaping)
+	$sceProvider.enabled(false);
 	
 	$locationProvider.html5Mode({ enabled: true, requireBase: false });
 	
@@ -56,8 +59,8 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			HDR_WARNING: 'Upozorenje',
 			HDR_ERROR: 'Greška',
 			
-			LOGIN_OK: 'Prijava uspješna',
-			LOGIN_NOK: 'Prijava neuspješna, molimo pokušajte ponovo...',
+			LOGIN_BAD_CREDENTIALS: 'Prijava neuspješna, molimo pokušajte ponovo.',
+			LOGIN_DISABLED: 'Vaš profil je deaktiviran. Za ponovnu aktivaciju obratite se na e-mail adresu: <a href="mailto:mojeufond@unicreditgroup.zaba.hr?Subject=Aktivacija korisnika" target="_top">mojeufond@unicreditgroup.zaba.hr</a>',
 			
 			MSG_REGISTRATION_SUCCESS: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u MojEUfond.',
 			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
@@ -85,16 +88,19 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			params : { username: $scope.username, password: $scope.password }
 		})
 		.success(function(data, status, headers, config) {
-			$scope.msg = (data.status == 'OK') ? $translate('LOGIN_OK') : $translate('LOGIN_NOK');
-			$scope.msgClass = "text-danger";
+			if (data.status == 'Disabled') {
+				$scope.msg = $translate('LOGIN_DISABLED');
+			} else if (data.status == 'BadCredentials') {
+				$scope.msg = $translate('LOGIN_BAD_CREDENTIALS');
+			}
+			
 			if (data.url != null) {
-				$scope.msgClass = "text-success";
+				// redirect if user is authenticated
 				$window.location.href = data.url;
 			}
 		})
 		.error(function(data, status, headers, config) {
 			$scope.msg = data.message;
-			$scope.msgClass = "text-danger";
 		});
 	};
 	

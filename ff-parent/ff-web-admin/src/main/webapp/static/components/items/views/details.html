@@ -125,10 +125,13 @@
 	                                
 	                                <!-- CURRENCY -->
 									<div ng-if="entity.type == 'CURRENCY'" class="input-group">
-										<input ng-model="entity.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" style="border-right: none;" />
+										<input ng-model="entity.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="entity" ng-required="entity.mandatory" />
+										<span class="input-group-addon"><small>{{ currencies[0].code }}</small></span>
+										<!--  
 										<span class="input-group-addon" style="border: none; padding: 0px;">
                                             <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="entity.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>										
 										</span>
+										-->
 									</div>
 									
 									<!-- PERCENTAGE -->

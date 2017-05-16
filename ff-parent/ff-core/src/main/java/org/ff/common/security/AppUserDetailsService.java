@@ -34,10 +34,11 @@ public class AppUserDetailsService implements UserDetailsService {
 		}
 
 		AppUser appUser = null;
-		if (user != null && user.getStatus() == UserStatus.ACTIVE) {
-			appUser = new AppUser(user.getId(), user.getEmail(), user.getPassword(), false, false, true, false,
-					Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(),
-					user.getDemoUser(), user.getRegistrationType());
+		if (user != null) {
+			appUser = new AppUser(user.getId(), user.getEmail(), user.getPassword(), false, false,
+					(user.getStatus() == UserStatus.ACTIVE) ? true : false, false,
+							Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(),
+							user.getDemoUser(), user.getRegistrationType());
 		}
 
 		if (appUser == null) {

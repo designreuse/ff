@@ -68,10 +68,13 @@
                         
                         <!-- CURRENCY -->
                         <div ng-if="item.item.type == 'CURRENCY'" class="input-group">
-                            <input ng-model="item.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.item.mandatory" style="border-right: none;" />
+                            <input ng-model="item.value" type="text" ng-currency currency-symbol="" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.item.mandatory" />
+                            <span class="input-group-addon"><small>{{ currencies[0].code }}</small></span>
+                            <!--  
                             <span class="input-group-addon" style="border: none; padding: 0px;">
                                 <select chosen width="1" disable-search="true" class="form-control ff-form-control" ng-model="item.currency" options="currencies" ng-options="currency.code for currency in currencies track by currency.code"></select>
                             </span>
+                            -->
                         </div>
                         
                         <!-- SELECT -->
