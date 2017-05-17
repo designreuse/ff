@@ -187,7 +187,6 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 		DashboardService.getHideSyncDataWarning()
 			.success(function(data, status) {
 				$scope.hideSyncDataWarning = { value : data };
-				console.log($scope.hideSyncDataWarning);
 			})
 			.error(function(data, status) {
 				toastr.error($translate('ACTION_FAILURE_MESSAGE'));
