@@ -112,12 +112,13 @@ public class ExternalFlowService {
 
 				log.debug("Company data: {}", companyData);
 
+				// process BRM data
+				BusinessRelationshipManager businessRelationshipManager = processVpoData(companyData);
+
 				// check if company is already registered in FundFinder
 				Company company = companyRepository.findByCode(companyData.getOibNumber());
 				User user = null;
 				String password = passwordGeneratorService.generate();
-
-				BusinessRelationshipManager businessRelationshipManager = processVpoData(companyData);
 
 				if (company == null) {
 					log.debug("Creating new user and company...");
