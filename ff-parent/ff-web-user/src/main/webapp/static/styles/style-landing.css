@@ -40,8 +40,8 @@ h1,h2,h3{
 }
 
 p{
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 16px;
+  line-height: 24px;
   color: #333;
 }
 
@@ -174,7 +174,7 @@ p{
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
   text-shadow: none;
-  padding: 25px;
+  padding: 20px;
   text-align: left;
 }
 
@@ -249,13 +249,25 @@ p{
 }
 
 .intro p{
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333;
+}
+
+ul li{
+  font-size: 16px;
+  line-height: 24px;
   color: #333;
 }
 
 #what-is-it{
   padding-bottom: 50px;
+}
+
+#call-to-action{
+  padding-bottom: 50px;
+  padding-top: 50px;
+  border-top: 1px solid #e5e5e5;
 }
 
 #not-convinced{
