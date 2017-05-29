@@ -7,8 +7,10 @@ import org.ff.common.security.AppUser.AppUserRole;
 import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Permission;
 import org.ff.jpa.domain.Role;
+import org.ff.jpa.domain.User;
 import org.ff.jpa.repository.PermissionRepository;
 import org.ff.jpa.repository.RoleRepository;
+import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.principal.resource.PrincipalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PrincipalController {
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -36,6 +41,9 @@ public class PrincipalController {
 			if (authentication.getPrincipal() instanceof AppUserDetails) {
 				// user application
 				AppUserDetails principal = (AppUserDetails) authentication.getPrincipal();
+
+				User user = userRepository.findOne(principal.getUser().getId());
+				principal.getUser().setUsername(user.getEmail());
 
 				String roleName = principal.getAuthorities().iterator().next().toString();
 				List<String> permissions = getPermissions(roleName);

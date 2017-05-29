@@ -113,6 +113,9 @@ function config($translateProvider) {
 			DLG_DEACTIVATE_HDR: 'Deaktivacija profila',
 			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila biti ćete automatski odjavljeni te više nećete moći pristupiti MojEUfond aplikaciji. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Da li doista želite deaktivirati vaš profil?',
 			
+			DLG_NO_EMAIL_HDR: 'Nepotpun profil korisnika',
+			DLG_NO_EMAIL_MSG: 'Kroz nekoliko sekundi biti ćete automatski preusmjereni na Postavke gdje možete popuniti sve obavezne stavke vašeg korisničkog profila.',
+			
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil poduzeća',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu vašeg poduzeća.',
 			

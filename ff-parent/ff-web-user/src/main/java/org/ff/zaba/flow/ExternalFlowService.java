@@ -134,8 +134,6 @@ public class ExternalFlowService {
 							return new ResponseEntity<>(HttpStatus.CONFLICT);
 						}
 						user.setEmail(data.get("email"));
-					} else {
-						user.setEmail("");
 					}
 
 					user.setPassword(PasswordService.encodePassword(password));
@@ -180,8 +178,6 @@ public class ExternalFlowService {
 						} else {
 							user.setEmail(data.get("email"));
 						}
-					} else {
-						user.setEmail("");
 					}
 					user.setLastLoginDate(new DateTime());
 					if (businessRelationshipManager != null) {

@@ -21,6 +21,7 @@ function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $
 				toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
 				$rootScope.principal.firstName = data.user.firstName;
 				$rootScope.principal.lastName = data.user.lastName;
+				$rootScope.principal.username = data.user.email;
 			})
 			.error(function(data, status, headers, config) {
 				if (data.exception.indexOf("ValidationFailedException") != -1) {

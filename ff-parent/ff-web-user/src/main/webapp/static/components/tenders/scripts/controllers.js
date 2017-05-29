@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW
 // ========================================================================
-function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, SessionStorage, TendersService, ImagesService) {
+function TendersOverviewController($rootScope, $scope, $state, $sce, $log, $timeout, $filter, uiGridConstants, SessionStorage, TendersService, ImagesService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -83,6 +83,14 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $
 		$state.go('projects.edit', { 'id' : id });
 	}
 	
+	var trusted = {};
+	$scope.toTrusted = function(html) {
+		if (html) {
+			html = html.replace(/\r?\n/g, '<br />');
+		}
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
+	}
+	
 	// initial load
 	$scope.findAll();
 };
@@ -90,7 +98,7 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $timeout, $
 //========================================================================
 //	DETAILS
 //========================================================================
-function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log, $timeout, $filter, TendersService) {
+function TendersDetailsController($rootScope, $scope, $state, $stateParams, $sce, $log, $timeout, $filter, TendersService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -118,6 +126,14 @@ function TendersDetailsController($rootScope, $scope, $state, $stateParams, $log
 	
 	$scope.showProject = function(id) {
 		$state.go('projects.edit', { 'id' : id });
+	}
+	
+	var trusted = {};
+	$scope.toTrusted = function(html) {
+		if (html) {
+			html = html.replace(/\r?\n/g, '<br />');
+		}
+	    return trusted[html] || (trusted[html] = $sce.trustAsHtml(html)); 
 	}
 	
 	// initial load

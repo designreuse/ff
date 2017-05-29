@@ -39,8 +39,10 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label class="ff-label">{{ 'LABEL_EMAIL' | translate }}</label>
-                        <input ng-model="settings.user.email" type="email" class="form-control ff-form-control" name="email" />
+                        <label class="ff-label">{{ 'LABEL_EMAIL' | translate }}
+                        	<span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.email.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.email.$valid }"></i></span>
+                        </label>
+                        <input ng-model="settings.user.email" type="email" class="form-control ff-form-control" name="email" ng-required="true" />
                     </div>
                 </div>
                 <div class="form-group">

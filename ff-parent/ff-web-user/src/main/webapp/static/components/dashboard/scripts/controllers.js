@@ -211,6 +211,21 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			});
 	};
 	
+	if (!$rootScope.principal.username) {
+		var dialogInstance1 = new BootstrapDialog({
+			type: BootstrapDialog.TYPE_DANGER,
+            title: $translate('DLG_NO_EMAIL_HDR'),
+            message: $translate('DLG_NO_EMAIL_MSG'),
+            closable: false,
+        });
+        dialogInstance1.open();
+        
+        $timeout(function() {
+        	dialogInstance1.close();
+        	$state.go('settings.overview');
+		}, 5000);
+	}
+	
 	// initial load
 	$scope.getData();
 	$scope.findArticles();
