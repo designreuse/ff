@@ -122,6 +122,8 @@ function config($translateProvider) {
 			CHOSEN_SINGLE_PLACEHOLDER: 'Molimo odaberite...',
 			CHOSEN_MULTIPLE_PLACEHOLDER: 'Molimo odaberite...',
 			CHOSEN_NO_RESULT_PLACEHOLDER: 'Nema rezultata koji odgovaraju',
+			CHOSEN_SINGLE_PLACEHOLDER_CONTACT: 'Upišite grad ili mjesto',
+			CHOSEN_NO_RESULT_PLACEHOLDER_CONTACT: 'Nema rezultata koji odgovaraju',
 		});
 	
 	$translateProvider.preferredLanguage("hr");

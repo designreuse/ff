@@ -73,7 +73,7 @@
                         <label class="ff-label">{{ 'LABEL_CONTACT_LOCATION' | translate }} *
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : form.location.$invalid, 'fa fa-check-circle m-l-xs ff-valid' : form.location.$valid }"></i></span>
                         </label> 
-                        <select chosen class="form-control ff-form-control" width="1" ng-required="true" ng-model="entity.location" name="location" options="locations" ng-options="location.value for location in locations track by location.key"></select>
+                        <select data-placeholder-text-single="'{{ 'CHOSEN_SINGLE_PLACEHOLDER_CONTACT' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER_CONTACT' | translate }}'" chosen class="form-control ff-form-control" width="1" ng-required="true" ng-model="entity.location" name="location" options="locations" ng-options="location.value for location in locations track by location.key"></select>
                     </div>
                 </div>
             </div>
