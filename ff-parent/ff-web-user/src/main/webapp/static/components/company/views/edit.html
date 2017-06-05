@@ -73,7 +73,7 @@
                         <input ng-if="item.type == 'NUMBER'" ng-model="item.value" type="number" class="form-control ff-form-control" name="{{'item'+parentIndex}}" ng-required="item.mandatory" />
                         
                         <!-- SUBDIVISION2 -->
-						<select ng-if="item.type == 'SUBDIVISION2'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+						<select ng-if="item.type == 'SUBDIVISION2'" width="1" data-placeholder-text-single="'{{ 'CHOSEN_SINGLE_PLACEHOLDER' | translate }}'" data-no-results-text="'{{ 'CHOSEN_NO_RESULT_PLACEHOLDER' | translate }}'" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
 						
 						<!-- SUBDIVISIONS1 -->
 						<select ng-if="item.type == 'SUBDIVISIONS1'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+parentIndex}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
