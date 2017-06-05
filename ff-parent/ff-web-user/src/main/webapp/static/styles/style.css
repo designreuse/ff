@@ -296,27 +296,27 @@
 .ff-emphasize-item-label {
 	width: 100%;
 	padding: 10px;
-	background: #c0c0c0 !important;
+	background: #00afd0 !important;
 	font-family: unicredit-regular;
-	font-size: 16px;
+	font-size: 15px;
 }
 
 .ff-emphasize-item-value {
 	padding-left: 10px;
 	background: #fafafa;
 	font-family: unicredit-light;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .ff-emphasize-item-box {
 	padding-left: 0px; 
 	padding-right: 0px;
 	padding-bottom: 5px;
-	border: 1px solid #c0c0c0;
+	border: 1px solid #00afd0;
 }
 
 .ff-emphasize-item-help {
-	color: #606060 !important;
+	color: #404040 !important;
 }
 
 .ff-nav-second-level {
