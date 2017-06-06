@@ -2,6 +2,7 @@ package org.ff.common.security;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.common.security.AppUser.AppUserRole;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserStatus;
@@ -35,7 +36,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
 		AppUser appUser = null;
 		if (user != null) {
-			appUser = new AppUser(user.getId(), user.getEmail(), user.getPassword(), false, false,
+			appUser = new AppUser(user.getId(), StringUtils.isNotBlank(user.getEmail()) ? user.getEmail() : "", user.getPassword(), false, false,
 					(user.getStatus() == UserStatus.ACTIVE) ? true : false, false,
 							Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(),
 							user.getDemoUser(), user.getRegistrationType());
