@@ -100,6 +100,7 @@ function config($translateProvider) {
 			LABEL_SHOW_SYNC_DATA_WARNING: 'Nemoj više prikazivati ovo upozorenje',
 			LABEL_NO_PROJECTS: 'Trenutno nema unešenih projekata',
 			LABEL_NO_ARTICLES: 'Trenutno nema unešenih članaka',
+			LABEL_CHART_DETAILS_NOTE: 'Za detalje kliknite na traku za određeni mjesec',
 			
 			TOOLTIP_DELETE: 'Izbriši',
 			TOOLTIP_SYNC_DATA: 'koristiti se podacima iz sustava Banke',
@@ -110,6 +111,7 @@ function config($translateProvider) {
 			
 			TENDER_STATE_OPEN: 'OTVOREN',
 			TENDER_STATE_PENDING: 'U NAJAVI',
+			TENDER_STATE_CLOSE: 'ZATVOREN',
 			
 			DLG_DELETE_HDR: 'Izbriši projekt',
 			DLG_DELETE_MSG: 'Želite li izbrisati projekt?',

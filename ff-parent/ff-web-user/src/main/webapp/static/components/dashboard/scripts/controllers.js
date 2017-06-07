@@ -226,7 +226,26 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 		}, 5000);
 	}
 	
+	$scope.showChartDetails = function(event) {
+		if (event[0]) {
+			$timeout(function() {
+				if ($scope.chartDetails != event[0]._model.label) {
+					$scope.chartDetails = event[0]._model.label; 
+					
+					DashboardService.getChartDetails($scope.chartDetails)
+						.success(function(data, status) {
+							$scope.chartDetailsTenders = data;
+						})
+						.error(function(data, status) {
+							toastr.error($translate('ACTION_FAILURE_MESSAGE'));
+						});
+				}
+			}, 100);
+		}
+	};
+	
 	// initial load
+	$scope.chartDetails = undefined;
 	$scope.getData();
 	$scope.findArticles();
 	$scope.getShowSyncDataWarningOrNot();

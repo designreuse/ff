@@ -3,6 +3,8 @@ package org.ff.rest.dashboard.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -104,11 +106,22 @@ public class DashboardService {
 
 			String tenderStartDateFormatted = monthFormat.format(tenderStartDate.toDate());
 
+			if (map2.containsKey(tenderStartDateFormatted)) {
+				for (TenderItem tenderItem : tender.getItems()) {
+					Item item = tenderItem.getItem();
+					if (item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING) {
+						if (StringUtils.isNotBlank(tenderItem.getValue())) {
+							double value = Double.parseDouble(tenderItem.getValue());
+							map2.put(tenderStartDateFormatted, map2.get(tenderStartDateFormatted) + value);
+						}
+					}
+				}
+			}
+
 			if (map1.containsKey(tenderStartDateFormatted)) {
 				map1.get(tenderStartDateFormatted).incrementAndGet();
 
-				// add tender to latest tenders if it's
-				if (tender.getCreationDate().isBefore(date30DaysAgo)) {
+				if (tenderStartDate.isBefore(date30DaysAgo.toLocalDate())) {
 					// skip tenders that are older then 30 days
 					continue;
 				}
@@ -124,6 +137,7 @@ public class DashboardService {
 					Item item = tenderItem.getItem();
 					if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE || item.getMetaTag() == ItemMetaTag.TENDER_END_DATE
 							|| item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING || item.getMetaTag() == ItemMetaTag.TENDER_MAX_AID_INTENSITY) {
+
 						ItemResource itemResource = itemResourceAssembler.toResource(item, true);
 						tenderResourceAssembler.setResourceValue(tenderResource, itemResource, tenderItem);
 						tenderResource.getItems().add(itemResource);
@@ -147,18 +161,6 @@ public class DashboardService {
 									tenderResource.setState(TenderState.CLOSE);
 								}
 							}
-						}
-					}
-				}
-			}
-
-			if (map2.containsKey(tenderStartDateFormatted)) {
-				for (TenderItem tenderItem : tender.getItems()) {
-					Item item = tenderItem.getItem();
-					if (item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING) {
-						if (StringUtils.isNotBlank(tenderItem.getValue())) {
-							double value = Double.parseDouble(tenderItem.getValue());
-							map2.put(tenderStartDateFormatted, map2.get(tenderStartDateFormatted) + value);
 						}
 					}
 				}
@@ -200,6 +202,61 @@ public class DashboardService {
 		}
 
 		return null;
+	}
+
+	public List<TenderResource> getChartDetails(String period) {
+		List<TenderResource> result = new LinkedList<>();
+
+		LocalDate today = new LocalDate();
+
+		for (Tender tender : tenderRepository.findByStatus(TenderStatus.ACTIVE)) {
+			LocalDate tenderStartDate = getTenderStartDate(tender);
+			if (tenderStartDate == null) {
+				// skip tender if start date is not known
+				continue;
+			}
+
+			if (period.equals(monthFormat.format(tenderStartDate.toDate()))) {
+				TenderResource tenderResource = new TenderResource();
+				tenderResource.setId(tender.getId());
+				tenderResource.setName(tender.getName());
+				tenderResource.setItems(new ArrayList<ItemResource>());
+				result.add(tenderResource);
+
+				for (TenderItem tenderItem : tender.getItems()) {
+					Item item = tenderItem.getItem();
+					if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE || item.getMetaTag() == ItemMetaTag.TENDER_END_DATE
+							|| item.getMetaTag() == ItemMetaTag.TENDER_AVAILABLE_FUNDING || item.getMetaTag() == ItemMetaTag.TENDER_MAX_AID_INTENSITY) {
+
+						ItemResource itemResource = itemResourceAssembler.toResource(item, true);
+						tenderResourceAssembler.setResourceValue(tenderResource, itemResource, tenderItem);
+						tenderResource.getItems().add(itemResource);
+
+						if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE) {
+							if (tenderItem.getValue() != null) {
+								LocalDate startDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+								if (startDate.isBefore(today)) {
+									tenderResource.setState(TenderState.OPEN);
+								} else if (startDate.isAfter(today)) {
+									tenderResource.setState(TenderState.PENDING);
+								}
+							}
+						}
+
+						if (item.getMetaTag() == ItemMetaTag.TENDER_END_DATE) {
+							if (tenderItem.getValue() != null) {
+								LocalDate endDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+								if (endDate.isBefore(today)) {
+									tenderResource.setState(TenderState.CLOSE);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 }

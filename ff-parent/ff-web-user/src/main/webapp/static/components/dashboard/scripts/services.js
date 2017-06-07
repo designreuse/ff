@@ -13,4 +13,7 @@ angular.module('FundFinder')
 	this.syncCompanyData = function(option, showSyncDataWarningFlag) {
 		return $http.get('/api/v1/company/syncData/' + option + '/' + showSyncDataWarningFlag);
 	};
+	this.getChartDetails = function(period) {
+		return $http.get('/api/v1/dashboard/getChartDetails?period=' + period);
+	};
 });

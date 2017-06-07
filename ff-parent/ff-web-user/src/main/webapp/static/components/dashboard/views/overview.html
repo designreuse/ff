@@ -103,7 +103,8 @@
 		                <div class="ibox-content ff-ibox-content">
 		                    <div class="row m-b-xs m-l-xxs p-xs" ng-repeat="tender in data.tenders" style="border: 1px solid #f0f0f0; border-radius: 5px;">
                                 <small ng-if="tender.state == 'OPEN'" class="label-primary pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_OPEN' | translate }}</small>
-                                <small ng-if="tender.state == 'PENDING'" class="label-danger pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_PENDING' | translate }}</small>
+                                <small ng-if="tender.state == 'PENDING'" class="label-warning pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_PENDING' | translate }}</small>
+                                <small ng-if="tender.state == 'CLOSE'" class="label-danger pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_CLOSE' | translate }}</small>
                                 <a class="ff-a" ui-sref="tenders.details({ id: tender.id })">
 		                          <h4>{{ tender.name }}</h4>
 		                        </a>
@@ -118,7 +119,7 @@
 		                            </span>
 		                            
 		                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_MAX_AID_INTENSITY'">
-                                        <i class="fa fa-level-up m-l-md m-r-xs" uib-tooltip="{{ item.text }}" ng-if="item.value" aria-hidden="true"></i> <span ng-if="item.value">{{ item.value | currency : "" }} {{ item.currency.code }}</span>
+                                        <i class="fa fa-level-up m-l-md m-r-xs" uib-tooltip="{{ item.text }}" ng-if="item.value" aria-hidden="true"></i> <span ng-if="item.value">{{ item.value }} %</span>
                                     </span>
 		                            
 		                            <i ui-sref="tenders.details({ id: tender.id })" class="fa fa-search-plus fa-lg pull-right" style="cursor: pointer;" aria-hidden="true"></i>
@@ -159,16 +160,42 @@
 		<div class="col-lg-6">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title ff-ibox-title">
-					<h4 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_TENDERS_CHART' | translate }}</h4>
+					<h4 style="margin-top: 0px; margin-bottom: 5px;" class="m-b-md">{{ 'HEADER_DASHBOARD_TENDERS_CHART' | translate }}
+						<small class="pull-right"><i class="fa fa-info-circle m-r-xxs" aria-hidden="true"></i> {{ 'LABEL_CHART_DETAILS_NOTE' | translate }}</small>
+					</h4>
 				</div>
-				<!--  
 				<div class="ibox-content ff-ibox-content">
-					<canvas class="chart chart-bar" chart-data="chartData" chart-labels="chartLabels" chart-options="chartOptions"></canvas>
-				</div>
-				-->
-				<div class="ibox-content ff-ibox-content">
-				    <canvas class="chart chart-bar" chart-data="chartData" chart-labels="chartLabels" 
+				    <canvas class="chart chart-bar" chart-data="chartData" chart-labels="chartLabels" chart-click="showChartDetails"
 				        chart-series="chartSeries" chart-dataset-override="chartDatasetOverride" chart-options="chartOptions"></canvas>
+				        
+				    <div ng-show="chartDetails" class="m-t-md">
+				    	<h5 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Detalji za {{ chartDetails }}</h5>
+				    	
+				    	<div class="row m-b-xs m-l-xs m-r-xs p-xs" ng-repeat="tender in chartDetailsTenders" style="border: 1px solid #f0f0f0; border-radius: 5px;">
+                               <small ng-if="tender.state == 'OPEN'" class="label-primary pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_OPEN' | translate }}</small>
+                               <small ng-if="tender.state == 'PENDING'" class="label-warning pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_PENDING' | translate }}</small>
+                               <small ng-if="tender.state == 'CLOSE'" class="label-danger pull-right" style="padding: 2px 5px 1px 5px; border-radius: 5px; margin-top: -7px; margin-right: -7px; color: white;">{{ 'TENDER_STATE_CLOSE' | translate }}</small>
+                               <a class="ff-a" ui-sref="tenders.details({ id: tender.id })">
+	                          <h4>{{ tender.name }}</h4>
+	                        </a>
+	                        <div>
+	                            <i class="fa fa-calendar m-r-xs" aria-hidden="true"></i>
+	                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_START_DATE'">{{ item.value | date:dateFormat }}</span>
+	                            -
+	                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_END_DATE'">{{ item.value | date:dateFormat }}</span>
+	                            
+	                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_AVAILABLE_FUNDING'">
+	                            	<i class="fa fa-diamond m-l-md m-r-xs" uib-tooltip="{{ item.text }}" ng-if="item.value" aria-hidden="true"></i> <span ng-if="item.value">{{ item.value | currency : "" }} {{ item.currency.code }}</span>
+	                            </span>
+	                            
+	                            <span ng-repeat="item in tender.items" ng-if="item.metaTag == 'TENDER_MAX_AID_INTENSITY'">
+									<i class="fa fa-level-up m-l-md m-r-xs" uib-tooltip="{{ item.text }}" ng-if="item.value" aria-hidden="true"></i> <span ng-if="item.value">{{ item.value }} %</span>
+								</span>
+	                            
+	                            <i ui-sref="tenders.details({ id: tender.id })" class="fa fa-search-plus fa-lg pull-right" style="cursor: pointer;" aria-hidden="true"></i>
+	                        </div> 
+	                    </div>
+				    </div>
 				</div>
 			</div>
 		</div>
