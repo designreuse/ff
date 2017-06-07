@@ -407,6 +407,32 @@ angular.module('FundFinder')
 	    })
 	
 	    // ==========================================
+		// 	E-MAIL
+	    // ==========================================
+		.state('emails', {
+	        abstract: true,
+	        url: "/emails",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/emails/scripts/controllers.js',
+	        			        constants.contextPath + '/components/emails/scripts/services.js',
+	        			        constants.contextPath + '/components/usergroups/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('emails.send', {
+	        url: "/send",
+	        templateUrl: constants.contextPath + "/components/emails/views/send.html",
+	        controller: 'EmailsSendController',
+	        data: { pageTitle: 'Send e-mail' }
+	    })
+	    
+	    // ==========================================
 	    // 	SETTINGS
 	    // ==========================================
 		.state('settings', {

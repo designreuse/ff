@@ -31,6 +31,9 @@
             <li ng-if="hasPermission(['contacts'])" ng-class="{active: $state.includes('contacts')}">
                 <a ui-sref="contacts.overview"><span class="nav-label">{{ 'MENU_CONTACTS' | translate }}</span></a>
             </li>
+            <li ng-class="{active: $state.includes('emails')}">
+                <a ui-sref="emails.send"><span class="nav-label">{{ 'MENU_EMAIL' | translate }}</span></a>
+            </li>
             <li ng-if="hasPermission(['settings'])" ng-class="{active: $state.includes('settings')}" class="dropdown">
 	            <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="nav-label">{{ 'MENU_SETTINGS' | translate }}</span> <span class="fa fa-angle-down"></span></a>
                 <ul class="dropdown-menu" role="menu">

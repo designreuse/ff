@@ -26,6 +26,7 @@ function config($translateProvider) {
 			MENU_TENDER_ITEMS: 'Stavke natječaja',
 			MENU_USERS: 'Korisnici',
 			MENU_USER_GROUPS: 'Korisničke grupe',
+			MENU_EMAIL: 'E-mail',
 
 			HEADER_ACTIVITY_ADD: 'Novi sektor',
 			HEADER_ACTIVITY_EDIT: 'Uredi sektor',

@@ -1,0 +1,59 @@
+<style>
+    .chosen-container-single {
+        width: 100%;
+    }
+    .chosen-container-single .chosen-single {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi {
+        width: 100%;
+    }
+    .chosen-container-multi .chosen-choices {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi .chosen-choices li.search-field .default {
+        color: #b0b0b0 !important;
+    }
+</style>
+
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1>{{ 'MENU_EMAIL' | translate }}</h1>
+    </div>
+</div>
+      
+<div class="wrapper wrapper-content animated fadeIn">
+	<form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
+	    <div class="row">
+			<div class="col-lg-12">
+				<div class="input-group" style="width: 100%">
+					<span class="input-group-addon" style="background: #f8f8f8; width: 100px; text-align: right;">
+						<small>{{ 'LABEL_SEND_EMAIL_TO' | translate }}</small>
+					</span> 
+					<select chosen multiple width="1" ng-required="true" ng-model="email.userGroups"
+						placeholder-text-multiple="'{{ 'LABEL_SEND_EMAIL_TO_PLACEHOLDER' | translate }}'"
+						options="userGroups" ng-options="userGroup.name for userGroup in userGroups track by userGroup.id"></select>
+				</div>
+				<div class="input-group m-t-xs" style="width: 100%">
+					<span class="input-group-addon" style="background: #f8f8f8; width: 100px; text-align: right;">
+						<small>{{ 'LABEL_SEND_EMAIL_SUBJECT' | translate }}</small>                                               
+					</span>
+					<input ng-model="email.subject" type="text" class="form-control ff-form-control" name="emailSubject" ng-required="true" maxlength="512" />
+				</div>
+				<div class="input-group m-t-xs" style="width: 100%">
+					<span class="input-group-addon" style="background: #f8f8f8; width: 100px; text-align: right;">
+						<small>{{ 'LABEL_SEND_EMAIL_TEXT' | translate }}</small>                                               
+					</span>
+					<summernote config="summernoteOptions" ng-model="email.text" name="text" ng-required="true" />
+				</div>
+			</div>
+		</div>
+	</form>
+	
+	<div class="row m-t-md" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="reset()" class="btn btn-white m-r-sm">{{ 'BUTTON_RESET' | translate }}</button>
+            <button ladda="sendingEmail" ng-click="send()" ng-disabled="form.$invalid" class="btn btn-primary">{{ 'BUTTON_SEND' | translate }}</button>
+        </div>
+    </div>
+</div>
