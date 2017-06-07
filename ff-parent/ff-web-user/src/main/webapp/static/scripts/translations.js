@@ -129,6 +129,7 @@ function config($translateProvider) {
 			MSG_REGISTRATION_CONFLICT_USER: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',
 			MSG_REGISTRATION_CONFLICT_COMPANY: 'Poduzeća sa upisanim OIB-om već postoji u sustavu.',
 			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
+			MSG_COMPANY_PROFILE_MISSING: 'Registracija nije moguća jer profil poduzeća nije popunjen',
 			
 			CHOSEN_SINGLE_PLACEHOLDER: 'Molimo odaberite...',
 			CHOSEN_MULTIPLE_PLACEHOLDER: 'Molimo odaberite...',

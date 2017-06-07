@@ -131,6 +131,9 @@ function RegistrationController($rootScope, $scope, $state, $log, $timeout, $htt
 						toastr.error($translate('MSG_REGISTRATION_ERROR'));
 					}
 				});
+		} else {
+			toastr.warning($translate('MSG_COMPANY_PROFILE_MISSING'));
+			$scope.saving = false;
 		}
 	};
 };
