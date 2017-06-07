@@ -1,5 +1,6 @@
 angular.module('FundFinder')
-	.controller('SettingsController', SettingsController);
+	.controller('SettingsController', SettingsController)
+	.controller('RegistrationController', RegistrationController);
 
 function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $window, $filter, SettingsService) {
 	var $translate = $filter('translate');
@@ -80,4 +81,56 @@ function SettingsController($rootScope, $scope, $state, $log, $timeout, $http, $
 	
 	// initial load
 	$scope.find();
+};
+
+function RegistrationController($rootScope, $scope, $state, $log, $timeout, $http, $window, $filter, SessionStorage, SettingsService) {
+	var $translate = $filter('translate');
+	
+	$scope.user = {};
+	
+	$scope.register = function() {
+		$scope.saving = true;
+		
+		var user = $scope.user
+		user.company = SessionStorage.getSession("company");
+		user.projects = SessionStorage.getSession("projects");
+		
+		if (user && user.company) {
+			SettingsService.registerDemo(user)
+				.success(function(data, status, headers, config) {
+					$scope.saving = false;
+					BootstrapDialog.show({
+						type: BootstrapDialog.TYPE_DEFAULT,
+						closable: false,
+			            title: $translate('DLG_REGISTRATION_HDR'),
+			            message: $translate('DLG_REGISTRATION_MSG'),
+			            buttons: [
+							{
+								label: $translate('BUTTON_CLOSE_AND_LOGOUT'),
+							    cssClass: 'btn-white',
+							    action: function(dialog) {
+							    	$http.post('/logout', {})
+										.success(function() {
+											$window.location.href = '';
+										})
+										.error(function(data) {
+											$log.error(data);
+										});
+							    }
+							}
+			            ]
+			        });
+				})
+				.error(function(data, status, headers, config) {
+					$scope.saving = false;
+					if (data == 100) {
+						toastr.warning($translate('MSG_REGISTRATION_CONFLICT_USER'));
+					} else if (data == 200) {
+						toastr.warning($translate('MSG_REGISTRATION_CONFLICT_COMPANY'));
+					} else {
+						toastr.error($translate('MSG_REGISTRATION_ERROR'));
+					}
+				});
+		}
+	};
 };

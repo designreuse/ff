@@ -201,6 +201,12 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.password = undefined;
 	};
 	
+	$scope.showLoginDemo = function() {
+		$scope.username = "demo";
+		$scope.password = "demo";
+		$scope.login();
+	};
+	
 	$scope.showResetPassword = function() {
 		$scope.landingVisible = false;
 		$scope.welcomeVisible = false;

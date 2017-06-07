@@ -5,11 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
+import org.ff.common.security.AppUserDetails;
 import org.ff.rest.user.resource.UserResource;
 import org.ff.rest.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,6 +67,16 @@ public class UserController extends BaseController {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".confirmRegistration");
 		try {
 			userService.confirmRegistration(registrationCode, response);
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "registerDemo")
+	public ResponseEntity<?> registerDemo(@AuthenticationPrincipal AppUserDetails principal, @RequestBody UserResource resource, HttpServletRequest request) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".registerDemo");
+		try {
+			return userService.registerDemo(resource, principal, localeResolver.resolveLocale(request));
 		} finally {
 			etmService.collect(point);
 		}

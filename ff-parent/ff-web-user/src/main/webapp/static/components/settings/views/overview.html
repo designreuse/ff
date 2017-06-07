@@ -9,8 +9,8 @@
 
 <div class="wrapper wrapper-content animated fadeIn">
 	<form name="form" class="form-horizontal ng-pristine ng-valid" novalidate>
-	   <div class="row">
-	       <div class="col-lg-12">
+		<div class="row">
+	       	<div class="col-lg-12">
                 <div class="form-group p-xs" style="padding-top: 0px; padding-bottom: 0px;">
                     <h3>{{ 'HEADER_PERSONAL_DATA' | translate }}</h3><hr style="margin-top: 0px; margin-bottom: 0px;">                 
                 </div>
@@ -30,9 +30,9 @@
                         <input ng-model="settings.user.lastName" type="text" class="form-control ff-form-control" name="lastName" ng-required="true" maxlength="128" />
                     </div>
                 </div>
-	       </div>
-	   </div>
-	   <div class="row">
+	       	</div>
+	   	</div>
+	   	<div class="row">
            <div class="col-lg-12">
                 <div class="form-group p-xs" style="padding-top: 0px; padding-bottom: 0px;">
                     <h3>{{ 'HEADER_EMAIL' | translate }}</h3><hr style="margin-top: 0px; margin-bottom: 0px;">                 
@@ -52,8 +52,8 @@
                     </div>
                 </div>
            </div>
-       </div>
-       <div class="row">
+       	</div>
+       	<div class="row">
            <div class="col-lg-12">
                 <div class="form-group p-xs" style="padding-top: 0px; padding-bottom: 0px;">
                     <h3>{{ 'HEADER_CHANGE_PASSWORD' | translate }}</h3><hr style="margin-top: 0px; margin-bottom: 0px;">                 
@@ -74,12 +74,12 @@
                         <input ng-model="settings.user.confirmPassword" type="password" class="form-control ff-form-control" name="confirmPassword" ng-required="settings.user.password.length > 0" maxlength="128" />
                     </div>
                 </div>
-           </div>
-       </div>
-       <div class="row" style="border-top: solid 1px #f0f0f0;">
-        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
-            <button ng-click="save()" ng-disabled="form.$invalid || (settings.user.password != settings.user.confirmPassword)" class="btn btn-primary">{{ 'BUTTON_SAVE' | translate }}</button>
-        </div>
-    </div>
+			</div>
+       	</div>
+		<div class="row" style="border-top: solid 1px #f0f0f0;">
+			<div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+				<button ng-click="save()" ng-disabled="form.$invalid || (settings.user.password != settings.user.confirmPassword)" class="btn btn-primary">{{ 'BUTTON_SAVE' | translate }}</button>
+			</div>
+		</div>
 	</form>
 </div>
