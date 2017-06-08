@@ -174,6 +174,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = false;
+		$scope.termsOfUseVisible = false;
 		
 		$scope.username = undefined;
 		$scope.password = undefined;
@@ -185,6 +186,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = false;
+		$scope.termsOfUseVisible = false;
 		
 		$scope.username = undefined;
 		$scope.password = undefined;
@@ -196,6 +198,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.loginVisible = true;
 		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = false;
+		$scope.termsOfUseVisible = false;
 		
 		$scope.username = undefined;
 		$scope.password = undefined;
@@ -213,6 +216,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = true;
 		$scope.registrationVisible = false;
+		$scope.termsOfUseVisible = false;
 		
 		$scope.user = { 'firstName' : undefined, 'lastName' : undefined, 'email' : undefined, 'password' : undefined, 'confirmPassword' : undefined, 'status' : 'WAITING_CONFIRMATION', 'company' : { 'name' : undefined } };
 	};
@@ -223,12 +227,21 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$scope.loginVisible = false;
 		$scope.resetPasswordVisible = false;
 		$scope.registrationVisible = true;
+		$scope.termsOfUseVisible = false;
 		
 		$scope.user = { 'firstName' : undefined, 'lastName' : undefined, 'email' : undefined, 'password' : undefined, 'confirmPassword' : undefined, 'status' : 'WAITING_CONFIRMATION', 'company' : { 'name' : undefined } };
 	};
 	
 	$scope.showTermsOfUse = function() {
-		$window.open("http://google.hr", "_blank");
+		$scope.landingVisible = false;
+		$scope.welcomeVisible = false;
+		$scope.loginVisible = false;
+		$scope.resetPasswordVisible = false;
+		$scope.registrationVisible = false;
+		$scope.termsOfUseVisible = true;
+		
+		$scope.username = undefined;
+		$scope.password = undefined;
 	};
 	
 	// initial
