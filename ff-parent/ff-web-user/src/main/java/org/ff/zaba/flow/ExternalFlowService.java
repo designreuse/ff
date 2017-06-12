@@ -32,6 +32,7 @@ import org.ff.jpa.repository.Subdivision2Repository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.jpa.repository.ZabaMappingsLocationRepository;
 import org.ff.rest.user.resource.UserResource;
+import org.ff.zaba.resource.ExternalCompanyResource;
 import org.ff.zaba.session.SessionClient;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

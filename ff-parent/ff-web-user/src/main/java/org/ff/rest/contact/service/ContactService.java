@@ -1,25 +1,22 @@
 package org.ff.rest.contact.service;
 
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.mailsender.MailSenderService;
-import org.ff.common.resource.KeyValueResource;
 import org.ff.jpa.domain.Contact;
 import org.ff.jpa.repository.ContactRepository;
 import org.ff.rest.contact.resource.ContactResource;
+import org.ff.rest.contact.resource.OfficeResource;
+import org.ff.zaba.contact.ZabaContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -29,9 +26,6 @@ import freemarker.template.Template;
 
 @Service
 public class ContactService {
-
-	@Autowired
-	private Collator collator;
 
 	@Autowired
 	private MailSenderService mailSender;
@@ -45,39 +39,22 @@ public class ContactService {
 	@Autowired
 	private ContactRepository contactRepository;
 
-	private Map<Integer, String> contactLocations;
+	@Autowired
+	private ZabaContactService zabaContactService;
 
 	private List<String> contactEmails;
 
 	@PostConstruct
 	public void init() {
-		contactLocations = new HashMap<>();
-		List<String> locations = Arrays.asList(baseProperties.getContactLocations().split("\\|"));
-
-		Collections.sort(locations, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				return collator.compare(o1, o2);
-			}
-		});
-
-		int i = 1;
-		for (String location : locations) {
-			contactLocations.put(i++, location);
-		}
-
 		contactEmails = new ArrayList<>();
 		for (String str : baseProperties.getContactEmailTo().split("\\|")) {
 			contactEmails.add(str);
 		}
 	}
 
-	public List<KeyValueResource> getLocations() {
-		List<KeyValueResource> resources = new ArrayList<>();
-		for (Entry<Integer, String> entry : contactLocations.entrySet()) {
-			resources.add(new KeyValueResource(entry.getKey(), entry.getValue()));
-		}
-		return resources;
+	@Cacheable(value = "locations")
+	public List<OfficeResource> getLocations() {
+		return zabaContactService.getOffices();
 	}
 
 	public ContactResource get(UserDetails principal) {
@@ -93,7 +70,8 @@ public class ContactService {
 			model.put("contactName", resource.getName());
 			model.put("contactEmail", resource.getEmail());
 			model.put("contactPhone", StringUtils.isNotBlank(resource.getPhone()) ? resource.getPhone() : "");
-			model.put("location", resource.getLocation().getValue());
+			model.put("location", resource.getLocation().getPrefix()
+					+ " " + resource.getLocation().getAddress() + ", " + resource.getLocation().getSubdivision2());
 			model.put("text", StringUtils.isNotBlank(resource.getText()) ? resource.getText() : "");
 
 			mailSender.send(contactEmails.toArray(new String[contactEmails.size()]), baseProperties.getContactEmailSubject(),
@@ -108,9 +86,12 @@ public class ContactService {
 		contact.setName(resource.getName());
 		contact.setEmail(resource.getEmail());
 		contact.setPhone(resource.getPhone());
-		contact.setLocation(resource.getLocation().getValue());
+		contact.setLocation(resource.getLocation().getPrefix()
+				+ " " + resource.getLocation().getAddress() + ", " + resource.getLocation().getSubdivision2());
 		contact.setText(resource.getText());
 		contactRepository.save(contact);
+
+		zabaContactService.submit(resource);
 	}
 
 }

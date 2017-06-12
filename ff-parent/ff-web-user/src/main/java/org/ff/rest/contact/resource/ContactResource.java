@@ -1,6 +1,5 @@
 package org.ff.rest.contact.resource;
 
-import org.ff.common.resource.KeyValueResource;
 import org.ff.rest.company.resource.CompanyResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,7 +25,7 @@ public class ContactResource {
 	private String phone;
 
 	@JsonProperty("location")
-	private KeyValueResource location;
+	private OfficeResource location;
 
 	@JsonProperty("text")
 	private String text;

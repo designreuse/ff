@@ -29,8 +29,6 @@ public class BaseProperties {
 
 	private String mailSender;
 
-	private String contactLocations;
-
 	private String contactEmailTo;
 
 	private String contactEmailSubject;
@@ -44,6 +42,12 @@ public class BaseProperties {
 	private String zabaSessionApplication;
 
 	private String zabaApiGetByCompanyNumber;
+
+	private String zabaContactApiOffices;
+
+	private String zabaContactApiSubmit;
+
+	private String zabaContactApiSubmitId;
 
 	private String mappingLegalTypeNumber;
 

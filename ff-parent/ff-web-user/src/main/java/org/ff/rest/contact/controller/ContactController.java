@@ -3,8 +3,8 @@ package org.ff.rest.contact.controller;
 import java.util.List;
 
 import org.ff.base.controller.BaseController;
-import org.ff.common.resource.KeyValueResource;
 import org.ff.rest.contact.resource.ContactResource;
+import org.ff.rest.contact.resource.OfficeResource;
 import org.ff.rest.contact.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +22,7 @@ public class ContactController extends BaseController {
 	private ContactService service;
 
 	@RequestMapping(method = RequestMethod.GET, value="/locations")
-	public List<KeyValueResource> getLocations() {
+	public List<OfficeResource> getLocations() {
 		return service.getLocations();
 	}
 
