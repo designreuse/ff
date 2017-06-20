@@ -3,13 +3,13 @@
 <html>
     <body>
         <div>
-            E-mail sa sljedećim sadržajem:
+            Poštovani, e-mail poruka sljedećeg sadržaja:
             
             <blockquote style="background: #f0f0f0; border-left: 10px solid #ccc; padding: 5px;">
                 ${originalEmailText}
             </blockquote>
             
-            Je upravo poslan ovim korisnicima: 
+            upravo je poslana korisnicima navedenim u nastavku: 
             <ul>
                 <#list users as user>
                     <li>${user}</li>

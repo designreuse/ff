@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.common.exception.ValidationFailedException;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.repository.CompanyRepository;
@@ -23,6 +24,10 @@ public class CompanyValidator {
 
 	public void validate(CompanyResource resource, Locale locale) {
 		List<String> messages = new ArrayList<>();
+
+		if (StringUtils.isBlank(resource.getCode())) {
+			return;
+		}
 
 		Company entity = companyRepository.findByCode(resource.getCode());
 		if (entity != null && !entity.getId().equals(resource.getId())) {

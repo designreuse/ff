@@ -3,9 +3,9 @@
 <html>
     <body>
         <div>
-            Novi natječaj, koji bi vas mogao zanimati, se upravo otvorio: <b><i>${tenderName}</i></b>
-            <p>
-            Za više informacija molimo posjetite <i>MojEUfond</i>
+        	Poštovani,<p>
+        	zahvaljujemo na korištenju usluge MojEUfond. Otvoren je novi natječaj koji bi Vas mogao zanimati - <strong>${tenderName}</strong>. Više informacija o natječaju i prihvatljivim projektima dostupno je na Vašem profilu u aplikaciji MojEUfond.<p>
+            Vaša Zagrebačka banka
         </div>
     </body>
 </html>

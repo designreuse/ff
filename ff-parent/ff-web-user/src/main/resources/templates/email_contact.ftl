@@ -3,11 +3,11 @@
 <html>
     <body>
         <div>
-             <b>Naziv tvrtke: </b>${companyName}
+             <b>Naziv poduzeća: </b>${companyName}
              <p>
-             <b>OIB tvrtke: </b>${companyCode}
+             <b>OIB poduzeća: </b>${companyCode}
              <p>
-             <b>Kontakt osoba: </b>${contactName}
+             <b>Osoba za kontakt: </b>${contactName}
              <p>
              <b>E-mail: </b>${contactEmail}
              <p>
