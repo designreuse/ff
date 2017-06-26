@@ -1,16 +1,19 @@
 @font-face {
     font-family: unicredit-regular;
-    src: url(font/unicredit-regular-webfont.ttf);
+    src: url(font/unicredit-regular-webfont.ttf) format('truetype');
+    src: url(font/unicredit-regular-webfont.eot?) format('eot');
 }
 
 @font-face {
     font-family: unicredit-light;
-    src: url(font/unicredit-light-webfont.ttf);
+    src: url(font/unicredit-light-webfont.ttf) format('truetype');
+    src: url(font/unicredit-light-webfont.eot?) format('eot');
 }
 
 @font-face {
     font-family: unicredit-bold;
-    src: url(font/unicredit-bold-webfont.ttf);
+    src: url(font/unicredit-bold-webfont.ttf) format('truetype');
+    src: url(font/unicredit-bold-webfont.eot?) format('eot');
 }
 
 html {
@@ -300,6 +303,7 @@ ul li{
 
 #how-to-use{
   background-image: -webkit-radial-gradient(center top,ellipse cover,#fff,#bfebf3);
+  background-image: -ms-radial-gradient(center top,ellipse cover,#fff,#bfebf3);
   background-image: radial-gradient(center top,ellipse cover,#fff,#bfebf3);
   min-height: 730px;
   padding-bottom: 20px;
