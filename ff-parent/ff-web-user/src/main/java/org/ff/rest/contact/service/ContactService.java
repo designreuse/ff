@@ -1,6 +1,9 @@
 package org.ff.rest.contact.service;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +17,11 @@ import org.ff.jpa.domain.Contact;
 import org.ff.jpa.repository.ContactRepository;
 import org.ff.rest.contact.resource.ContactResource;
 import org.ff.rest.contact.resource.OfficeResource;
-import org.ff.zaba.contact.ZabaContactService;
+import org.ff.zaba.resource.ZabaContactFormRequestResource;
+import org.ff.zaba.resource.ZabaOfficeResource;
+import org.ff.zaba.service.ZabaApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -26,6 +30,9 @@ import freemarker.template.Template;
 
 @Service
 public class ContactService {
+
+	@Autowired
+	private Collator collator;
 
 	@Autowired
 	private MailSenderService mailSender;
@@ -40,7 +47,7 @@ public class ContactService {
 	private ContactRepository contactRepository;
 
 	@Autowired
-	private ZabaContactService zabaContactService;
+	private ZabaApiService zabaApiService;
 
 	private List<String> contactEmails;
 
@@ -54,10 +61,23 @@ public class ContactService {
 
 	@Cacheable(value = "locations")
 	public List<OfficeResource> getLocations() {
-		return zabaContactService.getOffices();
+		List<OfficeResource> result = new ArrayList<>();
+
+		for (ZabaOfficeResource resource : zabaApiService.getOffices()) {
+			result.add(new OfficeResource(resource.getId(), null, resource.getGrad(), resource.getPostanskiBroj(), resource.getAdresa(), resource.getVrsta() + " " + resource.getNazivFunkcija().toLowerCase()));
+		}
+
+		Collections.sort(result, new Comparator<OfficeResource>() {
+			@Override
+			public int compare(OfficeResource o1, OfficeResource o2) {
+				return collator.compare(o1.getSubdivision2(), o2.getSubdivision2());
+			}
+		});
+
+		return result;
 	}
 
-	public ContactResource get(UserDetails principal) {
+	public ContactResource get() {
 		return new ContactResource();
 	}
 
@@ -91,7 +111,18 @@ public class ContactService {
 		contact.setText(resource.getText());
 		contactRepository.save(contact);
 
-		zabaContactService.submit(resource);
+		ZabaContactFormRequestResource requestResource = new ZabaContactFormRequestResource();
+		requestResource.setVrsta(baseProperties.getZabaContactApiSubmitId());
+		requestResource.setNazivTvrtke(resource.getCompany().getName());
+		requestResource.setOibTvrtke(resource.getCompany().getCode());
+		requestResource.setNameKontakt(resource.getName());
+		requestResource.setEmailKontakt(resource.getEmail());
+		requestResource.setTeleKontakt(resource.getPhone());
+		requestResource.setOffice(resource.getLocation().getId() + " " + resource.getLocation().getPrefix()
+				+ " " + resource.getLocation().getAddress() + ", " + resource.getLocation().getSubdivision2());
+		requestResource.setPoruka(resource.getText());
+
+		zabaApiService.submit(requestResource);
 	}
 
 }

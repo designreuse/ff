@@ -7,8 +7,6 @@ import org.ff.rest.contact.resource.ContactResource;
 import org.ff.rest.contact.resource.OfficeResource;
 import org.ff.rest.contact.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,8 +25,8 @@ public class ContactController extends BaseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ContactResource get(@AuthenticationPrincipal UserDetails principal) {
-		return service.get(principal);
+	public ContactResource get() {
+		return service.get();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

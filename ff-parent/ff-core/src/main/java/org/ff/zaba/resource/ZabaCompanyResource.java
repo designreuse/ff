@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class ExternalCompanyResource {
+public class ZabaCompanyResource {
 
 	@JsonProperty("subjectName")
 	private String subjectName;

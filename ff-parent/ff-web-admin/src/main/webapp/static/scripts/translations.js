@@ -114,6 +114,7 @@ function config($translateProvider) {
 			LABEL_IMAGE: 'Slika',
 			LABEL_INVESTMENT: 'Investicija',
 			LABEL_LAST_LOGIN_DATE: 'Zadnja prijava',
+			LABEL_LAST_GFI_SYNC_DATE: 'Zadnja GFI sinkronizacija',
 			LABEL_LAST_MODIFIED: 'Zadnja promjena',
 			LABEL_LAST_MODIFIED_DATE: 'Last modified',
 			LABEL_LAST_NAME: 'Prezime',
@@ -218,6 +219,7 @@ function config($translateProvider) {
 			BUTTON_EXPORT_ALL: 'Izvezi sve',
 			BUTTON_EXPORT_SELECTED: 'Izvezi odabrane',
 			BUTTON_IMPORT: 'Uvoz',
+			BUTTON_GFI_SYNC: 'GFI sinkronizacija',
 			
 			BUTTON_DATE_CURRENT: 'Danas',
 			BUTTON_DATE_CLEAR: 'Izbriši',
@@ -339,9 +341,18 @@ function config($translateProvider) {
 			ACTION_IMPORT_SUCCESS_MESSAGE: 'Uvoz podataka je uspješan izvršen',
 			ACTION_EXPORT_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom izvoza podataka',
 			ACTION_EXPORT_SUCCESS_MESSAGE: 'Izvoz podataka je uspješno izvršen',
+			ACTION_GFI_SYNC_FAILURE_MESSAGE: 'Došlo je do pogreške prilikom GFI sinkronizacije',
+			ACTION_GFI_SYNC_SUCCESS_MESSAGE: 'GFI sinkronizacija je uspješno izvršena',
 			
 			DIALOG_DELETE_HEADER: 'Izbriši zapis',
 			DIALOG_DELETE_MESSAGE: 'Da li doista želite izbrisati zapis?',
+			
+			DIALOG_GFI_SYNC_HEADER: 'GFI sinkronizacija',
+			DIALOG_GFI_SYNC_HEADER2: 'Rezultati GFI sinkronizacije',
+			DIALOG_GFI_SYNC_MESSAGE: 'Jeste li sigurni da želite pokrenuti ažuriranje profila SVIH korisnika koji su registrirani putem e-zabaPS?<br><br><small><u>Napomena</u>: Pokretanje ažuriranja će promijeniti sve podatke u Profilu poduzeća SVIH korisnika, koji su registrirani e-zabaPS sustavom, u najnovije podatke kojima Banka raspolaže.</small>',
+			DIALOG_GFI_SYNC_MESSAGE2: 'Jeste li sigurni da želite pokrenuti ažuriranje profila ovog korisnika?<br><br><small><u>Napomena</u>: Pokretanje ažuriranja će promijeniti sve podatke u Profilu poduzeća korisnika u najnovije podatke kojima Banka raspolaže.</small>',
+			DIALOG_GFI_SYNC_MESSAGE3: 'GFI sinkronizacija je provedena za ukupno {{cntTotal}} korisnika, od čega je bila uspješna u {{cntOK}}, a neuspješna u {{cntNOK}} slučajeva.',
+			DIALOG_GFI_SYNC_MESSAGE4: 'Sinkronizacija nije uspjela za sljedeće korisnike:',
 			
 			POSTSCRIPT_CODE: 'Jedinstveni identifikator',
 			POSTSCRIPT_ITEM_POSITION: 'Vrijednost mora biti između 1 i 1000',

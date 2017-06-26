@@ -49,4 +49,7 @@ public class CompanyResource {
 	@JsonProperty("lastModifiedBy")
 	private String lastModifiedBy;
 
+	@JsonProperty("lastGfiSync")
+	private Date lastGfiSync;
+
 }

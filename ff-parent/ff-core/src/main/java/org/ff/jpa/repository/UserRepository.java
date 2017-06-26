@@ -23,6 +23,8 @@ public interface UserRepository extends CrudRepository<User, Integer>, JpaSpecif
 
 	List<User> findByStatus(UserStatus status);
 
+	List<User> findByRegistrationType(UserRegistrationType userRegistrationType);
+
 	User findByDemoUser(Boolean demoUser);
 
 	Long countByDemoUser(Boolean demoUser);

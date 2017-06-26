@@ -424,6 +424,72 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 			});
 	}
 	
+	$scope.gfiSync = function() {
+		BootstrapDialog.show({
+			type: BootstrapDialog.TYPE_DEFAULT,
+            title: $translate('DIALOG_GFI_SYNC_HEADER'),
+            message: $translate('DIALOG_GFI_SYNC_MESSAGE'),
+            buttons: [
+				{
+					label: $translate('BUTTON_NO'),
+				    cssClass: 'btn-white',
+				    action: function(dialog) {
+				        dialog.close();
+				    }
+				},
+            	{
+            		label: $translate('BUTTON_YES'),
+	                cssClass: 'btn-primary',
+	                action: function(dialog) {
+	                	UsersService.gfiSync()
+		    				.success(function(data, status) {
+		    					$scope.gfiSyncInProgress = false;
+		    					$scope.gfiSyncReport(data);
+		    				})
+		    				.error(function(data, status) {
+		    					$scope.gfiSyncInProgress = false;
+		    					toastr.error($translate('ACTION_GFI_SYNC_FAILURE_MESSAGE'));	
+		    				});
+	        			dialog.close();
+	        			$scope.gfiSyncInProgress = true;
+	                }	                
+            	}
+            ]
+        });
+	}
+	
+	$scope.gfiSyncReport = function(data) {
+		var message = '';
+		
+		message = message + '<div>'
+		message = message + $translate('DIALOG_GFI_SYNC_MESSAGE3', { cntTotal: (data.updateOK.length + data.updateNOK.length), cntOK: data.updateOK.length, cntNOK: data.updateNOK.length });
+		if (data.updateNOK.length > 0) {
+			message = message + '<br><br>'
+			message = message + $translate('DIALOG_GFI_SYNC_MESSAGE4');
+			message = message + '<ul style="height: 300px; overflow: scroll; margin-top: 5px;">'
+			$.each(data.updateNOK, function(index, value) {
+				message = message + '<li><small>' + value.company.name  + '</small></li>'
+			});
+			message = message + '</ul>'
+		}
+		message = message + '</div>'
+		
+		BootstrapDialog.show({
+			type: BootstrapDialog.TYPE_DEFAULT,
+            title: $translate('DIALOG_GFI_SYNC_HEADER2'),
+            message: message,
+            buttons: [
+				{
+					label: $translate('BUTTON_CLOSE'),
+				    cssClass: 'btn-white',
+				    action: function(dialog) {
+				        dialog.close();
+				    }
+				}
+            ]
+        });
+	}
+	
 	$scope.deleteEntity = function (entity) {
 		BootstrapDialog.show({
 			type: BootstrapDialog.TYPE_DEFAULT,
@@ -851,6 +917,43 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 		var downloadLink = angular.element('<a target="_blank"></a>');
         downloadLink.attr('href', constants.contextPath + "/api/v1/users/" + $stateParams.id + "/export/pdf");
         downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
+	}
+	
+	$scope.gfiSync = function(entity) {
+		BootstrapDialog.show({
+			type: BootstrapDialog.TYPE_DEFAULT,
+            title: $translate('DIALOG_GFI_SYNC_HEADER'),
+            message: $translate('DIALOG_GFI_SYNC_MESSAGE2'),
+            buttons: [
+				{
+					label: $translate('BUTTON_NO'),
+				    cssClass: 'btn-white',
+				    action: function(dialog) {
+				        dialog.close();
+				    }
+				},
+            	{
+            		label: $translate('BUTTON_YES'),
+	                cssClass: 'btn-primary',
+	                action: function(dialog) {
+	                	UsersService.gfiSync(entity)
+		    				.success(function(data, status) {
+		    					if (data.updateOK.length == 1) {
+		    						toastr.success($translate('ACTION_GFI_SYNC_SUCCESS_MESSAGE'));
+		    					} else if (data.updateNOK.length == 1) {
+		    						toastr.error($translate('ACTION_GFI_SYNC_FAILURE_MESSAGE'));	
+		    					}
+		    					
+		    					$scope.getEntity();
+		    				})
+		    				.error(function(data, status) {
+		    					toastr.error($translate('ACTION_GFI_SYNC_FAILURE_MESSAGE'));
+		    				});
+	        			dialog.close();
+	                }	                
+            	}
+            ]
+        });
 	}
 	
 	// initial load

@@ -113,6 +113,7 @@ public class CompanyResourceAssembler {
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());
 		resource.setLastModifiedBy(entity.getLastModifiedBy());
+		resource.setLastGfiSync((entity.getLastGfiSync() != null) ? entity.getLastGfiSync().toDate() : null);
 		return resource;
 	}
 

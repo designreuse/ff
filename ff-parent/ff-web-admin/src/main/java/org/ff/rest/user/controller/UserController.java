@@ -13,7 +13,9 @@ import org.ff.common.etm.EtmService;
 import org.ff.common.uigrid.PageableResource;
 import org.ff.common.uigrid.UiGridResource;
 import org.ff.rest.email.resource.SendEmailResource;
+import org.ff.rest.user.resource.GfiSyncReportResource;
 import org.ff.rest.user.resource.UserResource;
+import org.ff.rest.user.service.GfiSyncService;
 import org.ff.rest.user.service.UserExportService;
 import org.ff.rest.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private EtmService etmService;
+
+	@Autowired
+	private GfiSyncService gfiSyncService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/page")
 	public PageableResource<UserResource> getPage(Principal principal, @RequestBody UiGridResource resource) {
@@ -155,6 +160,18 @@ public class UserController extends BaseController {
 			headers.add("content-disposition", "inline;filename=" + file.getName());
 			ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
 			return responseEntity;
+		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value="/gfi-sync")
+	public GfiSyncReportResource gfiSync(Principal principal, @RequestBody(required = false) UserResource resource, HttpServletRequest request) {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".gfiSync");
+		try {
+			return gfiSyncService.gfiSync(resource, localeResolver.resolveLocale(request));
+		} catch (RuntimeException e) {
+			throw processException(e);
 		} finally {
 			etmService.collect(point);
 		}

@@ -25,4 +25,7 @@ angular.module('FundFinder')
 	this.setBusinessRelationshipManager = function(id, resource) {
 		return $http.post('/api/v1/users/' + id + '/brm', resource);
 	};
+	this.gfiSync = function(resource) {
+		return $http.post('/api/v1/users/gfi-sync', resource);
+	};
 });

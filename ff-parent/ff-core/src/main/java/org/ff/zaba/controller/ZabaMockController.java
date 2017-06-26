@@ -1,10 +1,10 @@
-package org.ff.zaba.mock;
+package org.ff.zaba.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.ff.zaba.resource.ExternalCompanyResource;
+import org.ff.zaba.resource.ZabaCompanyResource;
 import org.ff.zaba.resource.ZabaContactFormRequestResource;
 import org.ff.zaba.resource.ZabaContactFormResponseResource;
 import org.ff.zaba.resource.ZabaOfficeResource;
@@ -32,7 +32,7 @@ public class ZabaMockController {
 	@RequestMapping(method = RequestMethod.GET, value = "/getByCompanyNumber")
 	public ResponseEntity<?> getByCompanyNumber(@RequestParam String companyNumber, @RequestParam String branchOfficeNumber) {
 		try {
-			ExternalCompanyResource resource = new ExternalCompanyResource();
+			ZabaCompanyResource resource = new ZabaCompanyResource();
 			resource.setSubjectName("VERBUM D.O.O.ZA GRAFIČKO OBLIKOVANJE,IZDAVAŠTVO I TRGOVINU");
 			resource.setOibNumber("49355429927");
 			resource.setRegistrationNumber("0000000078");

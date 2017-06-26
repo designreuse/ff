@@ -1,18 +1,16 @@
-package org.ff.zaba.contact;
+package org.ff.zaba.service;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.ff.base.properties.BaseProperties;
-import org.ff.rest.contact.resource.ContactResource;
-import org.ff.rest.contact.resource.OfficeResource;
-import org.ff.zaba.flow.LogClientHttpRequestInterceptor;
+import org.ff.zaba.resource.LogClientHttpRequestInterceptor;
+import org.ff.zaba.resource.ZabaCompanyResource;
 import org.ff.zaba.resource.ZabaContactFormRequestResource;
 import org.ff.zaba.resource.ZabaContactFormResponseResource;
 import org.ff.zaba.resource.ZabaOfficeResource;
@@ -32,16 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class ZabaContactService {
+public class ZabaApiService {
 
 	@Autowired
 	private BaseProperties baseProperties;
 
 	@Autowired
 	private LogClientHttpRequestInterceptor interceptor;
-
-	@Autowired
-	private Collator collator;
 
 	private RestTemplate restTemplate;
 
@@ -53,25 +48,44 @@ public class ZabaContactService {
 		restTemplate.setInterceptors(interceptors);
 	}
 
-	public List<OfficeResource> getOffices() {
-		List<OfficeResource> result = new ArrayList<>();
+	/**
+	 * Method returns company data for given combination of company number and branch office number.
+	 * @param matbr
+	 * @return
+	 * @throws Exception
+	 */
+	public ZabaCompanyResource getCompanyData(String matbr) throws Exception {
+		String companyNumber = null;
+		String branchOfficeNumber = null;
 
-		log.debug("Getting offices from external source...");
+		if (matbr.contains("-")) {
+			String[] array = matbr.split("\\-");
+			companyNumber = array[0];
+			branchOfficeNumber = array[1];
+		} else {
+			companyNumber = matbr;
+			branchOfficeNumber = "";
+		}
+
+		log.debug("Getting company data for company number [{}] and branch office number [{}]...", companyNumber, branchOfficeNumber);
+		ResponseEntity<ZabaCompanyResource> responseEntity = restTemplate.exchange(baseProperties.getZabaApiGetByCompanyNumber(),
+				HttpMethod.GET, new HttpEntity<>(getHttpHeaders()), ZabaCompanyResource.class, getUriVariables(companyNumber, branchOfficeNumber));
+
+		return responseEntity.getBody();
+	}
+
+	public List<ZabaOfficeResource> getOffices() {
+		List<ZabaOfficeResource> result = new ArrayList<>();
 
 		try {
+			log.debug("Getting offices from external source...");
+
 			ResponseEntity<ZabaOfficeResource[]> responseEntity = restTemplate.exchange(
 					baseProperties.getZabaContactApiOffices(), HttpMethod.GET, new HttpEntity<>(getHttpHeaders()), ZabaOfficeResource[].class);
 
 			for (ZabaOfficeResource resource : responseEntity.getBody()) {
-				result.add(new OfficeResource(resource.getId(), null, resource.getGrad(), resource.getPostanskiBroj(), resource.getAdresa(), resource.getVrsta() + " " + resource.getNazivFunkcija().toLowerCase()));
+				result.add(resource);
 			}
-
-			Collections.sort(result, new Comparator<OfficeResource>() {
-				@Override
-				public int compare(OfficeResource o1, OfficeResource o2) {
-					return collator.compare(o1.getSubdivision2(), o2.getSubdivision2());
-				}
-			});
 		} catch (Exception e) {
 			log.error("Getting offices from external source failed", e);
 		}
@@ -79,25 +93,14 @@ public class ZabaContactService {
 		return result;
 	}
 
-	public void submit(ContactResource resource) {
+	public void submit(ZabaContactFormRequestResource resource) {
 		try {
 			log.debug("Submitting contact form: {}", resource);
-
-			ZabaContactFormRequestResource requestResource = new ZabaContactFormRequestResource();
-			requestResource.setVrsta(baseProperties.getZabaContactApiSubmitId());
-			requestResource.setNazivTvrtke(resource.getCompany().getName());
-			requestResource.setOibTvrtke(resource.getCompany().getCode());
-			requestResource.setNameKontakt(resource.getName());
-			requestResource.setEmailKontakt(resource.getEmail());
-			requestResource.setTeleKontakt(resource.getPhone());
-			requestResource.setOffice(resource.getLocation().getId() + " " + resource.getLocation().getPrefix()
-					+ " " + resource.getLocation().getAddress() + ", " + resource.getLocation().getSubdivision2());
-			requestResource.setPoruka(resource.getText());
 
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 			headers.add("Accept", MediaType.toString(Arrays.asList(MediaType.APPLICATION_JSON)));
 
-			HttpEntity<ZabaContactFormRequestResource> request = new HttpEntity<>(requestResource);
+			HttpEntity<ZabaContactFormRequestResource> request = new HttpEntity<>(resource);
 
 			ResponseEntity<ZabaContactFormResponseResource> responseEntity = restTemplate.exchange(
 					baseProperties.getZabaContactApiSubmit(), HttpMethod.POST, request, ZabaContactFormResponseResource.class);
@@ -114,6 +117,13 @@ public class ZabaContactService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		return headers;
+	}
+
+	private Map<String, String> getUriVariables(String companyNumber, String branchOfficeNumber) {
+		Map<String, String> uriVariables = new HashMap<String, String>();
+		uriVariables.put("companyNumber", companyNumber);
+		uriVariables.put("branchOfficeNumber", branchOfficeNumber);
+		return uriVariables;
 	}
 
 }

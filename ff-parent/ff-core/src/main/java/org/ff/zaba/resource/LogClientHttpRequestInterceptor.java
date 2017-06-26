@@ -1,4 +1,4 @@
-package org.ff.zaba.flow;
+package org.ff.zaba.resource;
 
 import java.io.IOException;
 

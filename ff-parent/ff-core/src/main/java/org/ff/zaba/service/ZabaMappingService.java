@@ -1,4 +1,4 @@
-package org.ff.zaba.flow;
+package org.ff.zaba.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class ExternalFlowMappingService {
+public class ZabaMappingService {
 
 	@Autowired
 	private BaseProperties baseProperties;
@@ -56,18 +56,18 @@ public class ExternalFlowMappingService {
 			initProfitOrLoss();
 			initCapitalTotalLiabilities();
 
-			log.debug("==================== E X T E R N A L    F L O W    M A P P I N G S ====================");
+			log.debug("==================== C O M P A N Y    D A T A    M A P P I N G S ====================");
 			log.debug("legalTypes: {}", legalTypes);
 			log.debug("zipCode: {}", baseProperties.getMappingZipCode());
 			log.debug("foundingDate: {}", baseProperties.getMappingFoundingDate());
 			log.debug("bankruptcyProcedures: {}", bankruptcyProcedures);
 			log.debug("blocked5Days: {}", blocked5Days);
 			log.debug("blocked20Days: {}", blocked20Days);
+			log.debug("numberOfEmployees: {}", baseProperties.getMappingNumberOfEmployees());
 			log.debug("lastYearIncome: {}", baseProperties.getMappingLastYearIncome());
 			log.debug("profitBeforeTax: {}", profitBeforeTax);
 			log.debug("profitOrLoss: {}", profitOrLoss);
 			log.debug("capitalTotalLiabilities: {} {}", capitalTotalLiabilitiesThreshold, capitalTotalLiabilities);
-			log.debug("numberOfEmployees: {}", baseProperties.getMappingNumberOfEmployees());
 			log.debug("=======================================================================================");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

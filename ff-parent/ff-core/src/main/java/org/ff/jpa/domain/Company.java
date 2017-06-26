@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import org.ff.jpa.AbstractEntity;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,5 +77,9 @@ public class Company extends AbstractEntity {
 
 	@Column(name = "hide_sync_data_warning", nullable = true)
 	private Boolean hideSyncDataWarning;
+
+	@Column(name = "last_gfi_sync", nullable = true)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime lastGfiSync;
 
 }
