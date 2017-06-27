@@ -73,4 +73,8 @@ public class BaseProperties {
 
 	private String mappingCapitalTotalLiabilities;
 
+	private Boolean sendgridEnabled;
+
+	private String sendgridApikey;
+
 }
