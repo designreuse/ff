@@ -64,7 +64,16 @@ public class ContactService {
 		List<OfficeResource> result = new ArrayList<>();
 
 		for (ZabaOfficeResource resource : zabaApiService.getOffices()) {
-			result.add(new OfficeResource(resource.getId(), null, resource.getGrad(), resource.getPostanskiBroj(), resource.getAdresa(), resource.getVrsta() + " " + resource.getNazivFunkcija().toLowerCase()));
+			if (resource != null) {
+				StringBuffer prefix = new StringBuffer();
+				if (StringUtils.isNotBlank(resource.getVrsta())) {
+					prefix.append(resource.getVrsta()).append(" ");
+				}
+				if (StringUtils.isNotBlank(resource.getNazivFunkcija())) {
+					prefix.append(resource.getNazivFunkcija().toLowerCase());
+				}
+				result.add(new OfficeResource(resource.getId(), null, resource.getGrad(), resource.getPostanskiBroj(), resource.getAdresa(), prefix.toString().trim()));
+			}
 		}
 
 		Collections.sort(result, new Comparator<OfficeResource>() {
