@@ -1,19 +1,16 @@
 @font-face {
     font-family: unicredit-regular;
-    src: url(font/unicredit-regular-webfont.ttf) format('truetype');
-    src: url(font/unicredit-regular-webfont.eot?) format('eot');
+    src: url(font/unicredit-regular-webfont.eot) format("embedded-opentype"), url(font/unicredit-regular-webfont.ttf) format("truetype");
 }
 
 @font-face {
     font-family: unicredit-light;
-    src: url(font/unicredit-light-webfont.ttf) format('truetype');
-    src: url(font/unicredit-light-webfont.eot?) format('eot');
+    src: url(font/unicredit-light-webfont.eot) format("embedded-opentype"), url(font/unicredit-light-webfont.ttf) format("truetype");
 }
 
 @font-face {
     font-family: unicredit-bold;
-    src: url(font/unicredit-bold-webfont.ttf) format('truetype');
-    src: url(font/unicredit-bold-webfont.eot?) format('eot');
+    src: url(font/unicredit-bold-webfont.eot) format("embedded-opentype"), url(font/unicredit-bold-webfont.ttf) format("truetype");
 }
 
 html {
