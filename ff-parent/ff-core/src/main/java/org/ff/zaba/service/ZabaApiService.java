@@ -86,6 +86,8 @@ public class ZabaApiService {
 			for (ZabaOfficeResource resource : responseEntity.getBody()) {
 				result.add(resource);
 			}
+
+			log.debug("Offices successfully retrieved from external source: {}", result);
 		} catch (Exception e) {
 			log.error("Getting offices from external source failed", e);
 		}
