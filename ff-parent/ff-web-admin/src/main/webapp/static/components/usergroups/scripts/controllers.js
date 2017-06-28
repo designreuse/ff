@@ -418,6 +418,12 @@ function UserGroupsEditController($rootScope, $scope, $state, $stateParams, $log
 		UsersService.getEntities()
 			.success(function(data, status) {
 				if (status == 200) {
+					$.each(data, function(index, value) {
+						value.lastName = value.lastName + ' ' + value.firstName;
+						if (value.company.name) {
+							value.lastName = value.lastName + ' (' + value.company.name + ')';
+						}
+					});
 					$scope.users = data;
 				} else {
 					toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
