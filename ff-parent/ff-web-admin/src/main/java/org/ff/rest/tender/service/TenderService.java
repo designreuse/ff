@@ -14,13 +14,13 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.service.BaseService;
 import org.ff.common.algorithm.AlgorithmService;
+import org.ff.common.mailsender.MailSenderResource;
 import org.ff.common.mailsender.MailSenderService;
 import org.ff.common.uigrid.PageableResource;
 import org.ff.common.uigrid.UiGridFilterResource;
 import org.ff.common.uigrid.UiGridResource;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
-import org.ff.jpa.domain.BusinessRelationshipManager;
 import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.Image;
 import org.ff.jpa.domain.Item;
@@ -61,10 +61,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -100,9 +97,6 @@ public class TenderService extends BaseService {
 
 	@Autowired
 	private MailSenderService mailSender;
-
-	@Autowired
-	private Configuration configuration;
 
 	@Autowired
 	private AlgorithmService algorithmService;
@@ -290,17 +284,20 @@ public class TenderService extends BaseService {
 		try {
 			Tender tender = repository.findOne(resource.getTenderId());
 
-			Template template = configuration.getTemplate("email_tender.ftl");
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("tenderName", tender.getName());
-			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+			String text = mailSender.processTemplateIntoString("email_tender.ftl", model);
 
 			Email email = new Email();
 			email.setSubject(resource.getSubject());
 			email.setText(text);
+			emailRepository.save(email);
 
-			Set<String> to = new HashSet<>();
-			Map<String, Set<String>> businessRelationshipManagers = new HashMap<>();
+			List<MailSenderResource> mailSenderResources = new ArrayList<>();
+
+			Map<String, Set<String>> brms = new HashMap<>();
+			Map<String, String> brmSubstitutes = new HashMap<>();
+
 			for (UserGroupResource userGroup : resource.getUserGroups()) {
 				if (userGroup.getMetaTag() == UserGroupMetaTag.MATCHING_USERS) {
 					List<User> users = algorithmService.findUsers4Tender(tender, new DebuggingResource());
@@ -309,62 +306,49 @@ public class TenderService extends BaseService {
 
 				if (userGroup.getUsers() != null) {
 					for (UserResource userResource : userGroup.getUsers()) {
-						User user = userRepository.findOne(userResource.getId());
-						if (user.getStatus() != UserStatus.ACTIVE) {
+						if (userResource.getStatus() != UserStatus.ACTIVE || StringUtils.isBlank(userResource.getEmail())) {
 							continue;
 						}
 
-						to.add(user.getEmail());
-						if (StringUtils.isNotBlank(user.getEmail2())) {
-							to.add(user.getEmail2());
-						}
-
-						BusinessRelationshipManager brm = user.getBusinessRelationshipManager();
-						if (brm != null && StringUtils.isNotBlank(brm.getEmail())) {
-							if (!businessRelationshipManagers.containsKey(brm.getEmail())) {
-								businessRelationshipManagers.put(brm.getEmail(), new HashSet<String>());
-							}
-							businessRelationshipManagers.get(brm.getEmail()).add(user.getEmail());
-						}
+						User user = userRepository.findOne(userResource.getId());
 
 						UserEmail userEmail = new UserEmail();
 						userEmail.setEmail(email);
 						userEmail.setUser(user);
 						userEmail.setTender(tender);
 						userEmailRepository.save(userEmail);
+
+						mailSenderResources.add(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, resource.getSubject(), text));
+
+						if (user.getBusinessRelationshipManager() != null && StringUtils.isNotBlank(user.getBusinessRelationshipManager().getEmail())) {
+							if (!brms.containsKey(user.getBusinessRelationshipManager().getEmail())) {
+								brms.put(user.getBusinessRelationshipManager().getEmail(), new HashSet<String>());
+							}
+							brms.get(user.getBusinessRelationshipManager().getEmail()).add(user.getEmail());
+
+							if (user.getBusinessRelationshipManagerSubstitute() != null && StringUtils.isNotBlank((user.getBusinessRelationshipManagerSubstitute().getEmail()))) {
+								brmSubstitutes.put(user.getBusinessRelationshipManager().getEmail(), user.getBusinessRelationshipManagerSubstitute().getEmail());
+							}
+						}
 					}
 				}
 			}
 
-			if (!to.isEmpty()) {
-				mailSender.send(to.toArray(new String[to.size()]), resource.getSubject(), text);
-				emailRepository.save(email);
+			for (Entry<String, Set<String>> entry : brms.entrySet()) {
+				model = new HashMap<String, Object>();
+				model.put("originalEmailText", text);
+				model.put("users", entry.getValue());
+				mailSenderResources.add(new MailSenderResource(entry.getKey(), brmSubstitutes.get(entry.getKey()), resource.getSubject(), mailSender.processTemplateIntoString("email_tender_brm.ftl", model)));
+			}
 
-				// send e-mail to business relationship manager(s)
-				for (Entry<String, Set<String>> entry : businessRelationshipManagers.entrySet()) {
-					sendEmail2BusinessRelationshipManager(entry.getKey(), entry.getValue(), resource.getSubject(), text);
-				}
-
+			if (!mailSenderResources.isEmpty()) {
+				mailSender.send(mailSenderResources);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Sending e-mail failed", e);
-		}
-	}
-
-	private void sendEmail2BusinessRelationshipManager(String to, Set<String> users, String originalEmailSubject, String originalEmailText) {
-		try {
-			Template template = configuration.getTemplate("email_tender_brm.ftl");
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("originalEmailText", originalEmailText);
-			model.put("users", users);
-			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-			mailSender.send(to, "FYI: " + originalEmailSubject, text);
-		} catch (Exception e) {
-			log.error(String.format("Sending e-mail to business relationship manager [%s] failed", to), e);
 		}
 	}
 

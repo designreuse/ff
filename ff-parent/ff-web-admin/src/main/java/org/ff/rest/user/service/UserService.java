@@ -13,6 +13,7 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.service.BaseService;
 import org.ff.common.algorithm.AlgorithmService;
+import org.ff.common.mailsender.MailSenderResource;
 import org.ff.common.mailsender.MailSenderService;
 import org.ff.common.uigrid.PageableResource;
 import org.ff.common.uigrid.UiGridFilterResource;
@@ -47,10 +48,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -74,9 +72,6 @@ public class UserService extends BaseService {
 
 	@Autowired
 	private Collator collator;
-
-	@Autowired
-	private Configuration configuration;
 
 	@Autowired
 	private EmailRepository emailRepository;
@@ -324,51 +319,49 @@ public class UserService extends BaseService {
 		}
 	}
 
+	/**
+	 * Method sends e-mail to a single user.
+	 * @param resource
+	 */
 	@Transactional
 	public void sendEmail(SendEmailResource resource) {
 		try {
-			Template template = configuration.getTemplate("email_user.ftl");
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("text", textToHTML(resource.getText()));
-			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+			String text = mailSender.processTemplateIntoString("email_user.ftl", model);
+
+			User user = userRepository.findOne(resource.getUsers().get(0).getId());
 
 			Email email = new Email();
 			email.setSubject(resource.getSubject());
 			email.setText(text);
 			emailRepository.save(email);
 
-			User user = userRepository.findOne(resource.getUsers().get(0).getId());
-
 			UserEmail userEmail = new UserEmail();
 			userEmail.setEmail(email);
 			userEmail.setUser(user);
 			userEmailRepository.save(userEmail);
 
-			if (StringUtils.isNotBlank(user.getEmail2())) {
-				mailSender.send(new String[] { user.getEmail(),  user.getEmail2() }, resource.getSubject(), text);
-			} else {
-				mailSender.send(user.getEmail(), resource.getSubject(), text);
-			}
+			// send e-mail
+			mailSender.send(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, resource.getSubject(), text));
 
-			if (user.getBusinessRelationshipManager() != null) {
-				sendEmail2BusinessRelationshipManager(user.getBusinessRelationshipManager().getEmail(), user.getEmail(), resource.getSubject(), text);
-			}
+			// send e-mail to BRM
+			send2Brm(user, resource.getSubject(), text);
 		} catch (Exception e) {
 			throw new RuntimeException("Sending e-mail failed", e);
 		}
 	}
 
-	private void sendEmail2BusinessRelationshipManager(String to, String user, String originalEmailSubject, String originalEmailText) {
+	private void send2Brm(User user, String subject, String text) {
 		try {
-			Template template = configuration.getTemplate("email_user_brm.ftl");
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("originalEmailText", originalEmailText);
-			model.put("user", user);
-			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-			mailSender.send(to, "FYI: " + originalEmailSubject, text);
+			if (user.getBusinessRelationshipManager() != null && StringUtils.isNotBlank(user.getBusinessRelationshipManager().getEmail())) {
+				Map<String, Object> model = new HashMap<String, Object>();
+				model.put("originalEmailText", text);
+				model.put("user", user.getEmail());
+				mailSender.send(new MailSenderResource(user.getBusinessRelationshipManager().getEmail(), (user.getBusinessRelationshipManagerSubstitute() != null && StringUtils.isNotBlank((user.getBusinessRelationshipManagerSubstitute().getEmail()))) ? user.getBusinessRelationshipManagerSubstitute().getEmail() : null, subject, mailSender.processTemplateIntoString("email_user_brm.ftl", model)));
+			}
 		} catch (Exception e) {
-			log.error(String.format("Sending e-mail to business relationship manager [%s] failed", to), e);
+			log.error(String.format("Sending e-mail to business relationship manager [%s] failed", user.getBusinessRelationshipManager().getEmail()), e);
 		}
 	}
 

@@ -103,8 +103,9 @@ public class ContactService {
 					+ " " + resource.getLocation().getAddress() + ", " + resource.getLocation().getSubdivision2());
 			model.put("text", StringUtils.isNotBlank(resource.getText()) ? resource.getText() : "");
 
-			mailSender.send(contactEmails.toArray(new String[contactEmails.size()]), baseProperties.getContactEmailSubject(),
-					FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
+			for (String contactEmail : contactEmails) {
+				mailSender.send(contactEmail, baseProperties.getContactEmailSubject(), FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

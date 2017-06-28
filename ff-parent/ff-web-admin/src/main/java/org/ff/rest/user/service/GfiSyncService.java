@@ -2,17 +2,25 @@ package org.ff.rest.user.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
+import org.ff.common.mailsender.MailSenderResource;
 import org.ff.common.mailsender.MailSenderService;
 import org.ff.jpa.domain.Company;
+import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
+import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.repository.CompanyRepository;
+import org.ff.jpa.repository.EmailRepository;
+import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.user.resource.GfiSyncReportResource;
 import org.ff.rest.user.resource.UserResource;
@@ -24,10 +32,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -36,9 +42,6 @@ public class GfiSyncService {
 
 	@Autowired
 	private BaseProperties baseProperties;
-
-	@Autowired
-	private Configuration configuration;
 
 	@Autowired
 	private MailSenderService mailSender;
@@ -53,6 +56,12 @@ public class GfiSyncService {
 	private UserResourceAssembler userResourceAssembler;
 
 	@Autowired
+	private EmailRepository emailRepository;
+
+	@Autowired
+	private UserEmailRepository userEmailRepository;
+
+	@Autowired
 	private ZabaApiService zabaApiService;
 
 	@Autowired
@@ -61,6 +70,7 @@ public class GfiSyncService {
 	@Autowired
 	private ZabaUpdateService zabaUpdateService;
 
+	@Transactional
 	public GfiSyncReportResource gfiSync(UserResource resource, Locale locale) {
 		GfiSyncReportResource result = new GfiSyncReportResource();
 
@@ -82,7 +92,18 @@ public class GfiSyncService {
 			users.add(user);
 		}
 
-		List<String> to = new ArrayList<>();
+		// e-mail template
+		String text = mailSender.processTemplateIntoString("email_gfi_sync.ftl", new HashMap<String, Object>());
+
+		// save e-mail record in database
+		Email email = new Email();
+		email.setSubject(baseProperties.getGfiSyncEmailSubject());
+		email.setText(text);
+		emailRepository.save(email);
+
+		Map<String, Set<String>> brms = new HashMap<>();
+		Map<String, String> brmSubstitutes = new HashMap<>();
+
 		for (User user : users) {
 			try {
 				Company company = user.getCompany();
@@ -101,11 +122,22 @@ public class GfiSyncService {
 
 					result.getUpdateOK().add(userResourceAssembler.toResource(user, true));
 
-					if (StringUtils.isNotBlank(user.getEmail())) {
-						to.add(user.getEmail());
-					}
-					if (StringUtils.isNotBlank(user.getEmail2())) {
-						to.add(user.getEmail2());
+					UserEmail userEmail = new UserEmail();
+					userEmail.setEmail(email);
+					userEmail.setUser(user);
+					userEmailRepository.save(userEmail);
+
+					mailSender.send(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, baseProperties.getGfiSyncEmailSubject(), text));
+
+					if (user.getBusinessRelationshipManager() != null && StringUtils.isNotBlank(user.getBusinessRelationshipManager().getEmail())) {
+						if (!brms.containsKey(user.getBusinessRelationshipManager().getEmail())) {
+							brms.put(user.getBusinessRelationshipManager().getEmail(), new HashSet<String>());
+						}
+						brms.get(user.getBusinessRelationshipManager().getEmail()).add(user.getEmail());
+
+						if (user.getBusinessRelationshipManagerSubstitute() != null && StringUtils.isNotBlank((user.getBusinessRelationshipManagerSubstitute().getEmail()))) {
+							brmSubstitutes.put(user.getBusinessRelationshipManager().getEmail(), user.getBusinessRelationshipManagerSubstitute().getEmail());
+						}
 					}
 				}
 			} catch (Exception e) {
@@ -114,16 +146,15 @@ public class GfiSyncService {
 			}
 		}
 
-		// send e-mail
-		try {
-			Template template = configuration.getTemplate("email_gfi_sync.ftl");
+		// send e-mails to BRMs
+		List<MailSenderResource> mailSenderResources = new ArrayList<>();
+		for (Entry<String, Set<String>> entry : brms.entrySet()) {
 			Map<String, Object> model = new HashMap<String, Object>();
-			String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-			mailSender.send(to.toArray(new String[to.size()]), baseProperties.getGfiSyncEmailSubject(), text);
-		} catch (Exception e) {
-			log.error("Sending GFI sync e-mail failed", e);
+			model.put("originalEmailText", text);
+			model.put("users", entry.getValue());
+			mailSenderResources.add(new MailSenderResource(entry.getKey(), brmSubstitutes.get(entry.getKey()), baseProperties.getGfiSyncEmailSubject(), mailSender.processTemplateIntoString("email_tender_brm.ftl", model)));
 		}
+		mailSender.send(mailSenderResources);
 
 		log.debug("GFI sync finished in {} ms", System.currentTimeMillis() - start);
 

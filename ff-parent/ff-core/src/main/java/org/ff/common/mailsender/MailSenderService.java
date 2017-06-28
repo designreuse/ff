@@ -1,14 +1,19 @@
 package org.ff.common.mailsender;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.sendgrid.Content;
 import com.sendgrid.Email;
@@ -18,11 +23,16 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class MailSenderService {
+
+	@Autowired
+	private Configuration configuration;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -40,33 +50,56 @@ public class MailSenderService {
 		}
 	}
 
-	public void send(final String to, final String subject, final String text) {
+	/**
+	 * Convenience method that creates text out of given template name and model.
+	 * @param templateName
+	 * @param model
+	 * @return
+	 */
+	public String processTemplateIntoString(String templateName, Map<String, Object> model) {
+		try {
+			Template template = configuration.getTemplate(templateName );
+			return FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+		} catch (Exception e) {
+			throw new RuntimeException("Processing template failed", e);
+		}
+	}
+
+	/**
+	 * Send e-mails.
+	 * @param resource
+	 */
+	public void send(List<MailSenderResource> resources) {
+		for (MailSenderResource resource : resources) {
+			send(resource);
+		}
+	}
+
+	/**
+	 * Send e-mail.
+	 * @param resource
+	 */
+	public void send(MailSenderResource resource) {
+		send(resource.getTo(), (StringUtils.isNotBlank(resource.getTo()) && !resource.getTo().equalsIgnoreCase(resource.getCc())) ? resource.getCc() : null, resource.getSubject(), resource.getText());
+	}
+
+	/**
+	 * Send e-mail with given subject and text to recipient;
+	 * @param to
+	 * @param subject
+	 * @param text
+	 */
+	public void send(String to, String subject, String text) {
+		send(to, null, subject, text);
+	}
+
+	private void send(final String to, final String cc, final String subject, final String text) {
 		log.debug("Sending e-mail with subject [{}] to [{}]", subject, to);
 
 		if (Boolean.TRUE == baseProperties.getSendgridEnabled() && sendGrid != null) {
 			sendViaSendGrid(to, subject, text);
-		} else {
-			MimeMessagePreparator preparator = new MimeMessagePreparator() {
-				@Override
-				public void prepare(MimeMessage mimeMessage) throws Exception {
-					MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-					message.setFrom(baseProperties.getMailSender());
-					message.setTo(to);
-					message.setSubject(subject);
-					message.setText(text, true);
-				}
-			};
-
-			mailSender.send(preparator);
-		}
-	}
-
-	public void send(final String[] tos, final String subject, final String text) {
-		log.debug("Sending e-mail with subject [{}] to {}", subject, tos);
-
-		if (Boolean.TRUE == baseProperties.getSendgridEnabled() && sendGrid != null) {
-			for (String to : tos) {
-				sendViaSendGrid(to, subject, text);
+			if (StringUtils.isNotBlank(cc)) {
+				sendViaSendGrid(cc, subject, text);
 			}
 		} else {
 			MimeMessagePreparator preparator = new MimeMessagePreparator() {
@@ -74,7 +107,10 @@ public class MailSenderService {
 				public void prepare(MimeMessage mimeMessage) throws Exception {
 					MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
 					message.setFrom(baseProperties.getMailSender());
-					message.setTo(tos);
+					message.setTo(to);
+					if (StringUtils.isNotBlank(cc)) {
+						message.setCc(cc);
+					}
 					message.setSubject(subject);
 					message.setText(text, true);
 				}
