@@ -21,6 +21,7 @@ import org.ff.common.uigrid.UiGridResource;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Email;
+import org.ff.jpa.domain.Project;
 import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
@@ -121,8 +122,19 @@ public class UserService extends BaseService {
 
 		UserResource resource = resourceAssembler.toResource(entity, false);
 
-		List<Tender> tenders = algorithmService.findTenders4User(entity, entity.getCompany(), projectRepository.findByCompany(entity.getCompany()), new DebuggingResource()); // TODO: this might slow things down
+		List<Tender> tenders = algorithmService.findTenders4User(entity, entity.getCompany(),
+				projectRepository.findByCompany(entity.getCompany()), new DebuggingResource());
+
 		if (tenders != null && !tenders.isEmpty()) {
+			if (entity.getCompany() != null) {
+				List<Project> projects = projectRepository.findByCompany(entity.getCompany());
+				if (projects != null) {
+					for (Tender tender : tenders) {
+						algorithmService.processTender4Projects(tender, projects);
+					}
+				}
+			}
+
 			resource.getCompany().setTenders(tenderResourceAssembler.toResources(tenders, true));
 		}
 
@@ -146,24 +158,24 @@ public class UserService extends BaseService {
 		return resource;
 	}
 
-	private List<String> getTenders4Project(ProjectResource project, List<TenderResource> tenders) {
-		List<String> result = new ArrayList<>();
+	private List<TenderResource> getTenders4Project(ProjectResource project, List<TenderResource> tenders) {
+		List<TenderResource> result = new ArrayList<>();
 		if (tenders != null) {
 			for (TenderResource tenderResource : tenders) {
 				for (ProjectResource projectResource : tenderResource.getProjects()) {
 					if (projectResource.getId().equals(project.getId())) {
 						if (!result.contains(tenderResource)) {
-							result.add(tenderResource.getName());
+							result.add(tenderResource);
 						}
 					}
 				}
 			}
 		}
 
-		Collections.sort(result, new Comparator<String>() {
+		Collections.sort(result, new Comparator<TenderResource>() {
 			@Override
-			public int compare(String o1, String o2) {
-				return collator.compare(o1, o2);
+			public int compare(TenderResource o1, TenderResource o2) {
+				return collator.compare(o1.getName(), o2.getName());
 			}
 		});
 

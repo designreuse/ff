@@ -6,6 +6,7 @@ import java.util.List;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.image.resource.ImageResource;
 import org.ff.rest.investment.resource.InvestmentResource;
+import org.ff.rest.tender.resource.TenderResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -39,7 +40,7 @@ public class ProjectResource {
 	private List<ProjectItemResource> items;
 
 	@JsonProperty("matchingTenders")
-	private List<String> matchingTenders;
+	private List<TenderResource> matchingTenders;
 
 	@JsonProperty("creationDate")
 	private Date creationDate;
