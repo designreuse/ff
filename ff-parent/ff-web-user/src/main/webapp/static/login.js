@@ -178,6 +178,8 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		
 		$scope.username = undefined;
 		$scope.password = undefined;
+		
+		$window.scrollTo(0, 0);
 	};
 	
 	$scope.showWelcome = function() {
@@ -242,6 +244,8 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		
 		$scope.username = undefined;
 		$scope.password = undefined;
+		
+		$window.scrollTo(0, 0);
 	};
 	
 	// initial
