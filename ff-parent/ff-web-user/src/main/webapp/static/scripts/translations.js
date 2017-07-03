@@ -98,8 +98,8 @@ function config($translateProvider) {
 			LABEL_SYNC_DATA: 'Prilikom prijave automatski ažurirajte podatke koje ste unijeli s podacima koje ima Banka.',
 			LABEL_SYNC_DATA_WARNING: 'Podaci o poduzeću koje ste unijeli razlikuju se od podataka dostupnih Banci. Želite li:',
 			LABEL_SHOW_SYNC_DATA_WARNING: 'Nemoj više prikazivati ovo upozorenje',
-			LABEL_NO_PROJECTS: 'Trenutno nema unešenih projekata',
-			LABEL_NO_ARTICLES: 'Trenutno nema unešenih članaka',
+			LABEL_NO_PROJECTS: 'Trenutno nema unesenih projekata',
+			LABEL_NO_ARTICLES: 'Trenutno nema unesenih članaka',
 			LABEL_CHART_DETAILS_NOTE: 'Za detalje kliknite na traku za određeni mjesec',
 			
 			TOOLTIP_DELETE: 'Izbriši',
