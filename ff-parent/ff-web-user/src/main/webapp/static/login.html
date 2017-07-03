@@ -348,7 +348,7 @@ korisni upravo Vama.</p>
                 <div ng-if="unauthorize" class="col-md-6 text-center">
                     <i style="margin-top: 100px;" class="fa fa-exclamation-triangle fa-5x fa-fw"></i>
                     <h3 style="margin-top: 20px;">{{ 'LBL_UNAUTHORIZE' | translate }}</h3>
-                    <h5 ng-if="status == 409" style="margin-top: 10px;">{{ status }} - {{ 'LBL_USER_ALREADY_REGISTERED' | translate }}</h5>
+                    <p style="font-size: 11px; text-align: center;" ng-bind-html="externalFlowFailedMsg"></p>
                 </div>
                 <div class="col-md-3"></div>
             </div>

@@ -266,6 +266,11 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			.error(function(data, status, headers, config) {
 				$scope.unauthorize = true;
 				$scope.status = status;
+				if (status == 403) {
+					$scope.externalFlowFailedMsg = $translate('LOGIN_DISABLED');					
+				} else if (status == 409) {
+					$scope.externalFlowFailedMsg = $translate('LBL_USER_ALREADY_REGISTERED');
+				}
 			});
 	} else {
 		$scope.showLanding();		

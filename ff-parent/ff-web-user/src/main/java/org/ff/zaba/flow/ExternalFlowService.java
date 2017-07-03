@@ -145,6 +145,10 @@ public class ExternalFlowService {
 				resource.setEmail(user.getEmail());
 				resource.setPassword(user.getPassword());
 
+				if (UserStatus.INACTIVE == user.getStatus()) {
+					return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				}
+
 				return new ResponseEntity<>(resource, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
