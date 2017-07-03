@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.ff.common.password.PasswordService;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.User;
+import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.CompanyRepository;
@@ -58,6 +59,12 @@ public class UserResourceAssembler {
 		resource.setCreatedBy(entity.getCreatedBy());
 		resource.setLastModifiedDate(entity.getLastModifiedDate().toDate());
 		resource.setLastModifiedBy(entity.getLastModifiedBy());
+
+		if (UserRegistrationType.INTERNAL == entity.getRegistrationType() && resource.getCompany() != null) {
+			resource.getCompany().setName(null);
+			resource.getCompany().setCode(null);
+		}
+
 		return resource;
 	}
 
