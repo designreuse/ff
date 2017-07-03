@@ -395,7 +395,7 @@ korisni upravo Vama.</p>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
                                     <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
-                                    <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
+                                    <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formResetPassword.email.$invalid, 'fa fa-check-circle ff-valid' : formResetPassword.email.$valid }"></i>
                                     </span>
@@ -441,7 +441,7 @@ korisni upravo Vama.</p>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
                                     <small class="ff-postscript">{{ 'LBL_EMAIL' | translate }}</small>
-                                    <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" maxlength="255">
+                                    <input ng-model="user.email" type="email" class="form-control" name="email" ng-required="true" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" maxlength="255">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.email.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.email.$valid }"></i>
                                     </span>

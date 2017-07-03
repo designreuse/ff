@@ -64,7 +64,7 @@
                             <span class="pull-right"><i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle m-l-xs ff-invalid' : (form.name.$invalid || form.email.$invalid), 'fa fa-check-circle m-l-xs ff-valid' : (form.name.$valid && form.email.$valid) }"></i></span>
                         </label>
                         <input ng-model="entity.name" type="text" class="form-control ff-form-control" name="name" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_CONTACT_PERSON' | translate }} *" />
-                        <input ng-model="entity.email" type="email" class="form-control ff-form-control m-t-xs" name="email" ng-required="true" maxlength="255" placeholder="{{ 'LABEL_CONTACT_EMAIL' | translate }} *" />
+                        <input ng-model="entity.email" type="email" class="form-control ff-form-control m-t-xs" name="email" ng-required="true" maxlength="255" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="{{ 'LABEL_CONTACT_EMAIL' | translate }} *" />
                         <input ng-model="entity.phone" type="text" class="form-control ff-form-control m-t-xs" name="phone" maxlength="255" placeholder="{{ 'LABEL_CONTACT_PHONE' | translate }}" /> 
                     </div>
                 </div>
