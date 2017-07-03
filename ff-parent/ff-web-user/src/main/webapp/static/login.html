@@ -450,7 +450,7 @@ korisni upravo Vama.</p>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
                                     <small class="ff-postscript">{{ 'LBL_PASSWORD' | translate }}</small>
-                                    <input ng-model="user.password" type="password" class="form-control" name="password" ng-required="true" maxlength="128">
+                                    <input ng-model="user.password" type="password" class="form-control" name="password" ng-required="true" maxlength="128" pattern=".{8,128}">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.password.$invalid, 'fa fa-check-circle ff-valid' : formRegistration.password.$valid }"></i>
                                     </span>
@@ -459,7 +459,7 @@ korisni upravo Vama.</p>
                             <div class="form-group" style="margin-bottom: 5px;">
                                 <div class="input-group">
                                     <small class="ff-postscript">{{ 'LBL_CONFIRM_PASSWORD' | translate }}</small>
-                                    <input ng-model="user.confirmPassword" type="password" class="form-control" name="confirmPassword" ng-required="true" maxlength="128">
+                                    <input ng-model="user.confirmPassword" type="password" class="form-control" name="confirmPassword" ng-required="true" maxlength="128" pattern=".{8,128}">
                                     <span class="input-group-addon">
                                         <i style="width: 10px;" ng-class="{ 'fa fa-exclamation-circle ff-invalid' : formRegistration.confirmPassword.$invalid || (user.confirmPassword.length > 0 && user.password != user.confirmPassword), 'fa fa-check-circle ff-valid' : formRegistration.confirmPassword.$valid && (user.confirmPassword.length > 0 && user.password == user.confirmPassword) }"></i>
                                     </span>
