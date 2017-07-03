@@ -57,7 +57,7 @@ p span {
 		<div ng-if="activeView == 2" class="col-lg-12 p-xxs">
 			<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
 				<div class="masonry-brick ff-masonry-brick" ng-repeat="tender in tenders">
-					<i style="background: white;" class="fa fa-edit fa-2x pull-right ff-masonry-brick-edit" aria-hidden="true" uib-tooltip="{{ 'ACTION_TOOLTIP_EDIT' | translate }}" ui-sref="tenders.edit({ id: tender.id })"></i>
+					<i ng-if="hasPermission(['tenders.update'])" style="background: white;" class="fa fa-edit fa-2x pull-right ff-masonry-brick-edit" aria-hidden="true" uib-tooltip="{{ 'ACTION_TOOLTIP_EDIT' | translate }}" ui-sref="tenders.edit({ id: tender.id })"></i>
 					<h5 class="p-xs ff-masonry-brick-title" style="margin-bottom: 5px;">
 						<a class="ff-a" ui-sref="tenders.details({ id: tender.id })">{{tender.name}}</a>
 					</h5>
