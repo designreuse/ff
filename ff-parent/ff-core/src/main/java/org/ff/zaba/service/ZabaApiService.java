@@ -84,7 +84,9 @@ public class ZabaApiService {
 					baseProperties.getZabaContactApiOffices(), HttpMethod.GET, new HttpEntity<>(getHttpHeaders()), ZabaOfficeResource[].class);
 
 			for (ZabaOfficeResource resource : responseEntity.getBody()) {
-				result.add(resource);
+				if (resource.getIdFunkcija() != null && resource.getIdFunkcija().intValue() == 4) {
+					result.add(resource);
+				}
 			}
 
 			log.debug("Offices successfully retrieved from external source: {}", result);

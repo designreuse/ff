@@ -70,8 +70,9 @@ public class ZabaMockController {
 		try {
 			List<ZabaOfficeResource> resources = new ArrayList<>();
 
-			resources.add(new ZabaOfficeResource(61, "Poslovnica", "Za građanstvo", "Trg Franje Tuđmana bb", "Sinj", "21230"));
-			resources.add(new ZabaOfficeResource(44, "Poslovnica", "Za građanstvo", "Trg Franje Tuđmana 1", "Virovitica", "33000"));
+			resources.add(new ZabaOfficeResource(61, "Poslovnica", null, "Trg Franje Tuđmana bb", "Sinj", "21230", 4));
+			resources.add(new ZabaOfficeResource(44, "Poslovnica", null, "Trg Franje Tuđmana 1", "Virovitica", "33000", 4));
+			resources.add(new ZabaOfficeResource(31, "Poslovnica", "Za građanstvo", "Trg Slobode 11", "Osijek", "31000", 1));
 
 			return new ResponseEntity<>(resources, HttpStatus.OK);
 		} catch (Exception e) {

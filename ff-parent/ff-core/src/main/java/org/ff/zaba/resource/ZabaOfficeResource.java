@@ -31,4 +31,7 @@ public class ZabaOfficeResource {
 	@JsonProperty("postanskiBroj")
 	private String postanskiBroj;
 
+	@JsonProperty("idFunkcija")
+	private Integer idFunkcija;
+
 }
