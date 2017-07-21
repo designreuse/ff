@@ -81,7 +81,7 @@ public class DashboardService {
 
 		LocalDate today = new LocalDate();
 		DateTime date3MonthsAgo = new DateTime().minusMonths(3);
-		DateTime date30DaysAgo = new DateTime().minusDays(30);
+		DateTime date30DaysAgo = new DateTime().minusDays(30); // latest tenders
 
 		Map<String, AtomicInteger> map1 = new LinkedHashMap<>(); // tenders count by month
 		Map<String, Double> map2 = new LinkedHashMap<>(); // tenders total value by month
@@ -96,7 +96,31 @@ public class DashboardService {
 		AtomicInteger cntTendersOpen = new AtomicInteger(0);
 
 		for (Tender tender : tenderRepository.findByStatus(TenderStatus.ACTIVE)) {
+			// counter tenders
 			cntTenders.incrementAndGet();
+
+			// count open tenders
+			for (TenderItem tenderItem : tender.getItems()) {
+				Item item = tenderItem.getItem();
+
+				if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE) {
+					if (tenderItem.getValue() != null) {
+						LocalDate startDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+						if (startDate.isBefore(today)) {
+							cntTendersOpen.incrementAndGet();
+						}
+					}
+				}
+
+				if (item.getMetaTag() == ItemMetaTag.TENDER_END_DATE) {
+					if (tenderItem.getValue() != null) {
+						LocalDate endDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
+						if (endDate.isBefore(today)) {
+							cntTendersOpen.decrementAndGet();
+						}
+					}
+				}
+			}
 
 			LocalDate tenderStartDate = getTenderStartDate(tender);
 			if (tenderStartDate == null) {
@@ -146,7 +170,6 @@ public class DashboardService {
 							if (tenderItem.getValue() != null) {
 								LocalDate startDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
 								if (startDate.isBefore(today)) {
-									cntTendersOpen.incrementAndGet();
 									tenderResource.setState(TenderState.OPEN);
 								} else if (startDate.isAfter(today)) {
 									tenderResource.setState(TenderState.PENDING);
