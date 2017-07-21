@@ -103,6 +103,10 @@ function config($translateProvider) {
 			LABEL_NO_ARTICLES: 'Trenutno nema unesenih članaka',
 			LABEL_CHART_DETAILS_NOTE: 'Za detalje kliknite na traku za određeni mjesec',
 			
+			LABEL_PRIMARY_FIRST_NAME_MISSING: 'Molimo upišite ime',
+			LABEL_PRIMARY_LAST_NAME_MISSING: 'Molimo upišite prezime',
+			LABEL_PRIMARY_EMAIL_MISSING: 'Molimo upišite e-mail adresu',
+			
 			TOOLTIP_DELETE: 'Izbriši',
 			TOOLTIP_SYNC_DATA: 'koristiti se podacima iz sustava Banke',
 			TOOLTIP_SYNC_DATA_ALWAYS: 'Ažuriraj podatke o tvrtki koje ste unijeli sa podacima koje ima banka sad i ubuduće',

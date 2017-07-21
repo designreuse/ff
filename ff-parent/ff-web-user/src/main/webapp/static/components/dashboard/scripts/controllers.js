@@ -211,7 +211,7 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			});
 	};
 	
-	if (!$rootScope.principal.username) {
+	if (!$rootScope.principal.username || !$rootScope.principal.firstName || !$rootScope.principal.lastName) {
 		var dialogInstance1 = new BootstrapDialog({
 			type: BootstrapDialog.TYPE_DANGER,
             title: $translate('DLG_NO_EMAIL_HDR'),
