@@ -303,7 +303,6 @@
 
 .ff-emphasize-item-value {
 	padding-left: 10px;
-	background: #fafafa;
 	font-family: unicredit-light;
 	font-size: 12px;
 }
@@ -312,7 +311,6 @@
 	padding-left: 0px; 
 	padding-right: 0px;
 	padding-bottom: 5px;
-	border: 1px solid #00afd0;
 }
 
 .ff-emphasize-item-help {
