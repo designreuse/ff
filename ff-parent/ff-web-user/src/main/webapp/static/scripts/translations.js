@@ -83,6 +83,7 @@ function config($translateProvider) {
 			LABEL_PASSWORD: 'Zaporka',
 			LABEL_NEW_PASSWORD: 'Nova zaporka',
 			LABEL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
+			LABEL_PASSWORD_GUIDELINES: 'Zaporka treba sadržavati minimalno 8 znakova',
 			LABEL_NAME: 'Naziv',
 			LABEL_DESCRIPTION: 'Opis',
 			LABEL_INVESTMENT: 'Investicija',

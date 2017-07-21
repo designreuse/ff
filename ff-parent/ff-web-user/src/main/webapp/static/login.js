@@ -37,6 +37,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			LBL_WELCOME: 'MojEUfond prijava',
 			LBL_USERNAME: 'Korisničko ime',
 			LBL_PASSWORD: 'Zaporka',
+			LBL_PASSWORD_GUIDELINES: '(minimalno 8 znakova)',
 			LBL_CONFIRM_PASSWORD: 'Potvrdi zaporku',
 			LBL_RESET_PASSWORD: 'Resetiraj zaporku',
 			LBL_REGISTRATION: 'Registracija',

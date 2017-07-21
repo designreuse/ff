@@ -20,9 +20,9 @@ angular.module('FundFinder')
 		$state.go('settings.overview');
 	};
 	
-	$scope.registration = function() {
-		$state.go('settings.registration');
-	};
+//	$scope.registration = function() {
+//		$state.go('settings.registration');
+//	};
 	
 	// change language function
 	$scope.changeLanguage = function(langKey) {
