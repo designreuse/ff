@@ -158,14 +158,16 @@ public class UserService extends BaseService {
 		return resource;
 	}
 
-	private List<TenderResource> getTenders4Project(ProjectResource project, List<TenderResource> tenders) {
+	public List<TenderResource> getTenders4Project(ProjectResource project, List<TenderResource> tenders) {
 		List<TenderResource> result = new ArrayList<>();
 		if (tenders != null) {
 			for (TenderResource tenderResource : tenders) {
-				for (ProjectResource projectResource : tenderResource.getProjects()) {
-					if (projectResource.getId().equals(project.getId())) {
-						if (!result.contains(tenderResource)) {
-							result.add(tenderResource);
+				if (tenderResource.getProjects() != null) {
+					for (ProjectResource projectResource : tenderResource.getProjects()) {
+						if (projectResource.getId().equals(project.getId())) {
+							if (!result.contains(tenderResource)) {
+								result.add(tenderResource);
+							}
 						}
 					}
 				}

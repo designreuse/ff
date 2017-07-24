@@ -8,7 +8,10 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.template;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +19,15 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
+import org.ff.jpa.domain.Item.ItemMetaTag;
+import org.ff.jpa.domain.Subdivision2;
+import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
+import org.ff.jpa.domain.User.UserStatus;
+import org.ff.jpa.repository.Subdivision2Repository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.investment.resource.InvestmentResource;
@@ -26,12 +35,15 @@ import org.ff.rest.item.resource.ItemResource;
 import org.ff.rest.project.resource.ProjectItemResource;
 import org.ff.rest.project.resource.ProjectResource;
 import org.ff.rest.project.resource.ProjectResourceAssembler;
+import org.ff.rest.tender.resource.TenderResource;
 import org.ff.rest.user.resource.UserResource;
 import org.ff.rest.user.resource.UserResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import au.com.bytecode.opencsv.CSVWriter;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
@@ -42,6 +54,7 @@ import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 
+@Slf4j
 @Service
 public class UserExportService {
 
@@ -52,11 +65,18 @@ public class UserExportService {
 	private BaseProperties baseProperties;
 
 	@Autowired
+	private UserService userService;
+
+	@Autowired
 	private UserRepository repository;
 
 	@Autowired
 	private UserResourceAssembler resourceAssembler;
 
+	@Autowired
+	private Subdivision2Repository subdivision2Repository;
+
+	private DecimalFormat currencyFormatter;
 	private Locale locale;
 	private DateFormat dateFormat;
 	private StyleBuilder rootStyle;
@@ -65,6 +85,15 @@ public class UserExportService {
 
 	@PostConstruct
 	public void init() {
+		String pattern = "###,###.##";
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale(baseProperties.getLocale()));
+		dfs.setDecimalSeparator(',');
+		dfs.setGroupingSeparator('.');
+
+		currencyFormatter = new DecimalFormat(pattern, dfs);
+		currencyFormatter.setMinimumFractionDigits(2);
+		currencyFormatter.setMaximumFractionDigits(2);
+
 		locale = new Locale(baseProperties.getLocale());
 		dateFormat = new SimpleDateFormat(baseProperties.getDateTimeFormat());
 
@@ -215,6 +244,191 @@ public class UserExportService {
 
 		multiPageList.add(cmp.verticalGap(5),
 				cmp.verticalList(cmp.text(messageSource.getMessage("report.hdr.projects", null, locale).toUpperCase()).setStyle(sectionStyle), cmp.verticalGap(0), horizontalList));
+	}
+
+	public File exportCompanyData2Csv(Locale locale) {
+		long start = System.currentTimeMillis();
+
+		File file = null;
+		CSVWriter writer = null;
+		try {
+			file = new File(String.format("company_data_%s.csv", System.currentTimeMillis()));
+			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
+
+			List<String[]> entries = new ArrayList<>();
+			String[] headers = new String[] { "id_korisnika", "status_korisnika", "tip_registracije", "id_poduzeća", "naziv", "oib", "županija", "općina", "veličina", "visina_prihoda", "broj_projekata", "vrijednost_projekata" };
+			entries.add(headers);
+
+			for (User user : repository.findAll()) {
+				if (user.getDemoUser() == Boolean.TRUE) {
+					continue;
+				}
+
+				UserResource userResource = resourceAssembler.toResource(user, false);
+				CompanyResource companyResource = userResource.getCompany();
+
+				String[] entry = new String[12];
+
+				entry[0] = user.getId().toString();
+				entry[1] = getUserStatus(user.getStatus(), locale);
+				entry[2] = getRegistrationType(user.getRegistrationType(), locale);
+				entry[3] = companyResource.getId().toString();
+				entry[4] = StringUtils.isNotBlank(companyResource.getName()) ? companyResource.getName() : "";
+				entry[5] = StringUtils.isNotBlank(companyResource.getCode()) ? companyResource.getCode() : "";
+
+				Subdivision2 subdivision2 = subdivision2Repository.findByName(getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_LOCATION));
+				entry[6] = (subdivision2 != null) ? subdivision2.getSubdivision1().getName() : "";
+				entry[7] = (subdivision2 != null) ? subdivision2.getName() : "";
+
+				entry[8] = getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_SIZE);
+				entry[9] = getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_REVENUE);
+
+				int cntProjects = 0;
+				double totalInvestmentAmount = 0;
+				for (ProjectResource projectResource : userResource.getProjects()) {
+					cntProjects++;
+					for (ProjectItemResource projectItemResource : projectResource.getItems()) {
+						if (projectItemResource.getItem().getMetaTag() == ItemMetaTag.COMPANY_INVESTMENT_AMOUNT) {
+							if (projectItemResource.getValue() != null) {
+								totalInvestmentAmount = totalInvestmentAmount + (double) projectItemResource.getValue();
+							}
+						}
+					}
+				}
+
+				entry[10] = Integer.toString(cntProjects);
+				entry[11] = currencyFormatter.format(totalInvestmentAmount);
+
+				entries.add(entry);
+			}
+
+			writer.writeAll(entries);
+
+			return file;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			IOUtils.closeQuietly(writer);
+			log.debug("Exporting company data to CSV finished in {} ms.", System.currentTimeMillis() - start);
+		}
+	}
+
+	private String getCompanyItemValue(CompanyResource companyResource, ItemMetaTag metaTag) {
+		String result = "";
+		for (ItemResource itemResource : companyResource.getItems()) {
+			if (itemResource.getMetaTag() == metaTag) {
+				result = itemResource.getValueMapped();
+			}
+
+		}
+		return result;
+	}
+
+	public File exportProjectData2Csv(Locale locale) {
+		long start = System.currentTimeMillis();
+
+		File file = null;
+		CSVWriter writer = null;
+		try {
+			file = new File(String.format("project_data_%s.csv", System.currentTimeMillis()));
+			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
+
+			List<String[]> entries = new ArrayList<>();
+			String[] headers = new String[] { "id_korisnika", "status_korisnika", "tip_registracije", "id_poduzeća", "naziv_poduzeća", "oib_poduzeća", "naziv", "djelatnost", "investicije", "županija", "općina", "iznos", "način_financiranja", "prihvatljivi_natječaji" };
+			entries.add(headers);
+
+			for (User user : repository.findAll()) {
+				if (user.getDemoUser() == Boolean.TRUE) {
+					continue;
+				}
+
+				UserResource userResource = userService.find(user.getId(), locale);
+
+				for (ProjectResource projectResource : userResource.getProjects()) {
+					String[] entry = new String[14];
+
+					entry[0] = user.getId().toString();
+					entry[1] = getUserStatus(user.getStatus(), locale);
+					entry[2] = getRegistrationType(user.getRegistrationType(), locale);
+					entry[3] = userResource.getCompany().getId().toString();
+					entry[4] = StringUtils.isNotBlank(userResource.getCompany().getName()) ? userResource.getCompany().getName() : "";
+					entry[5] = StringUtils.isNotBlank(userResource.getCompany().getCode()) ? userResource.getCompany().getCode() : "";
+
+					entry[6] = StringUtils.isNotBlank(projectResource.getName()) ? projectResource.getName() : "";
+					entry[7] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_ACTIVITY);
+
+					List<String> investments = new ArrayList<>();
+					for (InvestmentResource investmentResource : projectResource.getInvestments()) {
+						investments.add(investmentResource.getName());
+					}
+					entry[8] = StringUtils.join(investments, "|");
+
+					entry[9] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION1);
+					entry[10] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION2);
+
+					String investmentAmount = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_AMOUNT);
+					entry[11] = (StringUtils.isNotBlank(investmentAmount)) ? currencyFormatter.format(Double.parseDouble(investmentAmount)) : "";
+
+					entry[12] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_FINANCING_TYPE);
+
+					List<String> mathcingTenders = new ArrayList<>();
+					if (projectResource.getMatchingTenders() != null) {
+						for (TenderResource tenderResource : projectResource.getMatchingTenders()) {
+							mathcingTenders.add(tenderResource.getName());
+						}
+					}
+					entry[13] = StringUtils.join(mathcingTenders, "|");
+
+					entries.add(entry);
+				}
+			}
+
+			writer.writeAll(entries);
+
+			return file;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			IOUtils.closeQuietly(writer);
+			log.debug("Exporting project data to CSV finished in {} ms.", System.currentTimeMillis() - start);
+		}
+	}
+
+	private String getProjectItemValue(ProjectResource projectResource, ItemMetaTag metaTag) {
+		String result = "";
+		for (ProjectItemResource projectItemResource : projectResource.getItems()) {
+			if (projectItemResource.getItem().getMetaTag() == metaTag) {
+				if (metaTag == ItemMetaTag.COMPANY_INVESTMENT_AMOUNT) {
+					result = projectItemResource.getValue().toString();
+				} else {
+					result = projectItemResource.getValueMapped();
+				}
+			}
+
+		}
+		return result;
+	}
+
+	private String getUserStatus(UserStatus status, Locale locale) {
+		if (status == UserStatus.ACTIVE) {
+			return messageSource.getMessage("export.userStatusActive", null, locale);
+		} else if (status == UserStatus.INACTIVE) {
+			return messageSource.getMessage("export.userStatusInactive", null, locale);
+		} else if (status == UserStatus.WAITING_CONFIRMATION) {
+			return messageSource.getMessage("export.userStatusWaitingConfirmation", null, locale);
+		} else {
+			return "";
+		}
+	}
+
+	private String getRegistrationType(UserRegistrationType registrationType, Locale locale) {
+		if (registrationType == UserRegistrationType.INTERNAL) {
+			return messageSource.getMessage("export.registrationTypeInternal", null, locale);
+		} else if (registrationType == UserRegistrationType.EXTERNAL) {
+			return messageSource.getMessage("export.registrationTypeExternal", null, locale);
+		} else {
+			return "";
+		}
 	}
 
 }

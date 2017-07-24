@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.ff.base.controller.BaseController;
 import org.ff.common.etm.EtmService;
 import org.ff.common.uigrid.PageableResource;
@@ -151,16 +152,18 @@ public class UserController extends BaseController {
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/export/pdf", produces = "application/pdf")
 	public ResponseEntity<byte[]> exportPdf(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".exportPdf");
+
+		File file = null;
 		try {
-			File file = userExportService.exportPdf(id);
+			file = userExportService.exportPdf(id);
 			byte[] pdfContents = Files.toByteArray(file);
-			file.delete();
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("content-disposition", "inline;filename=" + file.getName());
 			ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
 			return responseEntity;
 		} finally {
+			FileUtils.deleteQuietly(file);
 			etmService.collect(point);
 		}
 	}
@@ -173,6 +176,44 @@ public class UserController extends BaseController {
 		} catch (RuntimeException e) {
 			throw processException(e);
 		} finally {
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value="/exportCompanyData2Csv", produces = "text/csv")
+	public ResponseEntity<byte[]> exportCompanyData2Csv(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".exportCompanyData2Csv");
+
+		File file = null;
+		try {
+			file = userExportService.exportCompanyData2Csv(localeResolver.resolveLocale(request));
+			byte[] csvContents = Files.toByteArray(file);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("content-disposition", "inline;filename=" + file.getName());
+			ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(csvContents, headers, HttpStatus.OK);
+			return responseEntity;
+		} finally {
+			FileUtils.deleteQuietly(file);
+			etmService.collect(point);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value="/exportProjectData2Csv", produces = "text/csv")
+	public ResponseEntity<byte[]> exportProjectData2Csv(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".exportProjectData2Csv");
+
+		File file = null;
+		try {
+			file = userExportService.exportProjectData2Csv(localeResolver.resolveLocale(request));
+			byte[] csvContents = Files.toByteArray(file);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("content-disposition", "inline;filename=" + file.getName());
+			ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(csvContents, headers, HttpStatus.OK);
+			return responseEntity;
+		} finally {
+			FileUtils.deleteQuietly(file);
 			etmService.collect(point);
 		}
 	}
