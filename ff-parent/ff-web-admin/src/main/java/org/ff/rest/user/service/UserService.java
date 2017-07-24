@@ -274,6 +274,18 @@ public class UserService extends BaseService {
 
 		// delete
 		repository.delete(entity);
+
+		// send e-mail
+		try {
+			if (StringUtils.isNotBlank(entity.getEmail())) {
+				mailSender.send(new MailSenderResource(entity.getEmail(), StringUtils.isNotBlank(entity.getEmail2()) ? entity.getEmail2() : "",
+						messageSource.getMessage("email.userDeleted.subject", null, locale),
+						mailSender.processTemplateIntoString("email_user_deleted.ftl", new HashMap<String, Object>())));
+			}
+		} catch (Exception e) {
+			log.error("Sending e-mail failed", e);
+		}
+
 		log.debug("User [{}] deleted", entity.getId());
 	}
 
