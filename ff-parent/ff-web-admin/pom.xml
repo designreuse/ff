@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.ff</groupId>
 		<artifactId>ff-parent</artifactId>
-		<version>1.0.16-SNAPSHOT</version>
+		<version>1.0.17-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -36,12 +36,12 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.20.Final</version><!--$NO-MVN-MAN-VER$-->
+			<version>4.2.20.Final</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.2.20.Final</version><!--$NO-MVN-MAN-VER$-->
+			<version>4.2.20.Final</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
@@ -129,7 +129,7 @@
 		<dependency>
 			<groupId>com.sendgrid</groupId>
 			<artifactId>sendgrid-java</artifactId>
-			<version>4.0.1</version><!--$NO-MVN-MAN-VER$-->
+			<version>4.0.1</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 	</dependencies>
 
