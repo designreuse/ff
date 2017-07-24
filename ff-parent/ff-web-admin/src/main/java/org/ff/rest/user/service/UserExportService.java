@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
@@ -306,22 +307,12 @@ public class UserExportService {
 
 			return file;
 		} catch (Exception e) {
+			FileUtils.deleteQuietly(file);
 			throw new RuntimeException(e);
 		} finally {
 			IOUtils.closeQuietly(writer);
 			log.debug("Exporting company data to CSV finished in {} ms.", System.currentTimeMillis() - start);
 		}
-	}
-
-	private String getCompanyItemValue(CompanyResource companyResource, ItemMetaTag metaTag) {
-		String result = "";
-		for (ItemResource itemResource : companyResource.getItems()) {
-			if (itemResource.getMetaTag() == metaTag) {
-				result = itemResource.getValueMapped();
-			}
-
-		}
-		return result;
 	}
 
 	public File exportProjectData2Csv(Locale locale) {
@@ -387,11 +378,23 @@ public class UserExportService {
 
 			return file;
 		} catch (Exception e) {
+			FileUtils.deleteQuietly(file);
 			throw new RuntimeException(e);
 		} finally {
 			IOUtils.closeQuietly(writer);
 			log.debug("Exporting project data to CSV finished in {} ms.", System.currentTimeMillis() - start);
 		}
+	}
+
+	private String getCompanyItemValue(CompanyResource companyResource, ItemMetaTag metaTag) {
+		String result = "";
+		for (ItemResource itemResource : companyResource.getItems()) {
+			if (itemResource.getMetaTag() == metaTag) {
+				result = itemResource.getValueMapped();
+			}
+
+		}
+		return result;
 	}
 
 	private String getProjectItemValue(ProjectResource projectResource, ItemMetaTag metaTag) {
