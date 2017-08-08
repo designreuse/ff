@@ -257,7 +257,7 @@ public class UserExportService {
 			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
 
 			List<String[]> entries = new ArrayList<>();
-			String[] headers = new String[] { "id_korisnika", "status_korisnika", "tip_registracije", "id_poduzeća", "naziv", "oib", "županija", "općina", "veličina", "visina_prihoda", "broj_projekata", "vrijednost_projekata" };
+			String[] headers = new String[] { "ID korisnika", "Status korisnika", "Tip registracije", "ID poduzeća", "Naziv", "OIB", "Županija sjedišta", "Općina sjedišta", "Veličina", "Visina prihoda", "Broj projekata", "Vrijednost projekata (HRK)", "Zadnja prijava", "VPO", "VPO (zamjena)" };
 			entries.add(headers);
 
 			for (User user : repository.findAll()) {
@@ -268,7 +268,7 @@ public class UserExportService {
 				UserResource userResource = resourceAssembler.toResource(user, false);
 				CompanyResource companyResource = userResource.getCompany();
 
-				String[] entry = new String[12];
+				String[] entry = new String[15];
 
 				entry[0] = user.getId().toString();
 				entry[1] = getUserStatus(user.getStatus(), locale);
@@ -300,6 +300,10 @@ public class UserExportService {
 				entry[10] = Integer.toString(cntProjects);
 				entry[11] = currencyFormatter.format(totalInvestmentAmount);
 
+				entry[12] = (user.getLastLoginDate() != null) ? dateFormat.format(user.getLastLoginDate().toDate()) : "";
+				entry[13] = (user.getBusinessRelationshipManager() != null) ? user.getBusinessRelationshipManager().getLastName() + " " + user.getBusinessRelationshipManager().getFirstName() : "";
+				entry[14] = (user.getBusinessRelationshipManagerSubstitute() != null) ? user.getBusinessRelationshipManagerSubstitute().getLastName() + " " + user.getBusinessRelationshipManagerSubstitute().getFirstName() : "";
+
 				entries.add(entry);
 			}
 
@@ -325,7 +329,7 @@ public class UserExportService {
 			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
 
 			List<String[]> entries = new ArrayList<>();
-			String[] headers = new String[] { "id_korisnika", "status_korisnika", "tip_registracije", "id_poduzeća", "naziv_poduzeća", "oib_poduzeća", "naziv", "djelatnost", "investicije", "županija", "općina", "iznos", "način_financiranja", "prihvatljivi_natječaji" };
+			String[] headers = new String[] { "ID korisnika", "Status korisnika", "Tip registracije", "ID poduzeća", "Naziv poduzeća", "OIB poduzeća", "Naziv", "Djelatnost", "Investicije", "Županija projekta", "Općina projekta", "Iznos (HRK)", "Način financiranja", "Prihvatljivi natječaji" };
 			entries.add(headers);
 
 			for (User user : repository.findAll()) {

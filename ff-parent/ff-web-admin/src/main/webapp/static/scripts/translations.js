@@ -220,8 +220,8 @@ function config($translateProvider) {
 			BUTTON_EXPORT_SELECTED: 'Izvezi odabrane',
 			BUTTON_IMPORT: 'Uvoz',
 			BUTTON_GFI_SYNC: 'GFI sinkronizacija',
-			BUTTON_EXPORT_COMPANY_DATA: 'Izvezi podatke o poduzeću',
-			BUTTON_EXPORT_PROJECT_DATA: 'Izvezi podatke o poduzeću',
+			BUTTON_EXPORT_COMPANY_DATA: 'Izvezi podatke o poduzećima',
+			BUTTON_EXPORT_PROJECT_DATA: 'Izvezi podatke o projektima',
 			
 			BUTTON_DATE_CURRENT: 'Danas',
 			BUTTON_DATE_CLEAR: 'Izbriši',
