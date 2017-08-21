@@ -61,11 +61,11 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			HDR_ERROR: 'Greška',
 			
 			LOGIN_BAD_CREDENTIALS: 'Prijava neuspješna, molimo pokušajte ponovo.',
-			LOGIN_DISABLED: 'Vaš profil je deaktiviran. Za ponovnu aktivaciju obratite se na e-mail adresu: <a href="mailto:mojEUfond@unicreditgroup.zaba.hr?Subject=Aktivacija korisnika" target="_top">mojEUfond@unicreditgroup.zaba.hr</a>',
+			LOGIN_DISABLED: 'Vaš profil je deaktiviran. Za ponovnu aktivaciju obratite se na e-mail adresu: <a href="mailto:mojeufond@unicreditgroup.zaba.hr?Subject=Aktivacija korisnika" target="_top">mojeufond@unicreditgroup.zaba.hr</a>',
 			
-			MSG_REGISTRATION_SUCCESS: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u MojEUfond.',
+			MSG_REGISTRATION_SUCCESS: 'Vaš zahtjev za registracijom je zaprimljen. Na unesenu e-mail adresu zaprimit ćete link za dovršetak registracije.',
 			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
-			MSG_REGISTRATION_CONFLICT: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',
+			MSG_REGISTRATION_CONFLICT: 'Korisnik s upisanom e-mail adresom već postoji u sustavu.',
 				
 			MSG_RESET_PASSWORD_SUCCESS: 'Nova zaporka je poslana na vaš e-mail.',
 			MSG_RESET_PASSWORD_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',

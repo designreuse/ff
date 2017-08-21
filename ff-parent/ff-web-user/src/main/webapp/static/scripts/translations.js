@@ -125,7 +125,7 @@ function config($translateProvider) {
 			DLG_REGISTRATION_MSG: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u MojEUfond.',
 
 			DLG_DEACTIVATE_HDR: 'Deaktivacija profila',
-			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila bit ćete automatski odjavljeni te više nećete moći pristupiti aplikaciji MojEUfond. Za ponovnu aktivaciju molimo kontaktirajte službu za korisnike.<p><p>Želite li deaktivirati  profil?',
+			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila bit ćete automatski odjavljeni te više nećete moći pristupiti aplikaciji MojEUfond. Za ponovnu aktivaciju obratite se na e-mail adresu: mojEUfond@unicreditgroup.zaba.hr.<p><p>Želite li deaktivirati profil?',
 			
 			DLG_NO_EMAIL_HDR: 'Nepotpun profil korisnika',
 			DLG_NO_EMAIL_MSG: 'Kroz nekoliko sekundi biti ćete automatski preusmjereni na Postavke gdje možete popuniti sve obavezne stavke vašeg korisničkog profila.',
