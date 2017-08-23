@@ -308,18 +308,6 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 			}
 		};
 	
-	$scope.exportCompanyData2Csv = function() {
-		var downloadLink = angular.element('<a target="_blank"></a>');
-        downloadLink.attr('href', constants.contextPath + "/api/v1/users/exportCompanyData2Csv");
-        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
-	};
-	
-	$scope.exportProjectData2Csv = function() {
-		var downloadLink = angular.element('<a target="_blank"></a>');
-        downloadLink.attr('href', constants.contextPath + "/api/v1/users/exportProjectData2Csv");
-        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
-	};
-	
 	$scope.exportAll = function(format) {
 		$('#ExportingModal').modal('show');
 		var uiGridResource = { "pagination" : { "page" : 0, "size" : 100000 }, "sort" : $scope.sortArray, "filter" : $scope.filterArray };

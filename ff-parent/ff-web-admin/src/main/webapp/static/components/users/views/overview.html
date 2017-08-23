@@ -28,10 +28,9 @@
                     <li class="divider" style="margin: 0px;"></li>
                     <li><a ng-click="exportAll('PDF')">{{ 'BUTTON_EXPORT_ALL' | translate }} {{ 'TO_PDF' | translate }}</a></li>
                     <li><a ng-click="exportSelected('PDF')">{{ 'BUTTON_EXPORT_SELECTED' | translate }} {{ 'TO_PDF' | translate }}</a></li>
-                    
                     <li class="divider" style="margin: 0px;"></li>
-					<li><a ng-click="exportCompanyData2Csv()">{{ 'BUTTON_EXPORT_COMPANY_DATA' | translate }} {{ 'TO_CSV' | translate }}</a></li>
-					<li><a ng-click="exportProjectData2Csv()">{{ 'BUTTON_EXPORT_PROJECT_DATA' | translate }} {{ 'TO_CSV' | translate }}</a></li>                    
+					<li><a href="{{ contextPath }}/api/v1/users/exportCompanyData2Csv">{{ 'BUTTON_EXPORT_COMPANY_DATA' | translate }} {{ 'TO_CSV' | translate }}</a></li>
+					<li><a href="{{ contextPath }}/api/v1/users/exportProjectData2Csv">{{ 'BUTTON_EXPORT_PROJECT_DATA' | translate }} {{ 'TO_CSV' | translate }}</a></li>
                 </ul>
             </div>
             <button ladda="gfiSyncInProgress" ng-click="gfiSync()" class="btn btn-primary pull-right">{{ 'BUTTON_GFI_SYNC' | translate }}</button>
