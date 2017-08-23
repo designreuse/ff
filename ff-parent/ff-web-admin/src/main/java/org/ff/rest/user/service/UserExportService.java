@@ -257,7 +257,7 @@ public class UserExportService {
 			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
 
 			List<String[]> entries = new ArrayList<>();
-			String[] headers = new String[] { "ID korisnika", "Status korisnika", "Tip registracije", "ID poduzeća", "Naziv", "OIB", "Županija sjedišta", "Općina sjedišta", "Veličina", "Visina prihoda", "Broj projekata", "Vrijednost projekata (HRK)", "Zadnja prijava", "VPO", "VPO (zamjena)" };
+			String[] headers = new String[] { "ID korisnika", "Status korisnika", "Tip registracije", "Naziv", "OIB", "Županija sjedišta", "Općina sjedišta", "Veličina", "Visina prihoda", "Broj projekata", "Vrijednost projekata (HRK)", "Zadnja prijava", "VPO", "VPO (zamjena)" };
 			entries.add(headers);
 
 			for (User user : repository.findAll()) {
@@ -273,16 +273,15 @@ public class UserExportService {
 				entry[0] = user.getId().toString();
 				entry[1] = getUserStatus(user.getStatus(), locale);
 				entry[2] = getRegistrationType(user.getRegistrationType(), locale);
-				entry[3] = companyResource.getId().toString();
-				entry[4] = StringUtils.isNotBlank(companyResource.getName()) ? companyResource.getName() : "";
-				entry[5] = StringUtils.isNotBlank(companyResource.getCode()) ? companyResource.getCode() : "";
+				entry[3] = StringUtils.isNotBlank(companyResource.getName()) ? companyResource.getName() : "";
+				entry[4] = StringUtils.isNotBlank(companyResource.getCode()) ? companyResource.getCode() : "";
 
 				Subdivision2 subdivision2 = subdivision2Repository.findByName(getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_LOCATION));
-				entry[6] = (subdivision2 != null) ? subdivision2.getSubdivision1().getName() : "";
-				entry[7] = (subdivision2 != null) ? subdivision2.getName() : "";
+				entry[5] = (subdivision2 != null) ? subdivision2.getSubdivision1().getName() : "";
+				entry[6] = (subdivision2 != null) ? subdivision2.getName() : "";
 
-				entry[8] = getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_SIZE);
-				entry[9] = getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_REVENUE);
+				entry[7] = getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_SIZE);
+				entry[8] = getCompanyItemValue(companyResource, ItemMetaTag.COMPANY_REVENUE);
 
 				int cntProjects = 0;
 				double totalInvestmentAmount = 0;
@@ -297,12 +296,12 @@ public class UserExportService {
 					}
 				}
 
-				entry[10] = Integer.toString(cntProjects);
-				entry[11] = currencyFormatter.format(totalInvestmentAmount);
+				entry[9] = Integer.toString(cntProjects);
+				entry[10] = currencyFormatter.format(totalInvestmentAmount);
 
-				entry[12] = (user.getLastLoginDate() != null) ? dateFormat.format(user.getLastLoginDate().toDate()) : "";
-				entry[13] = (user.getBusinessRelationshipManager() != null) ? user.getBusinessRelationshipManager().getLastName() + " " + user.getBusinessRelationshipManager().getFirstName() : "";
-				entry[14] = (user.getBusinessRelationshipManagerSubstitute() != null) ? user.getBusinessRelationshipManagerSubstitute().getLastName() + " " + user.getBusinessRelationshipManagerSubstitute().getFirstName() : "";
+				entry[11] = (user.getLastLoginDate() != null) ? dateFormat.format(user.getLastLoginDate().toDate()) : "";
+				entry[12] = (user.getBusinessRelationshipManager() != null) ? user.getBusinessRelationshipManager().getLastName() + " " + user.getBusinessRelationshipManager().getFirstName() : "";
+				entry[13] = (user.getBusinessRelationshipManagerSubstitute() != null) ? user.getBusinessRelationshipManagerSubstitute().getLastName() + " " + user.getBusinessRelationshipManagerSubstitute().getFirstName() : "";
 
 				entries.add(entry);
 			}
@@ -329,7 +328,7 @@ public class UserExportService {
 			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
 
 			List<String[]> entries = new ArrayList<>();
-			String[] headers = new String[] { "ID korisnika", "Status korisnika", "Tip registracije", "ID poduzeća", "Naziv poduzeća", "OIB poduzeća", "Naziv", "Djelatnost", "Investicije", "Županija projekta", "Općina projekta", "Iznos (HRK)", "Način financiranja", "Prihvatljivi natječaji" };
+			String[] headers = new String[] { "ID korisnika", "Status korisnika", "Tip registracije", "Naziv poduzeća", "OIB poduzeća", "Naziv", "Djelatnost", "Investicije", "Županija projekta", "Općina projekta", "Iznos (HRK)", "Način financiranja", "Prihvatljivi natječaji" };
 			entries.add(headers);
 
 			for (User user : repository.findAll()) {
@@ -345,26 +344,25 @@ public class UserExportService {
 					entry[0] = user.getId().toString();
 					entry[1] = getUserStatus(user.getStatus(), locale);
 					entry[2] = getRegistrationType(user.getRegistrationType(), locale);
-					entry[3] = userResource.getCompany().getId().toString();
-					entry[4] = StringUtils.isNotBlank(userResource.getCompany().getName()) ? userResource.getCompany().getName() : "";
-					entry[5] = StringUtils.isNotBlank(userResource.getCompany().getCode()) ? userResource.getCompany().getCode() : "";
+					entry[3] = StringUtils.isNotBlank(userResource.getCompany().getName()) ? userResource.getCompany().getName() : "";
+					entry[4] = StringUtils.isNotBlank(userResource.getCompany().getCode()) ? userResource.getCompany().getCode() : "";
 
-					entry[6] = StringUtils.isNotBlank(projectResource.getName()) ? projectResource.getName() : "";
-					entry[7] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_ACTIVITY);
+					entry[5] = StringUtils.isNotBlank(projectResource.getName()) ? projectResource.getName() : "";
+					entry[6] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_ACTIVITY);
 
 					List<String> investments = new ArrayList<>();
 					for (InvestmentResource investmentResource : projectResource.getInvestments()) {
 						investments.add(investmentResource.getName());
 					}
-					entry[8] = StringUtils.join(investments, "|");
+					entry[7] = StringUtils.join(investments, "|");
 
-					entry[9] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION1);
-					entry[10] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION2);
+					entry[8] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION1);
+					entry[9] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_SUBDIVISION2);
 
 					String investmentAmount = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_AMOUNT);
-					entry[11] = (StringUtils.isNotBlank(investmentAmount)) ? currencyFormatter.format(Double.parseDouble(investmentAmount)) : "";
+					entry[10] = (StringUtils.isNotBlank(investmentAmount)) ? currencyFormatter.format(Double.parseDouble(investmentAmount)) : "";
 
-					entry[12] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_FINANCING_TYPE);
+					entry[11] = getProjectItemValue(projectResource, ItemMetaTag.COMPANY_INVESTMENT_FINANCING_TYPE);
 
 					List<String> mathcingTenders = new ArrayList<>();
 					if (projectResource.getMatchingTenders() != null) {
@@ -372,7 +370,7 @@ public class UserExportService {
 							mathcingTenders.add(tenderResource.getName());
 						}
 					}
-					entry[13] = StringUtils.join(mathcingTenders, "|");
+					entry[12] = StringUtils.join(mathcingTenders, "|");
 
 					entries.add(entry);
 				}
