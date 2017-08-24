@@ -404,7 +404,7 @@ public class UserExportService {
 		for (ProjectItemResource projectItemResource : projectResource.getItems()) {
 			if (projectItemResource.getItem().getMetaTag() == metaTag) {
 				if (metaTag == ItemMetaTag.COMPANY_INVESTMENT_AMOUNT) {
-					result = projectItemResource.getValue().toString();
+					result = (projectItemResource.getValue() != null) ? projectItemResource.getValue().toString() : "";
 				} else {
 					result = projectItemResource.getValueMapped();
 				}
