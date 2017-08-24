@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -22,6 +23,7 @@ import org.ff.zaba.resource.ZabaOfficeResource;
 import org.ff.zaba.service.ZabaApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -33,6 +35,9 @@ public class ContactService {
 
 	@Autowired
 	private Collator collator;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Autowired
 	private MailSenderService mailSender;
@@ -60,18 +65,18 @@ public class ContactService {
 	}
 
 	@Cacheable(value = "locations")
-	public List<OfficeResource> getLocations() {
+	public List<OfficeResource> getLocations(Locale locale) {
 		List<OfficeResource> result = new ArrayList<>();
 
 		for (ZabaOfficeResource resource : zabaApiService.getOffices()) {
 			if (resource != null) {
-				StringBuffer prefix = new StringBuffer();
-				if (StringUtils.isNotBlank(resource.getVrsta())) {
-					prefix.append(resource.getVrsta()).append(" ");
-				}
-				if (StringUtils.isNotBlank(resource.getNazivFunkcija())) {
-					prefix.append(resource.getNazivFunkcija().toLowerCase());
-				}
+				StringBuffer prefix = new StringBuffer(messageSource.getMessage("contact.location.prefix", null, locale));
+				//				if (StringUtils.isNotBlank(resource.getVrsta())) {
+				//					prefix.append(resource.getVrsta()).append(" ");
+				//				}
+				//				if (StringUtils.isNotBlank(resource.getNazivFunkcija())) {
+				//					prefix.append(resource.getNazivFunkcija().toLowerCase());
+				//				}
 				result.add(new OfficeResource(resource.getId(), null, resource.getGrad(), resource.getPostanskiBroj(), resource.getAdresa(), prefix.toString().trim()));
 			}
 		}
