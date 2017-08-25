@@ -724,4 +724,18 @@ group .panel-heading+.panel-collapse>.panel-body {
 	}
 }
 
+.back-home{
+	color: #00afd0;
+	text-transform: uppercase;
+	font-family: unicredit-regular;
+}
+
+.back-home i{
+	color: #00afd0;
+}
+
+.back-home:hover{
+	color: #00afd0;
+}
+
 
