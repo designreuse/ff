@@ -581,9 +581,6 @@ group .panel-heading+.panel-collapse>.panel-body {
   	border-top: none;
   }
   
-  .navbar-header{
-  	width: 110%;
-  }
 }
 
 @media (max-width: 780px){
@@ -669,7 +666,7 @@ group .panel-heading+.panel-collapse>.panel-body {
 	border: none;
 }
 
-@media (max-width: 769px){
+@media (max-width: 767px){
 	.navbar-brand{
 		float: right;
 	}
@@ -677,6 +674,10 @@ group .panel-heading+.panel-collapse>.panel-body {
 	.navbar-inverse .navbar-toggle{
 		float: left;
 		margin-right: 2px;
+	}
+	
+	.navbar-header{
+		width: 100%;
 	}
 }
 
@@ -704,10 +705,7 @@ group .panel-heading+.panel-collapse>.panel-body {
 }
 
 @media (max-width: 320px){
-	.navbar-inverse .navbar-brand {
-  		width: 80%;
-  		text-align: right;
-	}
+
 	
 	.navbar-toggle{
 	margin-top: 15px;
@@ -715,6 +713,11 @@ group .panel-heading+.panel-collapse>.panel-body {
 }
 
 @media (max-width: 340px){
+	.navbar-inverse .navbar-brand {
+  		width: 80%;
+  		text-align: right;
+	}
+	
 	.hero-lg {
     	font-size: 1.7em;
 	}
