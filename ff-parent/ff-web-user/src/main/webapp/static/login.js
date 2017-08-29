@@ -309,5 +309,90 @@ $(document).ready(function () {
 		  var thisLink = $(this).attr('data-imagelink');
 		  $('#screen').attr('src', thisLink);
 		});
+	
+	/*Cookie bar*/
+	
+	(function ($) {
+		$.cookie = function (key, value, options) {
+			if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
+				options = $.extend({}, options);
+
+				if (value === null || value === undefined) {
+					options.expires = -1;
+				}
+
+				if (typeof options.expires === 'number') {
+					var days = options.expires, t = options.expires = new Date();
+					t.setDate(t.getDate() + days);
+				}
+
+				value = String(value);
+
+				return (document.cookie = [
+					encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
+					options.expires ? '; expires=' + options.expires.toUTCString() : '', // max-age is not supported by IE
+					options.path ? '; path=' + options.path : '',
+					options.domain ? '; domain=' + options.domain : '',
+					options.secure ? '; secure' : ''
+				].join(''));
+			}
+			options = value || {};
+			var decode = options.raw ? function (s) { return s; } : decodeURIComponent;
+
+			var pairs = document.cookie.split('; ');
+			for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
+				// IE
+				if (decode(pair[0]) === key) return decode(pair[1] || '');
+			}
+			return null;
+		};
+
+		$.fn.cookieBar = function (options) {
+			var settings = $.extend({
+				'closeButton': 'none',
+				'hideOnClose': true,
+				'secure': false,
+				'path': '/',
+				'domain': ''
+			}, options);
+
+			return this.each(function () {
+				var cookiebar = $(this);
+
+				// just in case they didnt hide it by default.
+				cookiebar.hide();
+
+				// if close button not defined. define it!
+				if (settings.closeButton == 'none') {
+					cookiebar.append('<a class="cookiebar-close"><i class="icon-close" aria-hidden="true"></i></a>');
+					$.extend(settings, { 'closeButton': '.cookiebar-close' });
+				}
+
+				if ($.cookie('cookiebar') != 'hide') {
+					cookiebar.show();
+				}
+
+				cookiebar.find(settings.closeButton).click(function () {
+					if (settings.hideOnClose) {
+						cookiebar.hide();
+					}
+					$.cookie('cookiebar', 'hide', { path: settings.path, secure: settings.secure, domain: settings.domain, expires: 30 });
+					cookiebar.trigger('cookieBar-close');
+					return false;
+				});
+			});
+		};
+
+		// self injection init
+		$.cookieBar = function (options) {
+			$('body').prepend('<div class="ui-widget"><div class="container"><div style="display: none;" class="cookie-message cookie-widget-header blue"><p>Stranice <a href="www.zaba.hr/mojeufond">www.zaba.hr/mojeufond</a> koriste kolačiće (cookies). Nastavak upotrebe ovih stranica podrazumijeva Vaš pristanak na pohranu i pristup kolačićima. Više o kolačićima i mogućnosti vlastitih postavki povezanih s njima potražite u <a href="https://www.zaba.hr/home/footer/izjava-o-privatnosti"> Izjavi o zaštiti privatnosti na internetskim stranicama Zagrebačke banke</a>.</p></div></div></div>');
+			$('.cookie-message').cookieBar(options);
+		};
+	})(jQuery);
+	
+	$.cookieBar();
+	
 	});
+
+
 	

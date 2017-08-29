@@ -741,4 +741,52 @@ group .panel-heading+.panel-collapse>.panel-body {
 	color: #00afd0;
 }
 
+.ui-widget{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 600;
+	background: rgba(0, 0, 0, .75);
+}
+
+.cookie-message {
+    background: #646464;
+    color: #fff;
+    padding: 24px 0 24px 25px;
+    font-size: 14px;
+    line-height: 1.2;
+    z-index: 50;
+    border-radius: 4px;
+    margin: 10px 0;
+    position: relative;
+}
+
+.cookie-message p{
+	color: #FFF;
+	font-size: 14px;
+}
+
+.cookie-message a{
+   color: #00afd0;	
+}
+
+.cookie-message a:hover{
+   text-decoration: underline;
+}
+
+.icon-close::before {
+    content: "\e95b";
+}
+
+.cookiebar-close{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 32px;
+	color: #FFF !important;
+	opacity: 0.33;
+}
+
+
 
