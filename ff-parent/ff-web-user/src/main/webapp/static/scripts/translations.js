@@ -92,7 +92,7 @@ function config($translateProvider) {
 			LABEL_CONTACT_EMAIL: 'E-mail',
 			LABEL_CONTACT_PHONE: 'Telefon',
 			LABEL_CONTACT_TEXT: 'Poruka',
-			LABEL_CONTACT_LOCATION: 'Odaberite poduzetnički centar',
+			LABEL_CONTACT_LOCATION: 'Odaberite lokaciju',
 			LABEL_CONTACT_SUBHEADER: 'Zatražite termin',
 			LABEL_CONTACT_DISCLAIMER: 'Zagrebačka banka osobne podatke unesene u donji obrazac obrađuje u svrhu ugovaranja sastanka u poslovnici. Radi pripreme bankara za sastanak u poslovnici molimo unesite OIB.',
 			LABEL_NO_MATCHING_TENDERS: 'Nije pronađen nijedan natječaj koji odgovara Vašem profilu.',
