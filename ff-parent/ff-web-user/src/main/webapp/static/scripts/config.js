@@ -72,11 +72,11 @@ angular.module('FundFinder')
 	        templateUrl: "/components/settings/views/overview.html",
 	        controller: 'SettingsController'
 	    })
-//	    .state('settings.registration', {
-//	        url: "/registration",
-//	        templateUrl: "/components/settings/views/registration.html",
-//	        controller: 'RegistrationController'
-//	    })
+	    .state('settings.registration', {
+	        url: "/registration",
+	        templateUrl: "/components/settings/views/registration.html",
+	        controller: 'RegistrationController'
+	    })
 	    
 		// TENDERS
 		.state('tenders', {

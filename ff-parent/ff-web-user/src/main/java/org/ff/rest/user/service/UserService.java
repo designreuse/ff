@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.base.service.BaseService;
 import org.ff.common.mailsender.MailSenderService;
@@ -179,10 +180,12 @@ public class UserService extends BaseService {
 			}
 
 			// validate company (code/OIB)
-			Company company = companyRepository.findByCode(userResource.getCompany().getCode());
-			if (company != null) {
-				// error code 200 indicates that company with given code (OIB) already exists
-				return new ResponseEntity<>(200, HttpStatus.CONFLICT);
+			if (StringUtils.isNotBlank(userResource.getCompany().getCode())) {
+				Company company = companyRepository.findByCode(userResource.getCompany().getCode());
+				if (company != null) {
+					// error code 200 indicates that company with given code (OIB) already exists
+					return new ResponseEntity<>(200, HttpStatus.CONFLICT);
+				}
 			}
 
 			// create user (and company)
