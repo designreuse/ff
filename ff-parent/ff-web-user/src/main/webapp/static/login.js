@@ -385,7 +385,7 @@ $(document).ready(function () {
 
 		// self injection init
 		$.cookieBar = function (options) {
-			$('body').prepend('<div class="ui-widget"><div class="container"><div style="display: none;" class="cookie-message cookie-widget-header blue"><p>Stranice <a href="www.zaba.hr/mojeufond">www.zaba.hr/mojeufond</a> koriste kolačiće (cookies). Nastavak upotrebe ovih stranica podrazumijeva Vaš pristanak na pohranu i pristup kolačićima. Više o kolačićima i mogućnosti vlastitih postavki povezanih s njima potražite u <a href="https://www.zaba.hr/home/footer/izjava-o-privatnosti"> Izjavi o zaštiti privatnosti na internetskim stranicama Zagrebačke banke</a>.</p></div></div></div>');
+			$('body').prepend('<div class="ui-widget"><div class="container"><div style="display: none;" class="cookie-message cookie-widget-header blue"><p>Stranice <a href="www.zaba.hr/mojeufond">www.zaba.hr/mojeufond</a> koriste kolačiće (cookies). Nastavak upotrebe ovih stranica podrazumijeva Vaš pristanak na pohranu i pristup kolačićima. Više o kolačićima i mogućnosti vlastitih postavki povezanih s njima potražite u <a href="https://www.zaba.hr/home/footer/izjava-o-privatnosti" target="_blank"> Izjavi o zaštiti privatnosti na internetskim stranicama Zagrebačke banke</a>.</p></div></div></div>');
 			$('.cookie-message').cookieBar(options);
 		};
 	})(jQuery);

@@ -23,7 +23,7 @@ function config($translateProvider) {
 			
 			HEADER_DASHBOARD_ARTICLE: 'Najnoviji članci',
 			HEADER_DASHBOARD_TENDERS: 'Najnoviji natječaji',
-			HEADER_DASHBOARD_TENDERS_CHART: 'Broj i ukupna vrijednost objavljenih natječaja',
+			HEADER_DASHBOARD_TENDERS_CHART: 'Pregled natječaja po mjesecima',
 			HEADER_DASHBOARD_TENDERS1_CNT: 'Natječaji',
 			HEADER_DASHBOARD_TENDERS2_CNT: 'Otvoreni natječaji',
 			HEADER_DASHBOARD_TENDERS3_CNT: 'Natječaji za vas',
