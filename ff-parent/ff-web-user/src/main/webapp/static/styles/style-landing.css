@@ -788,5 +788,10 @@ group .panel-heading+.panel-collapse>.panel-body {
 	opacity: 0.33;
 }
 
+.panel-body a{
+	font-size: 16px !important;
+	font-family: 'Open Sans', sans-serif !important;
+}
+
 
 
