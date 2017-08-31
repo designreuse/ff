@@ -114,7 +114,7 @@ public class GfiSyncService {
 					ZabaCompanyResource zabaCompanyResource = zabaApiService.getCompanyData(company.getCompanyNumber() + "-" + company.getBranchOfficeNumber());
 
 					// update company data
-					zabaUpdateService.updateCompanyData(company, zabaCompanyResource);
+					zabaUpdateService.updateCompanyData(company, zabaCompanyResource, true);
 
 					// update last GFI sync date
 					company.setLastGfiSync(new DateTime());

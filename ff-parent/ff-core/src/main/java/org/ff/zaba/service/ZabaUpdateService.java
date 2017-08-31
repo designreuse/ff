@@ -41,23 +41,23 @@ public class ZabaUpdateService {
 
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	public void updateCompanyData(Company company, ZabaCompanyResource resource) {
+	public void updateCompanyData(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		log.debug("Initiating update of company data...");
 
-		updateLegalTypeNumber(company, resource);
-		updateZipCode(company, resource);
-		updateFoundingDate(company, resource);
-		updateBankruptcyProcedure(company, resource);
-		updateBlocked5Days(company, resource);
-		updateBlocked20Days(company, resource);
-		updateNumberOfEmployees(company, resource);
-		updateLastYearIncome(company, resource);
-		updateProfitBeforeTax(company, resource);
-		updateProfitOrLoss(company, resource);
-		updateCapitalTotalLiabilities(company, resource);
+		updateLegalTypeNumber(company, resource, forceUpdate);
+		updateZipCode(company, resource, forceUpdate);
+		updateFoundingDate(company, resource, forceUpdate);
+		updateBankruptcyProcedure(company, resource, forceUpdate);
+		updateBlocked5Days(company, resource, forceUpdate);
+		updateBlocked20Days(company, resource, forceUpdate);
+		updateNumberOfEmployees(company, resource, forceUpdate);
+		updateLastYearIncome(company, resource, forceUpdate);
+		updateProfitBeforeTax(company, resource, forceUpdate);
+		updateProfitOrLoss(company, resource, forceUpdate);
+		updateCapitalTotalLiabilities(company, resource, forceUpdate);
 	}
 
-	private void updateLegalTypeNumber(Company company, ZabaCompanyResource resource) {
+	private void updateLegalTypeNumber(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating legal type number [{}] for company [{}]", resource.getLegalTypeNumber(), company.getName());
 
@@ -71,7 +71,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -83,7 +83,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateZipCode(Company company, ZabaCompanyResource resource) {
+	private void updateZipCode(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating ZIP code [{}] for company [{}]", resource.getZipCode(), company.getName());
 
@@ -101,7 +101,7 @@ public class ZabaUpdateService {
 						companyItem.setCompany(company);
 						companyItem.setItem(item);
 						companyItem.setValueExt(subdivision2.getId().toString());
-						if (Boolean.TRUE == company.getSyncData()) {
+						if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 							companyItem.setValue(companyItem.getValueExt());
 						}
 						companyItemRepository.save(companyItem);
@@ -115,7 +115,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateFoundingDate(Company company, ZabaCompanyResource resource) {
+	private void updateFoundingDate(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating founding date [{}] for company [{}]", resource.getFoundingDate(), company.getName());
 
@@ -129,7 +129,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(item);
 				companyItem.setValueExt(dateFormat.format(resource.getFoundingDate()));
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -141,7 +141,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateBankruptcyProcedure(Company company, ZabaCompanyResource resource) {
+	private void updateBankruptcyProcedure(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating bankruptcy procedure [{}] for company [{}]", resource.getAnyBankruptcyProcedure(), company.getName());
 
@@ -155,7 +155,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -167,7 +167,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateBlocked5Days(Company company, ZabaCompanyResource resource) {
+	private void updateBlocked5Days(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating blocked 5 days [{}] for company [{}]", resource.getIsBlockedFor5Days(), company.getName());
 
@@ -181,7 +181,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -193,7 +193,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateBlocked20Days(Company company, ZabaCompanyResource resource) {
+	private void updateBlocked20Days(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating blocked 20 days [{}] for company [{}]", resource.getIsBlockedFor20Days(), company.getName());
 
@@ -207,7 +207,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -219,7 +219,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateNumberOfEmployees(Company company, ZabaCompanyResource resource) {
+	private void updateNumberOfEmployees(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating number of employees [{}] for company [{}]", resource.getNumberOfEmployeesAnnual(), company.getName());
 
@@ -233,7 +233,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(item);
 				companyItem.setValueExt(resource.getNumberOfEmployeesAnnual());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -245,7 +245,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateLastYearIncome(Company company, ZabaCompanyResource resource) {
+	private void updateLastYearIncome(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating last year income [{}] for company [{}]", resource.getLastYearIncome(), company.getName());
 
@@ -282,7 +282,7 @@ public class ZabaUpdateService {
 					if (range.getValue().containsDouble(value)) {
 						itemOption = range.getKey();
 						companyItem.setValueExt(itemOption.getId().toString());
-						if (newCompanyItem || Boolean.TRUE == company.getSyncData()) {
+						if (newCompanyItem || forceUpdate || Boolean.TRUE == company.getSyncData()) {
 							companyItem.setValue(companyItem.getValueExt());
 						}
 						break;
@@ -298,7 +298,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateProfitBeforeTax(Company company, ZabaCompanyResource resource) {
+	private void updateProfitBeforeTax(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating profit before tax [{}] for company [{}]", resource.getIsProfitBeforeTax(), company.getName());
 
@@ -312,7 +312,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -324,7 +324,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateProfitOrLoss(Company company, ZabaCompanyResource resource) {
+	private void updateProfitOrLoss(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating profit or loss [{}] for company [{}]", resource.getProfitOrLoss(), company.getName());
 
@@ -338,7 +338,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);
@@ -350,7 +350,7 @@ public class ZabaUpdateService {
 		}
 	}
 
-	private void updateCapitalTotalLiabilities(Company company, ZabaCompanyResource resource) {
+	private void updateCapitalTotalLiabilities(Company company, ZabaCompanyResource resource, boolean forceUpdate) {
 		try {
 			log.debug("Updating capital [{}] / total liabilities [{}] for company [{}]", resource.getCapital(), resource.getTotalLiabilities(), company.getName());
 
@@ -364,7 +364,7 @@ public class ZabaUpdateService {
 				companyItem.setCompany(company);
 				companyItem.setItem(itemOption.getItem());
 				companyItem.setValueExt(itemOption.getId().toString());
-				if (Boolean.TRUE == company.getSyncData()) {
+				if (forceUpdate || Boolean.TRUE == company.getSyncData()) {
 					companyItem.setValue(companyItem.getValueExt());
 				}
 				companyItemRepository.save(companyItem);

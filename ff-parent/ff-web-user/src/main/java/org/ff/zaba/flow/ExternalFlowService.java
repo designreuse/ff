@@ -117,7 +117,7 @@ public class ExternalFlowService {
 
 					log.debug("New company [{}] created", company.getId());
 
-					zabaUpdateService.updateCompanyData(company, companyData);
+					zabaUpdateService.updateCompanyData(company, companyData, false);
 				} else {
 					log.debug("Existing company detected...");
 
@@ -138,7 +138,7 @@ public class ExternalFlowService {
 					}
 					userRepository.save(user);
 
-					zabaUpdateService.updateCompanyData(company, companyData);
+					zabaUpdateService.updateCompanyData(company, companyData, false);
 				}
 
 				resource.setId(user.getId());
