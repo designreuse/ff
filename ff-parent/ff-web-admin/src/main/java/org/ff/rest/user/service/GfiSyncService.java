@@ -1,6 +1,9 @@
 package org.ff.rest.user.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -156,9 +159,65 @@ public class GfiSyncService {
 		}
 		mailSender.send(mailSenderResources);
 
+		// send GFI sync report e-mail
+		sendGfiSyncReportEmail(start, result);
+
 		log.debug("GFI sync finished in {} ms", System.currentTimeMillis() - start);
 
 		return result;
+	}
+
+	private void sendGfiSyncReportEmail(long start, GfiSyncReportResource result) {
+		try {
+			log.debug("Sending GFI sync report e-mail...");
+
+			DateFormat dateTimeFormat = new SimpleDateFormat(baseProperties.getDateTimeFormat());
+			DateFormat dateFormat = new SimpleDateFormat(baseProperties.getDateFormat());
+			DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("startDate", dateFormat.format(new Date(start)));
+			model.put("startTime", timeFormat.format(new Date(start)));
+			model.put("cntUsers", Integer.toString(result.getUpdateOK().size() + result.getUpdateNOK().size()));
+			model.put("cntUsersOk", Integer.toString(result.getUpdateOK().size()));
+			model.put("cntUsersNok", Integer.toString(result.getUpdateNOK().size()));
+
+			Set<String> users = new HashSet<>();
+			for (UserResource userResource : result.getUpdateNOK()) {
+				StringBuffer sb = new StringBuffer();
+				sb.append(userResource.getId()).append(",");
+				sb.append(userResource.getFirstName()).append(" ").append(userResource.getLastName()).append(",");
+				sb.append(StringUtils.isNotBlank(userResource.getCompany().getName()) ? userResource.getCompany().getName() : "").append(",");
+				sb.append(StringUtils.isNotBlank(userResource.getCompany().getCode()) ? userResource.getCompany().getCode() : "").append(",");
+				sb.append(StringUtils.isNotBlank(userResource.getEmail()) ? userResource.getEmail() : "").append(",");
+				sb.append(StringUtils.isNotBlank(userResource.getEmail2()) ? userResource.getEmail2() : "").append(",");
+				if (userResource.getBusinessRelationshipManager() != null) {
+					sb.append(userResource.getBusinessRelationshipManager().getFirstName()).append(" ").append(userResource.getBusinessRelationshipManager().getLastName()).append(",");
+				} else {
+					sb.append("").append(",");
+				}
+				if (userResource.getBusinessRelationshipManagerSubstitute() != null) {
+					sb.append(userResource.getBusinessRelationshipManagerSubstitute().getFirstName()).append(" ").append(userResource.getBusinessRelationshipManagerSubstitute().getLastName()).append(",");
+				} else {
+					sb.append("").append(",");
+				}
+				if (userResource.getLastLoginDate() != null) {
+					sb.append(dateTimeFormat.format(userResource.getLastLoginDate()));
+				} else {
+					sb.append("");
+				}
+				users.add(sb.toString());
+			}
+			model.put("users", users);
+
+			for (String to : StringUtils.split(baseProperties.getGfiSyncReportEmailTo(), "|")) {
+				mailSender.send(new MailSenderResource(to, null, baseProperties.getGfiSyncReportEmailSubject(), mailSender.processTemplateIntoString("email_gfi_sync_report.ftl", model)));
+			}
+
+			log.debug("GFI sync report e-mail successfully sent");
+		} catch (Exception e) {
+			log.warn("Sending GFI sync report e-mail failed", e);
+		}
 	}
 
 }

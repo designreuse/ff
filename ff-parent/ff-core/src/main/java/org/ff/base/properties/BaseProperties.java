@@ -35,6 +35,10 @@ public class BaseProperties {
 
 	private String gfiSyncEmailSubject;
 
+	private String gfiSyncReportEmailTo;
+
+	private String gfiSyncReportEmailSubject;
+
 	private String zabaSovaUrl;
 
 	private String zabaSovaApplication;

@@ -51,6 +51,7 @@ function config($translateProvider) {
 			BUTTON_ENABLE: 'Aktiviraj',
 			BUTTON_REGISTER: 'Registriraj',
 			BUTTON_CLOSE_AND_LOGOUT: 'Zatvori i odjavi se',
+			BUTTON_CLOSE: 'Zatvori',
 			
 			BUTTON_SYNC_DATA: 'Koristiti se podacima iz sustava Banke',
 			BUTTON_SYNC_DATA_ALWAYS: 'Ažuriraj podatke sad i ubuduće',
@@ -121,9 +122,10 @@ function config($translateProvider) {
 			DLG_DELETE_HDR: 'Izbriši projekt',
 			DLG_DELETE_MSG: 'Želite li izbrisati projekt?',
 			
-			DLG_REGISTRATION_HDR: 'Registracija',
-			DLG_REGISTRATION_MSG: 'Vaš zahtijev za registracijom je uspješno zaprimljen.<p>Za nekoliko minuta primiti ćete konfirmacijski e-mail. Molimo kliknite na poveznicu iz e-maila da dovršite registraciju. Nakon toga ćete se moći prijaviti u MojEUfond.',
-
+			DLG_HDR_SUCCESS: 'Uspjeh',
+			DLG_HDR_WARNING: 'Upozorenje',
+			DLG_HDR_ERROR: 'Greška',
+			
 			DLG_DEACTIVATE_HDR: 'Deaktivacija profila',
 			DLG_DEACTIVATE_MSG: 'Deaktivacijom profila bit ćete automatski odjavljeni te više nećete moći pristupiti aplikaciji MojEUfond. Za ponovnu aktivaciju obratite se na e-mail adresu: mojEUfond@unicreditgroup.zaba.hr.<p><p>Želite li deaktivirati profil?',
 			
@@ -133,6 +135,7 @@ function config($translateProvider) {
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil poduzeća',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu poduzeća.',
 			
+			MSG_REGISTRATION_SUCCESS: 'Vaš zahtjev za registracijom je zaprimljen. Na unesenu e-mail adresu zaprimit ćete link za dovršetak registracije.',
 			MSG_REGISTRATION_CONFLICT_USER: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',
 			MSG_REGISTRATION_CONFLICT_COMPANY: 'Poduzeća sa upisanim OIB-om već postoji u sustavu.',
 			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',

@@ -58,7 +58,7 @@ public class MailSenderService {
 	 */
 	public String processTemplateIntoString(String templateName, Map<String, Object> model) {
 		try {
-			Template template = configuration.getTemplate(templateName );
+			Template template = configuration.getTemplate(templateName);
 			return FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 		} catch (Exception e) {
 			throw new RuntimeException("Processing template failed", e);

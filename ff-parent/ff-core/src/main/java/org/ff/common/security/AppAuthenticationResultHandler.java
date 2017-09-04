@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -76,6 +77,8 @@ public class AppAuthenticationResultHandler implements AuthenticationSuccessHand
 		Map<String, String> data = new HashMap<>();
 		if (exception instanceof DisabledException) {
 			data.put(STATUS, "Disabled");
+		} else if (exception instanceof AccountExpiredException) {
+			data.put(STATUS, "BadCredentials");
 		} else {
 			data.put(STATUS, "BadCredentials");
 		}

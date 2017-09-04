@@ -67,7 +67,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			MSG_REGISTRATION_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
 			MSG_REGISTRATION_CONFLICT: 'Korisnik s upisanom e-mail adresom već postoji u sustavu.',
 				
-			MSG_RESET_PASSWORD_SUCCESS: 'Nova zaporka je poslana na vaš e-mail.',
+			MSG_RESET_PASSWORD_SUCCESS: 'Nova zaporka je poslana na Vaš e-mail.',
 			MSG_RESET_PASSWORD_ERROR: 'Nažalost, došlo je do pogreške.<p>Molimo kontaktirajte službu za korisnike.',
 			MSG_RESET_PASSWORD_NOT_FOUND: 'Korisnik sa upisanim e-mailom nije pronađen.',
 		});

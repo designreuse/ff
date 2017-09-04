@@ -99,36 +99,35 @@ function RegistrationController($rootScope, $scope, $state, $log, $timeout, $htt
 			SettingsService.registerDemo(user)
 				.success(function(data, status, headers, config) {
 					$scope.saving = false;
-					BootstrapDialog.show({
-						type: BootstrapDialog.TYPE_DEFAULT,
-						closable: false,
-			            title: $translate('DLG_REGISTRATION_HDR'),
-			            message: $translate('DLG_REGISTRATION_MSG'),
-			            buttons: [
-							{
-								label: $translate('BUTTON_CLOSE_AND_LOGOUT'),
-							    cssClass: 'btn-white',
-							    action: function(dialog) {
-							    	$http.post('/logout', {})
-										.success(function() {
-											$window.location.href = '';
-										})
-										.error(function(data) {
-											$log.error(data);
-										});
-							    }
-							}
-			            ]
-			        });
+					
+					swal({
+						title: $translate('DLG_HDR_SUCCESS'), html: $translate('MSG_REGISTRATION_SUCCESS'), type: 'success', timer: 30000, width: 800, confirmButtonText: $translate('BUTTON_CLOSE') 
+					}).then(function() {
+						$timeout(function() {
+							$http.post('/logout', {})
+								.success(function() {
+									$window.location.href = '';
+								})
+								.error(function(data) {
+									$log.error(data);
+								});
+						}, 100);
+					});
 				})
 				.error(function(data, status, headers, config) {
 					$scope.saving = false;
 					if (data == 100) {
-						toastr.warning($translate('MSG_REGISTRATION_CONFLICT_USER'));
+						swal({
+							title: $translate('DLG_HDR_WARNING'), html: $translate('MSG_REGISTRATION_CONFLICT_USER'), type: 'warning', timer: 30000, width: 800, confirmButtonText: $translate('BUTTON_CLOSE') 
+						});
 					} else if (data == 200) {
-						toastr.warning($translate('MSG_REGISTRATION_CONFLICT_COMPANY'));
+						swal({
+							title: $translate('DLG_HDR_WARNING'), html: $translate('MSG_REGISTRATION_CONFLICT_COMPANY'), type: 'warning', timer: 30000, width: 800, confirmButtonText: $translate('BUTTON_CLOSE') 
+						});
 					} else {
-						toastr.error($translate('MSG_REGISTRATION_ERROR'));
+						swal({
+							title: $translate('DLG_HDR_ERROR'), html: $translate('MSG_REGISTRATION_ERROR'), type: 'error', timer: 30000, width: 800, confirmButtonText: $translate('BUTTON_CLOSE') 
+						});
 					}
 				});
 		} else {

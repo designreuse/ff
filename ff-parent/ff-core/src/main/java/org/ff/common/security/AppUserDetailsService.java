@@ -36,10 +36,11 @@ public class AppUserDetailsService implements UserDetailsService {
 
 		AppUser appUser = null;
 		if (user != null) {
-			appUser = new AppUser(user.getId(), StringUtils.isNotBlank(user.getEmail()) ? user.getEmail() : "", user.getPassword(), false, false,
-					(user.getStatus() == UserStatus.ACTIVE) ? true : false, false,
-							Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(),
-							user.getDemoUser(), user.getRegistrationType());
+			appUser = new AppUser(user.getId(), StringUtils.isNotBlank(user.getEmail()) ? user.getEmail() : "", user.getPassword(),
+					(user.getStatus() == UserStatus.WAITING_CONFIRMATION) ? true : false, false,
+							(user.getStatus() == UserStatus.INACTIVE) ? false : true, false,
+									Arrays.asList(AppUserRole.ROLE_USER.name()), user.getFirstName(), user.getLastName(),
+									user.getDemoUser(), user.getRegistrationType());
 		}
 
 		if (appUser == null) {
