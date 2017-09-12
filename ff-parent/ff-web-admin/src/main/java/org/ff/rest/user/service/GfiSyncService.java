@@ -13,16 +13,20 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.mailsender.MailSenderResource;
 import org.ff.common.mailsender.MailSenderService;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.Email;
+import org.ff.jpa.domain.GfiSync;
+import org.ff.jpa.domain.GfiSyncError;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.repository.CompanyRepository;
 import org.ff.jpa.repository.EmailRepository;
+import org.ff.jpa.repository.GfiSyncRepository;
 import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.user.resource.GfiSyncReportResource;
@@ -35,7 +39,11 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,13 +79,24 @@ public class GfiSyncService {
 	private CompanyRepository companyRepository;
 
 	@Autowired
+	private GfiSyncRepository gfiSyncRepository;
+
+	@Autowired
 	private ZabaUpdateService zabaUpdateService;
 
-	@Transactional
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@Transactional(propagation = Propagation.REQUIRED)
 	public GfiSyncReportResource gfiSync(UserResource resource, Locale locale) {
+		GfiSync gfiSync = new GfiSync();
+		gfiSync.setErrors(new HashSet<GfiSyncError>());
+
 		GfiSyncReportResource result = new GfiSyncReportResource();
 
 		long start = System.currentTimeMillis();
+		gfiSync.setStartTime(new DateTime(start));
+
 		List<User> users = new ArrayList<>();
 
 		if (resource == null) {
@@ -107,14 +126,18 @@ public class GfiSyncService {
 		Map<String, Set<String>> brms = new HashMap<>();
 		Map<String, String> brmSubstitutes = new HashMap<>();
 
+		ZabaCompanyResource zabaCompanyResource = null;
+
 		for (User user : users) {
+			zabaCompanyResource = null;
+
 			try {
 				Company company = user.getCompany();
 				if (company != null) {
 					log.debug("Syncing data for company [{}]", company.getName());
 
 					// get company data from external source (e.g. from ZaBa) via ReST API
-					ZabaCompanyResource zabaCompanyResource = zabaApiService.getCompanyData(company.getCompanyNumber() + "-" + company.getBranchOfficeNumber());
+					zabaCompanyResource = zabaApiService.getCompanyData(company.getCompanyNumber() + "-" + company.getBranchOfficeNumber());
 
 					// update company data
 					zabaUpdateService.updateCompanyData(company, zabaCompanyResource, true);
@@ -145,6 +168,21 @@ public class GfiSyncService {
 				}
 			} catch (Exception e) {
 				result.getUpdateNOK().add(userResourceAssembler.toResource(user, true));
+
+				GfiSyncError gfiSyncError = new GfiSyncError();
+				gfiSyncError.setGfiSync(gfiSync);
+				gfiSyncError.setUser(user);
+				gfiSyncError.setError(ExceptionUtils.getStackTrace(e));
+
+				if (zabaCompanyResource != null) {
+					try {
+						gfiSyncError.setCompanyData(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(zabaCompanyResource));
+					} catch (JsonProcessingException exc) {
+						log.warn("Parsing of ZabaCompanyResource failed", e);
+					}
+				}
+				gfiSync.getErrors().add(gfiSyncError);
+
 				log.error("GFI sync failed for user with ID: " + user.getId(), e);
 			}
 		}
@@ -161,6 +199,12 @@ public class GfiSyncService {
 
 		// send GFI sync report e-mail
 		sendGfiSyncReportEmail(start, result);
+
+		gfiSync.setCntTotal(result.getUpdateOK().size() + result.getUpdateNOK().size());
+		gfiSync.setCntOk(result.getUpdateOK().size());
+		gfiSync.setCntNok(result.getUpdateNOK().size());
+		gfiSync.setEndTime(new DateTime(System.currentTimeMillis()));
+		gfiSyncRepository.save(gfiSync);
 
 		log.debug("GFI sync finished in {} ms", System.currentTimeMillis() - start);
 

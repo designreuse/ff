@@ -55,6 +55,8 @@ public class ZabaApiService {
 	 * @throws Exception
 	 */
 	public ZabaCompanyResource getCompanyData(String matbr) throws Exception {
+		log.debug("Getting company data for [{}] from external source", matbr);
+
 		String companyNumber = null;
 		String branchOfficeNumber = null;
 
