@@ -245,14 +245,16 @@ public class GfiSyncService extends BaseService {
 							log.warn("Sending GFI sync e-mail to user failed", e);
 						}
 					} else {
-						log.debug("E-mail not set for user with ID [{}]", user.getId());
+						log.debug("GFI sync e-mail not sent to user with ID [{}] as e-mail not set", user.getId());
 					}
 
 					if (user.getBusinessRelationshipManager() != null && StringUtils.isNotBlank(user.getBusinessRelationshipManager().getEmail())) {
 						if (!brms.containsKey(user.getBusinessRelationshipManager().getEmail())) {
 							brms.put(user.getBusinessRelationshipManager().getEmail(), new HashSet<String>());
 						}
-						brms.get(user.getBusinessRelationshipManager().getEmail()).add(user.getEmail());
+						if (StringUtils.isNotBlank(user.getEmail())) {
+							brms.get(user.getBusinessRelationshipManager().getEmail()).add(user.getEmail());
+						}
 
 						if (user.getBusinessRelationshipManagerSubstitute() != null && StringUtils.isNotBlank((user.getBusinessRelationshipManagerSubstitute().getEmail()))) {
 							brmSubstitutes.put(user.getBusinessRelationshipManager().getEmail(), user.getBusinessRelationshipManagerSubstitute().getEmail());
