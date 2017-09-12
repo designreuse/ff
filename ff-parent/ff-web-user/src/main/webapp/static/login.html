@@ -356,7 +356,7 @@ korisni upravo Vama.</p>
                 </div>
                 <div ng-if="unauthorize" class="col-md-6 text-center">
                     <div class="swal2-icon swal2-warning pulse-warning" style="display: block;">!</div>
-                    <h3 style="margin-top: 20px;">{{ 'LBL_UNAUTHORIZE' | translate }}</h3>
+                    <h3 style="margin-top: 20px;" ng-bind-html="externalFlowUnauthorizedMsg"></h3>
                     <p style="font-size: 11px; text-align: center;" ng-bind-html="externalFlowFailedMsg"></p>
                 </div>
                 <div class="col-md-3"></div>

@@ -48,7 +48,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			LBL_EMAIL: 'E-mail',
 			LBL_COMPANY_NAME: 'Ime tvtke',
 			LBL_LOADING: 'Učitavam MojEUfond',
-			LBL_UNAUTHORIZE: 'Neautoriziran pristup',
+			LBL_UNAUTHORIZED: 'Neautoriziran pristup',
 			LBL_USER_ALREADY_REGISTERED: 'Korisnik je već registriran',
 			
 			BTN_LOGIN: 'Prijava',
@@ -268,9 +268,11 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 				$scope.unauthorize = true;
 				$scope.status = status;
 				if (status == 403) {
-					$scope.externalFlowFailedMsg = $translate('LOGIN_DISABLED');					
+					$scope.externalFlowFailedMsg = $translate('LOGIN_DISABLED');
+					$scope.externalFlowUnauthorizedMsg = undefined;	
 				} else if (status == 409) {
 					$scope.externalFlowFailedMsg = $translate('LBL_USER_ALREADY_REGISTERED');
+					$scope.externalFlowUnauthorizedMsg = $translate('LBL_UNAUTHORIZED');	
 				}
 			});
 	} else {
