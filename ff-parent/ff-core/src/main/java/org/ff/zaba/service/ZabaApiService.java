@@ -73,6 +73,8 @@ public class ZabaApiService {
 		ResponseEntity<ZabaCompanyResource> responseEntity = restTemplate.exchange(baseProperties.getZabaApiGetByCompanyNumber(),
 				HttpMethod.GET, new HttpEntity<>(getHttpHeaders()), ZabaCompanyResource.class, getUriVariables(companyNumber, branchOfficeNumber));
 
+		log.debug("Company data: {}", responseEntity.getBody());
+
 		return responseEntity.getBody();
 	}
 

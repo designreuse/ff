@@ -238,7 +238,15 @@ public class GfiSyncService extends BaseService {
 					userEmail.setUser(user);
 					userEmailRepository.save(userEmail);
 
-					mailSender.send(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, baseProperties.getGfiSyncEmailSubject(), text));
+					if (StringUtils.isNotBlank(user.getEmail())) {
+						try {
+							mailSender.send(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, baseProperties.getGfiSyncEmailSubject(), text));
+						} catch (Exception e) {
+							log.warn("Sending GFI sync e-mail to user failed", e);
+						}
+					} else {
+						log.debug("E-mail not set for user with ID [{}]", user.getId());
+					}
 
 					if (user.getBusinessRelationshipManager() != null && StringUtils.isNotBlank(user.getBusinessRelationshipManager().getEmail())) {
 						if (!brms.containsKey(user.getBusinessRelationshipManager().getEmail())) {
@@ -273,14 +281,22 @@ public class GfiSyncService extends BaseService {
 		}
 
 		// send e-mails to BRMs
-		List<MailSenderResource> mailSenderResources = new ArrayList<>();
-		for (Entry<String, Set<String>> entry : brms.entrySet()) {
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("originalEmailText", text);
-			model.put("users", entry.getValue());
-			mailSenderResources.add(new MailSenderResource(entry.getKey(), brmSubstitutes.get(entry.getKey()), baseProperties.getGfiSyncEmailSubject(), mailSender.processTemplateIntoString("email_tender_brm.ftl", model)));
+		try {
+			log.debug("Sending e-mail to BRMs and their substitutes...");
+			List<MailSenderResource> mailSenderResources = new ArrayList<>();
+			for (Entry<String, Set<String>> entry : brms.entrySet()) {
+				if (StringUtils.isBlank(entry.getKey())) {
+					continue;
+				}
+				Map<String, Object> model = new HashMap<String, Object>();
+				model.put("originalEmailText", text);
+				model.put("users", entry.getValue());
+				mailSenderResources.add(new MailSenderResource(entry.getKey(), brmSubstitutes.get(entry.getKey()), baseProperties.getGfiSyncEmailSubject(), mailSender.processTemplateIntoString("email_tender_brm.ftl", model)));
+			}
+			mailSender.send(mailSenderResources);
+		} catch (Exception e) {
+			log.warn("Sending GFI sync e-mails to BRMs failed", e);
 		}
-		mailSender.send(mailSenderResources);
 
 		// send GFI sync report e-mail
 		sendGfiSyncReportEmail(start, result);
