@@ -66,11 +66,8 @@ public class ContactService {
 		for (ZabaOfficeResource resource : zabaApiService.getOffices()) {
 			if (resource != null) {
 				StringBuffer prefix = new StringBuffer();
-				if (StringUtils.isNotBlank(resource.getVrsta())) {
-					prefix.append(resource.getVrsta()).append(" ");
-				}
 				if (StringUtils.isNotBlank(resource.getNazivFunkcija())) {
-					prefix.append(resource.getNazivFunkcija().toLowerCase());
+					prefix.append(resource.getNazivFunkcija());
 				}
 				result.add(new OfficeResource(resource.getId(), null, resource.getGrad(), resource.getPostanskiBroj(), resource.getAdresa(), prefix.toString().trim()));
 			}
