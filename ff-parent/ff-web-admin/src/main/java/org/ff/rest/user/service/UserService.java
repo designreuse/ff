@@ -30,6 +30,7 @@ import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.domain.UserGroup;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.EmailRepository;
+import org.ff.jpa.repository.GfiSyncErrorRepository;
 import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserGroupRepository;
@@ -94,6 +95,9 @@ public class UserService extends BaseService {
 
 	@Autowired
 	private ProjectRepository projectRepository;
+
+	@Autowired
+	private GfiSyncErrorRepository gfiSyncErrorRepository;
 
 	@Transactional(readOnly = true)
 	public List<UserResource> findAll() {
@@ -250,6 +254,11 @@ public class UserService extends BaseService {
 		if (entity == null || Boolean.TRUE == entity.getDemoUser()) {
 			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
 					new Object[] { messageSource.getMessage("resource.user", null, locale), id }, locale));
+		}
+
+		Long cntDeletedGfiSyncErrors = gfiSyncErrorRepository.deleteByUser(entity);
+		if (cntDeletedGfiSyncErrors > 0) {
+			log.debug("{} GFI sync errors deleted", cntDeletedGfiSyncErrors);
 		}
 
 		// delete projects
