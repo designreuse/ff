@@ -172,6 +172,49 @@ angular.module('FundFinder')
 	    })
 	    
 	    // ==========================================
+		// 	GFI SYNCS
+	    // ==========================================
+		.state('gfisyncs', {
+	        abstract: true,
+	        url: "/gfisyncs",
+	        templateUrl: "/views/common/content.html",
+	        onEnter: getPrincipal,
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/gfisyncs/scripts/controllers.js',
+	        			        constants.contextPath + '/components/gfisyncs/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    .state('gfisyncs.overview', {
+	        url: "/overview",
+	        templateUrl: constants.contextPath + "/components/gfisyncs/views/overview.html",
+	        controller: 'GfiSyncsOverviewController',
+	        params: { 'permission' : 'users.read' },
+	        data: { pageTitle: 'GFI syncs overview' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
+	    })
+		.state('gfisyncs.details', {
+	        url: "/details/:id",
+	        templateUrl: constants.contextPath + "/components/gfisyncs/views/details.html",
+	        controller: 'GfiSyncsDetailsController',
+	        params: { 'id' : null, 'permission' : 'users.read' },
+	        data: { pageTitle: 'GFI sync details' },
+	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	}
+	        }
+	    })
+	    
+	    // ==========================================
 		// 	TENDERS
 	    // ==========================================
 		.state('tenders', {

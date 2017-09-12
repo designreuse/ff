@@ -1,4 +1,4 @@
-package org.ff.rest.user.service;
+package org.ff.rest.gfisync.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,8 +15,14 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.ff.base.properties.BaseProperties;
+import org.ff.base.service.BaseService;
 import org.ff.common.mailsender.MailSenderResource;
 import org.ff.common.mailsender.MailSenderService;
+import org.ff.common.uigrid.PageableResource;
+import org.ff.common.uigrid.UiGridFilterResource;
+import org.ff.common.uigrid.UiGridResource;
+import org.ff.jpa.SearchCriteria;
+import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.GfiSync;
@@ -29,6 +35,9 @@ import org.ff.jpa.repository.EmailRepository;
 import org.ff.jpa.repository.GfiSyncRepository;
 import org.ff.jpa.repository.UserEmailRepository;
 import org.ff.jpa.repository.UserRepository;
+import org.ff.jpa.specification.GfiSyncSpecification;
+import org.ff.rest.gfisync.resource.GfiSyncResource;
+import org.ff.rest.gfisync.resource.GfiSyncResourceAssembler;
 import org.ff.rest.user.resource.GfiSyncReportResource;
 import org.ff.rest.user.resource.UserResource;
 import org.ff.rest.user.resource.UserResourceAssembler;
@@ -38,6 +47,9 @@ import org.ff.zaba.service.ZabaUpdateService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,16 +61,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class GfiSyncService {
+public class GfiSyncService extends BaseService {
+
+	@Autowired
+	private MessageSource messageSource;
+
+	@Autowired
+	private GfiSyncRepository repository;
+
+	@Autowired
+	private GfiSyncResourceAssembler resourceAssembler;
 
 	@Autowired
 	private BaseProperties baseProperties;
 
 	@Autowired
 	private MailSenderService mailSender;
-
-	@Autowired
-	private MessageSource messageSource;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -86,6 +104,73 @@ public class GfiSyncService {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Transactional(readOnly = true)
+	public GfiSyncResource find(Integer id, Locale locale) {
+		log.debug("Finding GfiSync [{}]...", id);
+
+		GfiSync entity = repository.findOne(id);
+		if (entity == null) {
+			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
+					new Object[] { messageSource.getMessage("resource.gfiSync", null, locale), id }, locale));
+		}
+
+		return resourceAssembler.toResource(entity, false);
+	}
+
+	@Transactional
+	public void delete(Integer id, Locale locale) {
+		log.debug("Deleting GfiSync [{}]...", id);
+
+		GfiSync entity = repository.findOne(id);
+		if (entity == null) {
+			throw new RuntimeException(messageSource.getMessage("exception.resourceNotFound",
+					new Object[] { messageSource.getMessage("resource.gfiSync", null, locale), id }, locale));
+		}
+
+		repository.delete(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public PageableResource<GfiSyncResource> getPage(UiGridResource resource) {
+		Page<GfiSync> page = null;
+
+		List<Specification<GfiSync>> specifications = new ArrayList<>();
+		if (resource.getFilter() != null && !resource.getFilter().isEmpty()) {
+			for (UiGridFilterResource uiGridFilterResource : resource.getFilter()) {
+				GfiSyncSpecification specification = createSpecification(uiGridFilterResource);
+				if (specification != null) {
+					specifications.add(specification);
+				}
+			}
+		}
+
+		if (!specifications.isEmpty()) {
+			// filtering
+			Specification<GfiSync> specification = specifications.get(0);
+			if (specifications.size() > 1) {
+				for (int i=1; i<specifications.size(); i++) {
+					specification = Specifications.where(specification).and(specifications.get(i));
+				}
+			}
+			page = repository.findAll(specification, createPageable(resource));
+		} else {
+			// no filtering
+			page = repository.findAll(createPageable(resource));
+		}
+
+		return new PageableResource<>(page.getTotalElements(), resourceAssembler.toResources(page.getContent(), true));
+	}
+
+	private GfiSyncSpecification createSpecification(UiGridFilterResource resource) {
+		if (resource.getName().equalsIgnoreCase("id")) {
+			return new GfiSyncSpecification(new SearchCriteria(resource.getName(), SearchOperation.EQUALITY, resource.getTerm()));
+		} else if (resource.getName().equalsIgnoreCase("creationDate") || resource.getName().equalsIgnoreCase("lastModifiedDate")) {
+			return new GfiSyncSpecification(new SearchCriteria(resource.getName(), SearchOperation.BETWEEN, getDateRange(resource.getTerm())));
+		} else {
+			return new GfiSyncSpecification(new SearchCriteria(resource.getName(), SearchOperation.CONTAINS, resource.getTerm()));
+		}
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GfiSyncReportResource gfiSync(UserResource resource, Locale locale) {

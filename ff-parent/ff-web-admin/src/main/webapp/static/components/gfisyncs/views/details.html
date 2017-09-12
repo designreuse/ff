@@ -1,0 +1,97 @@
+<style>
+    .panel {
+        margin-bottom: 0px; 
+    }
+    .chosen-container-single {
+        width: 100%;
+    }
+    .chosen-container-single .chosen-single {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi {
+        width: 100%;
+    }
+    .chosen-container-multi .chosen-choices {
+        border: 1px solid #e5e6e7;  
+    }
+    .chosen-container-multi .chosen-choices li.search-field .default {
+        width: 100% !important;
+        color: #b0b0b0 !important;
+    }
+</style>
+
+<script type="text/ng-template" id="email-exp.html">
+    <div class="ff-grid-extension form-horizontal">
+        <div class="col-lg-12 p-xxs">
+            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+                <div style="padding-left: 10px;" ng-bind-html="toTrusted(row.entity.email.text)"></div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div class="row border-bottom">
+    <div class="col-lg-12">
+        <h1>{{ 'HEADER_GFI_SYNC_DETAILS' | translate }}</h1>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="form-group">
+				<div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+					<label class="ff-label">{{ 'COLUMN_GFI_SYNC_TOTAL' | translate }}</label>
+					<div style="padding-left: 10px;">{{ entity.cntTotal }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+					<label class="ff-label">{{ 'COLUMN_GFI_SYNC_OK' | translate }}</label>
+					<div style="padding-left: 10px;">{{ entity.cntOk }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+					<label class="ff-label">{{ 'COLUMN_GFI_SYNC_NOK' | translate }}</label>
+					<div style="padding-left: 10px;">{{ entity.cntNok }}</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="form-group">
+				<div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+					<label class="ff-label">{{ 'COLUMN_START_TIME' | translate }}</label>
+					<div style="padding-left: 10px;">{{ entity.startTime | date:dateTimeFormat }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+					<label class="ff-label">{{ 'COLUMN_END_TIME' | translate }}</label>
+					<div style="padding-left: 10px;">{{ entity.endTime | date:dateTimeFormat }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row" ng-if="entity.errors && entity.errors.length > 0">
+		<div class="col-lg-12">
+			<div class="form-group">
+				<div class="col-sm-12 m-t-sm" style="padding-left: 0px; padding-right: 0px;">
+					<label class="ff-label">{{ 'LABEL_GFI_SYNC_NOK_USERS' | translate }}</label>
+					<div style="padding-left: 10px;">
+						<ul ng-repeat="error in entity.errors">
+							<li>{{ error.user }}<i ng-click="errorDetails(error.id)" uib-tooltip="{{'ACTION_TOOLTIP_DETAILS' | translate}}" style="cursor: pointer;" class="fa fa-lg fa-search-plus m-l-sm"></i></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row m-t-sm" style="border-top: solid 1px #f0f0f0;">
+        <div class="col-lg-12 m-b-sm m-t-sm" style="text-align: right;">
+            <button ng-click="back()" class="btn btn-white">{{ 'BUTTON_BACK' | translate }}</button>
+        </div>
+    </div>
+</div>
