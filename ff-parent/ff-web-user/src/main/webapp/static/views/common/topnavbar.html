@@ -22,8 +22,10 @@
             </li>
             <li ng-class="{active: $state.includes('company')}">
                 <a ui-sref="company.edit">
-                    <span class="nav-label">{{ 'MENU_COMPANY' | translate }}</span>
-                    <i style="color: red;" ng-if="profileIncomplete" class="fa fa-exclamation-circle pull-right" uib-popover="{{ 'INCOMPLETE_PROFILE_MSG' | translate }}" popover-title="{{ 'INCOMPLETE_PROFILE_HDR' | translate }}" popover-placement="bottom" popover-trigger="mouseenter" popover-append-to-body="true"></i>
+                    <span class="nav-label" style="display: inline-block;">{{ 'MENU_COMPANY' | translate }}
+                    	<i style="color: red;" ng-if="profileIncomplete" class="fa fa-exclamation-circle pull-right" uib-popover="{{ 'INCOMPLETE_PROFILE_MSG' | translate }}" popover-title="{{ 'INCOMPLETE_PROFILE_HDR' | translate }}" popover-placement="bottom" popover-trigger="mouseenter" popover-append-to-body="true"></i>
+                    </span>
+                    
                 </a>
             </li>
             <li ng-class="{active: $state.includes('projects')}">

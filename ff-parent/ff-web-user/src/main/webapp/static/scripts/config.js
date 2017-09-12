@@ -353,7 +353,7 @@ angular.module('FundFinder')
 				var cntMandatoryFilled = 0;
 				
 				$.each(company.items, function(index, item) {
-					if (item.metaTag && item.metaTag.startsWith('COMPANY_INVESTMENT')) {
+					if (item.metaTag && item.metaTag.indexOf('COMPANY_INVESTMENT') != -1) {
 						return;
 					}
 					

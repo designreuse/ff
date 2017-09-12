@@ -32,7 +32,7 @@ public class GfiSyncError {
 	private GfiSync gfiSync;
 
 	@ManyToOne
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "\"user\"")
 	private User user;
 
 	@Lob
