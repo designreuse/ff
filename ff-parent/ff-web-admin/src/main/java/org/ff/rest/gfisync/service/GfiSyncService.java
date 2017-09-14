@@ -24,6 +24,7 @@ import org.ff.common.uigrid.UiGridResource;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
 import org.ff.jpa.domain.Company;
+import org.ff.jpa.domain.ConfigParam.ConfigParamName;
 import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.GfiSync;
 import org.ff.jpa.domain.GfiSyncError;
@@ -31,6 +32,7 @@ import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.repository.CompanyRepository;
+import org.ff.jpa.repository.ConfigParamRepository;
 import org.ff.jpa.repository.EmailRepository;
 import org.ff.jpa.repository.GfiSyncRepository;
 import org.ff.jpa.repository.UserEmailRepository;
@@ -104,6 +106,9 @@ public class GfiSyncService extends BaseService {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private ConfigParamRepository configParamRepository;
 
 	@Transactional(readOnly = true)
 	public GfiSyncResource find(Integer id, Locale locale) {
@@ -204,7 +209,7 @@ public class GfiSyncService extends BaseService {
 
 		// save e-mail record in database
 		Email email = new Email();
-		email.setSubject(baseProperties.getGfiSyncEmailSubject());
+		email.setSubject(configParamRepository.findByName(ConfigParamName.gfi_sync_email_subject.toString()).getValue());
 		email.setText(text);
 		emailRepository.save(email);
 
@@ -240,7 +245,7 @@ public class GfiSyncService extends BaseService {
 
 					if (StringUtils.isNotBlank(user.getEmail())) {
 						try {
-							mailSender.send(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, baseProperties.getGfiSyncEmailSubject(), text));
+							mailSender.send(new MailSenderResource(user.getEmail(), StringUtils.isNotBlank(user.getEmail2()) ? user.getEmail2() : null, configParamRepository.findByName(ConfigParamName.gfi_sync_email_subject.toString()).getValue(), text));
 						} catch (Exception e) {
 							log.warn("Sending GFI sync e-mail to user failed", e);
 						}
@@ -293,7 +298,7 @@ public class GfiSyncService extends BaseService {
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("originalEmailText", text);
 				model.put("users", entry.getValue());
-				mailSenderResources.add(new MailSenderResource(entry.getKey(), brmSubstitutes.get(entry.getKey()), baseProperties.getGfiSyncEmailSubject(), mailSender.processTemplateIntoString("email_tender_brm.ftl", model)));
+				mailSenderResources.add(new MailSenderResource(entry.getKey(), brmSubstitutes.get(entry.getKey()), configParamRepository.findByName(ConfigParamName.gfi_sync_email_subject.toString()).getValue(), mailSender.processTemplateIntoString("email_tender_brm.ftl", model)));
 			}
 			mailSender.send(mailSenderResources);
 		} catch (Exception e) {
@@ -357,8 +362,8 @@ public class GfiSyncService extends BaseService {
 			}
 			model.put("users", users);
 
-			for (String to : StringUtils.split(baseProperties.getGfiSyncReportEmailTo(), "|")) {
-				mailSender.send(new MailSenderResource(to, null, baseProperties.getGfiSyncReportEmailSubject(), mailSender.processTemplateIntoString("email_gfi_sync_report.ftl", model)));
+			for (String to : StringUtils.split(configParamRepository.findByName(ConfigParamName.gfi_sync_report_email_to.toString()).getValue(), "|")) {
+				mailSender.send(new MailSenderResource(to, null, configParamRepository.findByName(ConfigParamName.gfi_sync_report_email_subject.toString()).getValue(), mailSender.processTemplateIntoString("email_gfi_sync_report.ftl", model)));
 			}
 
 			log.debug("GFI sync report e-mail successfully sent");

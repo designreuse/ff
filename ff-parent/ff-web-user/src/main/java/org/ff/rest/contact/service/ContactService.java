@@ -13,7 +13,9 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.mailsender.MailSenderService;
+import org.ff.jpa.domain.ConfigParam.ConfigParamName;
 import org.ff.jpa.domain.Contact;
+import org.ff.jpa.repository.ConfigParamRepository;
 import org.ff.jpa.repository.ContactRepository;
 import org.ff.rest.contact.resource.ContactResource;
 import org.ff.rest.contact.resource.OfficeResource;
@@ -49,12 +51,15 @@ public class ContactService {
 	@Autowired
 	private ZabaApiService zabaApiService;
 
+	@Autowired
+	private ConfigParamRepository configParamRepository;
+
 	private List<String> contactEmails;
 
 	@PostConstruct
 	public void init() {
 		contactEmails = new ArrayList<>();
-		for (String str : baseProperties.getContactEmailTo().split("\\|")) {
+		for (String str : configParamRepository.findByName(ConfigParamName.contact_email_to.toString()).getValue().split("\\|")) {
 			contactEmails.add(str);
 		}
 	}
@@ -101,7 +106,7 @@ public class ContactService {
 			model.put("text", StringUtils.isNotBlank(resource.getText()) ? resource.getText() : "");
 
 			for (String contactEmail : contactEmails) {
-				mailSender.send(contactEmail, baseProperties.getContactEmailSubject(), FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
+				mailSender.send(contactEmail, configParamRepository.findByName(ConfigParamName.contact_email_subject.toString()).getValue(), FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);

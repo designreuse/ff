@@ -67,6 +67,9 @@
 	                <li ng-class="{active: $state.is('settings.organizationalunits_overview') || $state.is('settings.organizationalunits_edit') }">
                         <a class="ff-nav-second-level" ui-sref="settings.organizationalunits_overview">{{ 'MENU_ORG_UNITS' | translate }}</a>
                     </li>
+                    <li ng-class="{ active: $state.is('settings.configparams') }">
+                        <a class="ff-nav-second-level" ui-sref="settings.configparams">{{ 'MENU_CONFIG_PARAMS' | translate }}</a>
+                    </li>
 	                <li ng-class="{ active: $state.is('settings.debugging') }">
                         <a class="ff-nav-second-level" ui-sref="settings.debugging">{{ 'MENU_DEBUGGING' | translate }}</a>
                     </li>

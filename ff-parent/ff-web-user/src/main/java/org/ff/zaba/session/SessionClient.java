@@ -9,6 +9,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.ff.base.properties.BaseProperties;
+import org.ff.jpa.domain.ConfigParam.ConfigParamName;
+import org.ff.jpa.repository.ConfigParamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.w3c.dom.Element;
@@ -27,6 +29,9 @@ public class SessionClient extends WebServiceGatewaySupport {
 
 	@Autowired
 	private BaseProperties baseProperties;
+
+	@Autowired
+	private ConfigParamRepository configParamRepository;
 
 	private ObjectFactory objectFactory;
 
@@ -63,7 +68,7 @@ public class SessionClient extends WebServiceGatewaySupport {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
-			if (baseProperties.getTestMode() == Boolean.TRUE) {
+			if (Boolean.parseBoolean(configParamRepository.findByName(ConfigParamName.test_mode.toString()).getValue())) {
 				try {
 					data.put("user_id", "12345678901"); // OIB zastupnika
 					data.put("user_id2", "49355429927"); // OIB pravne osobe

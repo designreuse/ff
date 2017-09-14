@@ -854,6 +854,22 @@ angular.module('FundFinder')
 	        }
 	    })
 	    
+	    .state('settings.configparams', {
+	    	url: "/configparams",
+	        templateUrl: constants.contextPath + "/components/configparams/views/edit.html",
+	        controller: 'ConfigParamsController',
+	        data: { pageTitle: 'Config params' },
+	        resolve: {
+	        	loadPlugin: function ($ocLazyLoad) {
+	        		return $ocLazyLoad.load({
+	        			name: 'FundFinder',
+	        			files: [constants.contextPath + '/components/configparams/scripts/controllers.js',
+	        			        constants.contextPath + '/components/configparams/scripts/services.js']
+	        		});
+	        	}
+	        }
+	    })
+	    
 	    .state('settings.debugging', {
 	    	url: "/debugging/overview",
 	        templateUrl: constants.contextPath + "/components/debugging/views/overview.html",
@@ -880,7 +896,7 @@ angular.module('FundFinder')
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
-	$rootScope.version = "v1.0.20";
+	$rootScope.version = "v1.0.21";
 	$rootScope.contextPath = constants.contextPath;
 	$rootScope.helpEnabled = false; // indicates if help feature is enabled or not
 	

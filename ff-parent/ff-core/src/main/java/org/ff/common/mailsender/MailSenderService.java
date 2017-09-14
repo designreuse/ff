@@ -7,7 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringUtils;
-import org.ff.base.properties.BaseProperties;
+import org.ff.jpa.domain.ConfigParam.ConfigParamName;
+import org.ff.jpa.repository.ConfigParamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -38,15 +39,19 @@ public class MailSenderService {
 	private JavaMailSender mailSender;
 
 	@Autowired
-	private BaseProperties baseProperties;
+	private ConfigParamRepository configParamRepository;
 
 	private SendGrid sendGrid;
 
 	@PostConstruct
 	public void init() {
-		if (Boolean.TRUE == baseProperties.getSendgridEnabled()) {
-			log.info("Initializing SendGrid with API key {}", baseProperties.getSendgridApikey());
-			sendGrid = new SendGrid(baseProperties.getSendgridApikey());
+		if (Boolean.parseBoolean(configParamRepository.findByName(ConfigParamName.sendgrid_enabled.toString()).getValue())) {
+			try {
+				log.info("Initializing SendGrid...");
+				sendGrid = new SendGrid(configParamRepository.findByName(ConfigParamName.sendgrid_apikey.toString()).getValue());
+			} catch (Exception e) {
+				log.info("SendGrid initialization failed", e);
+			}
 		}
 	}
 
@@ -96,7 +101,7 @@ public class MailSenderService {
 	private void send(final String to, final String cc, final String subject, final String text) {
 		log.debug("Sending e-mail with subject [{}] to [{}]", subject, to);
 
-		if (Boolean.TRUE == baseProperties.getSendgridEnabled() && sendGrid != null) {
+		if (Boolean.parseBoolean(configParamRepository.findByName(ConfigParamName.sendgrid_enabled.toString()).getValue()) && sendGrid != null) {
 			sendViaSendGrid(to, subject, text);
 			if (StringUtils.isNotBlank(cc)) {
 				sendViaSendGrid(cc, subject, text);
@@ -106,7 +111,7 @@ public class MailSenderService {
 				@Override
 				public void prepare(MimeMessage mimeMessage) throws Exception {
 					MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-					message.setFrom(baseProperties.getMailSender());
+					message.setFrom(configParamRepository.findByName(ConfigParamName.mail_sender.toString()).getValue());
 					message.setTo(to);
 					if (StringUtils.isNotBlank(cc)) {
 						message.setCc(cc);
@@ -122,7 +127,7 @@ public class MailSenderService {
 
 	private void sendViaSendGrid(final String to, final String subject, final String text) {
 		try {
-			Mail mail = new Mail(new Email(baseProperties.getMailSender()), subject, new Email(to), new Content("text/html", text));
+			Mail mail = new Mail(new Email(configParamRepository.findByName(ConfigParamName.mail_sender.toString()).getValue()), subject, new Email(to), new Content("text/html", text));
 
 			Request request = new Request();
 			request.setMethod(Method.POST);

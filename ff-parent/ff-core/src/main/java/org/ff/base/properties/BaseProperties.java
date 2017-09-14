@@ -11,8 +11,6 @@ import lombok.Setter;
 @Getter @Setter
 public class BaseProperties {
 
-	private Boolean testMode = Boolean.FALSE;
-
 	private String monthFormat;
 
 	private String dateFormat;
@@ -26,18 +24,6 @@ public class BaseProperties {
 	private String colatorLocale;
 
 	private String url;
-
-	private String mailSender;
-
-	private String contactEmailTo;
-
-	private String contactEmailSubject;
-
-	private String gfiSyncEmailSubject;
-
-	private String gfiSyncReportEmailTo;
-
-	private String gfiSyncReportEmailSubject;
 
 	private String zabaSovaUrl;
 
@@ -76,9 +62,5 @@ public class BaseProperties {
 	private String mappingProfitOrLoss;
 
 	private String mappingCapitalTotalLiabilities;
-
-	private Boolean sendgridEnabled;
-
-	private String sendgridApikey;
 
 }
