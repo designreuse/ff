@@ -44,41 +44,53 @@ public class SecurityFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 		SecurityContext context = SecurityContextHolder.getContext();
+
 		if (context.getAuthentication() != null && context.getAuthentication().isAuthenticated()) {
 			log.trace("User [{}] already authorized", context.getAuthentication().getName());
 		} else {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 			Authentication authentication = null;
-			if (httpRequest.getUserPrincipal() != null) {
-				// when in security realm (e.g. WebSphere)
-				log.debug("Authorizing user [{}]...", httpRequest.getUserPrincipal().getName());
 
-				String roleExt = sovaClient.wsKorisnikAutorizacija(httpRequest.getUserPrincipal().getName());
-				if (StringUtils.isNotBlank(roleExt)) {
-					Role role = roleRepository.findByName(roleExt);
-					if (role != null) {
-						log.debug("Role [{}] recognized; autorization OK", role.getName());
-						authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
-								null, getGrantedAuthority(role.getName()));
+			if (httpRequest.getRequestURI().endsWith(".js")
+					|| httpRequest.getRequestURI().endsWith(".css")
+					|| httpRequest.getRequestURI().endsWith(".png")
+					|| httpRequest.getRequestURI().endsWith(".woff")
+					|| httpRequest.getRequestURI().endsWith(".woff2")) {
+				// ignore these requests
+			} else {
+				log.debug("Request URI: {}", httpRequest.getRequestURI());
+
+				if (httpRequest.getUserPrincipal() != null) {
+					// when in security realm (e.g. WebSphere)
+					log.debug("Authorizing user [{}]...", httpRequest.getUserPrincipal().getName());
+
+					String roleExt = sovaClient.wsKorisnikAutorizacija(httpRequest.getUserPrincipal().getName());
+					if (StringUtils.isNotBlank(roleExt)) {
+						Role role = roleRepository.findByName(roleExt);
+						if (role != null) {
+							log.debug("Role [{}] recognized; autorization OK", role.getName());
+							authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
+									null, getGrantedAuthority(role.getName()));
+						} else {
+							log.warn("Role [{}] not recognized; autorization NOK", roleExt);
+							authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
+									null, AuthorityUtils.createAuthorityList(AppUserRole.ERROR_ROLE_NOT_RECOGNIZED.name()));
+						}
 					} else {
-						log.warn("Role [{}] not recognized; autorization NOK", roleExt);
+						log.warn("Role not found for user [{}]; autorization NOK", httpRequest.getUserPrincipal().getName());
 						authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
-								null, AuthorityUtils.createAuthorityList(AppUserRole.ERROR_ROLE_NOT_RECOGNIZED.name()));
+								null, AuthorityUtils.createAuthorityList(AppUserRole.ERROR_ROLE_NOT_FOUND.name()));
 					}
 				} else {
-					log.warn("Role not found for user [{}]; autorization NOK", httpRequest.getUserPrincipal().getName());
-					authentication = new UsernamePasswordAuthenticationToken(httpRequest.getUserPrincipal().getName(),
-							null, AuthorityUtils.createAuthorityList(AppUserRole.ERROR_ROLE_NOT_FOUND.name()));
-				}
-			} else {
-				for (String profile : environment.getActiveProfiles()) {
-					// if development profile is active, use dummy authentication
-					if (profile.startsWith("dev") || profile.startsWith("cloud")) {
-						log.trace("Authorizing unknown user (dev/cloud env)...");
-						authentication = new UsernamePasswordAuthenticationToken(
-								"Administrator", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name()));
-						break;
+					for (String profile : environment.getActiveProfiles()) {
+						// if development profile is active, use dummy authentication
+						if (profile.startsWith("dev") || profile.startsWith("cloud")) {
+							log.trace("Authorizing unknown user (dev/cloud env)...");
+							authentication = new UsernamePasswordAuthenticationToken(
+									"Administrator", null, AuthorityUtils.createAuthorityList(AppUserRole.ROLE_ADMIN.name()));
+							break;
+						}
 					}
 				}
 			}
@@ -87,6 +99,7 @@ public class SecurityFilter implements Filter {
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
+
 		filterChain.doFilter(request, response);
 	}
 
