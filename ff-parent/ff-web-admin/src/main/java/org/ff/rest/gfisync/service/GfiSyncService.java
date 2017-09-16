@@ -177,7 +177,7 @@ public class GfiSyncService extends BaseService {
 		}
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public GfiSyncReportResource gfiSync(UserResource resource, Locale locale) {
 		GfiSync gfiSync = new GfiSync();
 		gfiSync.setErrors(new HashSet<GfiSyncError>());

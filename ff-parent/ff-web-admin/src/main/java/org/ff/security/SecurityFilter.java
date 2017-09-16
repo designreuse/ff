@@ -55,6 +55,7 @@ public class SecurityFilter implements Filter {
 			if (httpRequest.getRequestURI().endsWith(".js")
 					|| httpRequest.getRequestURI().endsWith(".css")
 					|| httpRequest.getRequestURI().endsWith(".png")
+					|| httpRequest.getRequestURI().endsWith(".map")
 					|| httpRequest.getRequestURI().endsWith(".woff")
 					|| httpRequest.getRequestURI().endsWith(".woff2")) {
 				// ignore these requests

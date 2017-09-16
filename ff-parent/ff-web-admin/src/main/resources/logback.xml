@@ -37,5 +37,6 @@
     
     <!-- LOG LEVEL FOR SPECIFIC PACKAGE(S) -->
     <logger name="org.ff" level="DEBUG" />
+    <!-- <logger name="org.springframework.orm.jpa" level="DEBUG" /> -->
     
 </configuration>

@@ -43,7 +43,7 @@ public class ZabaUpdateService {
 
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void updateCompanyData(Company company, ZabaCompanyResource resource, boolean forceUpdate) throws Exception {
 		log.debug("Initiating update of company data...");
 
