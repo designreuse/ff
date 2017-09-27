@@ -193,7 +193,7 @@ angular.module('FundFinder')
 	        url: "/overview",
 	        templateUrl: constants.contextPath + "/components/gfisyncs/views/overview.html",
 	        controller: 'GfiSyncsOverviewController',
-	        params: { 'permission' : 'users.read' },
+	        params: { 'permission' : 'users.update' },
 	        data: { pageTitle: 'GFI syncs overview' },
 	        resolve: {
 	        	hasPermission: function(grant, $stateParams) {
@@ -205,7 +205,7 @@ angular.module('FundFinder')
 	        url: "/details/:id",
 	        templateUrl: constants.contextPath + "/components/gfisyncs/views/details.html",
 	        controller: 'GfiSyncsDetailsController',
-	        params: { 'id' : null, 'permission' : 'users.read' },
+	        params: { 'id' : null, 'permission' : 'users.update' },
 	        data: { pageTitle: 'GFI sync details' },
 	        resolve: {
 	        	hasPermission: function(grant, $stateParams) {

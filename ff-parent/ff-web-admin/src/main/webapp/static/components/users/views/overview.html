@@ -33,11 +33,13 @@
 					<li><a href="{{ contextPath }}/api/v1/users/exportProjectData2Csv">{{ 'BUTTON_EXPORT_PROJECT_DATA' | translate }} {{ 'TO_CSV' | translate }}</a></li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-primary pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><span class="caret"></span></button>
-            <ul class="dropdown-menu pull-right">
-            	<li><a ui-sref="gfisyncs.overview">{{ 'BUTTON_GFI_HISTORY' | translate }}</a></li>
-            </ul>
-            <button ladda="gfiSyncInProgress" ng-click="gfiSync()" class="btn btn-primary pull-right" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{ 'BUTTON_GFI_SYNC' | translate }}</button>
+           	<div ng-if="hasPermission(['users.update'])">
+	            <button type="button" class="btn btn-primary pull-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"><span class="caret"></span></button>
+	            <ul class="dropdown-menu pull-right">
+	            	<li><a ui-sref="gfisyncs.overview">{{ 'BUTTON_GFI_HISTORY' | translate }}</a></li>
+	            </ul>
+	            <button ladda="gfiSyncInProgress" ng-click="gfiSync()" class="btn btn-primary pull-right" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">{{ 'BUTTON_GFI_SYNC' | translate }}</button>
+            </div>
         </div>
     </div>
 	<div class="row">
