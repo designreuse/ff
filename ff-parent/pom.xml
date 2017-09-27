@@ -5,7 +5,7 @@
     
     <artifactId>ff-parent</artifactId>
     <groupId>org.ff</groupId>
-    <version>1.0.22-SNAPSHOT</version>
+    <version>1.0.21-SNAPSHOT</version>
     <name>Fund Finder</name>
     <packaging>pom</packaging>
     
