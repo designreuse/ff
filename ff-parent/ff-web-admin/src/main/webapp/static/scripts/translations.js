@@ -163,7 +163,7 @@ function config($translateProvider) {
 			LABEL_GFI_STACK_TRACE: 'Stack trace',
 			LABEL_GFI_COMPANY_DATA: 'Podaci o poduzeću iz vanjskog izvora',
 			
-			COLUMN_ACTIVITY: 'Sektori',
+			COLUMN_ACTIVITY: 'Sektor',
 			COLUMN_ACTIVITY_NAME: 'Naziv sektora',
 			COLUMN_AREA: 'Area',
 			COLUMN_CODE: 'Oznaka',

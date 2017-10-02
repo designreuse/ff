@@ -253,7 +253,7 @@ public class UserExportService {
 		File file = null;
 		CSVWriter writer = null;
 		try {
-			file = new File(String.format("company_data_%s.csv", System.currentTimeMillis()));
+			file = new File(String.format("podaci_o_poduzecima_%s.csv", System.currentTimeMillis()));
 			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
 
 			List<String[]> entries = new ArrayList<>();
@@ -331,7 +331,7 @@ public class UserExportService {
 		File file = null;
 		CSVWriter writer = null;
 		try {
-			file = new File(String.format("project_data_%s.csv", System.currentTimeMillis()));
+			file = new File(String.format("podaci_o_projektima_%s.csv", System.currentTimeMillis()));
 			writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
 
 			List<String[]> entries = new ArrayList<>();

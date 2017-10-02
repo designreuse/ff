@@ -147,15 +147,29 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			subheader = subheader + ' - ' + $translate('STATISTICS_PERIOD_LAST_6_MONTHS');
 		}
 		
-		html2canvas($('#trendsChart')).then(function(canvas) {
-		    var docDefinition = {
+		html2canvas($('#trendsChart')).then(function(srcCanvas) {
+			// create a dummy canvas
+			destCanvas = document.createElement("canvas");
+			destCanvas.width = srcCanvas.width;
+			destCanvas.height = srcCanvas.height;
+
+			destCtx = destCanvas.getContext('2d');
+
+			// create a rectangle with the desired color
+			destCtx.fillStyle = "#FFFFFF";
+			destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+			// draw the original canvas onto the destination canvas
+			destCtx.drawImage(srcCanvas, 0, 0);
+			
+			var docDefinition = {
 				pageSize: 'A4',
 				pageOrientation: 'landscape',
 				content: [
 				    { text: 'Trendovi', style: 'header' },
 				    { text: subheader, style: 'subheader' },
 				    {
-				        image: canvas.toDataURL('image/png'),
+				        image: destCanvas.toDataURL('image/jpeg'),
 				        width: 800
 					}
 				],
@@ -163,11 +177,10 @@ function DashboardController($rootScope, $scope, $state, $log, $timeout, $filter
 			};
 			
 			if (detectIE()) {
-				pdfMake.createPdf(docDefinition).download();
+				pdfMake.createPdf(docDefinition).download("trendovi.pdf");
 			} else {
-				pdfMake.createPdf(docDefinition).open();
+				pdfMake.createPdf(docDefinition).download("trendovi.pdf");
 			}
-				
 		});
 	};
 	

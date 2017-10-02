@@ -149,14 +149,14 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.exportCompaniesByCountiesCSV = function() {
 		var rows = new Array();
-		rows.push(['county', 'number', 'percentage']);
+		rows.push([$translate('COLUMN_SUBDIVISION1'), $translate('COLUMN_NO_OF_COMPANIES'), $translate('COLUMN_PERCENTAGE')]);
 		
 		$.each($scope.companiesByCounties4ExportCSV, function(index, value) {
 			rows.push([value.county, value.number, value.percentage]);
 		});
 		
         var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
-        FileSaver.saveAs(data, 'companies_by_county.csv');
+        FileSaver.saveAs(data, "poduzeca_po_zupanijama.csv");
 	};
 	
 	$scope.exportCompaniesByCountiesPDF = function() {
@@ -175,12 +175,28 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 			]);
 		});
 		
+		var srcCanvas = document.getElementById($scope.typeCompaniesByCounties);
+		
+		// create a dummy canvas
+		destCanvas = document.createElement("canvas");
+		destCanvas.width = srcCanvas.width;
+		destCanvas.height = srcCanvas.height;
+
+		destCtx = destCanvas.getContext('2d');
+
+		// create a rectangle with the desired color
+		destCtx.fillStyle = "#FFFFFF";
+		destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+		// draw the original canvas onto the destination canvas
+		destCtx.drawImage(srcCanvas, 0, 0);
+
 		var docDefinition = {
 			pageSize: 'A4',
 			content: [
 			    { text: $translate('TAB_STATS_COMPANIES_BY_COUNTIES'), style: 'header' },
 			    {
-			        image: document.getElementById($scope.typeCompaniesByCounties).toDataURL('image/png'),
+			        image: destCanvas.toDataURL('image/jpeg'),
 			        width: 515
 				},
 			    {
@@ -196,9 +212,9 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		};
 		
 		if (detectIE()) {
-			pdfMake.createPdf(docDefinition).download();
+			pdfMake.createPdf(docDefinition).download("poduzeca_po_zupanijama.pdf");
 		} else {
-			pdfMake.createPdf(docDefinition).open();
+			pdfMake.createPdf(docDefinition).download("poduzeca_po_zupanijama.pdf");
 		}
 	};
 	
@@ -255,14 +271,14 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.exportCompaniesByRevenuesCSV = function() {
 		var rows = new Array();
-		rows.push(['revenue', 'number', 'percentage']);
+		rows.push([$translate('COLUMN_REVENUE'), $translate('COLUMN_NO_OF_COMPANIES'), $translate('COLUMN_PERCENTAGE')]);
 		
 		$.each($scope.companiesByRevenues4ExportCSV, function(index, value) {
 			rows.push([value.revenue, value.number, value.percentage]);
 		});
 		
 		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
-        FileSaver.saveAs(data, 'companies_by_revenue.csv');
+        FileSaver.saveAs(data, "poduzeca_po_prihodima.csv");
 	};
 	
 	$scope.exportCompaniesByRevenuesPDF = function() {
@@ -281,12 +297,28 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 			]);
 		});
 		
+		var srcCanvas = document.getElementById($scope.typeCompaniesByRevenues);
+		
+		// create a dummy canvas
+		destCanvas = document.createElement("canvas");
+		destCanvas.width = srcCanvas.width;
+		destCanvas.height = srcCanvas.height;
+
+		destCtx = destCanvas.getContext('2d');
+
+		// create a rectangle with the desired color
+		destCtx.fillStyle = "#FFFFFF";
+		destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+		// draw the original canvas onto the destination canvas
+		destCtx.drawImage(srcCanvas, 0, 0);
+
 		var docDefinition = {
 			pageSize: 'A4',
 			content: [
 			    { text: $translate('TAB_STATS_COMPANIES_BY_REVENUES'), style: 'header' },
 			    {
-			        image: document.getElementById($scope.typeCompaniesByRevenues).toDataURL('image/png'),
+			    	image: destCanvas.toDataURL('image/jpeg'),
 			        width: 350
 				},
 			    {
@@ -302,9 +334,9 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		};
 		
 		if (detectIE()) {
-			pdfMake.createPdf(docDefinition).download();
+			pdfMake.createPdf(docDefinition).download("poduzeca_po_prihodima.pdf");
 		} else {
-			pdfMake.createPdf(docDefinition).open();
+			pdfMake.createPdf(docDefinition).download("poduzeca_po_prihodima.pdf");
 		}
 	};
 	
@@ -361,14 +393,14 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.exportCompaniesBySizeCSV = function() {
 		var rows = new Array();
-		rows.push(['size', 'number', 'percentage']);
+		rows.push([$translate('COLUMN_SIZE'), $translate('COLUMN_NO_OF_COMPANIES'), $translate('COLUMN_PERCENTAGE')]);
 		
 		$.each($scope.companiesBySize4ExportCSV, function(index, value) {
 			rows.push([value.size, value.number, value.percentage]);
 		});
 		
 		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
-        FileSaver.saveAs(data, 'companies_by_size.csv');
+        FileSaver.saveAs(data, 'poduzeca_po_velicini.csv');
 	};
 	
 	$scope.exportCompaniesBySizePDF = function() {
@@ -387,12 +419,28 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 			]);
 		});
 		
+		var srcCanvas = document.getElementById($scope.typeCompaniesBySize);
+		
+		// create a dummy canvas
+		destCanvas = document.createElement("canvas");
+		destCanvas.width = srcCanvas.width;
+		destCanvas.height = srcCanvas.height;
+
+		destCtx = destCanvas.getContext('2d');
+
+		// create a rectangle with the desired color
+		destCtx.fillStyle = "#FFFFFF";
+		destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+		// draw the original canvas onto the destination canvas
+		destCtx.drawImage(srcCanvas, 0, 0);
+
 		var docDefinition = {
 			pageSize: 'A4',
 			content: [
 			    { text: $translate('TAB_STATS_COMPANIES_BY_SIZE'), style: 'header' },
 			    {
-			        image: document.getElementById($scope.typeCompaniesBySize).toDataURL('image/png'),
+			    	image: destCanvas.toDataURL('image/jpeg'),
 			        width: 350
 				},
 			    {
@@ -408,9 +456,9 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		};
 		
 		if (detectIE()) {
-			pdfMake.createPdf(docDefinition).download();
+			pdfMake.createPdf(docDefinition).download("poduzeca_po_velicini.pdf");
 		} else {
-			pdfMake.createPdf(docDefinition).open();
+			pdfMake.createPdf(docDefinition).download("poduzeca_po_velicini.pdf");
 		}
 	};
 	
@@ -480,14 +528,14 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.exportInvestmentsByCountiesCSV = function() {
 		var rows = new Array();
-		rows.push(['county', 'number', 'percentage', 'value']);
+		rows.push([$translate('COLUMN_SUBDIVISION1'), $translate('COLUMN_NO_OF_COMPANIES'), $translate('COLUMN_PERCENTAGE'), $translate('COLUMN_INVESTMENT_VALUE_TOTAL')]);
 		
 		$.each($scope.investmentsByCounties4ExportCSV, function(index, value) {
 			rows.push([value.county, value.number, value.percentage, value.value]);
 		});
 		
 		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
-        FileSaver.saveAs(data, 'investments_by_county.csv');
+        FileSaver.saveAs(data, 'ulaganja_po_zupanijama.csv');
 	};
 	
 	$scope.exportInvestmentsByCountiesPDF = function() {
@@ -508,12 +556,28 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 			]);
 		});
 		
+		var srcCanvas = document.getElementById($scope.typeInvestmentsByCounties);
+		
+		// create a dummy canvas
+		destCanvas = document.createElement("canvas");
+		destCanvas.width = srcCanvas.width;
+		destCanvas.height = srcCanvas.height;
+
+		destCtx = destCanvas.getContext('2d');
+
+		// create a rectangle with the desired color
+		destCtx.fillStyle = "#FFFFFF";
+		destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+		// draw the original canvas onto the destination canvas
+		destCtx.drawImage(srcCanvas, 0, 0);
+
 		var docDefinition = {
 			pageSize: 'A4',
 			content: [
 			    { text: $translate('TAB_STATS_INVESTMENTS_BY_COUNTIES'), style: 'header' },
 			    {
-			        image: document.getElementById($scope.typeInvestmentsByCounties).toDataURL('image/png'),
+			        image: destCanvas.toDataURL('image/jpeg'),
 			        width: 515
 				},
 			    {
@@ -529,9 +593,9 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		};
 		
 		if (detectIE()) {
-			pdfMake.createPdf(docDefinition).download();
+			pdfMake.createPdf(docDefinition).download("ulaganja_po_zupanijama.pdf");
 		} else {
-			pdfMake.createPdf(docDefinition).open();
+			pdfMake.createPdf(docDefinition).download("ulaganja_po_zupanijama.pdf");
 		}
 	};
 	
@@ -601,14 +665,14 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 	
 	$scope.exportInvestmentsByActivitiesCSV = function() {
 		var rows = new Array();
-		rows.push(['activity', 'number', 'percentage', 'value']);
+		rows.push([$translate('COLUMN_ACTIVITY'), $translate('COLUMN_NO_OF_COMPANIES'), $translate('COLUMN_PERCENTAGE'), $translate('COLUMN_INVESTMENT_VALUE_TOTAL')]);
 		
 		$.each($scope.investmentsByActivities4ExportCSV, function(index, value) {
 			rows.push([value.activity, value.number, value.percentage, value.value]);
 		});
 		
 		var data = new Blob([rows.join('\n')], { type: 'data:text/csv;charset=utf-8' });
-        FileSaver.saveAs(data, 'investments_by_activity.csv');
+        FileSaver.saveAs(data, 'ulaganja_po_sektorima.csv');
 	};
 	
 	$scope.exportInvestmentsByActivitiesPDF = function() {
@@ -629,12 +693,28 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 			]);
 		});
 		
+		var srcCanvas = document.getElementById($scope.typeInvestmentsByActivities);
+		
+		// create a dummy canvas
+		destCanvas = document.createElement("canvas");
+		destCanvas.width = srcCanvas.width;
+		destCanvas.height = srcCanvas.height;
+
+		destCtx = destCanvas.getContext('2d');
+
+		// create a rectangle with the desired color
+		destCtx.fillStyle = "#FFFFFF";
+		destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+		// draw the original canvas onto the destination canvas
+		destCtx.drawImage(srcCanvas, 0, 0);
+
 		var docDefinition = {
 			pageSize: 'A4',
 			content: [
 			    { text: $translate('TAB_STATS_INVESTMENTS_BY_ACTIVITIES'), style: 'header' },
 			    {
-			        image: document.getElementById($scope.typeInvestmentsByActivities).toDataURL('image/png'),
+			        image: destCanvas.toDataURL('image/jpeg'),
 			        width: 515
 				},
 			    {
@@ -650,9 +730,9 @@ function StatisticsController($rootScope, $scope, $state, $log, $timeout, $filte
 		};
 		
 		if (detectIE()) {
-			pdfMake.createPdf(docDefinition).download();
+			pdfMake.createPdf(docDefinition).download("ulaganja_po_sektorima.pdf");
 		} else {
-			pdfMake.createPdf(docDefinition).open();
+			pdfMake.createPdf(docDefinition).download("ulaganja_po_sektorima.pdf");
 		}
 	};
 	

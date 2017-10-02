@@ -5,7 +5,7 @@ angular.module('FundFinder')
 // ========================================================================
 //	OVERVIEW CONTROLLER
 // ========================================================================
-function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, uiGridExporterConstants, constants, UsersService) {
+function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $filter, uiGridConstants, uiGridExporterConstants, uiGridExporterService, constants, UsersService) {
 	var $translate = $filter('translate');
 	var $lowercase = $filter('lowercase');
 	
@@ -55,7 +55,7 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 			exporterMenuCsv: false,
 			exporterMenuPdf: false,
 			exporterOlderExcelCompatibility: true,
-			exporterCsvFilename: 'users.csv',
+			exporterCsvFilename: 'korisnici.csv',
 			exporterPdfMaxGridWidth: $rootScope.exporterPdfMaxGridWidth,
 			exporterPdfDefaultStyle: $rootScope.exporterPdfDefaultStyle,
 			exporterPdfTableStyle: $rootScope.exporterPdfTableStyle,
@@ -322,7 +322,63 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 						if (format == 'CSV') {
 							$scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE);
 						} else if (format == 'PDF') {
-							$scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE);
+							var rows = new Array();
+							
+							var gridColumns = uiGridExporterService.getColumnHeaders($scope.gridApi.grid, uiGridExporterConstants.VISIBLE);
+							var tmpArray = new Array();
+							for (var i=0; i<gridColumns.length; i++) {
+								tmpArray.push(
+										{ text: gridColumns[i].displayName, style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+								);
+							}
+							rows.push(tmpArray);
+							
+							var gridRows = uiGridExporterService.getData($scope.gridApi.grid, uiGridExporterConstants.VISIBLE, uiGridExporterConstants.VISIBLE, true);
+							for (var i=0; i<gridRows.length; i++) {
+								tmpArray = new Array();
+								for (var j=0; j<gridColumns.length; j++) {
+									var value = gridRows[i][j].value;
+									tmpArray.push(
+											{ text: (value) ? value : "", style: 'tableRow', alignment: 'left' }
+									);
+								}
+								rows.push(tmpArray);
+							}
+							
+							var pdfMakeStyles = {
+								header: {
+									fontSize: 14,
+									bold: true,
+									margin: [0, 0, 0, 0]
+								},
+								tableContent: {
+									margin: [0, 10, 0, 0]
+								},
+								tableHeader: {
+									bold: true,
+									fontSize: 8
+								},
+								tableRow: {
+									fontSize: 8
+								}	
+							};
+							
+							var docDefinition = {
+								pageSize: 'A4',
+								content: [
+									{ text: $translate('MENU_USERS'), style: 'header' },
+									{
+								    	style: 'tableContent',
+								    	table: {
+							        		headerRows: 1,
+							        		body: rows
+							        	}
+								    }
+								],
+								styles: pdfMakeStyles
+							};
+							
+							pdfMake.createPdf(docDefinition).download("korisnici.pdf");
 						}
 						
 						$scope.getPage($scope.gridApi.pagination.getPage(), $scope.gridOptions.paginationPageSize);
@@ -343,7 +399,63 @@ function UsersOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 		if (format == 'CSV') {
 			$scope.gridApi.exporter.csvExport(uiGridExporterConstants.SELECTED, uiGridExporterConstants.SELECTED);
 		} else if (format == 'PDF') {
-			$scope.gridApi.exporter.pdfExport(uiGridExporterConstants.SELECTED, uiGridExporterConstants.SELECTED);
+			var rows = new Array();
+			
+			var gridColumns = uiGridExporterService.getColumnHeaders($scope.gridApi.grid, uiGridExporterConstants.VISIBLE);
+			var tmpArray = new Array();
+			for (var i=0; i<gridColumns.length; i++) {
+				tmpArray.push(
+						{ text: gridColumns[i].displayName, style: 'tableHeader', alignment: 'left', fillColor: '#f0f0f0' }
+				);
+			}
+			rows.push(tmpArray);
+			
+			var gridRows = uiGridExporterService.getData($scope.gridApi.grid, uiGridExporterConstants.SELECTED, uiGridExporterConstants.SELECTED, true);
+			for (var i=0; i<gridRows.length; i++) {
+				tmpArray = new Array();
+				for (var j=0; j<gridColumns.length; j++) {
+					var value = gridRows[i][j].value;
+					tmpArray.push(
+							{ text: (value) ? value : "", style: 'tableRow', alignment: 'left' }
+					);
+				}
+				rows.push(tmpArray);
+			}
+			
+			var pdfMakeStyles = {
+				header: {
+					fontSize: 14,
+					bold: true,
+					margin: [0, 0, 0, 0]
+				},
+				tableContent: {
+					margin: [0, 10, 0, 0]
+				},
+				tableHeader: {
+					bold: true,
+					fontSize: 8
+				},
+				tableRow: {
+					fontSize: 8
+				}	
+			};
+			
+			var docDefinition = {
+				pageSize: 'A4',
+				content: [
+					{ text: $translate('MENU_USERS'), style: 'header' },
+					{
+				    	style: 'tableContent',
+				    	table: {
+			        		headerRows: 1,
+			        		body: rows
+			        	}
+				    }
+				],
+				styles: pdfMakeStyles
+			};
+			
+			pdfMake.createPdf(docDefinition).download("korisnici.pdf");
 		}
 	};
 	
