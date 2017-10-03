@@ -15,6 +15,10 @@
             <source>${project.basedir}/src/main/resources/application.properties</source>
             <outputDirectory>shared</outputDirectory>
         </file>
+        <file>
+            <source>${project.basedir}/src/main/resources/application-prod-mssql.properties</source>
+            <outputDirectory>shared</outputDirectory>
+        </file>
         <!-- logback.xml -->
         <file>
             <source>${project.basedir}/src/main/resources/logback.xml</source>

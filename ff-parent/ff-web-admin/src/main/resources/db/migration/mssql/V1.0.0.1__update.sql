@@ -30,7 +30,9 @@ INSERT INTO [dbo].[permission] (id, name) VALUES
 
 SET IDENTITY_INSERT [dbo].[role] ON
 INSERT INTO [dbo].[role] (id, created_by, creation_date, last_modified_by, last_modified_date, name) VALUES 
-(1,NULL,'2016-11-22 10:49:06.0000000',NULL,'2016-11-22 10:49:06.0000000','MEUF01');
+(1, NULL, '2016-11-22 10:49:06.0000000', NULL, '2016-11-22 10:49:06.0000000', 'MEUF01'),
+(2, NULL, '2016-11-22 10:49:06.0000000', NULL, '2016-11-22 10:49:06.0000000', 'MEUF02'),
+(3, NULL, '2016-11-22 10:49:06.0000000', NULL, '2016-11-22 10:49:06.0000000', 'MEUF03');
 
 SET IDENTITY_INSERT [dbo].[role] OFF
 
@@ -62,7 +64,45 @@ INSERT INTO [dbo].[role_permission] (role_id, permission_id) VALUES
 (1, 5002),
 (1, 5003),
 (1, 8000),
-(1, 9000);
+(1, 9000),
+(2, 1000),
+(2, 1002),
+(2, 1005),
+(2, 2000),
+(2, 2002),
+(2, 2005),
+(2, 3000),
+(2, 3002),
+(2, 4000),
+(2, 4002),
+(2, 5000),
+(2, 5001),
+(2, 5003),
+(2, 8000),
+(3, 1000),
+(3, 1001),
+(3, 1002),
+(3, 1003),
+(3, 1004),
+(3, 1005),
+(3, 2000),
+(3, 2001),
+(3, 2002),
+(3, 2003),
+(3, 2005),
+(3, 3000),
+(3, 3001),
+(3, 3002),
+(3, 3003),
+(3, 4000),
+(3, 4001),
+(3, 4002),
+(3, 4003),
+(3, 5000),
+(3, 5001),
+(3, 5003),
+(3, 8000),
+(3, 9000);
 
 SET IDENTITY_INSERT [dbo].[user] ON
 INSERT INTO [dbo].[user] (id, created_by, creation_date, last_modified_by, last_modified_date, demo_user, email, first_name, last_login, last_name, password, registration_code, registration_code_confirmed, registration_code_sent, status, business_relationship_manager) VALUES 

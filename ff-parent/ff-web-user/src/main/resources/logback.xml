@@ -3,6 +3,7 @@
     
     <!-- PROPERTIES -->
     <property name="LOG_FILE" value="logs/ff-web-user.log"/>
+    <!-- <property name="LOG_FILE" value="/logApp/fundFinder/ff-web-user.log"/> -->
     <property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} %5p --- [%t] %-40.40logger{39}: %m%n%rEx" />
     <property name="FILE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} %5p --- [%t] %-40.40logger{39}: %m%n%rEx" />
 
