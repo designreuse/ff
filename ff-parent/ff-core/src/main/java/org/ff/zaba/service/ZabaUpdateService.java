@@ -225,6 +225,10 @@ public class ZabaUpdateService {
 
 		if (resource.getLastYearIncome() != null) {
 			Item item = zabaMappingService.getLastYearIncomeMapping();
+			if (item == null) {
+				return;
+			}
+
 			Map<ItemOption, DoubleRange> ranges = new HashMap<>();
 			for (ItemOption itemOption : item.getOptions()) {
 				String value = itemOption.getText();
