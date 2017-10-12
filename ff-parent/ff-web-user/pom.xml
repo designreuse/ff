@@ -138,7 +138,7 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<packagingExcludes>WEB-INF/classes/static/**,WEB-INF/classes/WEB-INF/**,WEB-INF/classes/application.properties,WEB-INF/classes/logback.xml</packagingExcludes>
+					<packagingExcludes>WEB-INF/classes/static/**,WEB-INF/classes/WEB-INF/**,WEB-INF/classes/application*.properties,WEB-INF/classes/logback.xml</packagingExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
