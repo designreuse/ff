@@ -8,7 +8,7 @@ angular.module('FundFinder')
 		return $http.get('/api/v1/users/' + id + "/deactivate");
 	};
 	this.deleteEntity = function(id) {
-		return $http.delete('/api/v1/users/' + id);
+		return $http.get('/api/v1/users/delete/' + id);
 	};
 	this.getEntity = function(id) {
 		return $http.get('/api/v1/users/' + id);

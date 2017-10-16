@@ -2,7 +2,7 @@ angular.module('FundFinder')
 
 .service('ContactsService', function($http) {
 	this.deleteEntity = function(id) {
-		return $http.delete('/api/v1/contacts/' + id);
+		return $http.get('/api/v1/contacts/delete/' + id);
 	};
 	this.getEntity = function(id) {
 		return $http.get('/api/v1/contacts/' + id);

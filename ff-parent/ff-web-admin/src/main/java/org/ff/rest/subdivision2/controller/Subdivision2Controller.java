@@ -78,7 +78,7 @@ public class Subdivision2Controller extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value="/{id}")
+	@RequestMapping(method = RequestMethod.GET, value="/delete/{id}")
 	public void delete(Principal principal, @PathVariable Integer id, HttpServletRequest request) {
 		EtmPoint point = etmService.createPoint(getClass().getSimpleName() + ".delete");
 		try {

@@ -11,7 +11,7 @@ angular.module('FundFinder')
 		return $http.post('/api/v1/items', resource);
 	};
 	this.deleteEntity = function(id) {
-		return $http.delete('/api/v1/items/' + id);
+		return $http.get('/api/v1/items/delete/' + id);
 	};
 	this.getEntity = function(entityType, id) {
 		return $http.get('/api/v1/items/' + entityType + "/" + id);

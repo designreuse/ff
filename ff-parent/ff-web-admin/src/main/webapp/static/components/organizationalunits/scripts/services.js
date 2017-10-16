@@ -5,7 +5,7 @@ angular.module('FundFinder')
 		return $http.post('/api/v1/organizationalunits', resource);
 	};
 	this.deleteEntity = function(id) {
-		return $http.delete('/api/v1/organizationalunits/' + id);
+		return $http.get('/api/v1/organizationalunits/delete/' + id);
 	};
 	this.getEntity = function(id) {
 		return $http.get('/api/v1/organizationalunits/' + id);

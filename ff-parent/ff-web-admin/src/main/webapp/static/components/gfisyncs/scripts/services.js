@@ -2,7 +2,7 @@ angular.module('FundFinder')
 
 .service('GfiSyncsService', function($http) {
 	this.deleteEntity = function(id) {
-		return $http.delete('/api/v1/gfisyncs/' + id);
+		return $http.get('/api/v1/gfisyncs/delete/' + id);
 	};
 	this.getEntity = function(id) {
 		return $http.get('/api/v1/gfisyncs/' + id);
