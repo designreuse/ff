@@ -436,12 +436,6 @@ function ContactsOverviewController($rootScope, $scope, $state, $log, $timeout, 
 		$state.go('contacts.details', { 'id' : entity.id });
 	}
 	
-	$scope.exportEntity = function(entity) {
-		var downloadLink = angular.element('<a target="_blank"></a>');
-        downloadLink.attr('href', constants.contextPath + "/api/v1/contacts/" + entity.id + "/export/pdf");
-        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
-	}
-	
 	$scope.deleteEntity = function (entity) {
 		BootstrapDialog.show({
 			type: BootstrapDialog.TYPE_DEFAULT,
@@ -571,12 +565,6 @@ function ContactsDetailsController($rootScope, $scope, $state, $stateParams, $lo
 				toastr.error($translate('ACTION_LOAD_FAILURE_MESSAGE'));
 			});
 	};
-	
-	$scope.exportPdf = function() {
-		var downloadLink = angular.element('<a target="_blank"></a>');
-        downloadLink.attr('href', constants.contextPath + "/api/v1/contacts/" + $stateParams.id + "/export/pdf");
-        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
-	}
 	
 	$scope.back = function() {
 		$state.go('contacts.overview');

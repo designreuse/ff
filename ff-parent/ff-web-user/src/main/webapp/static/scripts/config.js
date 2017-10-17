@@ -1,7 +1,7 @@
 angular.module('FundFinder')
 
 .constant("constants", {
-    "contextPath": "/fundfinder"
+
 })
 
 .config(function config($provide, $stateProvider, $httpProvider, $sceProvider, $urlRouterProvider, cfpLoadingBarProvider, constants) {
@@ -9,13 +9,13 @@ angular.module('FundFinder')
 	$sceProvider.enabled(false);
 	
 	// configure interceptor
-	$httpProvider.interceptors.push(function($location) {  
+	$httpProvider.interceptors.push(function($window, $location) {  
 		var path = {
 				request: function(config) {
 					if (config.url.indexOf("template/datepicker") != -1 || config.url.indexOf("uib") != -1) {
 						// workaround for problem with loading datepicker templates
 					} else {
-						config.url = constants.contextPath + config.url;
+						config.url = $window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + config.url;
 					}
 					return config;
 				},
@@ -32,13 +32,13 @@ angular.module('FundFinder')
 	cfpLoadingBarProvider.includeSpinner = false;
 		
 	// 'getPrincipal' function
-	var getPrincipal = function($rootScope, $http, $log) {
+	var getPrincipal = function($rootScope, $window, $http, $log) {
 		if (!$rootScope.principal) {
 			$log.info('Getting principal');
 			
 			// get data synchronously
 			var request = new XMLHttpRequest();
-			request.open('GET', constants.contextPath + '/principal', false);
+			request.open('GET', $window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + '/principal', false);
 			request.send(null);
 			
 			if (request.status == 200) {

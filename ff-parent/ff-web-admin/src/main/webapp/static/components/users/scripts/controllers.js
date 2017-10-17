@@ -1025,12 +1025,6 @@ function UsersDetailsController($rootScope, $scope, $state, $stateParams, $sce, 
 			});	
 	};
 	
-	$scope.exportPdf = function() {
-		var downloadLink = angular.element('<a target="_blank"></a>');
-        downloadLink.attr('href', constants.contextPath + "/api/v1/users/" + $stateParams.id + "/export/pdf");
-        downloadLink[0].dispatchEvent(new MouseEvent('click', { 'view': window, 'bubbles': true, 'cancelable': true }));
-	}
-	
 	$scope.gfiSync = function(entity) {
 		BootstrapDialog.show({
 			type: BootstrapDialog.TYPE_DEFAULT,

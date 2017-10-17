@@ -4,7 +4,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 //	CONSTANT
 // ================================================================================
 .constant("constants", {
-    "contextPath": "/fundfinder"
+
 })
 
 // ================================================================================
@@ -18,10 +18,10 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 	$locationProvider.html5Mode({ enabled: true, requireBase: false });
 	
 	// configure interceptors
-	$httpProvider.interceptors.push(function($location) {  
+	$httpProvider.interceptors.push(function($window, $location) {  
 		var path = {
 				request: function(config) {
-					config.url = constants.contextPath + config.url;
+					config.url = $window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + config.url;
 					return config;
 				},
 				response: function(response) {
