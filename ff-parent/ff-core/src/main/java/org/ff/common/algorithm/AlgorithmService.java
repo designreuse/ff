@@ -304,6 +304,10 @@ public class AlgorithmService extends BaseService {
 				return numberGreaterOrEqualNumber(algorithmItem, companyItem, tenderItem, debug);
 			} else if (companyItem.getItem().getType() == ItemType.NUMBER && algorithmItem.getOperator() == Operator.LESS_OR_EQUAL && tenderItem.getItem().getType() == ItemType.NUMBER) {
 				return numberLessOrEqualNumber(algorithmItem, companyItem, tenderItem, debug);
+			} else if (companyItem.getItem().getType() == ItemType.SUBDIVISION2 && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.SUBDIVISIONS2) {
+				return subdivision2InSubdivisions2(algorithmItem, companyItem, tenderItem, debug);
+			} else if (companyItem.getItem().getType() == ItemType.MULTISELECT && algorithmItem.getOperator() == Operator.IN && tenderItem.getItem().getType() == ItemType.MULTISELECT) {
+				return multiselectInMultiselect(algorithmItem, companyItem, tenderItem, debug);
 			}
 		}
 
@@ -518,6 +522,62 @@ public class AlgorithmService extends BaseService {
 			debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value set for company item [%s - %s] does not match value set for tender item [%s - %s]; Operator [%s]", algorithmItem.getCode(), companyItem.getItem().getCode(), companyItem.getItem().getText(), tenderItem.getItem().getCode(), tenderItem.getItem().getText(), algorithmItem.getOperator()), Status.NOK));
 			return Boolean.FALSE;
 		}
+	}
+
+	private Boolean subdivision2InSubdivisions2(AlgorithmItem algorithmItem, CompanyItem companyItem, TenderItem tenderItem, DebuggingResource debug) {
+		if (StringUtils.isBlank(companyItem.getValue())) {
+			debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value not set for company item [%s - %s]", algorithmItem.getCode(), companyItem.getItem().getCode(), companyItem.getItem().getText()), Status.NOK));
+			return Boolean.FALSE;
+		}
+
+		if (StringUtils.isBlank(tenderItem.getValue())) {
+			debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value not set for tender item [%s - %s]", algorithmItem.getCode(), tenderItem.getItem().getCode(), tenderItem.getItem().getText()), Status.NOK));
+			return Boolean.FALSE;
+		}
+
+		Integer companyItemValue = Integer.parseInt(companyItem.getValue());
+		for (String itemOptionId : tenderItem.getValue().split("\\|")) {
+			Integer tenderItemValue = Integer.parseInt(itemOptionId);
+			if (companyItemValue.equals(tenderItemValue)) {
+				debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]", algorithmItem.getCode()), Status.OK));
+				return Boolean.TRUE;
+			}
+		}
+
+		debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value set for company item [%s - %s] does not match value set for tender item [%s - %s]; Operator [%s]", algorithmItem.getCode(), companyItem.getItem().getCode(), companyItem.getItem().getText(), tenderItem.getItem().getCode(), tenderItem.getItem().getText(), algorithmItem.getOperator()), Status.NOK));
+		return Boolean.FALSE;
+
+	}
+
+	private Boolean multiselectInMultiselect(AlgorithmItem algorithmItem, CompanyItem companyItem, TenderItem tenderItem, DebuggingResource debug) {
+		if (StringUtils.isBlank(companyItem.getValue())) {
+			debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value not set for company item [%s - %s]", algorithmItem.getCode(), companyItem.getItem().getCode(), companyItem.getItem().getText()), Status.NOK));
+			return Boolean.FALSE;
+		}
+
+		if (StringUtils.isBlank(tenderItem.getValue())) {
+			debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value not set for tender item [%s - %s]", algorithmItem.getCode(), tenderItem.getItem().getCode(), tenderItem.getItem().getText()), Status.NOK));
+			return Boolean.FALSE;
+		}
+
+		List<String> companyItemValues = new ArrayList<>();
+		for (String itemOptionId : companyItem.getValue().split("\\|")) {
+			companyItemValues.add(itemOptionRepository.findOne(Integer.parseInt(itemOptionId)).getText());
+		}
+
+		List<String> tenderItemValues = new ArrayList<>();
+		for (String itemOptionId : tenderItem.getValue().split("\\|")) {
+			tenderItemValues.add(itemOptionRepository.findOne(Integer.parseInt(itemOptionId)).getText());
+		}
+
+		if (companyItemValues.containsAll(tenderItemValues)) {
+			debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]", algorithmItem.getCode()), Status.OK));
+			return Boolean.TRUE;
+		}
+
+		debug.add(new DebuggingEntry(new Date(), String.format("Algorithm item [%s]; Value set for company item [%s - %s] does not match value set for tender item [%s - %s]; Operator [%s]", algorithmItem.getCode(), companyItem.getItem().getCode(), companyItem.getItem().getText(), tenderItem.getItem().getCode(), tenderItem.getItem().getText(), algorithmItem.getOperator()), Status.NOK));
+		return Boolean.FALSE;
+
 	}
 
 }
