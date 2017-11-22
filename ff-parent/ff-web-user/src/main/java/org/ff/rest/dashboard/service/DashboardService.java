@@ -169,7 +169,7 @@ public class DashboardService {
 						if (item.getMetaTag() == ItemMetaTag.TENDER_START_DATE) {
 							if (tenderItem.getValue() != null) {
 								LocalDate startDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
-								if (startDate.isBefore(today)) {
+								if (startDate.isBefore(today) || startDate.isEqual(today)) {
 									tenderResource.setState(TenderState.OPEN);
 								} else if (startDate.isAfter(today)) {
 									tenderResource.setState(TenderState.PENDING);
