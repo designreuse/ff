@@ -84,7 +84,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 		$window.location.hash = "";
 	}
 	
-	$scope.login = function() {
+	$scope.login = function(isExternalFlow) {
 		$http.post("/login.html", null, {
 			params : { username: $scope.username, password: $scope.password }
 		})
@@ -97,7 +97,11 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 			
 			if (data.url != null) {
 				// redirect if user is authenticated
-				$window.location.href = data.url;
+				if (isExternalFlow) {
+					$window.location.replace(data.url);					
+				} else {
+					$window.location.href = data.url;
+				}
 			}
 		})
 		.error(function(data, status, headers, config) {
@@ -262,7 +266,7 @@ angular.module('FundFinderUnsecured', ['pascalprecht.translate', 'ui.router', 'a
 				// to indicate that this is external flow authorization we create username as concatenation of ___ and userId
 				$scope.username = "___" + data.id;
 				$scope.password = data.password;
-				$scope.login();
+				$scope.login(true);
 			})
 			.error(function(data, status, headers, config) {
 				$scope.unauthorize = true;
