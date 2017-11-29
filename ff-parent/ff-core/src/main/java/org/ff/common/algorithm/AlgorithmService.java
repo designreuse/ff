@@ -316,7 +316,7 @@ public class AlgorithmService extends BaseService {
 
 	private CompanyItem getCompanyItem4Item(Set<CompanyItem> companyItems, Item item) {
 		for (CompanyItem companyItem : companyItems) {
-			if (companyItem.getItem().getId().equals(item.getId())) {
+			if (companyItem.getItem() != null && companyItem.getItem().getId().equals(item.getId())) {
 				return companyItem;
 			}
 		}
@@ -325,7 +325,7 @@ public class AlgorithmService extends BaseService {
 
 	private TenderItem getTenderItem4Item(Set<TenderItem> tenderItems, Item item) {
 		for (TenderItem tenderItem : tenderItems) {
-			if (tenderItem.getItem().getId().equals(item.getId())) {
+			if (tenderItem.getItem() != null && tenderItem.getItem().getId().equals(item.getId())) {
 				return tenderItem;
 			}
 		}
