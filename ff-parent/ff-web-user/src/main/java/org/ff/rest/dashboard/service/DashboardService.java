@@ -215,7 +215,7 @@ public class DashboardService {
 		try {
 			if (tender != null && tender.getItems() != null) {
 				for (TenderItem tenderItem : tender.getItems()) {
-					if (tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_START_DATE) {
+					if (tenderItem.getItem().getMetaTag() == ItemMetaTag.TENDER_START_DATE && StringUtils.isNotBlank(tenderItem.getValue())) {
 						return DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDateTime(tenderItem.getValue()).toLocalDate();
 					}
 				}
