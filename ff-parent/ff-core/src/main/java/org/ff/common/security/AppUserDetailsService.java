@@ -47,7 +47,7 @@ public class AppUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("User not found!");
 		}
 
-		log.debug("User with username [{}] successfully authenticated", username);
+		log.debug("User with username [{}] found", username);
 
 		return new AppUserDetails(appUser);
 	}
