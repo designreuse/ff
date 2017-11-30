@@ -6,7 +6,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBElement;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.ff.base.properties.BaseProperties;
 import org.ff.jpa.domain.ConfigParam.ConfigParamName;
@@ -35,9 +37,23 @@ public class SessionClient extends WebServiceGatewaySupport {
 
 	private ObjectFactory objectFactory;
 
+	private DocumentBuilder documentBuilder;
+
 	@PostConstruct
 	public void init() {
 		objectFactory = new ObjectFactory();
+		try {
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setNamespaceAware(false);
+			documentBuilderFactory.setValidating(false);
+			documentBuilderFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+			documentBuilderFactory.setFeature("http://xml.org/sax/features/validation", false);
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			log.error("Creating document builder failed", e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -104,7 +120,8 @@ public class SessionClient extends WebServiceGatewaySupport {
 		try {
 			log.debug("Parsing XML string: {}", xmlString);
 
-			NodeList nodeList = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xmlString.getBytes())).getElementsByTagName("entry");
+			NodeList nodeList = documentBuilder.parse(new ByteArrayInputStream(xmlString.getBytes())).getElementsByTagName("entry");
+			log.debug("===");
 			for (int i=0; i<nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
