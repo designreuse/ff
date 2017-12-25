@@ -69,6 +69,14 @@ public class PrincipalController {
 
 		if (roleName.equals(AppUserRole.ROLE_ADMIN.name())) {
 			for (Permission permission : permissionRepository.findAll()) {
+				//				if (permission.getName().equals("tenders")
+				//						|| permission.getName().equals("tenders.read")
+				//						|| permission.getName().equals("tenders.create")
+				//						|| permission.getName().equals("tenders.update")
+				//						|| permission.getName().equals("tenders.delete")
+				//						|| permission.getName().equals("tenders.export")) {
+				//					continue;
+				//				}
 				permissions.add(permission.getName());
 			}
 		} else {

@@ -55,7 +55,7 @@
 	                <li ng-class="{active: $state.is('settings.subdivisions2_overview') || $state.is('settings.subdivisions2_edit') }">
 	                    <a class="ff-nav-second-level" ui-sref="settings.subdivisions2_overview">{{ 'MENU_SUBDIVISIONS2' | translate }}</a>
 	                </li>
-	                <li ng-class="{active: $state.is('settings.roles_overview') || $state.is('settings.roles_edit') }">
+	                <li ng-if="hasPermission(['settings.roles.read'])" ng-class="{active: $state.is('settings.roles_overview') || $state.is('settings.roles_edit') }">
 	                    <a class="ff-nav-second-level" ui-sref="settings.roles_overview">{{ 'MENU_ROLES' | translate }}</a>
 	                </li>
 	                <li ng-class="{active: $state.is('settings.usergroups_overview') || $state.is('settings.usergroups_edit') }">

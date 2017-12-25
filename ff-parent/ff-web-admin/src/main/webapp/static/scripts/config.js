@@ -728,7 +728,11 @@ angular.module('FundFinder')
 	        templateUrl: "/components/roles/views/overview.html",
 	        controller: 'RolesOverviewController',
 	        data: { pageTitle: 'Roles overview' },
+	        params: { 'permission' : 'settings.roles.read' },
 	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	},
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
@@ -744,7 +748,11 @@ angular.module('FundFinder')
 	        templateUrl: "/components/roles/views/edit.html",
 	        controller: 'RolesEditController',
 	        data: { pageTitle: 'Edit role' },
+	        params: { 'permission' : 'settings.roles.update' },
 	        resolve: {
+	        	hasPermission: function(grant, $stateParams) {
+	        		return grant.only({ test: 'hasPermission', state: 'security.denied' }, $stateParams);
+	        	},
 	        	loadPlugin: function ($ocLazyLoad) {
 	        		return $ocLazyLoad.load({
 	        			name: 'FundFinder',
@@ -1185,12 +1193,15 @@ angular.module('FundFinder')
 		}
 		
 		var permission;
-		if (this.stateParams.id === 0 && this.stateParams.permission.endsWith(".update")) {
+		if (this.stateParams.id == 0 && this.stateParams.permission.endsWith(".update")) {
 			// special handling
 			permission = this.stateParams.permission.replace(".update", ".create");
 		} else {
 			permission = this.stateParams.permission;
 		}
+		
+		console.log(this.stateParams);
+		console.log(permission);
 		
 		return $rootScope.hasPermission([permission]);
 	});

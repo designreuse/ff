@@ -45,7 +45,11 @@ function RolesOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					enableSorting: true,
 					enableFiltering: true,
 					enableHiding: false,
-					cellTemplate:'<div class="ui-grid-cell-contents"><a class="ff-a" ng-click="grid.appScope.editEntity(row.entity)">{{row.entity.name}}</a></div>',
+					cellTemplate:
+						'<div class="ui-grid-cell-contents">' + 
+							'<a ng-if="grid.appScope.hasPermission([\'settings.roles.update\'])" class="ff-a" ng-click="grid.appScope.editEntity(row.entity)">{{row.entity.name}}</a>' +
+							'<span ng-if="!grid.appScope.hasPermission([\'settings.roles.update\'])">{{row.entity.name}}</span>' +
+						'</div>',
 					filterHeaderTemplate: 'ui-grid/ui-grid-filter-bss'
 				},
 				{
@@ -92,11 +96,11 @@ function RolesOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 					enableSorting: false,
 					enableFiltering: false,
 					enableHiding: false,
-					width: 65,
+					width: 64,
 					cellTemplate:
 						'<div style="padding-top: 1px">' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
-							'<button uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
+							'<button ng-if="grid.appScope.hasPermission([\'settings.roles.update\'])" uib-tooltip="{{\'ACTION_TOOLTIP_EDIT\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.editEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-edit"></i></button>' +
+							'<button ng-if="grid.appScope.hasPermission([\'settings.roles.delete\'])" uib-tooltip="{{\'ACTION_TOOLTIP_DELETE\' | translate}}" tooltip-append-to-body="true" ng-click="grid.appScope.deleteEntity(row.entity)" class="ff-grid-button btn-xs btn-white"><i class="fa fa-2x fa-times"></i></button>' + 
 						'</div>'
 				}
 			],
