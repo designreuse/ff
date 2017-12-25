@@ -229,6 +229,8 @@ public class TenderService extends BaseService {
 					new Object[] { messageSource.getMessage("resource.tender", null, locale), id }, locale));
 		}
 
+		userEmailRepository.deleteByTender(entity);
+
 		repository.delete(entity);
 	}
 

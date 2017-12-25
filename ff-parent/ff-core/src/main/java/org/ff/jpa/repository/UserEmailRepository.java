@@ -1,5 +1,6 @@
 package org.ff.jpa.repository;
 
+import org.ff.jpa.domain.Tender;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.UserEmail;
 import org.springframework.data.domain.Page;
@@ -12,5 +13,7 @@ public interface UserEmailRepository extends CrudRepository<UserEmail, Integer>,
 	Page<UserEmail> findAll(Pageable pageable);
 
 	Long deleteByUser(User user);
+
+	Long deleteByTender(Tender tender);
 
 }
