@@ -70,6 +70,7 @@ public class ArticleService extends BaseService {
 		} else {
 			entity = repository.findOne(resource.getId());
 			entity = resourceAssembler.updateEntity(entity, resource);
+			auditingHandler.markModified(entity);
 		}
 
 		repository.save(entity);

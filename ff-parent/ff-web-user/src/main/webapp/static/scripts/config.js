@@ -4,9 +4,13 @@ angular.module('FundFinder')
 
 })
 
-.config(function config($provide, $stateProvider, $httpProvider, $sceProvider, $urlRouterProvider, cfpLoadingBarProvider, constants) {
+.config(function config($provide, $stateProvider, $httpProvider, $sceProvider, $urlRouterProvider, cfpLoadingBarProvider, IdleProvider, constants) {
 	// disable SCE (Strict Contextual Escaping)
 	$sceProvider.enabled(false);
+	
+	// Idle settings
+	IdleProvider.idle(1800);
+	IdleProvider.timeout(9);
 	
 	// configure interceptor
 	$httpProvider.interceptors.push(function($window, $location) {  
@@ -243,7 +247,7 @@ angular.module('FundFinder')
 	    })
 })
 	
-.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, $locale, SessionStorage, ModalService, CommonService) {
+.run(function ($rootScope, $state, $stateParams, $log, $localStorage, $sce, $locale, $uibModal, $http, $window, SessionStorage, Idle, ModalService, CommonService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	
@@ -382,11 +386,22 @@ angular.module('FundFinder')
 					$rootScope.profileIncomplete = true;
 				}
 			}
+			
+			var projects = SessionStorage.getSession("projects");
+			if (projects && projects.length > 0) {
+				$rootScope.projectsIncomplete = false;
+			} else {
+				$rootScope.projectsIncomplete = true;
+			}
 		} else {
+			$rootScope.profileIncomplete = false;
+			$rootScope.projectsIncomplete = false;
+			
 			CommonService.getProfileCompleteness()
 				.success(function(data, status) {
 					$rootScope.profileCompleteness = data.profileCompleteness;
 					$rootScope.profileIncomplete = data.profileIncomplete;
+					$rootScope.projectsIncomplete = data.projectsIncomplete;
 				})
 				.error(function(data, status) {
 					$log.error(data);
@@ -396,4 +411,19 @@ angular.module('FundFinder')
 	
 	$rootScope.profileCompleteness = 0;
 	$rootScope.profileIncomplete = true;
+	
+	// Idle settings
+	$rootScope.idleTimeout = Idle.getTimeout(); 
+
+	$rootScope.$on('IdleTimeout', function() {
+		$http.post('/logout', {})
+			.success(function() {
+				$window.location.href = '';
+			})
+			.error(function(data) {
+				$log.error(data);
+			});
+	});
+
+	Idle.watch();
 });

@@ -102,13 +102,15 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
     						
 	            			$timeout(function() {
     							$scope.getProjects();
-							}, 200);
+    							$rootScope.getProfileCompleteness();
+							}, 500);
 	            		} else {	
 		                	ProjectsService.delete(entity.id)
 			    				.success(function(data, status) {
 			    					if (status == 200) {
 			    						toastr.success($translate('ACTION_DELETE_SUCCESS_MESSAGE'));
 			    						$scope.getProjects();
+			    						$rootScope.getProfileCompleteness();
 			    					} else {
 			    						toastr.error($translate('ACTION_DELETE_FAILURE_MESSAGE'));
 			    					}
@@ -287,6 +289,10 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 			
 			$state.go('projects.edit', { 'id' : $scope.entity.id });
 			toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
+			
+			$timeout(function() {
+				$rootScope.getProfileCompleteness();
+			}, 500);
 		} else {
 			ProjectsService.save($scope.entity)
 				.success(function(data, status, headers, config) {
@@ -294,6 +300,7 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 						$scope.entity = data;
 						$state.go('projects.edit', { 'id' : $scope.entity.id });
 						toastr.success($translate('ACTION_SAVE_SUCCESS_MESSAGE'));
+						$rootScope.getProfileCompleteness();
 					} else {
 						toastr.error($translate('ACTION_SAVE_FAILURE_MESSAGE'));
 					}

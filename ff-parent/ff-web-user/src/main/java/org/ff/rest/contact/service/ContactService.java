@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.ff.base.properties.BaseProperties;
 import org.ff.common.mailsender.MailSenderService;
@@ -54,16 +52,6 @@ public class ContactService {
 	@Autowired
 	private ConfigParamRepository configParamRepository;
 
-	private List<String> contactEmails;
-
-	@PostConstruct
-	public void init() {
-		contactEmails = new ArrayList<>();
-		for (String str : configParamRepository.findByName(ConfigParamName.contact_email_to.toString()).getValue().split("\\|")) {
-			contactEmails.add(str);
-		}
-	}
-
 	@Cacheable(value = "locations")
 	public List<OfficeResource> getLocations() {
 		List<OfficeResource> result = new ArrayList<>();
@@ -105,7 +93,7 @@ public class ContactService {
 					+ " " + resource.getLocation().getAddress() + ", " + resource.getLocation().getSubdivision2());
 			model.put("text", StringUtils.isNotBlank(resource.getText()) ? resource.getText() : "");
 
-			for (String contactEmail : contactEmails) {
+			for (String contactEmail : configParamRepository.findByName(ConfigParamName.contact_email_to.toString()).getValue().split("\\|")) {
 				mailSender.send(contactEmail, configParamRepository.findByName(ConfigParamName.contact_email_subject.toString()).getValue(), FreeMarkerTemplateUtils.processTemplateIntoString(template, model));
 			}
 		} catch (Exception e) {

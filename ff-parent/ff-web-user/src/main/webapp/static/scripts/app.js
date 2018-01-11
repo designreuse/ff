@@ -7,6 +7,7 @@
         'datePicker',					// https://github.com/g00fy-/angular-datepicker
         'daterangepicker',				// https://github.com/fragaria/angular-daterangepicker
         'dibari.angular-ellipsis',		// https://github.com/dibari/angular-ellipsis
+        'ngIdle',
         'localytics.directives',		// http://leocaseiro.github.io/angular-chosen/
         'ng-currency',					// https://github.com/aguirrel/ng-currency
         'ngStorage',

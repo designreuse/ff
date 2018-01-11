@@ -96,7 +96,7 @@ function config($translateProvider) {
 			LABEL_CONTACT_LOCATION: 'Odaberite lokaciju',
 			LABEL_CONTACT_SUBHEADER: 'Zatražite termin',
 			LABEL_CONTACT_DISCLAIMER: 'Zagrebačka banka osobne podatke unesene u donji obrazac obrađuje u svrhu ugovaranja sastanka u poslovnici. Radi pripreme bankara za sastanak u poslovnici molimo unesite OIB.',
-			LABEL_NO_MATCHING_TENDERS: 'Nije pronađen nijedan natječaj koji odgovara Vašem profilu.',
+			LABEL_NO_MATCHING_TENDERS: 'Nije pronađen nijedan natječaj koji odgovara Vašem profilu. Provjerite jeste li popunili profil poduzeća i unijeli Vaše planirane projekte',
 			LABEL_SYNC_DATA: 'Prilikom prijave automatski ažurirajte podatke koje ste unijeli s podacima koje ima Banka.',
 			LABEL_SYNC_DATA_WARNING: 'Podaci o poduzeću koje ste unijeli razlikuju se od podataka dostupnih Banci. Želite li:',
 			LABEL_SHOW_SYNC_DATA_WARNING: 'Nemoj više prikazivati ovo upozorenje',
@@ -134,6 +134,9 @@ function config($translateProvider) {
 			
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil poduzeća',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu poduzeća.',
+			
+			INCOMPLETE_PROJECTS_HDR: 'Nema projekata',
+			INCOMPLETE_PROJECTS_MSG: 'Molimo unesite bar jedan projekt',
 			
 			MSG_REGISTRATION_SUCCESS: 'Vaš zahtjev za registracijom je zaprimljen. Na unesenu e-mail adresu zaprimit ćete link za dovršetak registracije.',
 			MSG_REGISTRATION_CONFLICT_USER: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',

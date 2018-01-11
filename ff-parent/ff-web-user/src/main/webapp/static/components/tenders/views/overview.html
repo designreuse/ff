@@ -14,7 +14,8 @@ p span {
 
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div ng-if="tenders.length == 0">
-		<h4>{{ 'LABEL_NO_MATCHING_TENDERS' | translate }}</h4>
+		<!-- <h4>{{ 'LABEL_NO_MATCHING_TENDERS' | translate }}</h4> -->
+		<h4>Nije pronađen nijedan natječaj koji odgovara <a ui-sref="company.edit">Vašem profilu</a>. Provjerite jeste li popunili profil poduzeća i unijeli <a ui-sref="projects.overview">Vaše planirane projekte</a>.</h4>
 	</div>
 	<div masonry masonry-options="{ transitionDuration: '0.75s' }" preserve-order>
         <div class="masonry-brick ff-masonry-brick" ng-repeat="tender in tenders">

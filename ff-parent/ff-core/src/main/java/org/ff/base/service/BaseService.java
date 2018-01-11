@@ -14,6 +14,7 @@ import org.ff.common.uigrid.UiGridSortResource;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +25,9 @@ public class BaseService {
 
 	@PersistenceContext
 	protected EntityManager entityManager;
+
+	@Autowired
+	protected AuditingHandler auditingHandler;
 
 	@Autowired
 	protected BaseProperties properties;

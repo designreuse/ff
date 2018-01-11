@@ -16,4 +16,7 @@ public class ProfileCompletenessResource {
 	@JsonProperty("profileIncomplete")
 	private Boolean profileIncomplete = Boolean.TRUE;
 
+	@JsonProperty("projectsIncomplete")
+	private Boolean projectsIncomplete = Boolean.FALSE;
+
 }

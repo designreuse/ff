@@ -5,6 +5,7 @@ import org.ff.common.security.AppUserDetails;
 import org.ff.jpa.domain.Company;
 import org.ff.jpa.domain.CompanyItem;
 import org.ff.jpa.repository.CompanyRepository;
+import org.ff.jpa.repository.ProjectRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.company.resource.CompanyResource;
 import org.ff.rest.company.resource.CompanyResourceAssembler;
@@ -26,6 +27,9 @@ public class CompanyService {
 
 	@Autowired
 	private CompanyResourceAssembler resourceAssembler;
+
+	@Autowired
+	private ProjectRepository projectRepository;
 
 	@Transactional(readOnly = true)
 	public CompanyResource find(AppUserDetails principal) {
@@ -79,6 +83,11 @@ public class CompanyService {
 				result.setProfileIncomplete(Boolean.FALSE);
 			} else {
 				result.setProfileIncomplete(Boolean.TRUE);
+			}
+
+			// projects incomplete
+			if (projectRepository.countByCompany(userRepository.findOne(principal.getUser().getId()).getCompany()).intValue() == 0) {
+				result.setProjectsIncomplete(Boolean.TRUE);
 			}
 		}
 
