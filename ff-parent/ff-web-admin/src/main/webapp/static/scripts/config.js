@@ -35,8 +35,6 @@ angular.module('FundFinder')
 	// 'getPrincipal' function
 	var getPrincipal = function($rootScope, $window, $http, $log) {
 		if (!$rootScope.principal) {
-			$log.info('Getting principal');
-			
 			// get data synchronously
 			var request = new XMLHttpRequest();
 			request.open('GET', $window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + '/principal', false);
@@ -1178,8 +1176,6 @@ angular.module('FundFinder')
 	
 	grant.addTest('hasPermission', function() {
 		if (!$rootScope.principal) {
-			$log.info('Getting principal');
-			
 			// get data synchronously
 			var request = new XMLHttpRequest();
 			request.open('GET', $window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + '/principal', false);
@@ -1199,9 +1195,6 @@ angular.module('FundFinder')
 		} else {
 			permission = this.stateParams.permission;
 		}
-		
-		console.log(this.stateParams);
-		console.log(permission);
 		
 		return $rootScope.hasPermission([permission]);
 	});

@@ -236,6 +236,9 @@ function config($translateProvider) {
 			BUTTON_EXPORT_COMPANY_DATA: 'Izvezi podatke o poduzećima',
 			BUTTON_EXPORT_PROJECT_DATA: 'Izvezi podatke o projektima',
 			
+			BUTTON_SELECT_ALL: 'Odaberi sve',
+			BUTTON_UNSELECT_ALL: 'Poništi odabir',
+			
 			BUTTON_DATE_CURRENT: 'Danas',
 			BUTTON_DATE_CLEAR: 'Izbriši',
 			BUTTON_DATE_CLOSE: 'Zatvori',

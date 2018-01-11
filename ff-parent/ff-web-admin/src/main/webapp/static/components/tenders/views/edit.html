@@ -123,18 +123,48 @@
 						</div>
 						
 						<select ng-if="item.type == 'SELECT'" width="1" chosen class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
-	                                        
-	                    <select ng-if="item.type == 'MULTISELECT'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
+	                    
+	                    <div ng-if="item.type == 'MULTISELECT'">                    
+	                    	<select width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="item.options" ng-options="option.text for option in item.options track by option.id"></select>
+	                    	<div class="pull-right m-t-xs">
+	                    		<button ng-click="selectAll(item, item.options)" class="btn btn-xs btn-white">{{ 'BUTTON_SELECT_ALL' | translate }}</button>
+	                    		<button ng-click="unselectAll(item)" class="btn btn-xs btn-white">{{ 'BUTTON_UNSELECT_ALL' | translate }}</button>
+	                    	</div>
+	                    </div>
 	                                         
 	                    <input ng-if="item.type == 'HYPERLINK'" ng-model="item.value" type="url" class="form-control ff-form-control" name="{{'item'+$index}}" ng-required="item.mandatory" />
+	                    
+	                    <div ng-if="item.type == 'ACTIVITIES'">                            
+	                    	<select width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
+	                    	<div class="pull-right m-t-xs">
+	                    		<button ng-click="selectAll(item, activities)" class="btn btn-xs btn-white">{{ 'BUTTON_SELECT_ALL' | translate }}</button>
+	                    		<button ng-click="unselectAll(item)" class="btn btn-xs btn-white">{{ 'BUTTON_UNSELECT_ALL' | translate }}</button>
+	                    	</div>
+	                    </div>
+	                    
+	                    <div ng-if="item.type == 'SUBDIVISIONS1'">                               
+	                    	<select ng-change="getSubdivisions2(item)" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
+	                    	<div class="pull-right m-t-xs">
+	                    		<button ng-click="selectAll(item, subdivisions1)" class="btn btn-xs btn-white">{{ 'BUTTON_SELECT_ALL' | translate }}</button>
+	                    		<button ng-click="unselectAll(item)" class="btn btn-xs btn-white">{{ 'BUTTON_UNSELECT_ALL' | translate }}</button>
+	                    	</div>
+	                    </div>
 	                                                
-	                    <select ng-if="item.type == 'ACTIVITIES'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="activities" ng-options="activity.name for activity in activities track by activity.id"></select>
-	                                                   
-	                    <select ng-if="item.type == 'SUBDIVISIONS1'" ng-change="getSubdivisions2(item)" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions1" ng-options="subdivision1.name for subdivision1 in subdivisions1 track by subdivision1.id"></select>
-	                                                
-	                    <select ng-if="item.type == 'SUBDIVISIONS2'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
-	                                                
-	                    <select ng-if="item.type == 'INVESTMENTS_PRIMARY' || item.type == 'INVESTMENTS_SECONDARY'" width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
+	                    <div ng-if="item.type == 'SUBDIVISIONS2'">
+	                    	<select width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options="subdivisions2" ng-options="subdivision2.name group by subdivision2.subdivision1.name for subdivision2 in subdivisions2 track by subdivision2.id"></select>
+	                    	<div class="pull-right m-t-xs">
+	                    		<button ng-click="selectAll(item, subdivisions2)" class="btn btn-xs btn-white">{{ 'BUTTON_SELECT_ALL' | translate }}</button>
+	                    		<button ng-click="unselectAll(item)" class="btn btn-xs btn-white">{{ 'BUTTON_UNSELECT_ALL' | translate }}</button>
+	                    	</div>
+	                    </div>
+	                    
+	                    <div ng-if="item.type == 'INVESTMENTS_PRIMARY' || item.type == 'INVESTMENTS_SECONDARY'">                            
+	                    	<select width="1" chosen multiple class="form-control ff-form-control" ng-required="item.mandatory" ng-model="item.value" name="{{'item'+$index}}" options=investments ng-options="investment.name for investment in investments track by investment.id"></select>
+	                    	<div class="pull-right m-t-xs">
+	                    		<button ng-click="selectAll(item, investments)" class="btn btn-xs btn-white">{{ 'BUTTON_SELECT_ALL' | translate }}</button>
+	                    		<button ng-click="unselectAll(item)" class="btn btn-xs btn-white">{{ 'BUTTON_UNSELECT_ALL' | translate }}</button>
+	                    	</div>
+	                    </div>
                     </div>
 				</div>
 			</div>

@@ -1062,6 +1062,14 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 			});
 	};
 	
+	$scope.selectAll = function(item, options) {
+		item.value = options;
+	};
+	
+	$scope.unselectAll = function(item) {
+		item.value = [];
+	};
+	
 	$scope.getActivities = function() {
 		ActivitiesService.getEntities()
 			.success(function(data, status) {
