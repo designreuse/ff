@@ -29,7 +29,8 @@ public class ConfigParam {
 		contact_email_to,
 		sendgrid_enabled,
 		sendgrid_apikey,
-		test_mode
+		test_mode,
+		encrypt_passwords
 	};
 
 	@Id

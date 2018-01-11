@@ -130,7 +130,12 @@
 		<dependency>
 			<groupId>com.sendgrid</groupId>
 			<artifactId>sendgrid-java</artifactId>
-			<version>4.0.1</version><!--$NO-MVN-MAN-VER$-->
+			<version>4.0.1</version><!--$NO-MVN-MAN-VER$ -->
+		</dependency>
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
 		</dependency>
 	</dependencies>
 

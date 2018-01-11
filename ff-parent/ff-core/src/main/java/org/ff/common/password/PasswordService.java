@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
@@ -13,9 +15,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PasswordService {
 
+	private final static String ENCRYPTION_PASSWORD = "#!dJ_bOb0_tRiBuTe!#";
+
 	private List<CharacterRule> rules;
 
 	private PasswordGenerator generator;
+
+	private static BasicTextEncryptor encryptor;
+
+	static {
+		encryptor = new BasicTextEncryptor();
+		encryptor.setPassword(ENCRYPTION_PASSWORD);
+	}
 
 	@PostConstruct
 	public void init() {
@@ -36,9 +47,12 @@ public class PasswordService {
 		return generator.generatePassword(12, rules);
 	}
 
-	public static String encodePassword(String password) {
-		//		return new MessageDigestPasswordEncoder("SHA-1").encodePassword(password, null);
-		return password;
+	public static String encryptPassword(String password) {
+		return (StringUtils.isNotBlank(password)) ? encryptor.encrypt(password) : password;
+	}
+
+	public static String decryptPassword(String password) {
+		return (StringUtils.isNotBlank(password)) ? encryptor.decrypt(password) : password;
 	}
 
 }

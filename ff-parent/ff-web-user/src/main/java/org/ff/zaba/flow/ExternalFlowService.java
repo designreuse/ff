@@ -89,7 +89,7 @@ public class ExternalFlowService {
 						user.setEmail(data.get("email"));
 					}
 
-					user.setPassword(PasswordService.encodePassword(password));
+					user.setPassword(PasswordService.encryptPassword(password));
 					user.setLastLoginDate(new DateTime());
 					user.setDemoUser(Boolean.FALSE);
 					user.setRegistrationType(UserRegistrationType.EXTERNAL);
@@ -143,7 +143,7 @@ public class ExternalFlowService {
 
 				resource.setId(user.getId());
 				resource.setEmail(user.getEmail());
-				resource.setPassword(user.getPassword());
+				resource.setPassword(PasswordService.decryptPassword(user.getPassword()));
 
 				if (UserStatus.INACTIVE == user.getStatus()) {
 					return new ResponseEntity<>(HttpStatus.FORBIDDEN);

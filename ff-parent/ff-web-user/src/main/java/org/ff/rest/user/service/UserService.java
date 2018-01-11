@@ -113,7 +113,7 @@ public class UserService extends BaseService {
 		}
 
 		String password = passwordService.generate();
-		user.setPassword(PasswordService.encodePassword(password));
+		user.setPassword(PasswordService.encryptPassword(password));
 		user = repository.save(user);
 
 		log.debug("Sending reset password email to [{}]...", user.getEmail());

@@ -34,7 +34,8 @@ public class ConfigParamService {
 		for (ConfigParam entity : repository.findAll()) {
 			if (ConfigParamName.valueOf(entity.getName()) == ConfigParamName.test_mode
 					|| ConfigParamName.valueOf(entity.getName()) == ConfigParamName.sendgrid_enabled
-					|| ConfigParamName.valueOf(entity.getName()) == ConfigParamName.sendgrid_apikey) {
+					|| ConfigParamName.valueOf(entity.getName()) == ConfigParamName.sendgrid_apikey
+					|| ConfigParamName.valueOf(entity.getName()) == ConfigParamName.encrypt_passwords) {
 				continue;
 			}
 			resources.add(resourceAssembler.toResource(entity));

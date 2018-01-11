@@ -92,7 +92,7 @@ public class UserResourceAssembler {
 		entity.setLastName(resource.getLastName());
 		entity.setEmail(resource.getEmail());
 		entity.setEmail2(resource.getEmail2());
-		entity.setPassword(PasswordService.encodePassword(resource.getPassword()));
+		entity.setPassword(PasswordService.encryptPassword(resource.getPassword()));
 		Company company = null;
 		if (resource.getCompany() != null) {
 			company = companyResourceAssembler.createEntity(resource.getCompany());

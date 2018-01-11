@@ -1,13 +1,17 @@
 package org.ff.rest.user.service;
 
 import java.text.Collator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -15,11 +19,14 @@ import org.ff.base.service.BaseService;
 import org.ff.common.algorithm.AlgorithmService;
 import org.ff.common.mailsender.MailSenderResource;
 import org.ff.common.mailsender.MailSenderService;
+import org.ff.common.password.PasswordService;
 import org.ff.common.uigrid.PageableResource;
 import org.ff.common.uigrid.UiGridFilterResource;
 import org.ff.common.uigrid.UiGridResource;
 import org.ff.jpa.SearchCriteria;
 import org.ff.jpa.SearchOperation;
+import org.ff.jpa.domain.ConfigParam;
+import org.ff.jpa.domain.ConfigParam.ConfigParamName;
 import org.ff.jpa.domain.Email;
 import org.ff.jpa.domain.Project;
 import org.ff.jpa.domain.Tender;
@@ -29,6 +36,7 @@ import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.domain.UserEmail;
 import org.ff.jpa.domain.UserGroup;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
+import org.ff.jpa.repository.ConfigParamRepository;
 import org.ff.jpa.repository.EmailRepository;
 import org.ff.jpa.repository.GfiSyncErrorRepository;
 import org.ff.jpa.repository.ProjectRepository;
@@ -98,6 +106,14 @@ public class UserService extends BaseService {
 
 	@Autowired
 	private GfiSyncErrorRepository gfiSyncErrorRepository;
+
+	@Autowired
+	private ConfigParamRepository configParamRepository;
+
+	@PostConstruct
+	public void init() {
+		encryptPasswords();
+	}
 
 	@Transactional(readOnly = true)
 	public List<UserResource> findAll() {
@@ -458,6 +474,27 @@ public class UserService extends BaseService {
 			}
 		}
 		return out.toString();
+	}
+
+	@Transactional
+	private void encryptPasswords() {
+		ConfigParam param = configParamRepository.findByName(ConfigParamName.encrypt_passwords.toString());
+		if (param == null) {
+			long start = System.currentTimeMillis();
+			log.debug("Encrypting passwords...");
+			for (User user : userRepository.findAll()) {
+				if (StringUtils.isNotBlank(user.getPassword())) {
+					user.setPassword(PasswordService.encryptPassword(user.getPassword()));
+					userRepository.save(user);
+				}
+			}
+			param = new ConfigParam();
+			param.setName(ConfigParamName.encrypt_passwords.toString());
+			param.setValue(new SimpleDateFormat(properties.getDateTimeFormat()).format(new Date()));
+			configParamRepository.save(param);
+
+			log.debug("Encrypting passwords finished in {} ms.", System.currentTimeMillis() - start);
+		}
 	}
 
 }

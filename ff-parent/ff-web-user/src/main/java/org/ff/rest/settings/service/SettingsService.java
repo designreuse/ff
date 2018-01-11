@@ -46,7 +46,7 @@ public class SettingsService {
 		user.setEmail2(resource.getUser().getEmail2());
 
 		if (StringUtils.isNotBlank(resource.getUser().getPassword())) {
-			user.setPassword(PasswordService.encodePassword(resource.getUser().getPassword()));
+			user.setPassword(PasswordService.encryptPassword(resource.getUser().getPassword()));
 		}
 
 		userRepository.save(user);
