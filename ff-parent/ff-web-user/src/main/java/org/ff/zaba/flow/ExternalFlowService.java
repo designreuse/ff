@@ -176,8 +176,11 @@ public class ExternalFlowService {
 				orgUnit = new OrganizationalUnit();
 				orgUnit.setCode(companyData.getOrgUnit());
 				orgUnit.setName(companyData.getOrgUnitName());
-				organizationalUnitRepository.save(orgUnit);
+			} else {
+				orgUnit.setName(companyData.getOrgUnitName());
 			}
+
+			organizationalUnitRepository.save(orgUnit);
 		}
 
 		return orgUnit;
