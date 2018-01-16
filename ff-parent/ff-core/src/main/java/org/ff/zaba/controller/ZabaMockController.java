@@ -57,6 +57,8 @@ public class ZabaMockController {
 			resource.setVpoFirstName("Jack");
 			resource.setVpoLastName("Russel");
 			resource.setVpoEmail("jack.russel@gmail.com");
+			resource.setOrgUnit("org_unit_002");
+			resource.setOrgUnitName("Organizational unit 002");
 
 			return new ResponseEntity<>(resource, HttpStatus.OK);
 		} catch (Exception e) {

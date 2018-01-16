@@ -85,4 +85,10 @@ public class ZabaCompanyResource {
 	@JsonProperty("vpoEmail")
 	private String vpoEmail;
 
+	@JsonProperty("orgUnit")
+	private String orgUnit;
+
+	@JsonProperty("orgUnitName")
+	private String orgUnitName;
+
 }

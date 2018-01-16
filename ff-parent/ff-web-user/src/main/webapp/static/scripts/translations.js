@@ -135,8 +135,8 @@ function config($translateProvider) {
 			INCOMPLETE_PROFILE_HDR: 'Nepotpun profil poduzeća',
 			INCOMPLETE_PROFILE_MSG: 'Molimo popunite sve obavezne stavke u profilu poduzeća.',
 			
-			INCOMPLETE_PROJECTS_HDR: 'Nema projekata',
-			INCOMPLETE_PROJECTS_MSG: 'Molimo unesite bar jedan projekt',
+			INCOMPLETE_PROJECTS_HDR: 'Nema unesenih projekata',
+			INCOMPLETE_PROJECTS_MSG: 'Molimo dodajte Vaše planirane projekte i pritom popunite barem obavezne stavke.',
 			
 			MSG_REGISTRATION_SUCCESS: 'Vaš zahtjev za registracijom je zaprimljen. Na unesenu e-mail adresu zaprimit ćete link za dovršetak registracije.',
 			MSG_REGISTRATION_CONFLICT_USER: 'Korisnik sa upisanim e-mailom već postoji u sustavu.',

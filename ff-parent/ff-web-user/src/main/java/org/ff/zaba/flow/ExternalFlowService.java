@@ -6,11 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.ff.common.password.PasswordService;
 import org.ff.jpa.domain.BusinessRelationshipManager;
 import org.ff.jpa.domain.Company;
+import org.ff.jpa.domain.OrganizationalUnit;
 import org.ff.jpa.domain.User;
 import org.ff.jpa.domain.User.UserRegistrationType;
 import org.ff.jpa.domain.User.UserStatus;
 import org.ff.jpa.repository.BusinessRelationshipManagerRepository;
 import org.ff.jpa.repository.CompanyRepository;
+import org.ff.jpa.repository.OrganizationalUnitRepository;
 import org.ff.jpa.repository.UserRepository;
 import org.ff.rest.user.resource.UserResource;
 import org.ff.zaba.resource.ZabaCompanyResource;
@@ -50,6 +52,9 @@ public class ExternalFlowService {
 	@Autowired
 	private ZabaUpdateService zabaUpdateService;
 
+	@Autowired
+	private OrganizationalUnitRepository organizationalUnitRepository;
+
 	public ResponseEntity<UserResource> authorize(String authId) {
 		try {
 			log.debug("Initiating external flow for authId [{}]...", authId);
@@ -65,8 +70,11 @@ public class ExternalFlowService {
 
 				log.debug("Company data: {}", companyData);
 
+				// process organizational unit data
+				OrganizationalUnit organizationalUnit = processOrgUnitData(companyData);
+
 				// process BRM data
-				BusinessRelationshipManager businessRelationshipManager = processVpoData(companyData);
+				BusinessRelationshipManager businessRelationshipManager = processVpoData(companyData, organizationalUnit);
 
 				// check if company is already registered in FundFinder
 				Company company = companyRepository.findByCode(companyData.getOibNumber());
@@ -159,7 +167,23 @@ public class ExternalFlowService {
 		}
 	}
 
-	private BusinessRelationshipManager processVpoData(ZabaCompanyResource companyData) throws Exception {
+	private OrganizationalUnit processOrgUnitData(ZabaCompanyResource companyData) throws Exception {
+		OrganizationalUnit orgUnit = null;
+
+		if (StringUtils.isNotBlank(companyData.getOrgUnit())) {
+			orgUnit = organizationalUnitRepository.findByCode(companyData.getOrgUnit());
+			if (orgUnit == null) {
+				orgUnit = new OrganizationalUnit();
+				orgUnit.setCode(companyData.getOrgUnit());
+				orgUnit.setName(companyData.getOrgUnitName());
+				organizationalUnitRepository.save(orgUnit);
+			}
+		}
+
+		return orgUnit;
+	}
+
+	private BusinessRelationshipManager processVpoData(ZabaCompanyResource companyData, OrganizationalUnit organizationalUnit) throws Exception {
 		BusinessRelationshipManager businessRelationshipManager = null;
 
 		if (StringUtils.isNotBlank(companyData.getVpoEmail())) {
@@ -171,6 +195,7 @@ public class ExternalFlowService {
 				businessRelationshipManager.setFirstName(companyData.getVpoFirstName());
 				businessRelationshipManager.setLastName(companyData.getVpoLastName());
 				businessRelationshipManager.setEmail(companyData.getVpoEmail());
+				businessRelationshipManager.setOrganizationalUnit(organizationalUnit);
 			} else {
 				// update
 				if (StringUtils.isNotBlank(companyData.getVpoFirstName())) {
@@ -178,6 +203,9 @@ public class ExternalFlowService {
 				}
 				if (StringUtils.isNotBlank(companyData.getVpoLastName())) {
 					businessRelationshipManager.setLastName(companyData.getVpoLastName());
+				}
+				if (organizationalUnit != null) {
+					businessRelationshipManager.setOrganizationalUnit(organizationalUnit);
 				}
 			}
 
