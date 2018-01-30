@@ -107,4 +107,10 @@ public class CompanyController extends BaseController {
 		}
 	}
 
+	/** keep alive method */
+	@RequestMapping(method = RequestMethod.GET, value = { "/ping" })
+	public void ping() {
+		// do nothing
+	}
+
 }

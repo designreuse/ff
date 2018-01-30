@@ -4,6 +4,10 @@ angular.module('FundFinder')
 	this.getProfileCompleteness = function() {
 		return $http.get('/api/v1/company/profileCompleteness');
 	};
+	
+	this.ping = function() {
+		return $http.get('/api/v1/company/ping');
+	};
 })
 
 .factory('SessionStorage',['$window', function($window) {

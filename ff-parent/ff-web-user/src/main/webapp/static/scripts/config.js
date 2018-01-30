@@ -4,13 +4,12 @@ angular.module('FundFinder')
 
 })
 
-.config(function config($provide, $stateProvider, $httpProvider, $sceProvider, $urlRouterProvider, cfpLoadingBarProvider, IdleProvider, constants) {
+.config(function config($provide, $stateProvider, $httpProvider, $sceProvider, $urlRouterProvider, cfpLoadingBarProvider, KeepaliveProvider, constants) {
 	// disable SCE (Strict Contextual Escaping)
 	$sceProvider.enabled(false);
-	
-	// Idle settings
-	IdleProvider.idle(1800);
-	IdleProvider.timeout(9);
+
+	// keep alive settings
+	KeepaliveProvider.interval(60);
 	
 	// configure interceptor
 	$httpProvider.interceptors.push(function($window, $location) {  
@@ -410,15 +409,13 @@ angular.module('FundFinder')
 	$rootScope.profileCompleteness = 0;
 	$rootScope.profileIncomplete = true;
 	
-	// Idle settings
-	$rootScope.idleTimeout = Idle.getTimeout(); 
-
-	$rootScope.$on('IdleTimeout', function() {
-		$http.post('/logout', {})
-			.success(function() {
-				$window.location.href = '';
+	// Idle/keep alive settings
+	$rootScope.$on('Keepalive', function() {
+		CommonService.ping()
+			.success(function(data, status) {
+				// do nothing
 			})
-			.error(function(data) {
+			.error(function(data, status) {
 				$log.error(data);
 			});
 	});

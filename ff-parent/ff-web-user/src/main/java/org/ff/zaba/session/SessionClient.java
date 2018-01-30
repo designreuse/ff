@@ -121,7 +121,6 @@ public class SessionClient extends WebServiceGatewaySupport {
 			log.debug("Parsing XML string: {}", xmlString);
 
 			NodeList nodeList = documentBuilder.parse(new ByteArrayInputStream(xmlString.getBytes())).getElementsByTagName("entry");
-			log.debug("===");
 			for (int i=0; i<nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
