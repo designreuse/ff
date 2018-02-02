@@ -25,7 +25,7 @@ p span {
             <a ui-sref="tenders.details({ id: tender.id })">
                 <img class="img-rounded ff-masonry-brick-img" ng-show="tender.image.base64" ng-src="data:image/JPEG;base64,{{tender.image.base64}}" width="100%">
             </a>
-            <p style="margin-bottom: 0px; word-wrap: break-word" ng-bind-html="tender.text" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
+            <p style="margin-bottom: 0px; word-wrap: break-word" ng-bind-html="tender.text.substring(0,1000)" class="ff-masonry-brick-text text-justify" data-ellipsis></p>
             <div class="form-group" ng-repeat="item in tender.items" ng-if="item.valueMapped">
                 <div class="col-sm-12" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
                     <label class="ff-masonry-brick-label">{{ item.text }}</label>
