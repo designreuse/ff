@@ -145,10 +145,8 @@
                                         </a>
                                     </div>
                                     <div class="col-lg-9">
-                                        <a class="ff-a" ui-sref="articles.details({ id: article.id })">
-                                            <h4 style="margin-top: 0px; margin-bottom: 5px;">{{article.name}}</h4>
-                                        </a>
-                                        <p style="margin: 0px; min-height: 10px; max-height: 75px; word-wrap: break-word;" ng-bind-html="article.text" class="text-justify" data-ellipsis></p>
+										<h4 style="margin-top: 0px; margin-bottom: 5px;"><a class="ff-a" ui-sref="articles.details({ id: article.id })">{{article.name}}</a></h4>
+                                        <p style="margin: 0px; min-height: 10px; max-height: 75px; word-wrap: break-word;" ng-bind-html="article.text.substring(0, 1000)" class="text-justify" data-ellipsis></p>
                                     </div>
                                 </div>
                             </div>
