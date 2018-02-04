@@ -221,7 +221,7 @@ function UserGroupsOverviewController($rootScope, $scope, $state, $log, $timeout
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.usergroups_edit', { 'id' : 0 });
+		$state.go('settings.usergroups_edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -440,5 +440,5 @@ function UserGroupsEditController($rootScope, $scope, $state, $stateParams, $log
 	
 	// initial load
 	$scope.getUsers();
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

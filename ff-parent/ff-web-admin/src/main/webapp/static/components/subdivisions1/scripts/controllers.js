@@ -210,7 +210,7 @@ function Subdivisions1OverviewController($rootScope, $scope, $state, $log, $time
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.subdivisions1_edit', { 'id' : 0 });
+		$state.go('settings.subdivisions1_edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -371,5 +371,5 @@ function Subdivisions1EditController($rootScope, $scope, $state, $stateParams, $
 	};
 	
 	// initial load
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

@@ -365,7 +365,7 @@ function ItemsOverviewController($rootScope, $scope, $state, $stateParams, $log,
 	}
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.items_edit_' + $stateParams.entityType, { 'entityType' : $stateParams.entityType, 'id' : 0 });
+		$state.go('settings.items_edit_' + $stateParams.entityType, { 'entityType' : $stateParams.entityType, 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -810,5 +810,5 @@ function ItemsEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 		};
 	
 	// initial load
-	$scope.getEntity($stateParams.entityType, $stateParams.id);
+	$scope.getEntity($stateParams.entityType, ($stateParams.id) ? $stateParams.id : 0);
 };

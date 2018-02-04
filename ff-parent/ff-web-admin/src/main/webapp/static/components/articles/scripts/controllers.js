@@ -253,8 +253,8 @@ function ArticlesOverviewController($rootScope, $scope, $state, $log, $timeout, 
 		$state.go('articles.details', { 'id' : entity.id });
 	}
 	
-	$scope.addEntity = function (entity) {
-		$state.go('articles.edit', { 'id' : 0 });
+	$scope.addEntity = function () {
+		$state.go('articles.edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -557,5 +557,5 @@ function ArticlesEditController($rootScope, $scope, $state, $stateParams, $log, 
 	};
 	
 	// initial load
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

@@ -203,7 +203,7 @@ function RolesOverviewController($rootScope, $scope, $state, $log, $timeout, $fi
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.roles_edit', { 'id' : 0 });
+		$state.go('settings.roles_edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -386,5 +386,5 @@ function RolesEditController($rootScope, $scope, $state, $stateParams, $log, $ti
 	
 	// initial load
 	$scope.getPermissions();
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

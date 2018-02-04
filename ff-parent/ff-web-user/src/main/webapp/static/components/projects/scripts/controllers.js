@@ -60,7 +60,7 @@ function ProjectsController($rootScope, $scope, $state, $log, $timeout, $filter,
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('projects.edit', { 'id' : 0 });
+		$state.go('projects.edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -327,5 +327,5 @@ function ProjectsEditController($rootScope, $scope, $state, $stateParams, $log, 
 	$scope.getActivities();
 	$scope.getSubdivisions1();
 	$scope.getSubdivisions2();
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

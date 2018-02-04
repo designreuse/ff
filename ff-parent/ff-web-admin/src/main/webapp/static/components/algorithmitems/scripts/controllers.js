@@ -333,7 +333,7 @@ function AlgorithmItemsOverviewController($rootScope, $scope, $state, $log, $tim
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.algorithmitems_edit', { 'id' : 0 });
+		$state.go('settings.algorithmitems_edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -612,5 +612,5 @@ function AlgorithmItemsEditController($rootScope, $scope, $state, $stateParams, 
 	$scope.getCompanyItems();
 	$scope.getTenderItems();
 	$scope.getConditionalItems();
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

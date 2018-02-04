@@ -210,7 +210,7 @@ function OrganizationalUnitsOverviewController($rootScope, $scope, $state, $log,
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.organizationalunits_edit', { 'id' : 0 });
+		$state.go('settings.organizationalunits_edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -398,5 +398,5 @@ function OrganizationalUnitsEditController($rootScope, $scope, $state, $statePar
 	};
 	
 	// initial load
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

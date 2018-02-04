@@ -264,7 +264,7 @@ function TendersOverviewController($rootScope, $scope, $state, $log, $sce, $time
 	}
 	
 	$scope.addEntity = function (entity) {
-		$state.go('tenders.edit', { 'id' : 0 });
+		$state.go('tenders.edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -1164,7 +1164,7 @@ function TendersEditController($rootScope, $scope, $state, $stateParams, $log, $
 	// initial load
 	$scope.mandatoryItemsOnly = true;
 	
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 	$scope.getCurrencies();
 	$scope.getInvestments();
 	$scope.getSubdivisions1();

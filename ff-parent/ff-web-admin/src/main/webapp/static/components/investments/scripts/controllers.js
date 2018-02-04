@@ -254,7 +254,7 @@ function InvestmentsOverviewController($rootScope, $scope, $state, $log, $timeou
 	}
 	
 	$scope.addEntity = function (entity) {
-		$state.go('investments.edit', { 'id' : 0 });
+		$state.go('investments.edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -551,5 +551,5 @@ function InvestmentsEditController($rootScope, $scope, $state, $stateParams, $lo
 	};
 	
 	// initial load
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };

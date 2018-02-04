@@ -251,7 +251,7 @@ function BusinessRelationshipManagerOverviewController($rootScope, $scope, $stat
 	};
 	
 	$scope.addEntity = function (entity) {
-		$state.go('settings.businessrelationshipmanagers_edit', { 'id' : 0 });
+		$state.go('settings.businessrelationshipmanagers_edit', { 'id' : undefined });
 	}
 	
 	$scope.editEntity = function (entity) {
@@ -423,5 +423,5 @@ function BusinessRelationshipManagerEditController($rootScope, $scope, $state, $
 	
 	// initial load
 	$scope.getOrganizationalUnits();
-	$scope.getEntity($stateParams.id);
+	$scope.getEntity(($stateParams.id) ? $stateParams.id : 0);
 };
